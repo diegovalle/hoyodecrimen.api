@@ -47,5 +47,5 @@ def index():
 if __name__ == '__main__':
     app.run()
 
-from api import *
+from apihoyodecrimen import *
 db.create_all()
