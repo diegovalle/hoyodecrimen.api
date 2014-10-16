@@ -100,7 +100,7 @@ def sectors(crime, sector):
             json_results.append(d)
     return jsonify(items = json_results)
 
-@app.route('/v1/list/crimes/')
+@app.route('/v1/list/crimes')
 def listcrimes():
     results = Cuadrantes.query. \
               with_entities(Cuadrantes.crime).\
@@ -110,7 +110,7 @@ def listcrimes():
    for result in results:
             d = {'crime': result.crime}
             json_results.append(d)
-    return jsonify(items = json_results)
+   return jsonify(items = json_results)
 
 
 
