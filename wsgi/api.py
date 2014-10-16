@@ -81,7 +81,7 @@ def sectors(crime, sector):
         results = Cuadrantes.query. \
             filter(Cuadrantes.sector == sector,
                    Cuadrantes.crime == crime). \
-            group_by([Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector]). \
+            group_by([db.crime, db.date, db.sector]). \
             with_entities(Cuadrantes.sector,
                           Cuadrantes.crime,
                           Cuadrantes.date,
@@ -89,7 +89,6 @@ def sectors(crime, sector):
                           func.sum(Cuadrantes.population)) \
             .order_by(Cuadrantes.date) \
             .all()
-        #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     json_results = []
     for result in results:
             d = {'count': result.count,
