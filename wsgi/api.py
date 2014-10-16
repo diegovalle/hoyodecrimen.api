@@ -81,12 +81,12 @@ def sectors(crime, sector):
         results = Cuadrantes.query. \
             filter(Cuadrantes.sector == sector,
                    Cuadrantes.crime == crime). \
-            group_by([Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector]). \
             with_entities(Cuadrantes.sector,
                           Cuadrantes.crime,
                           Cuadrantes.date,
                           func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population)) \
+            group_by([Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector]). \
             .order_by(Cuadrantes.date) \
             .all()
     json_results = []
