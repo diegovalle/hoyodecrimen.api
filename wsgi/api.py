@@ -49,8 +49,6 @@ def index():
           methods=['GET'])
 def cuadrantes(crime, cuadrante):
     if request.method == 'GET':
-        cuadrante = cuadrante.lower()
-        crime = crime.lower()
         results = Cuadrantes.query. \
             filter(Cuadrantes.cuadrante == cuadrante,
                    Cuadrantes.crime == crime). \
