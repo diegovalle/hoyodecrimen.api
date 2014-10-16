@@ -51,7 +51,7 @@ def cuadrantes(crime, cuadrante):
     if request.method == 'GET':
         cuadrante = cuadrante.lower()
         crime = crime.lower()
-        results = query. \
+        results = Cuadrantes.query. \
             filter(Cuadrantes.cuadrante == cuadrante,
                    Cuadrantes.crime == crime). \
             with_entities(Cuadrantes.cuadrante,
