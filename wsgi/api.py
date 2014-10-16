@@ -171,7 +171,7 @@ SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime or
     return jsonify(items = json_results)
 
 @app.route('/v1/top5/changecuadrantes')
-def top5sectores():
+def top5changecuadrantes():
     results = db.session.execute("""with difference as
 (select crime, cuadrante, sector, max(population) as population, sum(case when date = '2014-07-01' or date = '2014-06-01' or date='2014-05-01' THEN count ELSE 0 END) as y2014, sum(case when date = '2013-07-01' or date = '2013-06-01' or date='2013-05-01' THEN count ELSE 0 END) as y2013, sum(case when date = '2014-07-01' or date = '2014-06-01' or date='2014-05-01' THEN count ELSE 0 END) - sum(case when date = '2013-07-01' or date = '2013-06-01' or date='2013-05-01' THEN count ELSE 0 END) as diff  from cuadrantes group by cuadrante, sector, crime order by diff desc)
 SELECT * from (SELECT rank() over (partition by crime order by diff desc) as rank,crime,cuadrante,sector,population, y2013, y2014,diff from difference group by diff,crime,sector,cuadrante, population, y2013, y2014) as temp where rank <= 5""")
