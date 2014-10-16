@@ -59,8 +59,8 @@ def cuadrantes(crime, cuadrante):
                           Cuadrantes.crime,
                           Cuadrantes.date,
                           Cuadrantes.count,
-                          Cuadrantes.population)
-            .order_by(Cuadrantes.date)
+                          Cuadrantes.population) \
+            .order_by(Cuadrantes.date) \
             .all()
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     json_results = []
