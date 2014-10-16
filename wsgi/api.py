@@ -49,7 +49,7 @@ def index():
 def cuadrantes(cuadrante):
     if request.method == 'GET':
         cuadrante_id = cuadrante.lower()
-        results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", [cuadrante_id])
+        results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     json_results = []
     for result in results:
             d = {'count': result.count,
