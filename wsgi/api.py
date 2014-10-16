@@ -85,10 +85,10 @@ def sectors(crime, sector):
                           Cuadrantes.crime,
                           Cuadrantes.date,
                           func.sum(Cuadrantes.count).label('count'),
-                          func.sum(Cuadrantes.population)) \
+                          func.sum(Cuadrantes.population)). \
             group_by([Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector]). \
-            .order_by(Cuadrantes.date) \
-            .all()
+            order_by(Cuadrantes.date). \
+            all()
     json_results = []
     for result in results:
             d = {'count': result.count,
