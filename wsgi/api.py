@@ -108,8 +108,8 @@ def listcrimes():
               all()
    json_results = []
    for result in results:
-            d = {'crime': result.crime}
-            json_results.append(d)
+           d = {'crime': result.crime}
+           json_results.append(d)
    return jsonify(items = json_results)
 
 
