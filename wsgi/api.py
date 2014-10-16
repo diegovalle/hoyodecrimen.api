@@ -127,7 +127,7 @@ def listcuadrantes():
 @app.route('/v1/list/sectores')
 def listsectores():
     results = Cuadrantes.query. \
-              with_entities(Cuadrantes.sectores).\
+              with_entities(Cuadrantes.sector).\
               distinct().\
               all()
     json_results = []
