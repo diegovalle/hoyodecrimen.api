@@ -49,7 +49,17 @@ def index():
 def cuadrantes:
     if request.method == 'GET':
         cuadrante_id = cuadrante.lower()
-        results = db.session.execute("select cuadrante, sector, crime, date, count from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", [cuadrante_id])
+        results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", [cuadrante_id])
+    json_results = []
+    for result in results:
+            d = {'count': result.count,
+                 'crime': result.crime,
+                 'sector': result.sector,
+                 'cuadrante': result.cuadrante,
+                 'date': result.date,
+                 'population': result.population}
+            json_results.append(d)
+    return jsonify(items = json_results)
 
 @app.route('/v1/top5/cuadrantes')
 def top5cuadrantes():
