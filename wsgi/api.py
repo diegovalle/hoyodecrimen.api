@@ -100,6 +100,20 @@ def sectors(crime, sector):
             json_results.append(d)
     return jsonify(items = json_results)
 
+@app.route('/v1/list/crimes/')
+def listcrimes():
+    results = Cuadrantes.query. \
+              with_entities(Cuadrantes.crime).\
+              distinct().\
+              all()
+   json_results = []
+   for result in results:
+            d = {'crime': result.crime}
+            json_results.append(d)
+    return jsonify(items = json_results)
+
+
+
 @app.route('/v1/top5/cuadrantes')
 def top5cuadrantes():
     results = db.session.execute("""with crimes as
