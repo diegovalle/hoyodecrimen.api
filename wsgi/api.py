@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
  
 app = Flask(__name__)
  
-#app.config.from_pyfile('apihoyodecrimen.cfg')
-#db = SQLAlchemy(app)
+app.config.from_pyfile('apihoyodecrimen.cfg')
+db = SQLAlchemy(app)
 
 #psql -d dbname -U username -W
 #CREATE TABLE cuadrantes (
