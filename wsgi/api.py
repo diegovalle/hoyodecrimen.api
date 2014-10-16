@@ -44,7 +44,7 @@ def index():
     return "Hello from API"
 
 @app.route('/v1/cuadrantes/'
-          '<string:cuadrante_id>',
+          '<string:cuadrante>',
           methods=['GET'])
 def cuadrantes(cuadrante):
     if request.method == 'GET':
