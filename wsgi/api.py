@@ -106,11 +106,11 @@ def listcrimes():
               with_entities(Cuadrantes.crime).\
               distinct().\
               all()
-   json_results = []
-   for result in results:
-           d = {'crime': result.crime}
-           json_results.append(d)
-   return jsonify(items = json_results)
+    json_results = []
+    for result in results:
+            d = {'crime': result.crime}
+            json_results.append(d)
+    return jsonify(items = json_results)
 
 
 
