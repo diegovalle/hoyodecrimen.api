@@ -142,7 +142,7 @@ def listsectores():
 def top5cuadrantes():
     results = db.session.execute("""with crimes as
 (select sum(count) as count,sector,cuadrante,max(population)as population, crime from cuadrantes where date >= '2013-08-01' and date <= '2014-07-01' group by cuadrante, sector, crime)
-SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by crime order by count desc) as rank,population from crimes group by count,crime,sector,cuadrante,population) as temp2 where rank <= 5 order by crime, count, cuadrante, sector""")
+SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by crime order by count desc) as rank,population from crimes group by count,crime,sector,cuadrante,population) as temp2 where rank <= 5 order by crime, count, cuadrante, sector desc""")
     json_results = []
     for result in results:
             d = {'count': result.count,
@@ -177,7 +177,7 @@ def top5changecuadrantes():
 SELECT * from (SELECT rank() over (partition by crime order by diff desc) as rank,crime,cuadrante,sector,population, y2013, y2014,diff from difference group by diff,crime,sector,cuadrante, population, y2013, y2014) as temp where rank <= 5  order by crime, diff, cuadrante, sector desc""")
     json_results = []
     for result in results:
-            d = {'count': result.count,
+            d = {
                  'crime': result.crime,
                  'sector': result.sector,
                  'cuadrante': result.cuadrante,
