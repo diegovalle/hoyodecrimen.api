@@ -76,7 +76,7 @@ def cuadrantes(crime, cuadrante):
           '<string:crime>/'
           '<string:sector>',
           methods=['GET'])
-def cuadrantes(crime, sector):
+def sectors(crime, sector):
     if request.method == 'GET':
         results = Cuadrantes.query. \
             filter(Cuadrantes.sector == sector,
