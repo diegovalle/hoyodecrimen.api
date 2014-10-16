@@ -81,7 +81,7 @@ def cuadrantes(crime, cuadrante):
         results = Cuadrantes.query. \
             filter(Cuadrantes.sector == sector,
                    Cuadrantes.crime == crime). \
-            group_by([crime, date, sector])
+            group_by([crime, date, sector]). \
             with_entities(Cuadrantes.sector,
                           Cuadrantes.crime,
                           Cuadrantes.date,
