@@ -40,9 +40,14 @@ class Cuadrantes(db.Model):
         self.population = population
  
 @app.route('/')
-@app.route('/hello')
 def index():
-    return "Hello from OpenShift"
+    return "Hello from API"
+
+@app.route('/v1/top5/cuadrantes')
+def top5cuadrantes():
+    Cuadrantes.execute("with crimes as
+(select sum(count) as count,sector,cuadrante,max(population)as population, crime from cuadrantes  where date >= '2013-08-01' and date <= '2014-07-01' group by cuadrante, sector, crime)
+SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by crime order by count desc) as rank,population from crimes group by count,crime,sector,cuadrante,population) as temp2 where rank <= (SELECT rank from (SELECT count,cuadrante,rank() over (partition by crime order by count desc) as rank, row_number() OVER (ORDER BY count desc) AS rownum from crimes) as rank10 where rownum = 10) order by crime, rank,sector, cuadrante")
  
 if __name__ == '__main__':
     app.run()
