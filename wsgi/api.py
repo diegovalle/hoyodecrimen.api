@@ -72,6 +72,34 @@ def cuadrantes(crime, cuadrante):
             json_results.append(d)
     return jsonify(items = json_results)
 
+@app.route('/v1/sectores/'
+          '<string:crime>/'
+          '<string:sector>',
+          methods=['GET'])
+def cuadrantes(crime, cuadrante):
+    if request.method == 'GET':
+        results = Cuadrantes.query. \
+            filter(Cuadrantes.sector == sector,
+                   Cuadrantes.crime == crime). \
+            group_by([crime, date, sector])
+            with_entities(Cuadrantes.sector,
+                          Cuadrantes.crime,
+                          Cuadrantes.date,
+                          func.sum(Cuadrantes.count).label('count'),
+                          func.sum(Cuadrantes.population)) \
+            .order_by(Cuadrantes.date) \
+            .all()
+        #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
+    json_results = []
+    for result in results:
+            d = {'count': result.count,
+                 'crime': result.crime,
+                 'sector': result.sector
+                 'date': result.date,
+                 'population': result.population / 12}
+            json_results.append(d)
+    return jsonify(items = json_results)
+
 @app.route('/v1/top5/cuadrantes')
 def top5cuadrantes():
     results = db.session.execute("""with crimes as
