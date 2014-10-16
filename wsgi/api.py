@@ -112,6 +112,30 @@ def listcrimes():
             json_results.append(d)
     return jsonify(items = json_results)
 
+@app.route('/v1/list/cuadrantes')
+def listcuadrantes():
+    results = Cuadrantes.query. \
+              with_entities(Cuadrantes.sector, Cuadrantes.cuadrante).\
+              distinct().\
+              all()
+    json_results = []
+    for result in results:
+            d = {'sector': result.sector, 'cuadrante': result.cuadrante}
+            json_results.append(d)
+    return jsonify(items = json_results)
+
+@app.route('/v1/list/sectores')
+def listsectores():
+    results = Cuadrantes.query. \
+              with_entities(Cuadrantes.sectores).\
+              distinct().\
+              all()
+    json_results = []
+    for result in results:
+            d = {'sector': result.sector}
+            json_results.append(d)
+    return jsonify(items = json_results)
+
 
 
 @app.route('/v1/top5/cuadrantes')
