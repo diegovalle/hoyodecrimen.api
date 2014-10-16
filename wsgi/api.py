@@ -46,7 +46,7 @@ def index():
 @app.route('/v1/cuadrantes/'
           '<string:cuadrante_id>',
           methods=['GET'])
-def cuadrantes:
+def cuadrantes():
     if request.method == 'GET':
         cuadrante_id = cuadrante.lower()
         results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", [cuadrante_id])
