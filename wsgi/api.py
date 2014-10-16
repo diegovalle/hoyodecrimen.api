@@ -94,7 +94,7 @@ def cuadrantes(crime, cuadrante):
     for result in results:
             d = {'count': result.count,
                  'crime': result.crime,
-                 'sector': result.sector
+                 'sector': result.sector,
                  'date': result.date,
                  'population': result.population / 12}
             json_results.append(d)
