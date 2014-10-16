@@ -44,12 +44,25 @@ def index():
     return "Hello from API"
 
 @app.route('/v1/cuadrantes/'
+          '<string:crime>/'
           '<string:cuadrante>',
           methods=['GET'])
-def cuadrantes(cuadrante):
+def cuadrantes(crime, cuadrante):
     if request.method == 'GET':
-        cuadrante_id = cuadrante.lower()
-        results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
+        cuadrante = cuadrante.lower()
+        crime = crime.lower()
+        results = query. \
+            filter(Cuadrantes.cuadrante == cuadrante,
+                   Cuadrantes.crime == crime). \
+            with_entities(Cuadrantes.cuadrante,
+                          Cuadrantes.sector,
+                          Cuadrantes.crime,
+                          Cuadrantes.date,
+                          Cuadrantes.count,
+                          Cuadrantes.population)
+            .order_by(Cuadrantes.date)
+            .all()
+        #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     json_results = []
     for result in results:
             d = {'count': result.count,
