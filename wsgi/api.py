@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
  
 app = Flask(__name__)
@@ -45,9 +45,19 @@ def index():
 
 @app.route('/v1/top5/cuadrantes')
 def top5cuadrantes():
-    db.session.execute("""with crimes as
+    results = db.session.execute("""with crimes as
 (select sum(count) as count,sector,cuadrante,max(population)as population, crime from cuadrantes  where date >= '2013-08-01' and date <= '2014-07-01' group by cuadrante, sector, crime)
 SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by crime order by count desc) as rank,population from crimes group by count,crime,sector,cuadrante,population) as temp2 where rank <= (SELECT rank from (SELECT count,cuadrante,rank() over (partition by crime order by count desc) as rank, row_number() OVER (ORDER BY count desc) AS rownum from crimes) as rank10 where rownum = 10) order by crime, rank,sector, cuadrante""")
+    json_results = []
+    for result in results:
+            d = {'count': result.count,
+                 'crime': result.crime,
+                 'sector': result.sector,
+                 'cuadrante': result.cuadrante,
+                 'rank': result.rank,
+                 'population': result.population}
+            json_results.append(d)
+    return jsonify(items = json_results)
  
 if __name__ == '__main__':
     app.run()
