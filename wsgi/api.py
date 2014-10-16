@@ -164,7 +164,7 @@ SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime or
             d = {'count': result.count,
                  'crime': result.crime,
                  'sector': result.sector,
-                 'cuadrante': result.cuadrante,
+                 'rate': result.rate,
                  'rank': result.rank,
                  'population': result.population}
             json_results.append(d)
@@ -182,7 +182,10 @@ SELECT * from (SELECT rank() over (partition by crime order by diff desc) as ran
                  'sector': result.sector,
                  'cuadrante': result.cuadrante,
                  'rank': result.rank,
-                 'population': result.population}
+                 'population': result.population,
+                 'start_period': result.y2013,
+                 'end_period': result.y2014,
+                 'difference': result.diff}
             json_results.append(d)
     return jsonify(items = json_results)
 
