@@ -67,7 +67,7 @@ def df_all(crime):
                           Cuadrantes.date,
                           func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population).label('population')). \
-            group_by(Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector). \
+            group_by(Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector, Cuadrantes.cuadrante). \
             order_by(Cuadrantes.date). \
             all()
     json_results = []
