@@ -158,7 +158,7 @@ SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by cri
 def top5sectores():
     results = db.session.execute("""with crimes as
 (select (sum(count) / (sum(population) /12 )* 100000) as rate,sum(count) as count,sector,sum(population)/12 as population, crime from cuadrantes  where date >= '2013-08-01' and date <= '2014-07-01' group by sector, crime)
-SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime order by rate desc) as rank,population from crimes group by count,crime,sector,population, rate) as temp2 where rank <= (SELECT rank from (SELECT rate,rank() over (partition by crime order by rate desc) as rank, row_number() OVER (ORDER BY count desc) AS rownum from crimes) as rank10 where rownum = 10) order by crime, rank,sector""")
+SELECT * from crimes limit 10""")
     json_results = []
     for result in results:
             d = {'count': result.count,
