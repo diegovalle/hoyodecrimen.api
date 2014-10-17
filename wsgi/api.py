@@ -2,8 +2,8 @@ from datetime import datetime
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, and_
-#from flask_cache import Cache
-from redis import Redis
+from flask_cache import Cache
+#from redis import Redis
  
 app = Flask(__name__)
 
