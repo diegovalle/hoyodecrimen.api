@@ -5,6 +5,11 @@ from sqlalchemy import func, and_
 from flask_cache import Cache
 #from redis import Redis
  
+
+START_STATE = '2013-01'
+#LAST_STRING = 'last'
+
+
 app = Flask(__name__)
 
 cache = Cache(app, config={
@@ -14,6 +19,9 @@ cache = Cache(app, config={
 
 app.config.from_pyfile('apihoyodecrimen.cfg')
 db = SQLAlchemy(app)
+
+#from api import *
+db.create_all()
 
 #psql -d dbname -U username -W
 #CREATE TABLE cuadrantes (
@@ -46,6 +54,53 @@ class Cuadrantes(db.Model):
         self.year = year
         self.sector = sector
         self.population = population
+
+def jsonp(f):
+    """Wraps JSONified output for JSONP"""
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        callback = request.args.get('callback', False)
+        if callback:
+            content = str(callback) + '(' + str(f(*args, **kwargs).data) + ')'
+            return current_app.response_class(content, mimetype='application/javascript')
+        else:
+            return f(*args, **kwargs)
+
+    return decorated_function
+
+def results_to_json(results):
+    json_results = []
+    if len(results) > 0:
+        keys = results[0].keys()
+        for result in results:
+            d = {}
+            for i, key in enumerate(keys):
+                if key == "date":
+                    d["year"] = int(result[i][0:4])
+                    d["month"] = int(result[i][5:7])
+                else:
+                    d[key] = result[i]
+            json_results.append(d)
+
+        return jsonify(rows=json_results) #Response(json.dumps(json_results),  mimetype='application/json')#
+    else:
+        return jsonify(rows=[])
+
+def monthsub(date, months):
+    m = (int(date[5:7]) + months) % 12
+    y = int(date[0:4]) + ((int(date[5:7])) + months - 1) // 12
+    if not m: 
+        m = 12
+    return str(y) + '-' + str(m).zfill(2) + '-01'
+
+def check_date_month(str):
+    try:
+        time.strptime(str, '%Y-%m')
+        valid = True
+    except ValueError:
+        valid = False
+    return valid
  
 @app.route('/')
 def index():
@@ -64,17 +119,10 @@ def df_all_crime():
             group_by(Cuadrantes.crime, Cuadrantes.date). \
             order_by(Cuadrantes.crime, Cuadrantes.date). \
             all()
-    json_results = []
-    for result in results:
-            d = {'count': result.count,
-                 'crime': result.crime,
-                 'date': result.date,
-                 'population': result.population}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+    return results_to_json(results)
 
 
-@cache.cached(timeout=None, key_prefix='df_crime')
+@cache.cached(timeout=None)
 @app.route('/v1/df/'
           '<string:crime>',
           methods=['GET'])
@@ -89,14 +137,7 @@ def df_all(crime):
             group_by(Cuadrantes.date, Cuadrantes.crime). \
             order_by(Cuadrantes.date). \
             all()
-    json_results = []
-    for result in results:
-            d = {'count': result.count,
-                 'crime': result.crime,
-                 'date': result.date,
-                 'population': result.population}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+    return results_to_json(results)
 
 @app.route('/v1/cuadrantes/'
           '<string:crime>/'
@@ -116,16 +157,7 @@ def cuadrantes(crime, cuadrante):
             .order_by(Cuadrantes.date) \
             .all()
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
-    json_results = []
-    for result in results:
-            d = {'count': result.count,
-                 'crime': result.crime,
-                 'sector': result.sector,
-                 'cuadrante': result.cuadrante,
-                 'date': result.date,
-                 'population': result.population}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+    return results_to_json(results)
 
 @app.route('/v1/sectores/'
           '<string:crime>/'
@@ -144,15 +176,7 @@ def sectors(crime, sector):
             group_by(Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector). \
             order_by(Cuadrantes.date). \
             all()
-    json_results = []
-    for result in results:
-            d = {'count': result.count,
-                 'crime': result.crime,
-                 'sector': result.sector,
-                 'date': result.date,
-                 'population': result.population / 12}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+    return results_to_json(results)
 
 @app.route('/v1/list/crimes')
 def listcrimes():
@@ -172,11 +196,7 @@ def listcuadrantes():
               with_entities(Cuadrantes.sector, Cuadrantes.cuadrante).\
               distinct().\
               all()
-    json_results = []
-    for result in results:
-            d = {'sector': result.sector, 'cuadrante': result.cuadrante}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+    return results_to_json(results)
 
 @app.route('/v1/list/sectores')
 def listsectores():
@@ -184,70 +204,57 @@ def listsectores():
               with_entities(Cuadrantes.sector).\
               distinct().\
               all()
-    json_results = []
-    for result in results:
-            d = {'sector': result.sector}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+    return results_to_json(results)
 
 
 
-@app.route('/v1/top5/cuadrantes')
+@app.route('/v1/top5/cuadrantecount')
 def top5cuadrantes():
-    results = db.session.execute("""with crimes as
-(select sum(count) as count,sector,cuadrante,max(population)as population, crime from cuadrantes where date >= '2013-08-01' and date <= '2014-07-01' group by cuadrante, sector, crime)
-SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by crime order by count desc) as rank,population from crimes group by count,crime,sector,cuadrante,population) as temp2 where rank <= 5 order by crime, count, cuadrante, sector desc""")
-    json_results = []
-    for result in results:
-            d = {'count': result.count,
-                 'crime': result.crime,
-                 'sector': result.sector,
-                 'cuadrante': result.cuadrante,
-                 'rank': result.rank,
-                 'population': result.population}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+    max_date = Cuadrantes.query. \
+            filter(). \
+            with_entities(func.max(Cuadrantes.date).label('date')). \
+            scalar()
+    start_date = monthsub(max_date, -11)
+    sql_query = """with crimes as
+(select sum(count) as count,sector,cuadrante,max(population)as population, crime from cuadrantes where date >= '{0}' and date <= '{1}' group by cuadrante, sector, crime)
+SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by crime order by count desc) as rank,population from crimes group by count,crime,sector,cuadrante,population) as temp2 where rank <= 5 order by crime, count, cuadrante, sector desc""".format(start_date, max_date)
+    results = db.session.execute(sql_query)
+    return results_to_json(results)
 
-@app.route('/v1/top5/sectores')
+@app.route('/v1/top5/sectorrate')
 def top5sectores():
     max_date = Cuadrantes.query. \
             filter(). \
             with_entities(func.max(Cuadrantes.date).label('date')). \
             scalar()
-    start_date = str(int(max_date[0:4])-1) + '-' + str((int(max_date[5:7]) + 1) % 12).zfill(2) + max_date[7:10]
+    start_date = monthsub(max_date, -11)
     sql_query = """with crimes as
 (select (sum(count) / (sum(population::float) /12 )* 100000) as rate,sum(count) as count,sector,sum(population)/12 as population, crime from cuadrantes  where date >= '{0}' and date <= '{1}' group by sector, crime)
 SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime order by rate desc) as rank,population from crimes group by count,crime,sector,population, rate) as temp2 where rank <= 5""".format(start_date, max_date)
     results = db.session.execute(sql_query)
-    json_results = []
-    for result in results:
-            d = {'count': result.count,
-                 'crime': result.crime,
-                 'sector': result.sector,
-                 'rate': result.rate,
-                 'rank': result.rank,
-                 'population': result.population}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+    return results_to_json(results)
 
 @app.route('/v1/top5/changecuadrantes')
 def top5changecuadrantes():
+    start=request.args.get('start', START_STATE)
+    end=request.args.get('end', LAST_STRING)
+    if end != 'last':
+        if not check_date_month(end):
+            abort(abort(make_response('something is wrong with the end date you provided', 400)))
+    if not check_date_month(start):
+        abort(abort(make_response('something is wrong with the start date you provided', 400)))
+    max_date = Cuadrantes.query. \
+            filter(). \
+            with_entities(func.max(Cuadrantes.date).label('date')). \
+            scalar()
+    max_date_minus3 = monthsub(max_date, -2)
+    max_date_last_year = monthsub(max_date, -12)
+    max_date_last_year_minus3 = monthsub(max_date, -14) 
     results = db.session.execute("""with difference as
-(select crime, cuadrante, sector, max(population) as population, sum(case when date = '2014-07-01' or date = '2014-06-01' or date='2014-05-01' THEN count ELSE 0 END) as y2014, sum(case when date = '2013-07-01' or date = '2013-06-01' or date='2013-05-01' THEN count ELSE 0 END) as y2013, sum(case when date = '2014-07-01' or date = '2014-06-01' or date='2014-05-01' THEN count ELSE 0 END) - sum(case when date = '2013-07-01' or date = '2013-06-01' or date='2013-05-01' THEN count ELSE 0 END) as diff  from cuadrantes group by cuadrante, sector, crime order by diff desc)
-SELECT * from (SELECT rank() over (partition by crime order by diff desc) as rank,crime,cuadrante,sector,population, y2013, y2014,diff from difference group by diff,crime,sector,cuadrante, population, y2013, y2014) as temp where rank <= 5  order by crime, rank, cuadrante, sector asc""")
-    json_results = []
-    for result in results:
-            d = {
-                 'crime': result.crime,
-                 'sector': result.sector,
-                 'cuadrante': result.cuadrante,
-                 'rank': result.rank,
-                 'population': result.population,
-                 'start_period': result.y2013,
-                 'end_period': result.y2014,
-                 'difference': result.diff}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+(select crime, cuadrante, sector, max(population) as population, sum(case when date = '2014-07-01' or date = '2014-06-01' or date='2014-05-01' THEN count ELSE 0 END) 
+as end_period, sum(case when date = '2013-07-01' or date = '2013-06-01' or date='2013-05-01' THEN count ELSE 0 END) as start_period, sum(case when date = '2014-07-01' or date = '2014-06-01' or date='2014-05-01' THEN count ELSE 0 END) - sum(case when date = '2013-07-01' or date = '2013-06-01' or date='2013-05-01' THEN count ELSE 0 END) as diff  from cuadrantes group by cuadrante, sector, crime order by diff desc)
+SELECT * from (SELECT rank() over (partition by crime order by diff desc) as rank,crime,cuadrante,sector,population, start_period, end_period,diff from difference group by diff,crime,sector,cuadrante, population, start_period, end_period) as temp where rank <= 5  order by crime, rank, cuadrante, sector asc""")
+    return results_to_json(results)
 
 
  
@@ -256,5 +263,3 @@ if __name__ == '__main__':
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
     app.run()
 
-from api import *
-db.create_all()
