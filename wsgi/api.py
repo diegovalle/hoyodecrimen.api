@@ -51,20 +51,42 @@ class Cuadrantes(db.Model):
 def index():
     return "Hello from API"
 
-@cache.cached(timeout=None, key_prefix='df_crime')
 @app.route('/v1/df/'
-          '<string:crime>/',
+          'all',
           methods=['GET'])
 def df_all(crime):
     if request.method == 'GET':
         results = Cuadrantes.query. \
-            filter(
-                   Cuadrantes.crime == crime). \
             with_entities(Cuadrantes.crime,
                           Cuadrantes.date,
                           func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population).label('population')). \
             group_by(Cuadrantes.crime, Cuadrantes.date). \
+            order_by(Cuadrantes.date). \
+            all()
+    json_results = []
+    for result in results:
+            d = {'count': result.count,
+                 'crime': result.crime,
+                 'date': result.date,
+                 'population': result.population}
+            json_results.append(d)
+    return jsonify(items = json_results)
+
+
+@cache.cached(timeout=None, key_prefix='df_crime')
+@app.route('/v1/df/'
+          '<string:crime>',
+          methods=['GET'])
+def df_all(crime):
+    if request.method == 'GET':
+        results = Cuadrantes.query. \
+            filter(Cuadrantes.crime == crime). \
+            with_entities(Cuadrantes.crime,
+                          Cuadrantes.date,
+                          func.sum(Cuadrantes.count).label('count'),
+                          func.sum(Cuadrantes.population).label('population')). \
+            group_by(Cuadrantes.date). \
             order_by(Cuadrantes.date). \
             all()
     json_results = []
@@ -226,7 +248,7 @@ SELECT * from (SELECT rank() over (partition by crime order by diff desc) as ran
 if __name__ == '__main__':
     app.config['PROFILE'] = True
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
-    app.run(debug = True)
+    app.run()
 
 from api import *
 db.create_all()
