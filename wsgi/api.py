@@ -7,10 +7,10 @@ from flask_cache import Cache
  
 app = Flask(__name__)
 
-#cache = Cache(app, config={
-#            'CACHE_TYPE': 'redis',
-#            'CACHE_REDIS_URL': 'redis://127.0.0.1:6379',
-#        })
+cache = Cache(app, config={
+            'CACHE_TYPE': 'redis',
+            'CACHE_REDIS_URL': 'redis://127.0.0.1:16379',
+        })
 
 app.config.from_pyfile('apihoyodecrimen.cfg')
 db = SQLAlchemy(app)
@@ -51,7 +51,7 @@ class Cuadrantes(db.Model):
 def index():
     return "Hello from API"
 
-#@cache.cached(timeout=None, key_prefix='sectors')
+@cache.cached(timeout=None, key_prefix='df_crime')
 @app.route('/v1/df/'
           '<string:crime>/',
           methods=['GET'])
