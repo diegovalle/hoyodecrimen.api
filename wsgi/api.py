@@ -53,21 +53,18 @@ def index():
 
 #@cache.cached(timeout=None, key_prefix='sectors')
 @app.route('/v1/df/'
-          '<string:crime>/'
-          'all',
+          '<string:crime>/',
           methods=['GET'])
 def df_all(crime):
     if request.method == 'GET':
         results = Cuadrantes.query. \
             filter(
                    Cuadrantes.crime == crime). \
-            with_entities(Cuadrantes.cuadrante,
-                          Cuadrantes.sector,
-                          Cuadrantes.crime,
+            with_entities(Cuadrantes.crime,
                           Cuadrantes.date,
                           func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population).label('population')). \
-            group_by(Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector, Cuadrantes.cuadrante). \
+            group_by(Cuadrantes.crime, Cuadrantes.date). \
             order_by(Cuadrantes.date). \
             all()
     json_results = []
