@@ -72,7 +72,7 @@ def df_all(crime):
             d = {'count': result.count,
                  'crime': result.crime,
                  'date': result.date,
-                 'population': result.population / 12}
+                 'population': result.population}
             json_results.append(d)
     return jsonify(items = json_results)
 
