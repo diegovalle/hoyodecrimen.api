@@ -210,9 +210,15 @@ SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by cri
 
 @app.route('/v1/top5/sectores')
 def top5sectores():
-    results = db.session.execute("""with crimes as
-(select (sum(count) / (sum(population::float) /12 )* 100000) as rate,sum(count) as count,sector,sum(population)/12 as population, crime from cuadrantes  where date >= '2013-08-01' and date <= '2014-07-01' group by sector, crime)
-SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime order by rate desc) as rank,population from crimes group by count,crime,sector,population, rate) as temp2 where rank <= 5""")
+    max_date = Cuadrantes.query. \
+            filter(). \
+            with_entities(func.max(Cuadrantes.date).label('date')). \
+            scalar()
+    start_date = str(int(max_date[0:4])-1) + '-' + str((int(max_date[5:7]) + 1) % 12).zfill(2) + max_date[7:10]
+    sql_query = """with crimes as
+(select (sum(count) / (sum(population::float) /12 )* 100000) as rate,sum(count) as count,sector,sum(population)/12 as population, crime from cuadrantes  where date >= '{0}' and date <= '{1}' group by sector, crime)
+SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime order by rate desc) as rank,population from crimes group by count,crime,sector,population, rate) as temp2 where rank <= 5""".format(startdate, max_date)
+    results = db.session.execute(sql_query)
     json_results = []
     for result in results:
             d = {'count': result.count,
