@@ -56,7 +56,7 @@ def index():
           '<string:crime>/'
           'all',
           methods=['GET'])
-def sectors(crime, sector):
+def df_all(crime):
     if request.method == 'GET':
         results = Cuadrantes.query. \
             filter(
