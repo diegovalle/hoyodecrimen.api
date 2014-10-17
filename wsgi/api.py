@@ -165,7 +165,7 @@ SELECT * from crimes limit 10""")
                  'crime': result.crime,
                  'sector': result.sector,
                  'rate': result.rate,
-                 'rank': result.rank,
+                 #'rank': result.rank,
                  'population': result.population}
             json_results.append(d)
     return jsonify(items = json_results)
