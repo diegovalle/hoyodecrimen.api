@@ -2,9 +2,16 @@ from datetime import datetime
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, and_
+from flask.ext.cache import Cache
+from redis import Redis
  
 app = Flask(__name__)
- 
+
+cache = Cache(app, config={
+            'CACHE_TYPE': 'redis',
+            'CACHE_REDIS_URL': 'redis://127.0.0.1:6379',
+        })
+
 app.config.from_pyfile('apihoyodecrimen.cfg')
 db = SQLAlchemy(app)
 
@@ -43,6 +50,36 @@ class Cuadrantes(db.Model):
 @app.route('/')
 def index():
     return "Hello from API"
+
+@cache.cached(timeout=None, key_prefix='sectors')
+@app.route('/v1/df/'
+          '<string:crime>/'
+          'all',
+          methods=['GET'])
+def sectors(crime, sector):
+    if request.method == 'GET':
+        results = Cuadrantes.query. \
+            filter(
+                   Cuadrantes.crime == crime). \
+            with_entities(Cuadrantes.cuadrante,
+                          Cuadrantes.sector,
+                          Cuadrantes.crime,
+                          Cuadrantes.date,
+                          func.sum(Cuadrantes.count).label('count'),
+                          func.sum(Cuadrantes.population).label('population')). \
+            group_by(Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector). \
+            order_by(Cuadrantes.date). \
+            all()
+    json_results = []
+    for result in results:
+            d = {'count': result.count,
+                 'crime': result.crime,
+                 'cuadrante': result.cuadrante,
+                 'sector': result.sector,
+                 'date': result.date,
+                 'population': result.population / 12}
+            json_results.append(d)
+    return jsonify(items = json_results)
 
 @app.route('/v1/cuadrantes/'
           '<string:crime>/'
