@@ -71,8 +71,6 @@ def df_all(crime):
     for result in results:
             d = {'count': result.count,
                  'crime': result.crime,
-                 'cuadrante': result.cuadrante,
-                 'sector': result.sector,
                  'date': result.date,
                  'population': result.population / 12}
             json_results.append(d)
