@@ -217,7 +217,7 @@ def top5sectores():
     start_date = str(int(max_date[0:4])-1) + '-' + str((int(max_date[5:7]) + 1) % 12).zfill(2) + max_date[7:10]
     sql_query = """with crimes as
 (select (sum(count) / (sum(population::float) /12 )* 100000) as rate,sum(count) as count,sector,sum(population)/12 as population, crime from cuadrantes  where date >= '{0}' and date <= '{1}' group by sector, crime)
-SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime order by rate desc) as rank,population from crimes group by count,crime,sector,population, rate) as temp2 where rank <= 5""".format(startdate, max_date)
+SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime order by rate desc) as rank,population from crimes group by count,crime,sector,population, rate) as temp2 where rank <= 5""".format(start_date, max_date)
     results = db.session.execute(sql_query)
     json_results = []
     for result in results:
