@@ -76,11 +76,11 @@ def results_to_json(results):
         for result in results:
             d = {}
             for i, key in enumerate(keys):
-                if key == "date":
-                    d["year"] = int(result[i][0:4])
-                    d["month"] = int(result[i][5:7])
-                else:
-                    d[key] = result[i]
+                #if key == "date":
+                #    d["year"] = int(result[i][0:4])
+                #    d["month"] = int(result[i][5:7])
+                #else:
+                d[key] = result[i]
             json_results.append(d)
 
         return jsonify(rows=json_results) #Response(json.dumps(json_results),  mimetype='application/json')#
@@ -184,11 +184,8 @@ def listcrimes():
               with_entities(func.lower(Cuadrantes.crime)).\
               distinct().\
               all()
-    json_results = []
-    for result in results:
-            d = {'crime': result.crime}
-            json_results.append(d)
-    return jsonify(rows = json_results)
+    return results_to_json(results)
+
 
 @app.route('/v1/list/cuadrantes')
 def listcuadrantes():
@@ -216,8 +213,16 @@ def top5cuadrantes():
             scalar()
     start_date = monthsub(max_date, -11)
     sql_query = """with crimes as
-(select sum(count) as count,sector,cuadrante,max(population)as population, crime from cuadrantes where date >= '{0}' and date <= '{1}' group by cuadrante, sector, crime)
-SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by crime order by count desc) as rank,population from crimes group by count,crime,sector,cuadrante,population) as temp2 where rank <= 5 order by crime, count, cuadrante, sector desc""".format(start_date, max_date)
+                      (select sum(count) as count,sector,cuadrante,max(population)as population, crime
+                      from cuadrantes
+                      where date >= '{0}' and date <= '{1}'
+                      group by cuadrante, sector, crime)
+                   SELECT *
+                   from
+                      (SELECT count,crime,lower(sector) as sector,lower(cuadrante) as cuadrante,rank() over (partition by crime order by count desc) as rank,population
+                      from crimes group by count,crime,sector,cuadrante,population) as temp2
+                      where rank <= 5
+                      order by crime, count, cuadrante, sector desc""".format(start_date, max_date)
     results = db.session.execute(sql_query)
     return results_to_json(dict(zip(results.keys(), results)))
 
@@ -229,8 +234,15 @@ def top5sectores():
             scalar()
     start_date = monthsub(max_date, -11)
     sql_query = """with crimes as
-(select (sum(count) / (sum(population::float) /12 )* 100000) as rate,sum(count) as count,sector,sum(population)/12 as population, crime from cuadrantes  where date >= '{0}' and date <= '{1}' group by sector, crime)
-SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime order by rate desc) as rank,population from crimes group by count,crime,sector,population, rate) as temp2 where rank <= 5""".format(start_date, max_date)
+                       (select (sum(count) / (sum(population::float) /12 )* 100000) as rate,sum(count) as count,sector,sum(population)/12 as population, crime
+                       from cuadrantes
+                       where date >= '{0}' and date <= '{1}'
+                       group by sector, crime)
+                   SELECT * from
+                       (SELECT count,rate,lower(crime) as crime,lower(sector) as sector,rank() over (partition by crime order by rate desc) as rank,population
+                       from crimes
+                       group by count,crime,sector,population, rate) as temp2
+                       where rank <= 5""".format(start_date, max_date)
     results = db.session.execute(sql_query)
     return results_to_json(dict(zip(results.keys(), results)))
 
@@ -251,9 +263,33 @@ def top5changecuadrantes():
     max_date_last_year = monthsub(max_date, -12)
     max_date_last_year_minus3 = monthsub(max_date, -14) 
     results = db.session.execute("""with difference as
-(select crime, cuadrante, sector, max(population) as population, sum(case when date = '2014-07-01' or date = '2014-06-01' or date='2014-05-01' THEN count ELSE 0 END) 
-as end_period, sum(case when date = '2013-07-01' or date = '2013-06-01' or date='2013-05-01' THEN count ELSE 0 END) as start_period, sum(case when date = '2014-07-01' or date = '2014-06-01' or date='2014-05-01' THEN count ELSE 0 END) - sum(case when date = '2013-07-01' or date = '2013-06-01' or date='2013-05-01' THEN count ELSE 0 END) as diff  from cuadrantes group by cuadrante, sector, crime order by diff desc)
-SELECT * from (SELECT rank() over (partition by crime order by diff desc) as rank,crime,cuadrante,sector,population, start_period, end_period,diff from difference group by diff,crime,sector,cuadrante, population, start_period, end_period) as temp where rank <= 5  order by crime, rank, cuadrante, sector asc""")
+                                       (select crime, cuadrante, sector, max(population) as population,
+                                               sum(case when date = '2014-07-01' or date = '2014-06-01'
+                                               or date='2014-05-01' THEN count ELSE 0 END) as end_period,
+                                               sum(case when date = '2013-07-01' or date = '2013-06-01' or
+                                               date='2013-05-01' THEN count ELSE 0 END) as start_period,
+                                               sum(case when date = '2014-07-01' or date = '2014-06-01' or
+                                               date='2014-05-01' THEN count ELSE 0 END) -
+                                               sum(case when date = '2013-07-01' or date = '2013-06-01' or
+                                               date='2013-05-01' THEN count ELSE 0 END) as diff
+                                        from cuadrantes
+                                        group by cuadrante, sector, crime
+                                        order by diff desc)
+                                    SELECT *
+                                    from (
+                                        SELECT rank() over (partition by crime order by diff desc) as rank,
+                                               lower(crime) as crime,lower(cuadrante) as cuadrante,
+                                               lower(sector) as sector,population, start_period, end_period,
+                                               diff from difference
+                                        group by diff,crime,sector,cuadrante, population, start_period, end_period)
+                                    as temp
+                                    where rank <= 5
+                                    order by crime, rank, cuadrante, sector asc""")
+    json_results = []
+    for result in results:
+            d = {'crime': result.crime}
+            json_results.append(d)
+    return jsonify(rows = json_results)
     return results_to_json(dict(zip(results.keys(), results)))
 
 
