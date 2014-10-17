@@ -62,7 +62,7 @@ def df_all_crime():
                           func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population).label('population')). \
             group_by(Cuadrantes.crime, Cuadrantes.date). \
-            order_by(Cuadrantes.date). \
+            order_by(Cuadrantes.crime, Cuadrantes.date). \
             all()
     json_results = []
     for result in results:
@@ -71,7 +71,7 @@ def df_all_crime():
                  'date': result.date,
                  'population': result.population}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 
 @cache.cached(timeout=None, key_prefix='df_crime')
@@ -86,7 +86,7 @@ def df_all(crime):
                           Cuadrantes.date,
                           func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population).label('population')). \
-            group_by(Cuadrantes.date). \
+            group_by(Cuadrantes.date, Cuadrantes.crime). \
             order_by(Cuadrantes.date). \
             all()
     json_results = []
@@ -96,7 +96,7 @@ def df_all(crime):
                  'date': result.date,
                  'population': result.population}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 @app.route('/v1/cuadrantes/'
           '<string:crime>/'
@@ -125,7 +125,7 @@ def cuadrantes(crime, cuadrante):
                  'date': result.date,
                  'population': result.population}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 @app.route('/v1/sectores/'
           '<string:crime>/'
@@ -152,7 +152,7 @@ def sectors(crime, sector):
                  'date': result.date,
                  'population': result.population / 12}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 @app.route('/v1/list/crimes')
 def listcrimes():
@@ -164,7 +164,7 @@ def listcrimes():
     for result in results:
             d = {'crime': result.crime}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 @app.route('/v1/list/cuadrantes')
 def listcuadrantes():
@@ -176,7 +176,7 @@ def listcuadrantes():
     for result in results:
             d = {'sector': result.sector, 'cuadrante': result.cuadrante}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 @app.route('/v1/list/sectores')
 def listsectores():
@@ -188,7 +188,7 @@ def listsectores():
     for result in results:
             d = {'sector': result.sector}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 
 
@@ -206,7 +206,7 @@ SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by cri
                  'rank': result.rank,
                  'population': result.population}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 @app.route('/v1/top5/sectores')
 def top5sectores():
@@ -222,7 +222,7 @@ SELECT * from (SELECT count,rate,crime,sector,rank() over (partition by crime or
                  'rank': result.rank,
                  'population': result.population}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 @app.route('/v1/top5/changecuadrantes')
 def top5changecuadrantes():
@@ -241,7 +241,7 @@ SELECT * from (SELECT rank() over (partition by crime order by diff desc) as ran
                  'end_period': result.y2014,
                  'difference': result.diff}
             json_results.append(d)
-    return jsonify(items = json_results)
+    return jsonify(rows = json_results)
 
 
  
