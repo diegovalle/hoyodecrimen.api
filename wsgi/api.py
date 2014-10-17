@@ -157,7 +157,7 @@ SELECT * from (SELECT count,crime,sector,cuadrante,rank() over (partition by cri
 @app.route('/v1/top5/sectores')
 def top5sectores():
     results = db.session.execute("""with crimes as
-(select (sum(count) / (sum(population) /12 )* 100000) as rate,sum(count) as count,sector,sum(population)/12 as population, crime from cuadrantes  where date >= '2013-08-01' and date <= '2014-07-01' group by sector, crime)
+(select (sum(count) / sum(population)) as rate,sum(count) as count,sector,sum(population)/12 as population, crime from cuadrantes  where date >= '2013-08-01' and date <= '2014-07-01' group by sector, crime)
 SELECT * from crimes limit 10""")
     json_results = []
     for result in results:
