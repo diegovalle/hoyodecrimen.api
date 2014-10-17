@@ -226,7 +226,7 @@ SELECT * from (SELECT rank() over (partition by crime order by diff desc) as ran
 if __name__ == '__main__':
     app.config['PROFILE'] = True
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
-    app.run()
+    app.run(debug = True)
 
 from api import *
 db.create_all()
