@@ -54,7 +54,7 @@ def index():
 @app.route('/v1/df/'
           'all',
           methods=['GET'])
-def df_all(crime):
+def df_all_crime():
     if request.method == 'GET':
         results = Cuadrantes.query. \
             with_entities(Cuadrantes.crime,
