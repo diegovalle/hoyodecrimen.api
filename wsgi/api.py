@@ -75,16 +75,16 @@ class Cuadrantes(db.Model):
         self.sector = sector
         self.population = population
 
-# class Cuadrantes_Poly(db.Model):
-#     __tablename__ = 'cuadrantes_poly'
-#     id = db.Column(db.String(60), primary_key=True)
-#     sector = db.Column(db.String(60))
-#     geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))
-#
-#     def __init__(self, id, sector, geom):
-#         self.id = id
-#         self.sector = sector
-#         self.geom = geom
+class Cuadrantes_Poly(db.Model):
+    __tablename__ = 'cuadrantes_poly'
+    id = db.Column(db.String(60), primary_key=True)
+    sector = db.Column(db.String(60))
+    geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))
+
+    def __init__(self, id, sector, geom):
+        self.id = id
+        self.sector = sector
+        self.geom = geom
 
 def jsonp(f):
     """Wraps JSONified output for JSONP"""
@@ -161,27 +161,27 @@ def check_float(str):
 def index():
     return "Hello from API"
 
-# @jsonp
-# @app.route('/v1/pip/'
-#           '<string:long>/'
-#           '<string:lat>',
-#           methods=['GET'])
-# def pip(long, lat):
-#     # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
-#     #                 FROM cuadrantes_poly
-#     #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
-#     if not check_float(long):
-#         abort(abort(make_response('something is wrong with the longitude you provided', 400)))
-#     if not check_float(lat):
-#         abort(abort(make_response('something is wrong with the latitude you provided', 400)))
-#     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
-#     results = Cuadrantes_Poly.query. \
-#         filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")==True). \
-#         with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
-#                       Cuadrantes_Poly.sector,
-#                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
-#         first()
-#     return jsonify(rows=results)
+@jsonp
+@app.route('/v1/pip/'
+          '<string:long>/'
+          '<string:lat>',
+          methods=['GET'])
+def pip(long, lat):
+    # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
+    #                 FROM cuadrantes_poly
+    #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
+    if not check_float(long):
+        abort(abort(make_response('something is wrong with the longitude you provided', 400)))
+    if not check_float(lat):
+        abort(abort(make_response('something is wrong with the latitude you provided', 400)))
+    point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
+    results = Cuadrantes_Poly.query. \
+        filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")==True). \
+        with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
+                      Cuadrantes_Poly.sector,
+                      func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
+        first()
+    return jsonify(rows=results)
 
 
 @jsonp
