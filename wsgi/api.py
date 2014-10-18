@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 from sqlalchemy import func, and_
 from flask_cache import Cache
+from werkzeug.contrib.profiler import ProfilerMiddleware
 #from redis import Redis
  
 
@@ -95,7 +96,7 @@ def results_to_json(results, n = 1):
                     d["year"] = int(result[i][0:4])
                     d["month"] = int(result[i][5:7])
                 elif key == "population" and n != 1:
-                    d["population"] = result[i] / 12 if result[i] is not None else result[i]
+                    d["population"] = result[i] / n if result[i] is not None else result[i]
                 else:
                     d[key] = result[i]
             json_results.append(d)
@@ -206,7 +207,7 @@ def cuadrantes_sum_all():
             scalar()
         start_date = monthsub(max_date, -11)
         results = Cuadrantes.query. \
-            filter(Cuadrantes.date >= start_date). \
+            filter(and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)). \
             with_entities(func.lower(Cuadrantes.cuadrante).label('cuadrante'),
                           func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
@@ -228,7 +229,7 @@ def sectores_sum_all():
             scalar()
         start_date = monthsub(max_date, -11)
         results = Cuadrantes.query. \
-            filter(Cuadrantes.date >= start_date). \
+            filter(and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)). \
             with_entities(func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label("count"),
@@ -375,6 +376,6 @@ def top5changecuadrantes():
  
 if __name__ == '__main__':
     app.config['PROFILE'] = True
-    #app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
-    app.run()
+    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
+    app.run(debug=True)
 
