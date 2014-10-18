@@ -197,6 +197,7 @@ def cuadrantes_all(cuadrante):
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     return results_to_json(results)
 
+@cache.cached(timeout=None)
 @app.route('/v1/sum/cuadrantes/all',
           methods=['GET'])
 def cuadrantes_sum_all():
@@ -219,6 +220,7 @@ def cuadrantes_sum_all():
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     return results_to_json(results, 12)
 
+@cache.cached(timeout=None)
 @app.route('/v1/sum/sectores/all',
           methods=['GET'])
 def sectores_sum_all():
