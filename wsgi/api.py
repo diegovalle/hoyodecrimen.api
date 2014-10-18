@@ -14,10 +14,11 @@ START_STATE = '2013-01'
 
 app = Flask(__name__)
 
-cache = Cache(app, config={
-            'CACHE_TYPE': 'redis',
-            'CACHE_REDIS_URL': 'redis://127.0.0.1:16379',
-        })
+# cache = Cache(app, config={
+#             'CACHE_TYPE': 'redis',
+#             'CACHE_REDIS_URL': 'redis://127.0.0.1:16379',
+#         })
+cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 app.config.from_pyfile('apihoyodecrimen.cfg')
 db = SQLAlchemy(app)
