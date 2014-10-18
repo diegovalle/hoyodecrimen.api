@@ -1,7 +1,6 @@
 Flask==0.10.1
 Flask-Cache==0.13.1
 Flask-SQLAlchemy==1.0
-GeoAlchemy==0.7.2
 GeoAlchemy2==0.2.4
 Jinja2==2.7.3
 MarkupSafe==0.23
