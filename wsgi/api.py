@@ -75,16 +75,16 @@ class Cuadrantes(db.Model):
         self.sector = sector
         self.population = population
 
-class Cuadrantes_Poly(db.Model):
-    __tablename__ = 'cuadrantes_poly'
-    id = db.Column(db.String(60), primary_key=True)
-    sector = db.Column(db.String(60))
-    geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))
-
-    def __init__(self, id, sector, geom):
-        self.id = id
-        self.sector = sector
-        self.geom = geom
+# class Cuadrantes_Poly(db.Model):
+#     __tablename__ = 'cuadrantes_poly'
+#     id = db.Column(db.String(60), primary_key=True)
+#     sector = db.Column(db.String(60))
+#     geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))
+#
+#     def __init__(self, id, sector, geom):
+#         self.id = id
+#         self.sector = sector
+#         self.geom = geom
 
 def jsonp(f):
     """Wraps JSONified output for JSONP"""
