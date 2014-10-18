@@ -5,6 +5,7 @@ from sqlalchemy.sql import text
 from sqlalchemy import func, and_
 from flask_cache import Cache
 from werkzeug.contrib.profiler import ProfilerMiddleware
+from functools import wraps
 #from redis import Redis
  
 
@@ -18,7 +19,7 @@ app = Flask(__name__)
 #             'CACHE_TYPE': 'redis',
 #             'CACHE_REDIS_URL': 'redis://127.0.0.1:16379',
 #         })
-cache = Cache(config={'CACHE_TYPE': 'simple'})
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 app.config.from_pyfile('apihoyodecrimen.cfg')
 db = SQLAlchemy(app)
@@ -125,6 +126,7 @@ def check_date_month(str):
 def index():
     return "Hello from API"
 
+@jsonp
 @app.route('/v1/df/'
           'all',
           methods=['GET'])
@@ -141,6 +143,7 @@ def df_all_crime():
     return results_to_json(results)
 
 
+@jsonp
 @cache.cached(timeout=None)
 @app.route('/v1/df/'
           '<string:crime>',
@@ -158,6 +161,7 @@ def df_all(crime):
             all()
     return results_to_json(results)
 
+@jsonp
 @app.route('/v1/cuadrantes/'
           '<string:crime>/'
           '<string:cuadrante>',
@@ -178,7 +182,7 @@ def cuadrantes(crime, cuadrante):
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     return results_to_json(results)
 
-
+@jsonp
 @app.route('/v1/cuadrantes/'
           'all/'
           '<string:cuadrante>',
@@ -198,6 +202,7 @@ def cuadrantes_all(cuadrante):
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     return results_to_json(results)
 
+@jsonp
 @cache.cached(timeout=None)
 @app.route('/v1/sum/cuadrantes/all',
           methods=['GET'])
@@ -221,7 +226,8 @@ def cuadrantes_sum_all():
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     return results_to_json(results, 12)
 
-@cache.cached(timeout=None)
+@jsonp
+@cache.cached(timeout=50)
 @app.route('/v1/sum/sectores/all',
           methods=['GET'])
 def sectores_sum_all():
@@ -242,6 +248,7 @@ def sectores_sum_all():
             .all()
     return results_to_json(results, 12)
 
+@jsonp
 @app.route('/v1/sectores/'
           '<string:crime>/'
           '<string:sector>',
@@ -261,6 +268,7 @@ def sectors(crime, sector):
             all()
     return results_to_json(results)
 
+@jsonp
 @app.route('/v1/list/crimes')
 def listcrimes():
     results = Cuadrantes.query. \
@@ -269,7 +277,7 @@ def listcrimes():
               all()
     return results_to_json(results)
 
-
+@jsonp
 @app.route('/v1/list/cuadrantes')
 def listcuadrantes():
     results = Cuadrantes.query. \
@@ -279,6 +287,7 @@ def listcuadrantes():
               all()
     return results_to_json(results)
 
+@jsonp
 @app.route('/v1/list/sectores')
 def listsectores():
     results = Cuadrantes.query. \
@@ -288,7 +297,7 @@ def listsectores():
     return results_to_json(results)
 
 
-
+@jsonp
 @app.route('/v1/top5/counts/cuadrante')
 def top5cuadrantes():
     max_date = Cuadrantes.query. \
@@ -311,6 +320,7 @@ def top5cuadrantes():
     results = db.engine.execute(sql_query)
     return ResultProxy_to_json(results)
 
+@jsonp
 @app.route('/v1/top5/rates/sector')
 def top5sectores():
     max_date = Cuadrantes.query. \
@@ -331,6 +341,7 @@ def top5sectores():
     results = db.session.execute(sql_query)
     return ResultProxy_to_json(results)
 
+@jsonp
 @app.route('/v1/top5/counts/change/cuadrantes')
 def top5changecuadrantes():
     # start=request.args.get('start', START_STATE)
