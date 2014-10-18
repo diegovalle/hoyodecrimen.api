@@ -1,11 +1,13 @@
 from datetime import datetime
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort, make_response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 from sqlalchemy import func, and_
-from flask_cache import Cache
+from flask.ext.cache import Cache
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
+from geoalchemy2 import Geometry
+from geoalchemy2.elements import WKTElement
 #from redis import Redis
  
 
@@ -19,15 +21,20 @@ app = Flask(__name__)
 #             'CACHE_TYPE': 'redis',
 #             'CACHE_REDIS_URL': 'redis://127.0.0.1:16379',
 #         })
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 app.config.from_pyfile('apihoyodecrimen.cfg')
+cache = Cache(app, config={
+         'CACHE_TYPE': 'filesystem',
+         'CACHE_DIR': '/tmp',
+         'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
+         'CACHE_THRESHOLD': 922337203685477580
+     })
 db = SQLAlchemy(app)
 
 #from api import *
 db.create_all()
 
-# psql -d dbname -U username -W
+# psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W
 # CREATE TABLE cuadrantes (
 # 	cuadrante varchar (10),
 # 	crime varchar (60),
@@ -39,6 +46,15 @@ db.create_all()
 #        PRIMARY KEY(cuadrante, sector, crime, date)
 # );
 # COPY cuadrantes FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+
+
+# shp2pgsql -s 4326 -W "latin1" -I -D cuadrantes-sspdf-no-errors.shp cuadrantes_poly > cuadrantes_poly.sql
+# ogr2ogr -f "GeoJSON" cuadrantes.geojson cuadrantes-sspdf-no-errors.shp
+# scp *.sql 543fe7165973cae5d30000c1@apihoyodecrimen-valle.rhcloud.com:app-root/data/
+
+#psql apihoyodecrimen -c "CREATE EXTENSION postgis;"
+#psql -d apihoyodecrimen $OPENSHIFT_POSTGRESQL_DB_USERNAME  < cuadrantes_poly.sql
+
 
 class Cuadrantes(db.Model):
     __tablename__ = 'cuadrantes'
@@ -58,6 +74,17 @@ class Cuadrantes(db.Model):
         self.year = year
         self.sector = sector
         self.population = population
+
+class Cuadrantes_Poly(db.Model):
+    __tablename__ = 'cuadrantes_poly'
+    id = db.Column(db.String(60), primary_key=True)
+    sector = db.Column(db.String(60))
+    geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))
+
+    def __init__(self, id, sector, geom):
+        self.id = id
+        self.sector = sector
+        self.geom = geom
 
 def jsonp(f):
     """Wraps JSONified output for JSONP"""
@@ -121,10 +148,41 @@ def check_date_month(str):
     except ValueError:
         valid = False
     return valid
+
+def check_float(str):
+    try:
+        float(str)
+        valid = True
+    except ValueError:
+        valid = False
+    return valid
  
 @app.route('/')
 def index():
     return "Hello from API"
+
+@jsonp
+@app.route('/v1/pip/'
+          '<string:long>/'
+          '<string:lat>',
+          methods=['GET'])
+def pip(long, lat):
+    # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
+    #                 FROM cuadrantes_poly
+    #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
+    if not check_float(long):
+        abort(abort(make_response('something is wrong with the longitude you provided', 400)))
+    if not check_float(lat):
+        abort(abort(make_response('something is wrong with the latitude you provided', 400)))
+    point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
+    results = Cuadrantes_Poly.query. \
+        filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")==True). \
+        with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
+                      Cuadrantes_Poly.sector,
+                      func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
+        first()
+    return jsonify(rows=results)
+
 
 @jsonp
 @app.route('/v1/df/'
@@ -141,6 +199,37 @@ def df_all_crime():
             order_by(Cuadrantes.crime, Cuadrantes.date). \
             all()
     return results_to_json(results)
+
+@cache.cached(timeout=50, key_prefix='all_comments')
+@jsonp
+@app.route('/v1/df/'
+          'last_12_months',
+        #'<string:cuadrante>',
+          methods=['GET'])
+def df_all_last_year():
+    if request.method == 'GET':
+        max_date = Cuadrantes.query. \
+            with_entities(func.max(Cuadrantes.date).label('date')). \
+            scalar()
+        start_date = monthsub(max_date, -11)
+        results_df = Cuadrantes.query. \
+            filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
+            with_entities(func.lower(Cuadrantes.crime).label('crime'),
+                          func.sum(Cuadrantes.count).label('count'),
+                          func.sum(Cuadrantes.population).label('population')). \
+            group_by(Cuadrantes.crime). \
+            order_by(Cuadrantes.crime). \
+            all()
+        # results = Cuadrantes.query. \
+        #     filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date),
+        #            func.lower(Cuadrantes.cuadrante) == cuadrante). \
+        #     with_entities(func.lower(Cuadrantes.crime).label('crime'),
+        #                   func.sum(Cuadrantes.count).label('count'),
+        #                   func.sum(Cuadrantes.population).label('population')). \
+        #     group_by(Cuadrantes.crime). \
+        #     order_by(Cuadrantes.crime). \
+        #     all()
+    return results_to_json(results_df, 12)
 
 
 @jsonp
