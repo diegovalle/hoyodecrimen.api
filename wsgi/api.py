@@ -6,8 +6,8 @@ from sqlalchemy import func, and_
 from flask.ext.cache import Cache
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
-#from geoalchemy2 import Geometry
-#from geoalchemy2.elements import WKTElement
+from geoalchemy2 import Geometry
+from geoalchemy2.elements import WKTElement
 #from redis import Redis
  
 
