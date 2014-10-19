@@ -8,10 +8,11 @@ from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
 from geoalchemy2 import Geometry
 from geoalchemy2.elements import WKTElement
+import time
 #from redis import Redis
  
 
-START_STATE = '2013-01'
+#START_STATE = '2013-01'
 #LAST_STRING = 'last'
 
 
@@ -114,7 +115,8 @@ def ResultProxy_to_json(results):
             json_results.append(d)
     return jsonify(rows = json_results)
 
-def results_to_json(results, n = 1):
+
+def results_to_array(results):
     json_results = []
     if len(results) > 0:
         keys = results[0].keys()
@@ -124,15 +126,15 @@ def results_to_json(results, n = 1):
                 if key == "date":
                     d["year"] = int(result[i][0:4])
                     d["month"] = int(result[i][5:7])
-                elif key == "population" and n != 1:
-                    d["population"] = result[i] / n if result[i] is not None else result[i]
                 else:
                     d[key] = result[i]
             json_results.append(d)
-
-        return jsonify(rows=json_results) #Response(json.dumps(json_results),  mimetype='application/json')#
+        return json_results
     else:
-        return jsonify(rows=[])
+        return []
+
+def results_to_json(results):
+    return results_to_array(jsonify(results))
 
 def monthsub(date, months):
     m = (int(date[5:7]) + months) % 12
@@ -175,13 +177,96 @@ def pip(long, lat):
     if not check_float(lat):
         abort(abort(make_response('something is wrong with the latitude you provided', 400)))
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
-    results = Cuadrantes_Poly.query. \
+    results_pip = Cuadrantes_Poly.query. \
         filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")==True). \
         with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
-                      Cuadrantes_Poly.sector,
+                      func.lower(Cuadrantes_Poly.sector).label("sector"),
                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
         first()
-    return jsonify(rows=results)
+    if(results_pip is not None):
+        json_results = []
+        d = {}
+        d['geomery'] = results_pip[2]
+        d['cuadrante'] = results_pip[0]
+        d['sector'] = results_pip[1]
+        json_results.append(d)
+    else:
+        results_cuad=[]
+        json_results=[]
+        results_df_last_year=[]
+        results_cuad_last_year=[]
+    return jsonify(pip = json_results)
+
+@jsonp
+@app.route('/v1/frontpage/'
+          '<string:long>/'
+          '<string:lat>',
+          methods=['GET'])
+def frontpage(long, lat):
+    # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
+    #                 FROM cuadrantes_poly
+    #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
+    if not check_float(long):
+        abort(abort(make_response('something is wrong with the longitude you provided', 400)))
+    if not check_float(lat):
+        abort(abort(make_response('something is wrong with the latitude you provided', 400)))
+    point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
+    results_pip = Cuadrantes_Poly.query. \
+        filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")==True). \
+        with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
+                      func.lower(Cuadrantes_Poly.sector).label("sector"),
+                      func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
+        first()
+    if(results_pip is not None):
+        results_cuad = Cuadrantes.query. \
+                filter(func.lower(Cuadrantes.cuadrante) == results_pip[0]). \
+                with_entities(func.lower(Cuadrantes.cuadrante).label('cuadrante'),
+                              func.lower(Cuadrantes.sector).label('sector'),
+                              func.lower(Cuadrantes.crime).label('crime'),
+                              Cuadrantes.date,
+                              Cuadrantes.count,
+                              Cuadrantes.population) \
+                .order_by(Cuadrantes.crime, Cuadrantes.date) \
+                .all()
+
+        # compare the cuadrante with the rest of the DF (last 12 months)
+        max_date = Cuadrantes.query. \
+            with_entities(func.max(Cuadrantes.date).label('date')). \
+            scalar()
+        start_date = monthsub(max_date, -11)
+        results_df_last_year = Cuadrantes.query. \
+            filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
+            with_entities(func.lower(Cuadrantes.crime).label('crime'),
+                          func.sum(Cuadrantes.count).label('count'),
+                          func.sum(Cuadrantes.population).op("/")(12).label('population')). \
+            group_by(Cuadrantes.crime). \
+            order_by(Cuadrantes.crime). \
+            all()
+        results_cuad_last_year = Cuadrantes.query. \
+            filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date),
+                   func.lower(Cuadrantes.cuadrante) == results_pip[0]). \
+            with_entities(func.lower(Cuadrantes.crime).label('crime'),
+                          func.sum(Cuadrantes.count).label('count'),
+                          func.sum(Cuadrantes.population).label('population')). \
+            group_by(Cuadrantes.crime). \
+            order_by(Cuadrantes.crime). \
+            all()
+
+        json_results = []
+        d = {}
+        d['geomery'] = results_pip[2]
+        d['cuadrante'] = results_pip[0]
+        d['sector'] = results_pip[1]
+        json_results.append(d)
+    else:
+        results_cuad=[]
+        json_results=[]
+        results_df_last_year=[]
+        results_cuad_last_year=[]
+    return jsonify(pip = json_results,
+                   cuadrante = results_to_array(results_cuad),
+                   df_last_year = results_to_array(results_df_last_year),
+                   cuadrante_last_year = results_to_array(results_cuad_last_year))
 
 
 @jsonp
@@ -203,11 +288,12 @@ def df_all_crime():
 @cache.cached(timeout=50, key_prefix='all_comments')
 @jsonp
 @app.route('/v1/df/'
-          'last_12_months',
-        #'<string:cuadrante>',
+          'last_12_months/'
+          '<string:cuadrante>',
           methods=['GET'])
-def df_all_last_year():
+def df_all_last_year(cuadrante):
     if request.method == 'GET':
+        cuadrante = cuadrante.lower()
         max_date = Cuadrantes.query. \
             with_entities(func.max(Cuadrantes.date).label('date')). \
             scalar()
@@ -216,20 +302,21 @@ def df_all_last_year():
             filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
             with_entities(func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label('count'),
+                          func.sum(Cuadrantes.population).op("/")(12).label('population')). \
+            group_by(Cuadrantes.crime). \
+            order_by(Cuadrantes.crime). \
+            all()
+        results_cuad = Cuadrantes.query. \
+            filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date),
+                   func.lower(Cuadrantes.cuadrante) == cuadrante). \
+            with_entities(func.lower(Cuadrantes.crime).label('crime'),
+                          func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population).label('population')). \
             group_by(Cuadrantes.crime). \
             order_by(Cuadrantes.crime). \
             all()
-        # results = Cuadrantes.query. \
-        #     filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date),
-        #            func.lower(Cuadrantes.cuadrante) == cuadrante). \
-        #     with_entities(func.lower(Cuadrantes.crime).label('crime'),
-        #                   func.sum(Cuadrantes.count).label('count'),
-        #                   func.sum(Cuadrantes.population).label('population')). \
-        #     group_by(Cuadrantes.crime). \
-        #     order_by(Cuadrantes.crime). \
-        #     all()
-    return results_to_json(results_df, 12)
+    #return results_to_json(results_df, 12)
+    return jsonify(df = results_to_array(results_df), cuadrante = results_to_array(results_cuad))
 
 
 @jsonp
@@ -239,6 +326,7 @@ def df_all_last_year():
           methods=['GET'])
 def df_all(crime):
     if request.method == 'GET':
+        crime = crime.lower()
         results = Cuadrantes.query. \
             filter(Cuadrantes.crime == crime). \
             with_entities(func.lower(Cuadrantes.crime).label('crime'),
@@ -257,6 +345,8 @@ def df_all(crime):
           methods=['GET'])
 def cuadrantes(crime, cuadrante):
     if request.method == 'GET':
+        cuadrante = cuadrante.lower()
+        crime = crime.lower()
         results = Cuadrantes.query. \
             filter(Cuadrantes.cuadrante == cuadrante,
                    Cuadrantes.crime == crime). \
@@ -278,6 +368,7 @@ def cuadrantes(crime, cuadrante):
           methods=['GET'])
 def cuadrantes_all(cuadrante):
     if request.method == 'GET':
+        cuadrante = cuadrante.lower()
         results = Cuadrantes.query. \
             filter(func.lower(Cuadrantes.cuadrante) == cuadrante). \
             with_entities(func.lower(Cuadrantes.cuadrante).label('cuadrante'),
@@ -308,12 +399,12 @@ def cuadrantes_sum_all():
                           func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label("count"),
-                          func.sum(Cuadrantes.population).label("population")) \
+                          func.sum(Cuadrantes.population).op("/")(12).label("population")) \
             .group_by(Cuadrantes.crime, Cuadrantes.sector, Cuadrantes.cuadrante) \
             .order_by(Cuadrantes.crime, Cuadrantes.cuadrante) \
             .all()
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
-    return results_to_json(results, 12)
+    return results_to_json(results)
 
 @jsonp
 @cache.cached(timeout=50)
@@ -331,11 +422,11 @@ def sectores_sum_all():
             with_entities(func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label("count"),
-                          func.sum(Cuadrantes.population).label("population")) \
+                          func.sum(Cuadrantes.population).op("/")(12).label("population")) \
             .group_by(Cuadrantes.crime, Cuadrantes.sector) \
             .order_by(Cuadrantes.crime, Cuadrantes.sector) \
             .all()
-    return results_to_json(results, 12)
+    return results_to_json(results)
 
 @jsonp
 @app.route('/v1/sectores/'
@@ -344,6 +435,8 @@ def sectores_sum_all():
           methods=['GET'])
 def sectors(crime, sector):
     if request.method == 'GET':
+        sector = sector.lower()
+        crime = crime.lower()
         results = Cuadrantes.query. \
             filter(Cuadrantes.sector == sector,
                    Cuadrantes.crime == crime). \
@@ -433,29 +526,44 @@ def top5sectores():
 @jsonp
 @app.route('/v1/top5/counts/change/cuadrantes')
 def top5changecuadrantes():
-    # start=request.args.get('start', START_STATE)
-    # end=request.args.get('end', LAST_STRING)
-    # if end != 'last':
-    #     if not check_date_month(end):
-    #         abort(abort(make_response('something is wrong with the end date you provided', 400)))
-    # if not check_date_month(start):
-    #     abort(abort(make_response('something is wrong with the start date you provided', 400)))
-    max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-    max_date_minus3 = monthsub(max_date, -2)
-    max_date_last_year = monthsub(max_date, -12)
-    max_date_last_year_minus3 = monthsub(max_date, -14)
+    start_period1 = request.args.get('start_period1', '', type=str)
+    start_period2 = request.args.get('start_period2', '', type=str)
+    end_period1 = request.args.get('end_period1', '', type=str)
+    end_period2 = request.args.get('end_period2', '', type=str)
+    if end_period1 != '' or end_period2 != '' or start_period1 != '' or start_period2 != '':
+        if not check_date_month(end_period1):
+            abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
+        if not check_date_month(end_period2):
+            abort(abort(make_response('something is wrong with the end_period2 date you provided', 400)))
+        if not check_date_month(start_period1):
+            abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
+        if not check_date_month(start_period2):
+            abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
+        if time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period2, '%Y-%m') or \
+           time.strptime(end_period1, '%Y-%m') >= time.strptime(start_period1, '%Y-%m') or \
+           time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period1, '%Y-%m'):
+            abort(abort(make_response('date order not valid', 400)))
+        max_date = end_period2
+        max_date_minus3 = start_period2
+        max_date_last_year = end_period1
+        max_date_last_year_minus3 = start_period1
+    else:
+        max_date = Cuadrantes.query. \
+                    filter(). \
+                    with_entities(func.max(Cuadrantes.date).label('date')). \
+                    scalar()
+        max_date_minus3 = monthsub(max_date, -2)
+        max_date_last_year = monthsub(max_date, -12)
+        max_date_last_year_minus3 = monthsub(max_date, -14)
     sql_query = """with difference as
                                        (select crime, cuadrante, sector, max(population) as population,
-                                               sum(case when date <= '{0}' and date >= '{1}'
+                                               sum(case when date <= :max_date and date >= :max_date_minus3
                                                THEN count ELSE 0 END) as end_count,
-                                               sum(case when date <= '{2}' and date >= '{3}'
+                                               sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
                                                THEN count ELSE 0 END) as start_count,
-                                               sum(case when date <= '{0}' and date >= '{1}'
+                                               sum(case when date <= :max_date and date >= :max_date_minus3
                                                THEN count ELSE 0 END) -
-                                               sum(case when date <= '{2}' and date >= '{3}'
+                                               sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
                                                THEN count ELSE 0 END) as difference
                                         from cuadrantes
                                         group by cuadrante, sector, crime)
@@ -468,11 +576,11 @@ def top5changecuadrantes():
                                         group by difference,crime,sector,cuadrante, population, start_count, end_count)
                                     as temp
                                     where rank <= 5
-                                    order by crime, rank, cuadrante, sector asc""".format(max_date,
-                                                                                          max_date_minus3,
-                                                                                          max_date_last_year,
-                                                                                          max_date_last_year_minus3)
-    results = db.session.execute(sql_query)
+                                    order by crime, rank, cuadrante, sector asc"""
+    results = db.session.execute(sql_query, {'max_date':max_date,
+                                             'max_date_minus3':max_date_minus3,
+                                             'max_date_last_year':max_date_last_year,
+                                             'max_date_last_year_minus3': max_date_last_year_minus3})
     return ResultProxy_to_json(results)
 
 
