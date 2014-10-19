@@ -87,6 +87,8 @@ class Cuadrantes_Poly(db.Model):
         self.sector = sector
         self.geom = geom
 
+
+
 def jsonp(f):
     """Wraps JSONified output for JSONP"""
 
@@ -158,6 +160,25 @@ def check_float(str):
     except ValueError:
         valid = False
     return valid
+
+
+def check_dates(end_period, start_period):
+    if end_period != '' or start_period != '':
+        if not check_date_month(end_period):
+            abort(abort(make_response('something is wrong with the end_period date you provided', 400)))
+        if not check_date_month(start_period):
+            abort(abort(make_response('something is wrong with the start_period date you provided', 400)))
+        if time.strptime(end_period, '%Y-%m') >= time.strptime(start_period, '%Y-%m'):
+            abort(abort(make_response('date order not valid', 400)))
+        max_date = end_period
+        start_date = start_period
+    else:
+        max_date = Cuadrantes.query. \
+                filter(). \
+                with_entities(func.max(Cuadrantes.date).label('date')). \
+                scalar()
+        start_date = monthsub(max_date, -11)
+    return max_date, start_date
  
 @app.route('/')
 def index():
@@ -482,11 +503,7 @@ def listsectores():
 @jsonp
 @app.route('/v1/top5/counts/cuadrante')
 def top5cuadrantes():
-    max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-    start_date = monthsub(max_date, -11)
+    max_date, start_date = check_dates(start_period, end_period)
     sql_query = """with crimes as
                       (select sum(count) as count,sector,cuadrante,max(population)as population, crime
                       from cuadrantes
@@ -505,22 +522,21 @@ def top5cuadrantes():
 @jsonp
 @app.route('/v1/top5/rates/sector')
 def top5sectores():
-    max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-    start_date = monthsub(max_date, -11)
-    sql_query = text("""with crimes as
+    start_period = request.args.get('start_period1', '', type=str)
+    end_period = request.args.get('end_period1', '', type=str)
+    max_date, start_date = check_dates(start_period, end_period)
+    sql_query = """with crimes as
                        (select (sum(count) / (sum(population::float) /12 )* 100000) as rate,sum(count) as count,sector,sum(population)/12 as population, crime
                        from cuadrantes
-                       where date >= '{0}' and date <= '{1}'
+                       where date >= :start_date and date <= :max_date
                        group by sector, crime)
                    SELECT * from
                        (SELECT count,rate,lower(crime) as crime,lower(sector) as sector,rank() over (partition by crime order by rate desc) as rank,population
                        from crimes
                        group by count,crime,sector,population, rate) as temp2
-                       where rank <= 5""".format(start_date, max_date))
-    results = db.session.execute(sql_query)
+                       where rank <= 5"""
+    results = db.session.execute(sql_query, {'start_date':start_date,
+                                             'max_date':max_date})
     return ResultProxy_to_json(results)
 
 @jsonp
