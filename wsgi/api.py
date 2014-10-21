@@ -191,7 +191,7 @@ def check_dates(start_period, end_period):
                 with_entities(func.max(Cuadrantes.date).label('date')). \
                 scalar()
         start_date = month_sub(max_date, -11)
-    return max_date, start_date
+    return start_date, max_date
  
 @app.route('/')
 def index():
@@ -360,7 +360,7 @@ def frontpage(long, lat):
 
 @jsonp
 @cache.cached(timeout=None)
-@app.route('/v1/df/'
+@app.route('/v1/series/df/'
           '<string:crime>',
           methods=['GET'])
 def df_all(crime):
@@ -374,7 +374,7 @@ def df_all(crime):
 
     .. sourcecode:: http
 
-      GET /v1/df/violacion HTTP/1.1
+      GET /v1/series/df/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -424,7 +424,7 @@ def cuadrantes(crime, cuadrante):
 
         start_period = request.args.get('start_period', '', type=str)
         end_period = request.args.get('end_period', '', type=str)
-        max_date, start_date = check_dates(start_period, end_period)
+        start_date, max_date = check_dates(start_period, end_period)
 
         if crime == "all":
             filters = [func.lower(Cuadrantes.cuadrante) == cuadrante,
@@ -516,7 +516,7 @@ def cuadrantes_sum_all(crime):
         crime = crime.lower()
         start_period = request.args.get('start_period', '', type=str)
         end_period = request.args.get('end_period', '', type=str)
-        max_date, start_date = check_dates(start_period, end_period)
+        start_date, max_date = check_dates(start_period, end_period)
         if crime == "all":
             filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
         else:
@@ -530,7 +530,7 @@ def cuadrantes_sum_all(crime):
                           func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label("count"),
-                          func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
+                          func.sum(Cuadrantes.population).op("/")(month_diff(start_date, max_date)).label("population")) \
             .group_by(Cuadrantes.crime, Cuadrantes.sector, Cuadrantes.cuadrante) \
             .order_by(Cuadrantes.crime, Cuadrantes.cuadrante) \
             .all()
@@ -565,7 +565,7 @@ def sectores_sum_all(crime):
         crime = crime.lower()
         start_period = request.args.get('start_period', '', type=str)
         end_period = request.args.get('end_period', '', type=str)
-        max_date, start_date = check_dates(start_period, end_period)
+        start_date, max_date = check_dates(start_period, end_period)
         if crime == "all":
             filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
         else:
@@ -578,10 +578,108 @@ def sectores_sum_all(crime):
                           func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label("count"),
-                          func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
+                          func.sum(Cuadrantes.population).op("/")(month_diff(start_date, max_date)).label("population")) \
             .group_by(Cuadrantes.crime, Cuadrantes.sector) \
             .order_by(Cuadrantes.crime, Cuadrantes.sector) \
             .all()
+        return results_to_json(results)
+
+
+@jsonp
+@cache.cached(timeout=50)
+@app.route('/v1/list/change/cuadrantes/<string:crime>',
+          methods=['GET'])
+def cuadrantes_change_sum_all(crime):
+    """Return the change in crime counts for a specified period of time at the cuadrante level
+
+    By default it returns the sum of crimes during the last 12 months
+
+    :param crime: the name of crime or the keyword ``all`` to return all crimes
+
+    :status 200: when the  change in crime counts is found
+
+    **Example request**:
+
+    .. sourcecode:: http
+
+      GET /v1/list/change/cuadrantes/all HTTP/1.1
+      Host: hoyodecrimen.com
+      Accept: application/json
+
+    :query start_period: Start of the period from which to start aggregating in the ``%Y-%m`` format (e.g. 2013-01)
+    :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    """
+    if request.method == 'GET':
+        crime = crime.lower()
+        start_period1 = request.args.get('start_period1', '', type=str)
+        start_period2 = request.args.get('start_period2', '', type=str)
+        end_period1 = request.args.get('end_period1', '', type=str)
+        end_period2 = request.args.get('end_period2', '', type=str)
+
+        # if crime == "all":
+        #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+        # else:
+        #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+        #                func.lower(Cuadrantes.crime) == crime]
+        if end_period1 != '' or end_period2 != '' or start_period1 != '' or start_period2 != '':
+            if not check_date_month(end_period1):
+                abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
+            if not check_date_month(end_period2):
+                abort(abort(make_response('something is wrong with the end_period2 date you provided', 400)))
+            if not check_date_month(start_period1):
+                abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
+            if not check_date_month(start_period2):
+                abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
+            if time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period2, '%Y-%m') or \
+               time.strptime(end_period1, '%Y-%m') >= time.strptime(start_period1, '%Y-%m') or \
+               time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period1, '%Y-%m'):
+                abort(abort(make_response('date order not valid', 400)))
+            max_date = end_period2
+            max_date_minus3 = start_period2
+            max_date_last_year = end_period1
+            max_date_last_year_minus3 = start_period1
+        else:
+            max_date = Cuadrantes.query. \
+                        filter(). \
+                        with_entities(func.max(Cuadrantes.date).label('date')). \
+                        scalar()
+            max_date_minus3 = month_sub(max_date, -2)
+            max_date_last_year = month_sub(max_date, -12)
+            max_date_last_year_minus3 = month_sub(max_date, -14)
+        sql_query1 = """select lower(crime) as crime, lower(cuadrante) as cuadrante,
+                               lower(sector) as sector, max(population) as population,
+                               :max_date_minus3 as start_period2, :max_date as end_period2,
+                               :max_date_last_year as start_period1, :max_date_last_year_minus3 as end_period1,
+                                                   sum(case when date <= :max_date and date >= :max_date_minus3
+                                                   THEN count ELSE 0 END) as period2_count,
+                                                   sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
+                                                   THEN count ELSE 0 END) as period1_count,
+                                                   sum(case when date <= :max_date and date >= :max_date_minus3
+                                                   THEN count ELSE 0 END) -
+                                                   sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
+                                                   THEN count ELSE 0 END) as difference
+                                            from cuadrantes
+                                            """
+        sql_query2 = "" if crime == "all" else " where lower(crime) = :crime "
+        sql_query3 = """group by cuadrante, sector, crime
+                        order by crime asc, difference desc, cuadrante asc"""
+        results = db.session.execute(sql_query1 + sql_query2 + sql_query3, {'max_date':max_date,
+                                                 'max_date_minus3':max_date_minus3,
+                                                 'max_date_last_year':max_date_last_year,
+                                                 'max_date_last_year_minus3': max_date_last_year_minus3,
+                                                 'crime': crime})
+        return ResultProxy_to_json(results)
+        # results = Cuadrantes.query. \
+        #     filter(*filters). \
+        #     with_entities(literal(start_date, type_=db.String).label('start_date'),
+        #                   literal(max_date, type_=db.String).label('end_date'),
+        #                   func.lower(Cuadrantes.sector).label('sector'),
+        #                   func.lower(Cuadrantes.crime).label('crime'),
+        #                   func.sum(Cuadrantes.count).label("count"),
+        #                   func.sum(Cuadrantes.population).op("/")(month_diff(start_date, max_date)).label("population")) \
+        #     .group_by(Cuadrantes.crime, Cuadrantes.sector) \
+        #     .order_by(Cuadrantes.crime, Cuadrantes.sector) \
+        #     .all()
         return results_to_json(results)
 
 
@@ -683,7 +781,7 @@ def top5cuadrantes(crime):
         crime = crime.lower()
         start_period = request.args.get('start_period', '', type=str)
         end_period = request.args.get('end_period', '', type=str)
-        max_date, start_date = check_dates(start_period, end_period)
+        start_date, max_date = check_dates(start_period, end_period)
         rank = request.args.get('rank', 5, type=int)
         if rank <= 0:
              abort(abort(make_response('No negative numbers', 400)))
@@ -737,7 +835,7 @@ def top5sectores(crime):
         crime = crime.lower()
         start_period = request.args.get('start_period', '', type=str)
         end_period = request.args.get('end_period', '', type=str)
-        max_date, start_date = check_dates(start_period, end_period)
+        start_date, max_date = check_dates(start_period, end_period)
         rank = request.args.get('rank', 5, type=int)
         if rank <= 0:
              abort(abort(make_response('No negative numbers', 400)))
@@ -758,7 +856,7 @@ def top5sectores(crime):
         results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date':start_date,
                                                  'max_date':max_date,
                                                  'crime': crime,
-                                                 'num_months': month_diff(max_date, start_date),
+                                                 'num_months': month_diff(start_date, max_date),
                                                  'rank': rank})
         return ResultProxy_to_json(results)
 
@@ -826,9 +924,9 @@ def top5changecuadrantes(crime):
         sql_query1 = """with difference as
                                            (select crime, cuadrante, sector, max(population) as population,
                                                    sum(case when date <= :max_date and date >= :max_date_minus3
-                                                   THEN count ELSE 0 END) as end_count,
+                                                   THEN count ELSE 0 END) as period2_count,
                                                    sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
-                                                   THEN count ELSE 0 END) as start_count,
+                                                   THEN count ELSE 0 END) as period1_count,
                                                    sum(case when date <= :max_date and date >= :max_date_minus3
                                                    THEN count ELSE 0 END) -
                                                    sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
