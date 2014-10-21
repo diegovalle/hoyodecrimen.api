@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Flask, jsonify, request, abort, make_response
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import text
+from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy import func, and_
 from flask.ext.cache import Cache
 from werkzeug.contrib.profiler import ProfilerMiddleware
@@ -30,6 +30,7 @@ cache = Cache(app, config={
          'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
          'CACHE_THRESHOLD': 922337203685477580
      })
+cache.init_app(app)
 db = SQLAlchemy(app)
 
 #from api import *
@@ -135,18 +136,27 @@ def results_to_array(results):
         return []
 
 def results_to_json(results):
+    # response = jsonify({'code': 404,'message': 'No found'})
+    # response.status_code = 404
+    # return response
     return jsonify(rows = results_to_array(results))
 
-def monthsub(date, months):
+def month_sub(date, months):
     m = (int(date[5:7]) + months) % 12
     y = int(date[0:4]) + ((int(date[5:7])) + months - 1) // 12
     if not m: 
         m = 12
-    return str(y) + '-' + str(m).zfill(2) + '-01'
+    d = str(y) + '-' + str(m).zfill(2) + '-01'
+    return d
+
+def month_diff(d1, d2):
+    date1 = datetime.strptime(d1, '%Y-%m-01')
+    date2 = datetime.strptime(d2, '%Y-%m-01')
+    return (date1.year - date2.year) * 12 + date1.month - date2.month + 1
 
 def check_date_month(str):
     try:
-        time.strptime(str, '%Y-%m')
+        time.strptime(str, '%Y-%m-01')
         valid = True
     except ValueError:
         valid = False
@@ -163,22 +173,24 @@ def check_float(str):
 
 def check_dates(start_period, end_period):
     if end_period != '' or start_period != '':
+        end_period += '-01'
+        start_period += '-01'
         if not check_date_month(start_period):
-            abort(abort(make_response('somethi1ng is wrong with the start_period date you provided', 400)))
+            abort(abort(make_response('something is wrong with the start_period date you provided', 400)))
         if not check_date_month(end_period):
             abort(abort(make_response('something is wrong with the end_period date you provided', 400)))
         if time.strptime(start_period, '%Y-%m') > time.strptime(end_period, '%Y-%m'):
             abort(abort(make_response('date order not valid', 400)))
+        if start_period < '2013-01':
+            abort(abort(make_response('start_period must be greater than 2013-01', 400)))
         max_date = end_period
         start_date = start_period
-        import pdb
-        pdb.set_trace()
     else:
         max_date = Cuadrantes.query. \
                 filter(). \
                 with_entities(func.max(Cuadrantes.date).label('date')). \
                 scalar()
-        start_date = monthsub(max_date, -11)
+        start_date = month_sub(max_date, -11)
     return max_date, start_date
  
 @app.route('/')
@@ -198,7 +210,6 @@ def pip(long, lat):
 
     :status 200: when the cuadrante corresponding to the latitude and longitude is found
     :status 400: when the latitude or longitude where incorrectly specified
-    :status 404: when the lat and long are outside the Federal District
 
     **Example request**:
 
@@ -256,7 +267,7 @@ def pip(long, lat):
         return jsonify(pip = json_results)
 
 @jsonp
-@app.route('/v1/pip-extras/'
+@app.route('/v1/pip/extras/'
           '<string:long>/'
           '<string:lat>',
           methods=['GET'])
@@ -271,13 +282,12 @@ def frontpage(long, lat):
 
     :status 200: when the cuadrante corresponding to the latitude and longitude is found
     :status 400: when the latitude or longitude where incorrectly specified
-    :status 404: when the lat and long are outside the Federal District
 
     **Example request**:
 
     .. sourcecode:: http
 
-      GET /v1/pip[extras/-99.13333/19.43 HTTP/1.1
+      GET /v1/pip/extras/-99.13333/19.43 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -312,7 +322,7 @@ def frontpage(long, lat):
             max_date = Cuadrantes.query. \
                 with_entities(func.max(Cuadrantes.date).label('date')). \
                 scalar()
-            start_date = monthsub(max_date, -11)
+            start_date = month_sub(max_date, -11)
             results_df_last_year = Cuadrantes.query. \
                 filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
                 with_entities(func.lower(Cuadrantes.crime).label('crime'),
@@ -359,7 +369,6 @@ def df_all(crime):
     :param crime: the name of crime or the keyword ``all``
 
     :status 200: when the sum of all crimes is found
-    :status 404: when the crime specified does not appear in the database
 
     **Example request**:
 
@@ -371,10 +380,10 @@ def df_all(crime):
     """
     if request.method == 'GET':
         crime = crime.lower()
-        if crime != "all":
-            filters = [func.lower(Cuadrantes.crime) == crime]
-        else:
+        if crime == "all":
             filters = [True]
+        else:
+            filters = [func.lower(Cuadrantes.crime) == crime]
         results = Cuadrantes.query. \
             filter(*filters). \
             with_entities(func.lower(Cuadrantes.crime).label('crime'),
@@ -387,57 +396,9 @@ def df_all(crime):
         return results_to_json(results)
 
 
-# @cache.cached(timeout=50, key_prefix='all_comments')
-# @jsonp
-# @app.route('/v1/df/'
-#           'last_12_months/'
-#           '<string:cuadrante>',
-#           methods=['GET'])
-# def df_all_last_year(cuadrante):
-#     """Return the crimes that occurred in the Federal District by cuad during the last 12 months
-#
-#     :param cuadrante: the name of crime or the keyword ``all``
-#
-#     :status 200: when the sum of all crimes is found
-#     :status 404: when the crime specified does not appear in the database
-#
-#     **Example request**:
-#
-#     .. sourcecode:: http
-#
-#       GET /v1/df/violacion HTTP/1.1
-#       Host: hoyodecrimen.com
-#       Accept: application/json
-#     """
-#     if request.method == 'GET':
-#         cuadrante = cuadrante.lower()
-#         max_date = Cuadrantes.query. \
-#             with_entities(func.max(Cuadrantes.date).label('date')). \
-#             scalar()
-#         start_date = monthsub(max_date, -11)
-#         results_df = Cuadrantes.query. \
-#             filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
-#             with_entities(func.lower(Cuadrantes.crime).label('crime'),
-#                           func.sum(Cuadrantes.count).label('count'),
-#                           func.sum(Cuadrantes.population).op("/")(12).label('population')). \
-#             group_by(Cuadrantes.crime). \
-#             order_by(Cuadrantes.crime). \
-#             all()
-#         results_cuad = Cuadrantes.query. \
-#             filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date),
-#                    func.lower(Cuadrantes.cuadrante) == cuadrante). \
-#             with_entities(func.lower(Cuadrantes.crime).label('crime'),
-#                           func.sum(Cuadrantes.count).label('count'),
-#                           func.sum(Cuadrantes.population).label('population')). \
-#             group_by(Cuadrantes.crime). \
-#             order_by(Cuadrantes.crime). \
-#             all()
-#     #return results_to_json(results_df, 12)
-#     return jsonify(df = results_to_array(results_df), cuadrante = results_to_array(results_cuad))
-
 
 @jsonp
-@app.route('/v1/cuadrantes/'
+@app.route('/v1/series/cuadrantes/'
           '<string:crime>/'
           '<string:cuadrante>',
           methods=['GET'])
@@ -448,24 +409,29 @@ def cuadrantes(crime, cuadrante):
     :param cuadrante: the name of the cuadrante from which to return the time series
 
     :status 200: when the sum of all crimes is found
-    :status 404: when the crime specified does not appear in the database
 
     **Example request**:
 
     .. sourcecode:: http
 
-      GET /v1/cuadrantes/violacion/c-1.1.1 HTTP/1.1
+      GET /v1/series/cuadrantes/violacion/c-1.1.1 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
     if request.method == 'GET':
         cuadrante = cuadrante.lower()
         crime = crime.lower()
-        if crime != "all":
-            filters = [func.lower(Cuadrantes.cuadrante) == cuadrante]
-        else:
+
+        start_period = request.args.get('start_period', '', type=str)
+        end_period = request.args.get('end_period', '', type=str)
+        max_date, start_date = check_dates(start_period, end_period)
+
+        if crime == "all":
             filters = [func.lower(Cuadrantes.cuadrante) == cuadrante,
                        func.lower(Cuadrantes.crime) == crime]
+        else:
+            filters = [func.lower(Cuadrantes.cuadrante) == cuadrante]
+
         results = Cuadrantes.query. \
             filter(*filters). \
             with_entities(func.lower(Cuadrantes.cuadrante).label('cuadrante'),
@@ -479,9 +445,9 @@ def cuadrantes(crime, cuadrante):
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
         return results_to_json(results)
 
-
+@cache.cached(timeout=None)
 @jsonp
-@app.route('/v1/sectores/'
+@app.route('/v1/series/sectores/'
           '<string:crime>/'
           '<string:sector>',
           methods=['GET'])
@@ -492,20 +458,19 @@ def sectors(crime, sector):
     :param cuadrante: the name of the cuadrante from which to return the time series
 
     :status 200: when the sum of all crimes is found
-    :status 404: when the crime specified does not appear in the database
 
     **Example request**:
 
     .. sourcecode:: http
 
-      GET /v1/sectores/violacion/angel%20-%20zona%20rosa HTTP/1.1
+      GET /v1/series/sectores/violacion/angel%20-%20zona%20rosa HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
     if request.method == 'GET':
         sector = sector.lower()
         crime = crime.lower()
-        if crime != "all":
+        if crime == "all":
             filters = [func.lower(Cuadrantes.sector) == sector,
                        func.lower(Cuadrantes.crime) == crime]
         else:
@@ -522,14 +487,17 @@ def sectors(crime, sector):
             all()
         return results_to_json(results)
 
+
 @jsonp
 @cache.cached(timeout=None)
-@app.route('/v1/sum/cuadrantes/all',
+@app.route('/v1/list/cuadrantes/<string:crime>',
           methods=['GET'])
-def cuadrantes_sum_all():
+def cuadrantes_sum_all(crime):
     """Return the sum of crimes that occurred in each cuadrante for a specified period of time
 
     By default it returns the sum of crimes during the last 12 months
+
+    :param crime: the name of crime or the keyword ``all`` to return all crimes
 
     :status 200: when the sum of all crimes is found
 
@@ -537,23 +505,32 @@ def cuadrantes_sum_all():
 
     .. sourcecode:: http
 
-      GET /v1/sum/cuadrantes/all HTTP/1.1
+      GET /v1/list/cuadrantes/all HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+    :query start_period: Start of the period from which to start aggregating in the ``%Y-%m`` format (e.g. 2013-01)
+    :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     if request.method == 'GET':
-        max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-        start_date = monthsub(max_date, -11)
+        crime = crime.lower()
+        start_period = request.args.get('start_period', '', type=str)
+        end_period = request.args.get('end_period', '', type=str)
+        max_date, start_date = check_dates(start_period, end_period)
+        if crime == "all":
+            filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+        else:
+            filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                       func.lower(Cuadrantes.crime) == crime]
         results = Cuadrantes.query. \
-            filter(and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)). \
-            with_entities(func.lower(Cuadrantes.cuadrante).label('cuadrante'),
+            filter(*filters). \
+            with_entities(literal(start_date, type_=db.String).label('start_date'),
+                          literal(max_date, type_=db.String).label('end_date'),
+                          func.lower(Cuadrantes.cuadrante).label('cuadrante'),
                           func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label("count"),
-                          func.sum(Cuadrantes.population).op("/")(12).label("population")) \
+                          func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
             .group_by(Cuadrantes.crime, Cuadrantes.sector, Cuadrantes.cuadrante) \
             .order_by(Cuadrantes.crime, Cuadrantes.cuadrante) \
             .all()
@@ -562,12 +539,14 @@ def cuadrantes_sum_all():
 
 @jsonp
 @cache.cached(timeout=50)
-@app.route('/v1/sum/sectores/all',
+@app.route('/v1/list/sectores/<string:crime>',
           methods=['GET'])
-def sectores_sum_all():
+def sectores_sum_all(crime):
     """Return the sum of crimes that occurred in each sectore for a specified period of time
 
     By default it returns the sum of crimes during the last 12 months
+
+    :param crime: the name of crime or the keyword ``all`` to return all crimes
 
     :status 200: when the sum of all crimes is found
 
@@ -575,22 +554,31 @@ def sectores_sum_all():
 
     .. sourcecode:: http
 
-      GET /v1/sum/cuadrantes/all HTTP/1.1
+      GET /v1/list/sectores/all HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+    :query start_period: Start of the period from which to start aggregating in the ``%Y-%m`` format (e.g. 2013-01)
+    :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     if request.method == 'GET':
-        max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-        start_date = monthsub(max_date, -11)
+        crime = crime.lower()
+        start_period = request.args.get('start_period', '', type=str)
+        end_period = request.args.get('end_period', '', type=str)
+        max_date, start_date = check_dates(start_period, end_period)
+        if crime == "all":
+            filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+        else:
+            filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                       func.lower(Cuadrantes.crime) == crime]
         results = Cuadrantes.query. \
-            filter(and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)). \
-            with_entities(func.lower(Cuadrantes.sector).label('sector'),
+            filter(*filters). \
+            with_entities(literal(start_date, type_=db.String).label('start_date'),
+                          literal(max_date, type_=db.String).label('end_date'),
+                          func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label("count"),
-                          func.sum(Cuadrantes.population).op("/")(12).label("population")) \
+                          func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
             .group_by(Cuadrantes.crime, Cuadrantes.sector) \
             .order_by(Cuadrantes.crime, Cuadrantes.sector) \
             .all()
@@ -598,7 +586,7 @@ def sectores_sum_all():
 
 
 @jsonp
-@app.route('/v1/list/crimes')
+@app.route('/v1/enumerate/crimes')
 def listcrimes():
     """Enumerate all the crimes in the database
 
@@ -608,7 +596,7 @@ def listcrimes():
 
    .. sourcecode:: http
 
-      GET /v1/list/sectores HTTP/1.1
+      GET /v1/enumerate/crimes HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 """
@@ -620,7 +608,7 @@ def listcrimes():
         return results_to_json(results)
 
 @jsonp
-@app.route('/v1/list/cuadrantes')
+@app.route('/v1/enumerate/cuadrantes')
 def listcuadrantes():
     """Enumerate all the cuadrantes in the database
 
@@ -630,7 +618,7 @@ def listcuadrantes():
 
     .. sourcecode:: http
 
-       GET /v1/list/cuadrantes HTTP/1.1
+       GET /v1/enumerate/cuadrantes HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
     """
@@ -643,7 +631,7 @@ def listcuadrantes():
         return results_to_json(results)
 
 @jsonp
-@app.route('/v1/list/sectores')
+@app.route('/v1/enumerate/sectores')
 def listsectores():
     """Enumerate all the sectores in the database
 
@@ -653,7 +641,7 @@ def listsectores():
 
    .. sourcecode:: http
 
-      GET /v1/list/sectores HTTP/1.1
+      GET /v1/enumerate/sectores HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -666,11 +654,11 @@ def listsectores():
 
 
 @jsonp
-@app.route('/v1/top5/counts/cuadrante/<string:crime>')
+@app.route('/v1/top/counts/cuadrante/<string:crime>')
 def top5cuadrantes(crime):
-    """Return the top 5 ranked cuadrantes with the highest crime counts for a given period of time.
+    """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
 
-    When no date parameters are specified, the top 5 cuadrantes are returned for the last 12 months
+    When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
     (e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
     All population data returned by this call is in persons/year and comes from the 2010 census
 
@@ -678,7 +666,6 @@ def top5cuadrantes(crime):
 
     :status 200: when the top 5 cuadrantes are found
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
-    :status 404: when the crime is not contained in the database
 
     **Example request**:
 
@@ -689,13 +676,17 @@ def top5cuadrantes(crime):
       Accept: application/json
 
     :query start_period: Start of the period from which to start counting
-    :query end_period: End of the period to analyze. Must be greater of equal to start_period
+    :query end_period: End of the period to analyze. Must be greater or equal to start_period
+    :query rank: Return all cuadrantes ranked higher. Defaults to `5`
     """
     if request.method == 'GET':
         crime = crime.lower()
         start_period = request.args.get('start_period', '', type=str)
         end_period = request.args.get('end_period', '', type=str)
         max_date, start_date = check_dates(start_period, end_period)
+        rank = request.args.get('rank', 5, type=int)
+        if rank <= 0:
+             abort(abort(make_response('No negative numbers', 400)))
         sql_query = """with crimes as
                           (select sum(count) as count,sector,cuadrante,max(population)as population, crime
                           from cuadrantes
@@ -709,46 +700,50 @@ def top5cuadrantes(crime):
                                   lower(sector) as sector,lower(cuadrante) as cuadrante,
                                   rank() over (partition by crime order by count desc) as rank,population
                           from crimes group by count,crime,sector,cuadrante,population) as temp2
-                          where rank <= 5
+                          where rank <= :rank
                           order by crime, rank, cuadrante, sector asc"""
         results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date':start_date,
                                                  'max_date':max_date,
-                                                 'crime': crime})
+                                                 'crime': crime,
+                                                 'rank': rank})
         return ResultProxy_to_json(results)
 
 @jsonp
-@app.route('/v1/top5/rates/sector/<string:crime>')
+@app.route('/v1/top/rates/sector/<string:crime>')
 def top5sectores(crime):
-    """Return the top 5 ranked sectors with the highest crime rates for a given period of time.
+    """Return the top ranked sectors with the highest crime **rates** for a given period of time.
 
-   When no date parameters are specified, the top 5 cuadrantes are returned for the last 12 months
-   (e.g. If July is the last date in the database then the period July 2014 to Aug 2013 will be analyzed).
-   All population data returned by this call is in persons/year and comes from the 2010 census
+    When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
+    (e.g. If July is the last date in the database then the period July 2014 to Aug 2013 will be analyzed).
+    All population data returned by this call is in persons/year and comes from the 2010 census
 
-   :param crime: the name of a crime or the keyword ``all``
-   :status 200: when the top 5 cuadrantes are found
-   :status 400: when the one of the dates was incorrectly specified or the periods overlap
-   :status 404: when the crime is not contained in the database
+    :param crime: the name of a crime or the keyword ``all``
+    :status 200: when the top 5 cuadrantes are found
+    :status 400: when the one of the dates was incorrectly specified or the periods overlap
 
-   **Example request**:
+    **Example request**:
 
-   .. sourcecode:: http
+    .. sourcecode:: http
 
-      GET /v1/top5/rates/sector/homicidio%20doloso HTTP/1.1
+      GET /v1/top/rates/sector/homicidio%20doloso HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
-   :query start_period: Start of the period from which to start counting
-   :query end_period: End of the period to analyze. Must be greater of equal to start_period
+    :query start_period: Start of the period from which to start counting
+    :query end_period: End of the period to analyze. Must be greater or equal to start_period
+    :query rank: Return all sectores with a rate ranked higher. Defaults to `5`
     """
     if request.method == 'GET':
         crime = crime.lower()
         start_period = request.args.get('start_period', '', type=str)
         end_period = request.args.get('end_period', '', type=str)
         max_date, start_date = check_dates(start_period, end_period)
+        rank = request.args.get('rank', 5, type=int)
+        if rank <= 0:
+             abort(abort(make_response('No negative numbers', 400)))
         sql_query = """with crimes as
-                           (select (sum(count) / (sum(population::float) /12 )* 100000) as rate,sum(count) as count,
-                           sector,sum(population)/12 as population, crime
+                           (select (sum(count) / (sum(population::float) / :num_months )* 100000) as rate,sum(count) as count,
+                           sector,sum(population) / :num_months as population, crime
                            from cuadrantes
                            where date >= :start_date and date <= :max_date"""
         sql_query2 = "" if crime == "all" else " and lower(crime) = :crime "
@@ -759,38 +754,40 @@ def top5sectores(crime):
                                    rank() over (partition by crime order by rate desc) as rank,population
                            from crimes
                            group by count,crime,sector,population, rate) as temp2
-                           where rank <= 5"""
+                           where rank <= :rank"""
         results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date':start_date,
                                                  'max_date':max_date,
-                                                 'crime': crime})
+                                                 'crime': crime,
+                                                 'num_months': month_diff(max_date, start_date),
+                                                 'rank': rank})
         return ResultProxy_to_json(results)
 
 @jsonp
-@app.route('/v1/top5/counts/change/cuadrantes/<string:crime>')
+@app.route('/v1/top/counts/change/cuadrantes/<string:crime>')
 def top5changecuadrantes(crime):
-    """Return the top 5 ranked cuadrantes were crime counts increased the most.
+    """Return the top ranked cuadrantes were crime **counts** increased the most.
 
-   When no date parameters are specified, the top 5 cuadrantes are returned for the last 3 months compared
-   with the same period during the previous year (e.g. July-May 2014 compared with July-May 2013).
-   All population data returned by this call is in persons/year and comes from the 2010 census
+    When no date parameters are specified the top 5 cuadrantes are returned for the last 3 months compared
+    with the same period during the previous year (e.g. July-May 2014 compared with July-May 2013).
+    All population data returned by this call is in persons/year and comes from the 2010 census
 
-   :param crime: the name of a crime or the keyword ``all``
-   :status 200: when the top 5 cuadrantes are found
-   :status 400: when the one of the dates was incorrectly specified or the periods overlap
-   :status 404: when the crime is not contained in the database
+    :param crime: the name of a crime or the keyword ``all``
+    :status 200: when the top 5 cuadrantes are found
+    :status 400: when the one of the dates was incorrectly specified or the periods overlap
 
-   **Example request**:
+    **Example request**:
 
-   .. sourcecode:: http
+    .. sourcecode:: http
 
-      GET /v1/top5/counts/change/cuadrantes/homicidio%20doloso HTTP/1.1
-      Host: hoyodecrimen.com
-      Accept: application/json
+       GET /v1/top/counts/change/cuadrantes/homicidio%20doloso HTTP/1.1
+       Host: hoyodecrimen.com
+       Accept: application/json
 
-   :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period
-   :query end_period1: End of the first period
-   :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period
-   :query end_period2: End of the second period
+    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period
+    :query end_period1: End of the first period
+    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period
+    :query end_period2: End of the second period
+    :query rank: Return the top X ranked cuadrantes
     """
     if request.method == 'GET':
         crime = crime.lower()
@@ -798,6 +795,9 @@ def top5changecuadrantes(crime):
         start_period2 = request.args.get('start_period2', '', type=str)
         end_period1 = request.args.get('end_period1', '', type=str)
         end_period2 = request.args.get('end_period2', '', type=str)
+        rank = request.args.get('rank', 5, type=int)
+        if rank <= 0:
+             abort(abort(make_response('No negative numbers', 400)))
         if end_period1 != '' or end_period2 != '' or start_period1 != '' or start_period2 != '':
             if not check_date_month(end_period1):
                 abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
@@ -820,9 +820,9 @@ def top5changecuadrantes(crime):
                         filter(). \
                         with_entities(func.max(Cuadrantes.date).label('date')). \
                         scalar()
-            max_date_minus3 = monthsub(max_date, -2)
-            max_date_last_year = monthsub(max_date, -12)
-            max_date_last_year_minus3 = monthsub(max_date, -14)
+            max_date_minus3 = month_sub(max_date, -2)
+            max_date_last_year = month_sub(max_date, -12)
+            max_date_last_year_minus3 = month_sub(max_date, -14)
         sql_query1 = """with difference as
                                            (select crime, cuadrante, sector, max(population) as population,
                                                    sum(case when date <= :max_date and date >= :max_date_minus3
@@ -846,13 +846,14 @@ def top5changecuadrantes(crime):
                                                    difference from difference
                                             group by difference,crime,sector,cuadrante, population, start_count, end_count)
                                         as temp
-                                        where rank <= 5
+                                        where rank <= :rank
                                         order by crime, rank, cuadrante, sector asc"""
         results = db.session.execute(sql_query1 + sql_query2 + sql_query3, {'max_date':max_date,
                                                  'max_date_minus3':max_date_minus3,
                                                  'max_date_last_year':max_date_last_year,
                                                  'max_date_last_year_minus3': max_date_last_year_minus3,
-                                                 'crime': crime})
+                                                 'crime': crime,
+                                                 'rank': rank})
         return ResultProxy_to_json(results)
 
 
