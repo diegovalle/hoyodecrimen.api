@@ -91,17 +91,18 @@ class Cuadrantes_Poly(db.Model):
 
 
 
-def jsonp(f):
-    """Wraps JSONified output for JSONP"""
-    @wraps(f)
+def jsonp(func):
+    """Wraps JSONified output for JSONP requests."""
+    @wraps(func)
     def decorated_function(*args, **kwargs):
         callback = request.args.get('callback', False)
         if callback:
-            content = str(callback) + '(' + str(f(*args, **kwargs).data) + ')'
-            return current_app.response_class(content, mimetype='application/javascript')
+            data = str(func(*args, **kwargs).data)
+            content = str(callback) + '(' + data + ')'
+            mimetype = 'application/javascript'
+            return app.response_class(content, mimetype=mimetype)
         else:
-            return f(*args, **kwargs)
-
+            return func(*args, **kwargs)
     return decorated_function
 
 def ResultProxy_to_json(results):
@@ -204,7 +205,7 @@ def api_html():
 
 @app.route('/')
 def index():
-    return app.send_static_file(os.path.join('api', 'index.html'))
+    return app.send_static_file(os.path.join('', 'index.html'))
 
 @app.route('/api/_static/<path:filename>')
 def static__api(filename):
@@ -559,7 +560,7 @@ def cuadrantes_sum_all(crime):
                           func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label("count"),
-                          func.sum(Cuadrantes.population).op("/")(month_diff(start_date, max_date)).label("population")) \
+                          func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
             .group_by(Cuadrantes.crime, Cuadrantes.sector, Cuadrantes.cuadrante) \
             .order_by(Cuadrantes.crime, Cuadrantes.cuadrante) \
             .all()
@@ -607,7 +608,7 @@ def sectores_sum_all(crime):
                           func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label("count"),
-                          func.sum(Cuadrantes.population).op("/")(month_diff(start_date, max_date)).label("population")) \
+                          func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
             .group_by(Cuadrantes.crime, Cuadrantes.sector) \
             .order_by(Cuadrantes.crime, Cuadrantes.sector) \
             .all()
@@ -835,8 +836,9 @@ def top5cuadrantes(crime):
                                                  'rank': rank})
         return ResultProxy_to_json(results)
 
-@jsonp
+
 @app.route('/v1/top/rates/sector/<string:crime>')
+@jsonp
 def top5sectores(crime):
     """Return the top ranked sectors with the highest crime **rates** for a given period of time.
 
@@ -885,7 +887,7 @@ def top5sectores(crime):
         results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date':start_date,
                                                  'max_date':max_date,
                                                  'crime': crime,
-                                                 'num_months': month_diff(start_date, max_date),
+                                                 'num_months': month_diff(max_date, start_date),
                                                  'rank': rank})
         return ResultProxy_to_json(results)
 
