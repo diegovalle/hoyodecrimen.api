@@ -233,6 +233,7 @@ def static_images(filename):
           '<string:lat>',
           methods=['GET'])
 @jsonp
+@cache.cached()
 def pip(long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to.
 
@@ -303,6 +304,7 @@ def pip(long, lat):
           '<string:lat>',
           methods=['GET'])
 @jsonp
+@cache.cached()
 def frontpage(long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
@@ -391,11 +393,12 @@ def frontpage(long, lat):
 
 
 
-@cache.cached(timeout=None)
+
 @app.route('/v1/series/df/'
           '<string:crime>',
           methods=['GET'])
 @jsonp
+@cache.cached()
 def df_all(crime):
     """Return the sum of crimes that occurred in the Federal District
 
@@ -436,6 +439,7 @@ def df_all(crime):
           '<string:cuadrante>',
           methods=['GET'])
 @jsonp
+@cache.cached()
 def cuadrantes(crime, cuadrante):
     """Return the count of crimes that occurred in a cuadrante, by date
 
@@ -479,12 +483,13 @@ def cuadrantes(crime, cuadrante):
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
         return results_to_json(results)
 
-@cache.cached(timeout=None)
+
 @app.route('/v1/series/sectores/'
           '<string:crime>/'
           '<string:sector>',
           methods=['GET'])
 @jsonp
+@cache.cached()
 def sectors(crime, sector):
     """Return the count of crimes that occurred in a sector, by date
 
@@ -527,6 +532,7 @@ def sectors(crime, sector):
 @app.route('/v1/list/cuadrantes/<string:crime>',
           methods=['GET'])
 @jsonp
+@cache.cached()
 def cuadrantes_sum_all(crime):
     """Return the sum of crimes that occurred in each cuadrante for a specified period of time
 
@@ -573,10 +579,10 @@ def cuadrantes_sum_all(crime):
         return results_to_json(results)
 
 
-@cache.cached(timeout=50)
 @app.route('/v1/list/sectores/<string:crime>',
           methods=['GET'])
 @jsonp
+@cache.cached()
 def sectores_sum_all(crime):
     """Return the sum of crimes that occurred in each sectore for a specified period of time
 
@@ -622,10 +628,10 @@ def sectores_sum_all(crime):
 
 
 
-@cache.cached(timeout=50)
 @app.route('/v1/list/change/cuadrantes/<string:crime>',
           methods=['GET'])
 @jsonp
+@cache.cached()
 def cuadrantes_change_sum_all(crime):
     """Return the change in crime counts for a specified period of time at the cuadrante level
 
@@ -723,6 +729,7 @@ def cuadrantes_change_sum_all(crime):
 
 @app.route('/v1/enumerate/crimes')
 @jsonp
+@cache.cached()
 def listcrimes():
     """Enumerate all the crimes in the database
 
@@ -746,6 +753,7 @@ def listcrimes():
 
 @app.route('/v1/enumerate/cuadrantes')
 @jsonp
+@cache.cached()
 def listcuadrantes():
     """Enumerate all the cuadrantes in the database
 
@@ -770,6 +778,7 @@ def listcuadrantes():
 
 @app.route('/v1/enumerate/sectores')
 @jsonp
+@cache.cached()
 def listsectores():
     """Enumerate all the sectores in the database
 
@@ -794,6 +803,7 @@ def listsectores():
 
 @app.route('/v1/top/counts/cuadrante/<string:crime>')
 @jsonp
+@cache.cached()
 def top5cuadrantes(crime):
     """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
 
@@ -850,6 +860,7 @@ def top5cuadrantes(crime):
 
 @app.route('/v1/top/rates/sector/<string:crime>')
 @jsonp
+@cache.cached()
 def top5sectores(crime):
     """Return the top ranked sectors with the highest crime **rates** for a given period of time.
 
@@ -905,6 +916,7 @@ def top5sectores(crime):
 
 @app.route('/v1/top/counts/change/cuadrantes/<string:crime>')
 @jsonp
+@cache.cached()
 def top5changecuadrantes(crime):
     """Return the top ranked cuadrantes were crime **counts** increased the most.
 
