@@ -227,11 +227,12 @@ def static_font(filename):
 def static_images(filename):
     return send_from_directory(os.path.join(_basedir, 'static/images'), filename)
 
-@jsonp
+
 @app.route('/v1/pip/'
           '<string:long>/'
           '<string:lat>',
           methods=['GET'])
+@jsonp
 def pip(long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to.
 
@@ -296,11 +297,12 @@ def pip(long, lat):
             results_cuad_last_year=[]
         return jsonify(pip = json_results)
 
-@jsonp
+
 @app.route('/v1/pip/extras/'
           '<string:long>/'
           '<string:lat>',
           methods=['GET'])
+@jsonp
 def frontpage(long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
@@ -388,11 +390,12 @@ def frontpage(long, lat):
                        cuadrante_last_year = results_to_array(results_cuad_last_year))
 
 
-@jsonp
+
 @cache.cached(timeout=None)
 @app.route('/v1/series/df/'
           '<string:crime>',
           methods=['GET'])
+@jsonp
 def df_all(crime):
     """Return the sum of crimes that occurred in the Federal District
 
@@ -427,11 +430,12 @@ def df_all(crime):
 
 
 
-@jsonp
+
 @app.route('/v1/series/cuadrantes/'
           '<string:crime>/'
           '<string:cuadrante>',
           methods=['GET'])
+@jsonp
 def cuadrantes(crime, cuadrante):
     """Return the count of crimes that occurred in a cuadrante, by date
 
@@ -476,11 +480,11 @@ def cuadrantes(crime, cuadrante):
         return results_to_json(results)
 
 @cache.cached(timeout=None)
-@jsonp
 @app.route('/v1/series/sectores/'
           '<string:crime>/'
           '<string:sector>',
           methods=['GET'])
+@jsonp
 def sectors(crime, sector):
     """Return the count of crimes that occurred in a sector, by date
 
@@ -518,10 +522,11 @@ def sectors(crime, sector):
         return results_to_json(results)
 
 
-@jsonp
+
 @cache.cached(timeout=None)
 @app.route('/v1/list/cuadrantes/<string:crime>',
           methods=['GET'])
+@jsonp
 def cuadrantes_sum_all(crime):
     """Return the sum of crimes that occurred in each cuadrante for a specified period of time
 
@@ -567,10 +572,11 @@ def cuadrantes_sum_all(crime):
         #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
         return results_to_json(results)
 
-@jsonp
+
 @cache.cached(timeout=50)
 @app.route('/v1/list/sectores/<string:crime>',
           methods=['GET'])
+@jsonp
 def sectores_sum_all(crime):
     """Return the sum of crimes that occurred in each sectore for a specified period of time
 
@@ -615,10 +621,11 @@ def sectores_sum_all(crime):
         return results_to_json(results)
 
 
-@jsonp
+
 @cache.cached(timeout=50)
 @app.route('/v1/list/change/cuadrantes/<string:crime>',
           methods=['GET'])
+@jsonp
 def cuadrantes_change_sum_all(crime):
     """Return the change in crime counts for a specified period of time at the cuadrante level
 
@@ -713,8 +720,9 @@ def cuadrantes_change_sum_all(crime):
         return results_to_json(results)
 
 
-@jsonp
+
 @app.route('/v1/enumerate/crimes')
+@jsonp
 def listcrimes():
     """Enumerate all the crimes in the database
 
@@ -735,8 +743,9 @@ def listcrimes():
                   all()
         return results_to_json(results)
 
-@jsonp
+
 @app.route('/v1/enumerate/cuadrantes')
+@jsonp
 def listcuadrantes():
     """Enumerate all the cuadrantes in the database
 
@@ -758,8 +767,9 @@ def listcuadrantes():
                   all()
         return results_to_json(results)
 
-@jsonp
+
 @app.route('/v1/enumerate/sectores')
+@jsonp
 def listsectores():
     """Enumerate all the sectores in the database
 
@@ -781,8 +791,9 @@ def listsectores():
         return results_to_json(results)
 
 
-@jsonp
+
 @app.route('/v1/top/counts/cuadrante/<string:crime>')
+@jsonp
 def top5cuadrantes(crime):
     """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
 
@@ -891,8 +902,9 @@ def top5sectores(crime):
                                                  'rank': rank})
         return ResultProxy_to_json(results)
 
-@jsonp
+
 @app.route('/v1/top/counts/change/cuadrantes/<string:crime>')
+@jsonp
 def top5changecuadrantes(crime):
     """Return the top ranked cuadrantes were crime **counts** increased the most.
 
