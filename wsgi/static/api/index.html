@@ -81,7 +81,7 @@ all the crimes that occurred in that cuadrante.</p>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Service</th>
 <th class="head">Description</th>
-<th class="head">Example Use</th>
+<th class="head">Url</th>
 </tr>
 </thead>
 <tbody valign="top">
@@ -102,9 +102,9 @@ corresponding cuadrante</td>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td>List Cuadrantes and
+<tr class="row-even"><td>List Cuadrantes or
 Sectores</td>
-<td>sum of crimes that occurred in each
+<td>Sum of crimes that occurred in each
 and every cuadrante or sector for a specified
 period of time</td>
 <td><div class="first last line-block">
@@ -116,8 +116,8 @@ period of time</td>
 </tr>
 <tr class="row-odd"><td>Top Most Violent</td>
 <td>A list of the cuadrantes and sectors with the
-highest rates (sectores) or crime counts
-(cuadrantes)</td>
+highest rates (sectores), crime counts
+(cuadrantes) or change in crime counts</td>
 <td><div class="first last line-block">
 <div class="line"><strong>/v1/top/rates/sector/(string: crime)</strong></div>
 <div class="line"><strong>/v1/top/counts/cuadrante/(string: crime)</strong></div>
@@ -135,7 +135,7 @@ that occurred in the Federal District</td>
 </tr>
 <tr class="row-odd"><td>Enumerate</td>
 <td>Get a list of the names of all cuadrantes,
-sectores and crimes</td>
+sectores or crimes</td>
 <td><div class="first last line-block">
 <div class="line"><strong>/v1/enumerate/crimes</strong></div>
 <div class="line"><strong>/v1/enumerate/sectores</strong></div>
@@ -149,8 +149,8 @@ sectores and crimes</td>
 <div class="section" id="endpoints">
 <h1>Endpoints<a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h1>
 <dl class="get">
-<dt id="get--v1-enumerate-cuadrantes">
-<code class="descname">GET </code><code class="descname">/v1/enumerate/cuadrantes</code><a class="headerlink" href="#get--v1-enumerate-cuadrantes" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-enumerate-cuadrantes">
+<code class="descname">GET </code><code class="descname">/api/v1/enumerate/cuadrantes</code><a class="headerlink" href="#get--api-v1-enumerate-cuadrantes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enumerate all the cuadrantes in the database</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -172,8 +172,8 @@ sectores and crimes</td>
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-enumerate-sectores">
-<code class="descname">GET </code><code class="descname">/v1/enumerate/sectores</code><a class="headerlink" href="#get--v1-enumerate-sectores" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-enumerate-sectores">
+<code class="descname">GET </code><code class="descname">/api/v1/enumerate/sectores</code><a class="headerlink" href="#get--api-v1-enumerate-sectores" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enumerate all the sectores in the database</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -195,8 +195,8 @@ sectores and crimes</td>
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-enumerate-crimes">
-<code class="descname">GET </code><code class="descname">/v1/enumerate/crimes</code><a class="headerlink" href="#get--v1-enumerate-crimes" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-enumerate-crimes">
+<code class="descname">GET </code><code class="descname">/api/v1/enumerate/crimes</code><a class="headerlink" href="#get--api-v1-enumerate-crimes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enumerate all the crimes in the database</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -218,8 +218,32 @@ sectores and crimes</td>
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-top-counts-change-cuadrantes-(string-crime)">
-<code class="descname">GET </code><code class="descname">/v1/top/counts/change/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-top-counts-change-cuadrantes-(string-crime)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-estariamosmejorcon">
+<code class="descname">GET </code><code class="descname">/api/v1/estariamosmejorcon</code><a class="headerlink" href="#get--api-v1-estariamosmejorcon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the once and future president of Mexico</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the best man for the job is a good ol&#8217; regular citizen</li>
+<li><span class="problematic">666</span> &#8211; when the best man for the job is president once more</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/estariamosmejorcon</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-top-counts-change-cuadrantes-(string-crime)">
+<code class="descname">GET </code><code class="descname">/api/v1/top/counts/change/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-top-counts-change-cuadrantes-(string-crime)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the top ranked cuadrantes were crime <strong>counts</strong> increased the most.</p>
 <p>When no date parameters are specified the top 5 cuadrantes are returned for the last 3 months compared
 with the same period during the previous year (e.g. July-May 2014 compared with July-May 2013).
@@ -266,8 +290,8 @@ All population data returned by this call is in persons/year and comes from the 
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-series-cuadrantes-(string-crime)-(string-cuadrante)">
-<code class="descname">GET </code><code class="descname">/v1/series/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>cuadrante</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-series-cuadrantes-(string-crime)-(string-cuadrante)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-series-cuadrantes-(string-crime)-(string-cuadrante)">
+<code class="descname">GET </code><code class="descname">/api/v1/series/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>cuadrante</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-series-cuadrantes-(string-crime)-(string-cuadrante)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the count of crimes that occurred in a cuadrante, by date</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -295,8 +319,8 @@ All population data returned by this call is in persons/year and comes from the 
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-series-sectores-(string-crime)-(string-sector)">
-<code class="descname">GET </code><code class="descname">/v1/series/sectores/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>sector</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-series-sectores-(string-crime)-(string-sector)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-series-sectores-(string-crime)-(string-sector)">
+<code class="descname">GET </code><code class="descname">/api/v1/series/sectores/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>sector</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-series-sectores-(string-crime)-(string-sector)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the count of crimes that occurred in a sector, by date</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -324,8 +348,8 @@ All population data returned by this call is in persons/year and comes from the 
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-list-change-cuadrantes-(string-crime)">
-<code class="descname">GET </code><code class="descname">/v1/list/change/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-list-change-cuadrantes-(string-crime)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-list-change-cuadrantes-(string-crime)">
+<code class="descname">GET </code><code class="descname">/api/v1/list/change/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-list-change-cuadrantes-(string-crime)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the change in crime counts for a specified period of time at the cuadrante level</p>
 <p>By default it returns the sum of crimes during the last 12 months</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -366,8 +390,8 @@ All population data returned by this call is in persons/year and comes from the 
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-top-counts-cuadrante-(string-crime)">
-<code class="descname">GET </code><code class="descname">/v1/top/counts/cuadrante/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-top-counts-cuadrante-(string-crime)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-top-counts-cuadrante-(string-crime)">
+<code class="descname">GET </code><code class="descname">/api/v1/top/counts/cuadrante/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-top-counts-cuadrante-(string-crime)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the top ranked cuadrantes with the highest crime <strong>counts</strong> for a given period of time.</p>
 <p>When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
 (e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
@@ -412,8 +436,8 @@ All population data returned by this call is in persons/year and comes from the 
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-pip-extras-(string-long)-(string-lat)">
-<code class="descname">GET </code><code class="descname">/v1/pip/extras/</code><span class="sig-paren">(</span><em class="property">string: </em><em>long</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>lat</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-pip-extras-(string-long)-(string-lat)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-pip-extras-(string-long)-(string-lat)">
+<code class="descname">GET </code><code class="descname">/api/v1/pip/extras/</code><span class="sig-paren">(</span><em class="property">string: </em><em>long</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>lat</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-pip-extras-(string-long)-(string-lat)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info</p>
 <p>Returns a list containg the cuadrante polygon as GeoJSON, all the crimes that occurred in the cuadrante
 by date, the sum of crime counts that occurred in the DF, and in the cuadrante during the last year</p>
@@ -444,8 +468,8 @@ by date, the sum of crime counts that occurred in the DF, and in the cuadrante d
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-top-rates-sector-(string-crime)">
-<code class="descname">GET </code><code class="descname">/v1/top/rates/sector/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-top-rates-sector-(string-crime)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-top-rates-sector-(string-crime)">
+<code class="descname">GET </code><code class="descname">/api/v1/top/rates/sector/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-top-rates-sector-(string-crime)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the top ranked sectors with the highest crime <strong>rates</strong> for a given period of time.</p>
 <p>When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
 (e.g. If July is the last date in the database then the period July 2014 to Aug 2013 will be analyzed).
@@ -490,8 +514,8 @@ All population data returned by this call is in persons/year and comes from the 
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-series-df-(string-crime)">
-<code class="descname">GET </code><code class="descname">/v1/series/df/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-series-df-(string-crime)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-series-df-(string-crime)">
+<code class="descname">GET </code><code class="descname">/api/v1/series/df/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-series-df-(string-crime)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the sum of crimes that occurred in the Federal District</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -518,8 +542,8 @@ All population data returned by this call is in persons/year and comes from the 
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-list-cuadrantes-(string-crime)">
-<code class="descname">GET </code><code class="descname">/v1/list/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-list-cuadrantes-(string-crime)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-list-cuadrantes-(string-crime)">
+<code class="descname">GET </code><code class="descname">/api/v1/list/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-list-cuadrantes-(string-crime)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the sum of crimes that occurred in each cuadrante for a specified period of time</p>
 <p>By default it returns the sum of crimes during the last 12 months</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -560,8 +584,8 @@ All population data returned by this call is in persons/year and comes from the 
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-list-sectores-(string-crime)">
-<code class="descname">GET </code><code class="descname">/v1/list/sectores/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-list-sectores-(string-crime)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-list-sectores-(string-crime)">
+<code class="descname">GET </code><code class="descname">/api/v1/list/sectores/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-list-sectores-(string-crime)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the sum of crimes that occurred in each sectore for a specified period of time</p>
 <p>By default it returns the sum of crimes during the last 12 months</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -602,8 +626,8 @@ All population data returned by this call is in persons/year and comes from the 
 </dd></dl>
 
 <dl class="get">
-<dt id="get--v1-pip-(string-long)-(string-lat)">
-<code class="descname">GET </code><code class="descname">/v1/pip/</code><span class="sig-paren">(</span><em class="property">string: </em><em>long</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>lat</em><span class="sig-paren">)</span><a class="headerlink" href="#get--v1-pip-(string-long)-(string-lat)" title="Permalink to this definition">¶</a></dt>
+<dt id="get--api-v1-pip-(string-long)-(string-lat)">
+<code class="descname">GET </code><code class="descname">/api/v1/pip/</code><span class="sig-paren">(</span><em class="property">string: </em><em>long</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>lat</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-pip-(string-long)-(string-lat)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a latitude and longitude determine the cuadrante they correspond to.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -643,16 +667,6 @@ Content-Type: application/json
 ]
 }
 </pre></div>
-</div>
-</dd></dl>
-
-<dl class="get">
-<dt id="get--static-(path-filename)">
-<code class="descname">GET </code><code class="descname">/static/</code><span class="sig-paren">(</span><em class="property">path: </em><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#get--static-(path-filename)" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function used internally to send static files from the static
-folder to the browser.</p>
-<div class="versionadded">
-<p><span class="versionmodified">New in version 0.5.</span></p>
 </div>
 </dd></dl>
 
