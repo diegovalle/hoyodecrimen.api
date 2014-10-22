@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, jsonify, request, abort, make_response
+from flask import Flask, jsonify, request, abort, make_response, url_for, send_from_directory,send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy import func, and_
@@ -9,6 +9,7 @@ from functools import wraps
 from geoalchemy2 import Geometry
 from geoalchemy2.elements import WKTElement
 import time
+import os
 #from redis import Redis
  
 
@@ -192,10 +193,20 @@ def check_dates(start_period, end_period):
                 scalar()
         start_date = month_sub(max_date, -11)
     return start_date, max_date
+
+_basedir = os.path.abspath(os.path.dirname(__file__))
  
 @app.route('/')
 def index():
     return "Hello from API"
+
+@app.route('/api/')
+def api_html():
+    return app.send_static_file(os.path.join('api', 'index.html'))
+
+@app.route('/api/_static/<path:filename>')
+def static__html(filename):
+    return send_from_directory(os.path.join(_basedir, 'static/api/_static'), filename)
 
 @jsonp
 @app.route('/v1/pip/'
@@ -649,7 +660,7 @@ def cuadrantes_change_sum_all(crime):
         sql_query1 = """select lower(crime) as crime, lower(cuadrante) as cuadrante,
                                lower(sector) as sector, max(population) as population,
                                :max_date_minus3 as start_period2, :max_date as end_period2,
-                               :max_date_last_year as start_period1, :max_date_last_year_minus3 as end_period1,
+                               :max_date_last_year as end_period1, :max_date_last_year_minus3 as start_period1,
                                                    sum(case when date <= :max_date and date >= :max_date_minus3
                                                    THEN count ELSE 0 END) as period2_count,
                                                    sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
@@ -940,9 +951,9 @@ def top5changecuadrantes(crime):
                                         from (
                                             SELECT rank() over (partition by crime order by difference desc) as rank,
                                                    lower(crime) as crime, lower(cuadrante) as cuadrante,
-                                                   lower(sector) as sector,population, start_count, end_count,
+                                                   lower(sector) as sector,population, period1_count, period2_count,
                                                    difference from difference
-                                            group by difference,crime,sector,cuadrante, population, start_count, end_count)
+                                            group by difference,crime,sector,cuadrante, population,  period1_count, period2_count)
                                         as temp
                                         where rank <= :rank
                                         order by crime, rank, cuadrante, sector asc"""
