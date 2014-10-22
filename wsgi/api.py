@@ -196,17 +196,35 @@ def check_dates(start_period, end_period):
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
  
-@app.route('/')
-def index():
-    return "Hello from API"
+
 
 @app.route('/api/')
 def api_html():
     return app.send_static_file(os.path.join('api', 'index.html'))
 
+@app.route('/')
+def index():
+    return app.send_static_file(os.path.join('api', 'index.html'))
+
 @app.route('/api/_static/<path:filename>')
-def static__html(filename):
+def static__api(filename):
     return send_from_directory(os.path.join(_basedir, 'static/api/_static'), filename)
+
+@app.route('/css/<path:filename>')
+def static_css(filename):
+    return send_from_directory(os.path.join(_basedir, 'static/css'), filename)
+
+@app.route('/js/<path:filename>')
+def static_js(filename):
+    return send_from_directory(os.path.join(_basedir, 'static/js'), filename)
+
+@app.route('/font/<path:filename>')
+def static_font(filename):
+    return send_from_directory(os.path.join(_basedir, 'static/font'), filename)
+
+@app.route('/images/<path:filename>')
+def static_images(filename):
+    return send_from_directory(os.path.join(_basedir, 'static/images'), filename)
 
 @jsonp
 @app.route('/v1/pip/'
