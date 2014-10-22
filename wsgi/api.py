@@ -1,94 +1,61 @@
 from datetime import datetime
-from flask import Flask, jsonify, request, abort, make_response, url_for, send_from_directory,send_file
+from flask import Blueprint, Flask, jsonify, request, abort, make_response, url_for, send_from_directory,send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy import func, and_
 from flask.ext.cache import Cache
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
-from geoalchemy2 import Geometry
 from geoalchemy2.elements import WKTElement
 import time
 import os
+from models import db, Cuadrantes, Cuadrantes_Poly
 #from redis import Redis
- 
 
-#START_STATE = '2013-01'
-#LAST_STRING = 'last'
 
+_basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
-
-# cache = Cache(app, config={
-#             'CACHE_TYPE': 'redis',
-#             'CACHE_REDIS_URL': 'redis://127.0.0.1:16379',
-#         })
-
+db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
 cache = Cache(app, config={
          'CACHE_TYPE': 'filesystem',
          'CACHE_DIR': '/tmp',
          'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
          'CACHE_THRESHOLD': 922337203685477580
-     })
+})
 cache.init_app(app)
-db = SQLAlchemy(app)
-
-#from api import *
-db.create_all()
-
-# psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W
-# CREATE TABLE cuadrantes (
-# 	cuadrante varchar (10),
-# 	crime varchar (60),
-# 	date  varchar (10),
-# 	count int,
-#        year int,
-#        sector varchar(60),
-#        population integer,
-#        PRIMARY KEY(cuadrante, sector, crime, date)
-# );
-# COPY cuadrantes FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+# cache = Cache(app, config={
+#             'CACHE_TYPE': 'redis',
+#             'CACHE_REDIS_URL': 'redis://127.0.0.1:16379',
+#         })
 
 
-# shp2pgsql -s 4326 -W "latin1" -I -D cuadrantes-sspdf-no-errors.shp cuadrantes_poly > cuadrantes_poly.sql
-# ogr2ogr -f "GeoJSON" cuadrantes.geojson cuadrantes-sspdf-no-errors.shp
-# scp *.sql 543fe7165973cae5d30000c1@apihoyodecrimen-valle.rhcloud.com:app-root/data/
-
-#psql apihoyodecrimen -c "CREATE EXTENSION postgis;"
-#psql -d apihoyodecrimen $OPENSHIFT_POSTGRESQL_DB_USERNAME  < cuadrantes_poly.sql
+API = Blueprint('API', __name__, url_prefix='/api/v1')
 
 
-class Cuadrantes(db.Model):
-    __tablename__ = 'cuadrantes'
-    cuadrante = db.Column(db.String(10), primary_key=True)
-    crime = db.Column(db.String(60))
-    date = db.Column(db.String(10))
-    count = db.Column(db.Integer)
-    year = db.Column(db.Integer)
-    sector = db.Column(db.String(60))
-    population = db.Column(db.Integer)
+class InvalidAPIUsage(Exception):
+    status_code = 400
 
-    def __init__(self, cuadrante, crime, date, count, year, sector, population):
-        self.cuadrante = cuadrante
-        self.crime = crime
-        self.date = date
-        self.count = count
-        self.year = year
-        self.sector = sector
-        self.population = population
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
 
-class Cuadrantes_Poly(db.Model):
-    __tablename__ = 'cuadrantes_poly'
-    id = db.Column(db.String(60), primary_key=True)
-    sector = db.Column(db.String(60))
-    geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
 
-    def __init__(self, id, sector, geom):
-        self.id = id
-        self.sector = sector
-        self.geom = geom
+@app.errorhandler(InvalidAPIUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
+#raise InvalidUsage('This view is gone', status_code=410)
 
 
 def jsonp(func):
@@ -195,9 +162,12 @@ def check_dates(start_period, end_period):
         start_date = month_sub(max_date, -11)
     return start_date, max_date
 
-_basedir = os.path.abspath(os.path.dirname(__file__))
- 
 
+ 
+# Sample HTTP error handling
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html'), 404
 
 @app.route('/api/')
 def api_html():
@@ -228,7 +198,7 @@ def static_images(filename):
     return send_from_directory(os.path.join(_basedir, 'static/images'), filename)
 
 
-@app.route('/v1/pip/'
+@API.route('/pip/'
           '<string:long>/'
           '<string:lat>',
           methods=['GET'])
@@ -272,34 +242,33 @@ def pip(long, lat):
     # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
     #                 FROM cuadrantes_poly
     #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
-    if request.method == 'GET':
-        if not check_float(long):
-            abort(abort(make_response('something is wrong with the longitude you provided', 400)))
-        if not check_float(lat):
-            abort(abort(make_response('something is wrong with the latitude you provided', 400)))
-        point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
-        results_pip = Cuadrantes_Poly.query. \
-            filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")==True). \
-            with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
-                          func.lower(Cuadrantes_Poly.sector).label("sector"),
-                          func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
-            first()
-        if(results_pip is not None):
-            json_results = []
-            d = {}
-            d['geomery'] = results_pip[2]
-            d['cuadrante'] = results_pip[0]
-            d['sector'] = results_pip[1]
-            json_results.append(d)
-        else:
-            results_cuad=[]
-            json_results=[]
-            results_df_last_year=[]
-            results_cuad_last_year=[]
-        return jsonify(pip = json_results)
+    if not check_float(long):
+        abort(abort(make_response('something is wrong with the longitude you provided', 400)))
+    if not check_float(lat):
+        abort(abort(make_response('something is wrong with the latitude you provided', 400)))
+    point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
+    results_pip = Cuadrantes_Poly.query. \
+        filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom") == True). \
+        with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
+                      func.lower(Cuadrantes_Poly.sector).label("sector"),
+                      func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
+        first()
+    if (results_pip is not None):
+        json_results = []
+        d = {}
+        d['geomery'] = results_pip[2]
+        d['cuadrante'] = results_pip[0]
+        d['sector'] = results_pip[1]
+        json_results.append(d)
+    else:
+        results_cuad = []
+        json_results = []
+        results_df_last_year = []
+        results_cuad_last_year = []
+    return jsonify(pip=json_results)
 
 
-@app.route('/v1/pip/extras/'
+@API.route('/v1/pip/extras/'
           '<string:long>/'
           '<string:lat>',
           methods=['GET'])
@@ -394,7 +363,7 @@ def frontpage(long, lat):
 
 
 
-@app.route('/v1/series/df/'
+@API.route('/v1/series/df/'
           '<string:crime>',
           methods=['GET'])
 @jsonp
@@ -434,7 +403,7 @@ def df_all(crime):
 
 
 
-@app.route('/v1/series/cuadrantes/'
+@API.route('/v1/series/cuadrantes/'
           '<string:crime>/'
           '<string:cuadrante>',
           methods=['GET'])
@@ -484,7 +453,7 @@ def cuadrantes(crime, cuadrante):
         return results_to_json(results)
 
 
-@app.route('/v1/series/sectores/'
+@API.route('/v1/series/sectores/'
           '<string:crime>/'
           '<string:sector>',
           methods=['GET'])
@@ -527,9 +496,7 @@ def sectors(crime, sector):
         return results_to_json(results)
 
 
-
-@cache.cached(timeout=None)
-@app.route('/v1/list/cuadrantes/<string:crime>',
+@API.route('/v1/list/cuadrantes/<string:crime>',
           methods=['GET'])
 @jsonp
 @cache.cached()
@@ -579,7 +546,7 @@ def cuadrantes_sum_all(crime):
         return results_to_json(results)
 
 
-@app.route('/v1/list/sectores/<string:crime>',
+@API.route('/v1/list/sectores/<string:crime>',
           methods=['GET'])
 @jsonp
 @cache.cached()
@@ -628,7 +595,7 @@ def sectores_sum_all(crime):
 
 
 
-@app.route('/v1/list/change/cuadrantes/<string:crime>',
+@API.route('/v1/list/change/cuadrantes/<string:crime>',
           methods=['GET'])
 @jsonp
 @cache.cached()
@@ -727,7 +694,7 @@ def cuadrantes_change_sum_all(crime):
 
 
 
-@app.route('/v1/enumerate/crimes')
+@API.route('/v1/enumerate/crimes')
 @jsonp
 @cache.cached()
 def listcrimes():
@@ -751,7 +718,7 @@ def listcrimes():
         return results_to_json(results)
 
 
-@app.route('/v1/enumerate/cuadrantes')
+@API.route('/v1/enumerate/cuadrantes')
 @jsonp
 @cache.cached()
 def listcuadrantes():
@@ -776,7 +743,7 @@ def listcuadrantes():
         return results_to_json(results)
 
 
-@app.route('/v1/enumerate/sectores')
+@API.route('/v1/enumerate/sectores')
 @jsonp
 @cache.cached()
 def listsectores():
@@ -801,7 +768,7 @@ def listsectores():
 
 
 
-@app.route('/v1/top/counts/cuadrante/<string:crime>')
+@API.route('/v1/top/counts/cuadrante/<string:crime>')
 @jsonp
 @cache.cached()
 def top5cuadrantes(crime):
@@ -858,7 +825,7 @@ def top5cuadrantes(crime):
         return ResultProxy_to_json(results)
 
 
-@app.route('/v1/top/rates/sector/<string:crime>')
+@API.route('/v1/top/rates/sector/<string:crime>')
 @jsonp
 @cache.cached()
 def top5sectores(crime):
@@ -914,7 +881,7 @@ def top5sectores(crime):
         return ResultProxy_to_json(results)
 
 
-@app.route('/v1/top/counts/change/cuadrantes/<string:crime>')
+@API.route('/v1/top/counts/change/cuadrantes/<string:crime>')
 @jsonp
 @cache.cached()
 def top5changecuadrantes(crime):
@@ -1012,7 +979,16 @@ def top5changecuadrantes(crime):
 
  
 if __name__ == '__main__':
+
+    with app.app_context():
+        cache.clear()
+
+
+    db.create_all()
     app.config['PROFILE'] = True
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
+    app.register_blueprint(API)
     app.run(debug=True)
+
+
 
