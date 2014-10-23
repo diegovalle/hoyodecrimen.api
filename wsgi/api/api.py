@@ -78,7 +78,7 @@ def ResultProxy_to_json(results):
                 else:
                     d[key] = result[key]
             json_results.append(d)
-    return jsonify(rows = json_results, use_decimal=True)
+    return jsonify(rows = json_results)
 
 
 def results_to_array(results):
