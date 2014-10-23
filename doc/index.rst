@@ -41,36 +41,45 @@ can use http:// to get a time series of the homicide rate in cuadrante
 c-1.1.1. Note that "homicidio doloso" can be changed to `all` to get
 all the crimes that occurred in that cuadrante.
 
+Note
+====
+Population is given in persons/year and corresponds to that of the
+2010 census. Rates are always annualized.
+
 What's available
 ================
 
 
-+------------------------+----------------------------------------------------------------+--------------+----------+
-| Service                | Description                                                    | Example Use  | Header 4 |
-|                        |                                                                |              |          |
-+========================+================================================================+==============+==========+
-| Point in Polygon       | Given a lat and longitude return the
-                           corresponding cuadrante                                                       | column 3     | column 4 |
-+------------------------+----------------------------------------------------------------+--------------+----------+
-| Time Series            |                                                             | ...          |          |
-+------------------------+----------------------------------------------------------------+--------------+----------+
-| List Cuadrantes and     | sum of crimes that occurred in each 
-| Sectores               | cuadrante or sector for a specified period of time
-                                                                                      | ...          |          |
-+------------------------+----------------------------------------------------------------+--------------+----------+
-| Top Most Violent       | A list of the Cuadrantes and sectors with the 
-                         | highest rates (sectores) and crime counts 
-                         | (cuadrantes)                                                           | ...          |          |
-+------------------------+----------------------------------------------------------------+--------------+----------+
-| DF data                | A time series of the sum of all crimes 
-                         | that occurred in the Federal District                                                         | ...          |          |
-+------------------------+----------------------------------------------------------------+--------------+----------+
-| Enumerate                  | Get a list of available Cuadrantes, 
-                         | Sectores and Crimes                                     | ...          |          |
-+------------------------+----------------------------------------------------------------+--------------+----------+
++------------------------+-----------------------------------------------------+------------------------------------------------------------------+
+| Service                | Description                                         | Endpoint                                                         | 
+|                        |                                                     |                                                                  |
++========================+=====================================================+==================================================================+
+| Point in Polygon       | Given a lat and longitude return the                | | **/v1/pip/(string: long)/(string: lat)**                       |
+|                        | corresponding cuadrante                             | | **/v1/pip/extras/(string: long)/(string: lat)**                |
++------------------------+-----------------------------------------------------+------------------------------------------------------------------+
+| Time Series            | Crimes ordered by month of occurrence               | | **/v1/series/sectores/(string: crime)/(string: sector)**       |
+|                        |                                                     | | **/v1/series/cuadrantes/(string: crime)/(string: cuadrante)**  |
+|                        |                                                     |                                                                  |
++------------------------+-----------------------------------------------------+------------------------------------------------------------------+
+| List Cuadrantes or     | Sum of crimes that occurred in each                 | | **/v1/list/cuadrantes/(string: crime)**                        |
+| Sectores               | and every cuadrante or sector for a specified       | | **/v1/list/sectores/(string: crime)**                          |
+|                        | period of time                                      | | **/v1/list/change/cuadrantes/(string: crime)**                 |
++------------------------+-----------------------------------------------------+------------------------------------------------------------------+
+| Top Most Violent       | A list of the cuadrantes and sectors with the       | | **/v1/top/rates/sector/(string: crime)**                       |
+|                        | highest rates (sectores), crime counts              | | **/v1/top/counts/cuadrante/(string: crime)**                   |
+|                        | (cuadrantes) or change in crime counts              | | **/v1/top/counts/change/cuadrantes/(string: crime)**           | 
++------------------------+-----------------------------------------------------+------------------------------------------------------------------+
+| DF data                | A time series of the sum of all crimes              | | **/v1/series/df/(string: crime)**                              |
+|                        | that occurred in the Federal District               |                                                                  |
++------------------------+-----------------------------------------------------+------------------------------------------------------------------+
+| Enumerate              | Get a list of the names of all cuadrantes,          | | **/v1/enumerate/crimes**                                       |
+|                        | sectores or crimes                                  | | **/v1/enumerate/sectores**                                     |
+|                        |                                                     | | **/v1/enumerate/cuadrantes**                                   |
++------------------------+-----------------------------------------------------+------------------------------------------------------------------+
+
 
 Endpoints
 ==========
 
-.. autoflask:: api:app
-   :endpoints:
+.. autoflask:: hoyodecrimen:app
+   :blueprints: API
