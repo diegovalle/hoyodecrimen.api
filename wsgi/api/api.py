@@ -20,7 +20,7 @@ from models import db, Cuadrantes, Cuadrantes_Poly
 # })
 cache = Cache(config={
     'CACHE_TYPE': 'redis',
-    'CACHE_REDIS_URL': 'redis://'+ os.environ['OPENSHIFT_REDIS_HOST'] + ':'+ os.environ['OPENSHIFT_REDIS_PORT'],
+    'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD'] +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'+ os.environ['OPENSHIFT_REDIS_PORT'],
     'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
     'CACHE_THRESHOLD': 922337203685477580
 })
