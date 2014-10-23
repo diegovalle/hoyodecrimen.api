@@ -12,11 +12,17 @@ import os
 from models import db, Cuadrantes, Cuadrantes_Poly
 #from redis import Redis
 
+# cache = Cache(config={
+#     'CACHE_TYPE': 'filesystem',
+#     'CACHE_DIR': '/tmp',
+#     'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
+#     'CACHE_THRESHOLD': 922337203685477580
+# })
 cache = Cache(config={
-         'CACHE_TYPE': 'filesystem',
-         'CACHE_DIR': '/tmp',
-         'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
-         'CACHE_THRESHOLD': 922337203685477580
+    'CACHE_TYPE': 'redis',
+    'CACHE_REDIS_URL': 'redis://127.0.0.1:16379',
+    'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
+    'CACHE_THRESHOLD': 922337203685477580
 })
 
 
