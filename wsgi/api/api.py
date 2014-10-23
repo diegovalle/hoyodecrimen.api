@@ -10,23 +10,29 @@ from geoalchemy2.elements import WKTElement
 import time
 import os
 from models import db, Cuadrantes, Cuadrantes_Poly
-#from redis import Redis
 
-# cache = Cache(config={
-#     'CACHE_TYPE': 'filesystem',
-#     'CACHE_DIR': '/tmp',
-#     'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
-#     'CACHE_THRESHOLD': 922337203685477580
-# })
-cache = Cache(config={
-    'CACHE_TYPE': 'redis',
-    'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD'] +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'+ os.environ['OPENSHIFT_REDIS_PORT'],
-    'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
-    'CACHE_THRESHOLD': 922337203685477580
-})
+# Use redis if not running in Openshift
+if 'OPENSHIFT_APP_UUID' not in os.environ:
+    cache = Cache(config={
+        'CACHE_TYPE': 'filesystem',
+        'CACHE_DIR': '/tmp',
+        'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
+        'CACHE_THRESHOLD': 922337203685477580
+    })
+else:
+    cache = Cache(config={
+        'CACHE_TYPE': 'redis',
+        'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD'] +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'+ os.environ['OPENSHIFT_REDIS_PORT'],
+        'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
+        'CACHE_THRESHOLD': 922337203685477580
+    })
 
 
 API = Blueprint('API', __name__, url_prefix='/api/v1')
+
+def make_cache_key(*args, **kwargs):
+    # Make sure the cache distinguishes requests with different parameters
+    return request.url
 
 class InvalidAPIUsage(Exception):
     status_code = 400
@@ -180,7 +186,7 @@ def estariamosmejorcon():
           '<string:lat>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def pip(long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to.
 
@@ -250,7 +256,7 @@ def pip(long, lat):
           '<string:lat>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def frontpage(long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
@@ -341,7 +347,7 @@ def frontpage(long, lat):
           '<string:crime>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def df_all(crime):
     """Return the sum of crimes that occurred in the Federal District
 
@@ -381,7 +387,7 @@ def df_all(crime):
           '<string:cuadrante>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def cuadrantes(crime, cuadrante):
     """Return the count of crimes that occurred in a cuadrante, by date
 
@@ -430,7 +436,7 @@ def cuadrantes(crime, cuadrante):
           '<string:sector>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def sectors(crime, sector):
     """Return the count of crimes that occurred in a sector, by date
 
@@ -470,7 +476,7 @@ def sectors(crime, sector):
 @API.route('/list/cuadrantes/<string:crime>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def cuadrantes_sum_all(crime):
     """Return the sum of crimes that occurred in each cuadrante for a specified period of time
 
@@ -519,7 +525,7 @@ def cuadrantes_sum_all(crime):
 @API.route('/list/sectores/<string:crime>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def sectores_sum_all(crime):
     """Return the sum of crimes that occurred in each sectore for a specified period of time
 
@@ -567,7 +573,7 @@ def sectores_sum_all(crime):
 @API.route('/list/change/cuadrantes/<string:crime>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def cuadrantes_change_sum_all(crime):
     """Return the change in crime counts for a specified period of time at the cuadrante level
 
@@ -665,7 +671,7 @@ def cuadrantes_change_sum_all(crime):
 @API.route('/enumerate/crimes',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def listcrimes():
     """Enumerate all the crimes in the database
 
@@ -689,7 +695,7 @@ def listcrimes():
 @API.route('/enumerate/cuadrantes',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def listcuadrantes():
     """Enumerate all the cuadrantes in the database
 
@@ -714,7 +720,7 @@ def listcuadrantes():
 @API.route('/enumerate/sectores',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def listsectores():
     """Enumerate all the sectores in the database
 
@@ -740,7 +746,7 @@ def listsectores():
 @API.route('/top/counts/cuadrante/<string:crime>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def top5cuadrantes(crime):
     """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
 
@@ -797,7 +803,7 @@ def top5cuadrantes(crime):
 @API.route('/top/rates/sector/<string:crime>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def top5sectores(crime):
     """Return the top ranked sectors with the highest crime **rates** for a given period of time.
 
@@ -854,7 +860,7 @@ def top5sectores(crime):
 @API.route('/top/counts/change/cuadrantes/<string:crime>',
           methods=['GET'])
 @jsonp
-@cache.cached()
+@cache.cached(key_prefix=make_cache_key)
 def top5changecuadrantes(crime):
     """Return the top ranked cuadrantes were crime **counts** increased the most.
 
