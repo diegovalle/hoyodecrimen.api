@@ -22,10 +22,7 @@ db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
 
 cache.init_app(app)
-# cache = Cache(app, config={
-#             'CACHE_TYPE': 'redis',
-#             'CACHE_REDIS_URL': 'redis://127.0.0.1:16379',
-#         })
+
 
 
 
