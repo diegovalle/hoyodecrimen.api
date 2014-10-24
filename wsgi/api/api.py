@@ -198,7 +198,7 @@ def pip(long, lat):
 
     .. sourcecode:: http
 
-      GET /v1/pip/-99.13333/19.43 HTTP/1.1
+      GET /api/v1/pip/-99.13333/19.43 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -273,7 +273,7 @@ def frontpage(long, lat):
 
     .. sourcecode:: http
 
-      GET /v1/pip/extras/-99.13333/19.43 HTTP/1.1
+      GET /api/v1/pip/extras/-99.13333/19.43 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -361,7 +361,7 @@ def df_all(crime):
 
     .. sourcecode:: http
 
-      GET /v1/series/df/violacion HTTP/1.1
+      GET /api/v1/series/df/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -402,7 +402,7 @@ def cuadrantes(crime, cuadrante):
 
     .. sourcecode:: http
 
-      GET /v1/series/cuadrantes/c-1.1.1/violacion HTTP/1.1
+      GET /api/v1/series/cuadrantes/c-1.1.1/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -451,7 +451,7 @@ def sectors(crime, sector):
 
     .. sourcecode:: http
 
-      GET /v1/series/sectores/angel%20-%20zona%20rosa/violacion HTTP/1.1
+      GET /api/v1/series/sectores/angel%20-%20zona%20rosa/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -492,7 +492,7 @@ def cuadrantes_sum_all(crime):
 
     .. sourcecode:: http
 
-      GET /v1/list/cuadrantes/all HTTP/1.1
+      GET /api/v1/list/cuadrantes/all HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -541,7 +541,7 @@ def sectores_sum_all(crime):
 
     .. sourcecode:: http
 
-      GET /v1/list/sectores/all HTTP/1.1
+      GET /api/v1/list/sectores/all HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -589,7 +589,7 @@ def cuadrantes_change_sum_all(crime):
 
     .. sourcecode:: http
 
-      GET /v1/list/change/cuadrantes/all HTTP/1.1
+      GET /api/v1/list/change/cuadrantes/all HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -639,8 +639,10 @@ def cuadrantes_change_sum_all(crime):
         max_date_last_year_minus3 = month_sub(max_date, -14)
     sql_query1 = """select lower(crime) as crime, lower(cuadrante) as cuadrante,
                                lower(sector) as sector, max(population) as population,
-                               :max_date_minus3 as start_period2, :max_date as end_period2,
-                               :max_date_last_year as end_period1, :max_date_last_year_minus3 as start_period1,
+                               substring(CAST(:max_date_minus3 AS text) for 7) as start_period2,
+                               substring(CAST(:max_date AS text) for 7) as end_period2,
+                               substring(CAST(:max_date_last_year AS text) for 7) as end_period1,
+                               substring(CAST(:max_date_last_year_minus3 AS text) for 7) as start_period1,
                                                    sum(case when date <= :max_date and date >= :max_date_minus3
                                                    THEN count ELSE 0 END) as period2_count,
                                                    sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
@@ -688,7 +690,7 @@ def listcrimes():
 
    .. sourcecode:: http
 
-      GET /v1/enumerate/crimes HTTP/1.1
+      GET /api/v1/enumerate/crimes HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
    """
@@ -712,7 +714,7 @@ def listcuadrantes():
 
     .. sourcecode:: http
 
-       GET /v1/enumerate/cuadrantes HTTP/1.1
+       GET /api/v1/enumerate/cuadrantes HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
     """
@@ -737,7 +739,7 @@ def listsectores():
 
     .. sourcecode:: http
 
-      GET /v1/enumerate/sectores HTTP/1.1
+      GET /api/v1/enumerate/sectores HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -750,7 +752,7 @@ def listsectores():
 
 
 
-@API.route('/top/counts/cuadrante/<string:crime>',
+@API.route('/top/counts/cuadrantes/<string:crime>',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -770,7 +772,7 @@ def top5cuadrantes(crime):
 
     .. sourcecode:: http
 
-      GET /v1/top5/counts/cuadrante/homicidio%20doloso HTTP/1.1
+      GET /api/v1/top/counts/cuadrantes/homicidio%20doloso HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -795,7 +797,8 @@ def top5cuadrantes(crime):
                           group by cuadrante, sector, crime)
                        SELECT *
                        from
-                          (SELECT :start_date as start_period, :max_date as end_period, count,lower(crime) as crime,
+                          (SELECT substring(CAST(:start_date AS text) for 7) as start_period,
+                                  substring(CAST(:max_date AS text) for 7) as end_period, count,lower(crime) as crime,
                                   lower(sector) as sector,lower(cuadrante) as cuadrante,
                                   rank() over (partition by crime order by count desc) as rank,population
                           from crimes group by count,crime,sector,cuadrante,population) as temp2
@@ -808,7 +811,7 @@ def top5cuadrantes(crime):
     return ResultProxy_to_json(results)
 
 
-@API.route('/top/rates/sector/<string:crime>',
+@API.route('/top/rates/sectores/<string:crime>',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -827,7 +830,7 @@ def top5sectores(crime):
 
     .. sourcecode:: http
 
-      GET /v1/top/rates/sector/homicidio%20doloso HTTP/1.1
+      GET /api/v1/top/rates/sector/homicidio%20doloso HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -850,7 +853,8 @@ def top5sectores(crime):
                            where date >= :start_date and date <= :max_date"""
     sql_query2 = "" if crime == "all" else " and lower(crime) = :crime "
     sql_query3 = """   group by sector, crime)
-                       SELECT start_period, end_period, round(rate::numeric , 1)::float as rate, crime, sector, count, rank, population from
+                       SELECT substring(start_period::text for 7), substring(end_period for 7),
+                               round(rate::numeric , 1)::float as rate, crime, sector, count, rank, population from
                            (SELECT :start_date as start_period, :max_date as end_period, count, rate,
                                    lower(crime) as crime,
                                    lower(sector) as sector,
@@ -885,7 +889,7 @@ def top5changecuadrantes(crime):
 
     .. sourcecode:: http
 
-       GET /v1/top/counts/change/cuadrantes/homicidio%20doloso HTTP/1.1
+       GET /api/v1/top/counts/change/cuadrantes/homicidio%20doloso HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
 
@@ -951,7 +955,11 @@ def top5changecuadrantes(crime):
                                             group by cuadrante, sector, crime)
                                         SELECT *
                                         from (
-                                            SELECT rank() over (partition by crime order by difference desc) as rank,
+                                            SELECT substring(CAST(:max_date as text) for 7) as end_period2,
+                                                   substring(CAST(:max_date_minus3 as text) for 7) as start_period2,
+                                                   substring(CAST(:max_date_last_year as text) for 7) as end_period1,
+                                                   substring(CAST(:max_date_last_year_minus3 as text) for 7) as start_period1,
+                                                   rank() over (partition by crime order by difference desc) as rank,
                                                    lower(crime) as crime, lower(cuadrante) as cuadrante,
                                                    lower(sector) as sector,population, period1_count, period2_count,
                                                    difference from difference
