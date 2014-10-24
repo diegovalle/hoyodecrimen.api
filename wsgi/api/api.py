@@ -14,17 +14,14 @@ from models import db, Cuadrantes, Cuadrantes_Poly
 # Use redis if not running in Openshift
 if 'OPENSHIFT_APP_UUID' not in os.environ:
     cache = Cache(config={
-        'CACHE_TYPE': 'filesystem',
-        'CACHE_DIR': '/tmp',
-        'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
-        'CACHE_THRESHOLD': 922337203685477580
+        'CACHE_TYPE': 'null' #or simple
     })
 else:
     cache = Cache(config={
         'CACHE_TYPE': 'redis',
         'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD'] +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'+ os.environ['OPENSHIFT_REDIS_PORT'],
         'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
-        'CACHE_THRESHOLD': 922337203685477580
+        'CACHE_KEY_PREFIX': 'hoyodecrimen_'
     })
 
 
@@ -46,16 +43,8 @@ class InvalidAPIUsage(Exception):
 
     def to_dict(self):
         rv = dict(self.payload or ())
-        rv['message'] = self.message
+        rv['error'] = self.message
         return rv
-
-@API.errorhandler(InvalidAPIUsage)
-def handle_invalid_usage(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
-
-#raise InvalidUsage('This view is gone', status_code=410)
 
 
 def jsonp(func):
@@ -145,13 +134,17 @@ def check_dates(start_period, end_period):
         end_period += '-01'
         start_period += '-01'
         if not check_date_month(start_period):
-            abort(abort(make_response('something is wrong with the start_period date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the start_period date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the start_period date you provided', 400)))
         if not check_date_month(end_period):
-            abort(abort(make_response('something is wrong with the end_period date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the end_period date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the end_period date you provided', 400)))
         if time.strptime(start_period, '%Y-%m') > time.strptime(end_period, '%Y-%m'):
-            abort(abort(make_response('date order not valid', 400)))
+            raise InvalidAPIUsage('date order not valid', status_code=400)
+            #abort(abort(make_response('date order not valid', 400)))
         if start_period < '2013-01':
-            abort(abort(make_response('start_period must be greater than 2013-01', 400)))
+            raise InvalidAPIUsage('start_period must be greater than 2013-01', status_code=400)
+            #abort(abort(make_response('start_period must be greater than 2013-01', 400)))
         max_date = end_period
         start_date = start_period
     else:
@@ -162,6 +155,11 @@ def check_dates(start_period, end_period):
         start_date = month_sub(max_date, -11)
     return start_date, max_date
 
+@API.errorhandler(InvalidAPIUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 @API.route('/estariamosmejorcon', methods=['GET'])
 def estariamosmejorcon():
@@ -226,9 +224,11 @@ def pip(long, lat):
     #                 FROM cuadrantes_poly
     #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
     if not check_float(long):
-        abort(abort(make_response('something is wrong with the longitude you provided', 400)))
+        raise InvalidAPIUsage('something is wrong with the longitude you provided', status_code=400)
+        #abort(abort(make_response('something is wrong with the longitude you provided', 400)))
     if not check_float(lat):
-        abort(abort(make_response('something is wrong with the latitude you provided', 400)))
+        raise InvalidAPIUsage('something is wrong with the latitude you provided', status_code=400)
+        #abort(abort(make_response('something is wrong with the latitude you provided', 400)))
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
     results_pip = Cuadrantes_Poly.query. \
         filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom") == True). \
@@ -281,9 +281,11 @@ def frontpage(long, lat):
     #                 FROM cuadrantes_poly
     #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
     if not check_float(long):
-        abort(abort(make_response('something is wrong with the longitude you provided', 400)))
+        raise InvalidAPIUsage('something is wrong with the longitude you provided', status_code=400)
+        #abort(abort(make_response('something is wrong with the longitude you provided', 400)))
     if not check_float(lat):
-        abort(abort(make_response('something is wrong with the latitude you provided', 400)))
+        raise InvalidAPIUsage('something is wrong with the latitude you provided', status_code=400)
+        #abort(abort(make_response('something is wrong with the latitude you provided', 400)))
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
     results_pip = Cuadrantes_Poly.query. \
         filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom") == True). \
@@ -383,8 +385,8 @@ def df_all(crime):
 
 
 @API.route('/series/cuadrantes/'
-          '<string:crime>/'
-          '<string:cuadrante>',
+          '<string:cuadrante>/'
+          '<string:crime>',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -400,7 +402,7 @@ def cuadrantes(crime, cuadrante):
 
     .. sourcecode:: http
 
-      GET /v1/series/cuadrantes/violacion/c-1.1.1 HTTP/1.1
+      GET /v1/series/cuadrantes/c-1.1.1/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -432,8 +434,8 @@ def cuadrantes(crime, cuadrante):
 
 
 @API.route('/series/sectores/'
-          '<string:crime>/'
-          '<string:sector>',
+          '<string:sector>/'
+          '<string:crime>',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -449,7 +451,7 @@ def sectors(crime, sector):
 
     .. sourcecode:: http
 
-      GET /v1/series/sectores/violacion/angel%20-%20zona%20rosa HTTP/1.1
+      GET /v1/series/sectores/angel%20-%20zona%20rosa/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
     """
@@ -607,17 +609,22 @@ def cuadrantes_change_sum_all(crime):
     #                func.lower(Cuadrantes.crime) == crime]
     if end_period1 != '' or end_period2 != '' or start_period1 != '' or start_period2 != '':
         if not check_date_month(end_period1):
-            abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the end_period1 date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
         if not check_date_month(end_period2):
-            abort(abort(make_response('something is wrong with the end_period2 date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the end_period1 date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
         if not check_date_month(start_period1):
-            abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the start_period1 date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
         if not check_date_month(start_period2):
-            abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the start_period2 date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
         if time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period2, '%Y-%m') or \
                         time.strptime(end_period1, '%Y-%m') >= time.strptime(start_period1, '%Y-%m') or \
                         time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period1, '%Y-%m'):
-            abort(abort(make_response('date order not valid', 400)))
+            raise InvalidAPIUsage('date order not valid', status_code=400)
+            #abort(abort(make_response('date order not valid', 400)))
         max_date = end_period2
         max_date_minus3 = start_period2
         max_date_last_year = end_period1
@@ -777,7 +784,8 @@ def top5cuadrantes(crime):
     start_date, max_date = check_dates(start_period, end_period)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
-        abort(abort(make_response('No negative numbers', 400)))
+        raise InvalidAPIUsage('No negative numbers', status_code=400)
+        #abort(abort(make_response('No negative numbers', 400)))
     sql_query = """with crimes as
                           (select sum(count) as count,sector,cuadrante,max(population)as population, crime
                           from cuadrantes
@@ -833,7 +841,8 @@ def top5sectores(crime):
     start_date, max_date = check_dates(start_period, end_period)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
-        abort(abort(make_response('No negative numbers', 400)))
+        raise InvalidAPIUsage('No negative numbers', status_code=400)
+        #abort(abort(make_response('No negative numbers', 400)))
     sql_query = """with crimes as
                            (select (sum(count) / (sum(population::float) / :num_months )* 100000) as rate,sum(count) as count,
                            sector,sum(population) / :num_months as population, crime
@@ -893,20 +902,26 @@ def top5changecuadrantes(crime):
     end_period2 = request.args.get('end_period2', '', type=str)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
-        abort(abort(make_response('No negative numbers', 400)))
+        raise InvalidAPIUsage('No negative numbers', status_code=400)
+        #abort(abort(make_response('No negative numbers', 400)))
     if end_period1 != '' or end_period2 != '' or start_period1 != '' or start_period2 != '':
         if not check_date_month(end_period1):
-            abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the end_period1 date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
         if not check_date_month(end_period2):
-            abort(abort(make_response('something is wrong with the end_period2 date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the end_period2 date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the end_period2 date you provided', 400)))
         if not check_date_month(start_period1):
-            abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the start_period1 date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
         if not check_date_month(start_period2):
-            abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the start_period2 date you provided', status_code=400)
+            #abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
         if time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period2, '%Y-%m') or \
                         time.strptime(end_period1, '%Y-%m') >= time.strptime(start_period1, '%Y-%m') or \
                         time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period1, '%Y-%m'):
-            abort(abort(make_response('date order not valid', 400)))
+            raise InvalidAPIUsage('date order not valid', status_code=400)
+            #abort(abort(make_response('date order not valid', 400)))
         max_date = end_period2
         max_date_minus3 = start_period2
         max_date_last_year = end_period1
