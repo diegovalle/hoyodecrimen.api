@@ -276,6 +276,46 @@ def frontpage(long, lat):
       GET /api/v1/pip/extras/-99.13333/19.43 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "cuadrante": [
+      {
+      "count": 0,
+      "crime": "homicidio doloso",
+      "cuadrante": "c-1.4.4",
+      "month": 1,
+      "population": 1405,
+      "sector": "corredor - centro",
+      "year": 2013
+      },
+      ...
+      "cuadrante_last_year": [
+      {
+      "count": 0,
+      "crime": "homicidio doloso",
+      "population": 16860
+      },
+      ...
+      "df_last_year": [
+      {
+      "count": 823,
+      "crime": "homicidio doloso",
+      "population": 8785874
+      },
+      ...
+      "pip": [
+      {
+      "cuadrante": "c-1.4.4",
+      "geomery": "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}",
+      "sector": "corredor - centro"
+      }
     """
     # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
     #                 FROM cuadrantes_poly
@@ -364,6 +404,24 @@ def df_all(crime):
       GET /api/v1/series/df/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "count": 64,
+      "crime": "violacion",
+      "month": 1,
+      "population": 8785874,
+      "year": 2013
+      },
+      ...
     """
     crime = crime.lower()
     if crime == "all":
@@ -405,6 +463,26 @@ def cuadrantes(crime, cuadrante):
       GET /api/v1/series/cuadrantes/c-1.1.1/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "count": 0,
+      "crime": "homicidio doloso",
+      "cuadrante": "c-1.1.1",
+      "month": 1,
+      "population": 1594,
+      "sector": "angel - zona rosa",
+      "year": 2013
+      },
+      ...
     """
     cuadrante = cuadrante.lower()
     crime = crime.lower()
@@ -454,6 +532,26 @@ def sectors(crime, sector):
       GET /api/v1/series/sectores/angel%20-%20zona%20rosa/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "count": 0,
+      "crime": "homicidio doloso",
+      "month": 1,
+      "population": 25606,
+      "sector": "angel - zona rosa",
+      "year": 2013
+      },
+      ...
+
     """
     sector = sector.lower()
     crime = crime.lower()
@@ -496,6 +594,26 @@ def cuadrantes_sum_all(crime):
       Host: hoyodecrimen.com
       Accept: application/json
 
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "count": 0,
+      "crime": "homicidio doloso",
+      "cuadrante": "c-1.1.1",
+      "end_date": "2014-07",
+      "population": 1594,
+      "sector": "angel - zona rosa",
+      "start_date": "2013-08"
+      },
+      ...
+
     :query start_period: Start of the period from which to start aggregating in the ``%Y-%m`` format (e.g. 2013-01)
     :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
@@ -510,8 +628,8 @@ def cuadrantes_sum_all(crime):
                    func.lower(Cuadrantes.crime) == crime]
     results = Cuadrantes.query. \
         filter(*filters). \
-        with_entities(literal(start_date, type_=db.String).label('start_date'),
-                      literal(max_date, type_=db.String).label('end_date'),
+        with_entities(func.substr(literal(start_date, type_=db.String),0,8).label('start_date'),
+                      func.substr(literal(max_date, type_=db.String),0,8).label('end_date'),
                       func.lower(Cuadrantes.cuadrante).label('cuadrante'),
                       func.lower(Cuadrantes.sector).label('sector'),
                       func.lower(Cuadrantes.crime).label('crime'),
@@ -545,6 +663,25 @@ def sectores_sum_all(crime):
       Host: hoyodecrimen.com
       Accept: application/json
 
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "count": 26,
+      "crime": "homicidio doloso",
+      "end_date": "2014-07",
+      "population": 171047,
+      "sector": "abasto-reforma",
+      "start_date": "2013-08"
+      },
+      ...
+
     :query start_period: Start of the period from which to start aggregating in the ``%Y-%m`` format (e.g. 2013-01)
     :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
@@ -559,8 +696,8 @@ def sectores_sum_all(crime):
                    func.lower(Cuadrantes.crime) == crime]
     results = Cuadrantes.query. \
         filter(*filters). \
-        with_entities(literal(start_date, type_=db.String).label('start_date'),
-                      literal(max_date, type_=db.String).label('end_date'),
+        with_entities(func.substr(literal(start_date, type_=db.String),0,8).label('start_date'),
+                      func.substr(literal(max_date, type_=db.String),0,8).label('end_date'),
                       func.lower(Cuadrantes.sector).label('sector'),
                       func.lower(Cuadrantes.crime).label('crime'),
                       func.sum(Cuadrantes.count).label("count"),
@@ -593,6 +730,30 @@ def cuadrantes_change_sum_all(crime):
       Host: hoyodecrimen.com
       Accept: application/json
 
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "crime": "homicidio doloso",
+      "cuadrante": "o-2.2.9",
+      "difference": 5,
+      "end_period1": "2013-07",
+      "end_period2": "2014-07",
+      "period1_count": 0,
+      "period2_count": 5,
+      "population": 43116,
+      "sector": "quetzal",
+      "start_period1": "2013-05",
+      "start_period2": "2014-05"
+      },
+      ...
+
     :query start_period: Start of the period from which to start aggregating in the ``%Y-%m`` format (e.g. 2013-01)
     :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
@@ -602,11 +763,6 @@ def cuadrantes_change_sum_all(crime):
     end_period1 = request.args.get('end_period1', '', type=str)
     end_period2 = request.args.get('end_period2', '', type=str)
 
-    # if crime == "all":
-    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
-    # else:
-    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-    #                func.lower(Cuadrantes.crime) == crime]
     if end_period1 != '' or end_period2 != '' or start_period1 != '' or start_period2 != '':
         if not check_date_month(end_period1):
             raise InvalidAPIUsage('something is wrong with the end_period1 date you provided')
@@ -693,6 +849,23 @@ def listcrimes():
       GET /api/v1/enumerate/crimes HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+   **Example response (truncated)**:
+
+   .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "crime": "violacion"
+      },
+      {
+      "crime": "robo a negocio c/v"
+      }
+      ...
    """
     results = Cuadrantes.query. \
         with_entities(func.lower(Cuadrantes.crime).label('crime')). \
@@ -717,6 +890,25 @@ def listcuadrantes():
        GET /api/v1/enumerate/cuadrantes HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "cuadrante": "s-1.1.16",
+      "sector": "narvarte - alamos"
+      },
+      {
+      "cuadrante": "n-2.1.1",
+      "sector": "aragon"
+      }
+      ...
     """
     results = Cuadrantes.query. \
         with_entities(func.lower(Cuadrantes.sector).label('sector'),
@@ -742,6 +934,28 @@ def listsectores():
       GET /api/v1/enumerate/sectores HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+      {
+      "rows": [
+      {
+      "sector": "abasto-reforma"
+      },
+      {
+      "sector": "san angel"
+      },
+      {
+      "sector": "coyoacan"
+      },
+      {
+      "sector": "tezonco"
+      },
+      ...
     """
 
     results = Cuadrantes.query. \
@@ -775,6 +989,26 @@ def top5cuadrantes(crime):
       GET /api/v1/top/counts/cuadrantes/homicidio%20doloso HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+      {
+      "rows": [
+      {
+      "count": 12,
+      "crime": "homicidio doloso",
+      "cuadrante": "n-2.2.1",
+      "end_period": "2014-07",
+      "population": 1833,
+      "rank": 1,
+      "sector": "cuchilla",
+      "start_period": "2013-08"
+      },
+      ...
 
     :query start_period: Start of the period from which to start counting
     :query end_period: End of the period to analyze. Must be greater or equal to start_period
@@ -830,9 +1064,30 @@ def top5sectores(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/top/rates/sector/homicidio%20doloso HTTP/1.1
+      GET /api/v1/top/rates/sectores/homicidio%20doloso HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "count": 22,
+      "crime": "homicidio doloso",
+      "end_period": "2014-07",
+      "population": 33787,
+      "rank": 1,
+      "rate": 65.1,
+      "sector": "congreso",
+      "start_period": "2013-08"
+      },
+      ...
 
     :query start_period: Start of the period from which to start counting
     :query end_period: End of the period to analyze. Must be greater or equal to start_period
@@ -853,7 +1108,7 @@ def top5sectores(crime):
                            where date >= :start_date and date <= :max_date"""
     sql_query2 = "" if crime == "all" else " and lower(crime) = :crime "
     sql_query3 = """   group by sector, crime)
-                       SELECT substring(start_period::text for 7), substring(end_period for 7),
+                       SELECT substring(CAST(start_period as text) for 7) as start_period, substring(end_period::text for 7) as end_period,
                                round(rate::numeric , 1)::float as rate, crime, sector, count, rank, population from
                            (SELECT :start_date as start_period, :max_date as end_period, count, rate,
                                    lower(crime) as crime,
@@ -892,6 +1147,31 @@ def top5changecuadrantes(crime):
        GET /api/v1/top/counts/change/cuadrantes/homicidio%20doloso HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.0 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "crime": "homicidio doloso",
+      "cuadrante": "o-2.2.9",
+      "difference": 5,
+      "end_period1": "2013-07",
+      "end_period2": "2014-07",
+      "period1_count": 0,
+      "period2_count": 5,
+      "population": 43116,
+      "rank": 1,
+      "sector": "quetzal",
+      "start_period1": "2013-05",
+      "start_period2": "2014-05"
+      },
+      ...
 
     :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period
     :query end_period1: End of the first period
