@@ -46,6 +46,11 @@ class InvalidAPIUsage(Exception):
         rv['error'] = self.message
         return rv
 
+@API.errorhandler(InvalidAPIUsage)
+def invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 def jsonp(func):
     """Wraps JSONified output for JSONP requests."""
@@ -116,6 +121,8 @@ def check_date_month(str):
     try:
         time.strptime(str, '%Y-%m-01')
         valid = True
+        if str < '2013-01-01':
+            valid = False
     except ValueError:
         valid = False
     return valid
@@ -128,23 +135,59 @@ def check_float(str):
         valid = False
     return valid
 
+def check_periods(start_period1, start_period2, end_period1, end_period2):
+    start_period1 += '-01'
+    start_period2 += '-01'
+    end_period1 += '-01'
+    end_period2 += '-01'
+        #abort(abort(make_response('No negative numbers', 400)))
+    if end_period1 != '-01' or end_period2 != '-01' or start_period1 != '-01' or start_period2 != '-01':
+        if not check_date_month(end_period1):
+            raise InvalidAPIUsage('something is wrong with the end_period1 date you provided')
+            #abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
+        if not check_date_month(end_period2):
+            raise InvalidAPIUsage('something is wrong with the end_period2 date you provided')
+            #abort(abort(make_response('something is wrong with the end_period2 date you provided', 400)))
+        if not check_date_month(start_period1):
+            raise InvalidAPIUsage('something is wrong with the start_period1 date you provided')
+            #abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
+        if not check_date_month(start_period2):
+            raise InvalidAPIUsage('something is wrong with the start_period2 date you provided')
+            #abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
+        if end_period2 <= start_period2 or \
+           end_period1 <= start_period1 or \
+           start_period2 <= end_period1:
+            raise InvalidAPIUsage('date order not valid')
+            #abort(abort(make_response('date order not valid', 400)))
+        max_date = end_period2
+        max_date_minus3 = start_period2
+        max_date_last_year = end_period1
+        max_date_last_year_minus3 = start_period1
+    else:
+        max_date = Cuadrantes.query. \
+            filter(). \
+            with_entities(func.max(Cuadrantes.date).label('date')). \
+            scalar()
+        max_date_minus3 = month_sub(max_date, -2)
+        max_date_last_year = month_sub(max_date, -12)
+        max_date_last_year_minus3 = month_sub(max_date, -14)
+    return max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3
 
 def check_dates(start_period, end_period):
-    if end_period != '' or start_period != '':
-        end_period += '-01'
-        start_period += '-01'
+    start_period += '-01'
+    end_period += '-01'
+    if end_period != '-01' or start_period != '-01':
+        #end_period += '-01'
+        #start_period += '-01'
         if not check_date_month(start_period):
             raise InvalidAPIUsage('something is wrong with the start_period date you provided')
             #abort(abort(make_response('something is wrong with the start_period date you provided', 400)))
         if not check_date_month(end_period):
             raise InvalidAPIUsage('something is wrong with the end_period date you provided')
             #abort(abort(make_response('something is wrong with the end_period date you provided', 400)))
-        if time.strptime(start_period, '%Y-%m') > time.strptime(end_period, '%Y-%m'):
+        if start_period > end_period:
             raise InvalidAPIUsage('date order not valid')
             #abort(abort(make_response('date order not valid', 400)))
-        if start_period < '2013-01':
-            raise InvalidAPIUsage('start_period must be greater than 2013-01')
-            #abort(abort(make_response('start_period must be greater than 2013-01', 400)))
         max_date = end_period
         start_date = start_period
     else:
@@ -155,11 +198,7 @@ def check_dates(start_period, end_period):
         start_date = month_sub(max_date, -11)
     return start_date, max_date
 
-@API.errorhandler(InvalidAPIUsage)
-def handle_invalid_usage(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
+
 
 @API.route('/estariamosmejorcon', methods=['GET'])
 def estariamosmejorcon():
@@ -762,37 +801,10 @@ def cuadrantes_change_sum_all(crime):
     start_period2 = request.args.get('start_period2', '', type=str)
     end_period1 = request.args.get('end_period1', '', type=str)
     end_period2 = request.args.get('end_period2', '', type=str)
-
-    if end_period1 != '' or end_period2 != '' or start_period1 != '' or start_period2 != '':
-        if not check_date_month(end_period1):
-            raise InvalidAPIUsage('something is wrong with the end_period1 date you provided')
-            #abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
-        if not check_date_month(end_period2):
-            raise InvalidAPIUsage('something is wrong with the end_period1 date you provided')
-            #abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
-        if not check_date_month(start_period1):
-            raise InvalidAPIUsage('something is wrong with the start_period1 date you provided')
-            #abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
-        if not check_date_month(start_period2):
-            raise InvalidAPIUsage('something is wrong with the start_period2 date you provided')
-            #abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
-        if time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period2, '%Y-%m') or \
-                        time.strptime(end_period1, '%Y-%m') >= time.strptime(start_period1, '%Y-%m') or \
-                        time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period1, '%Y-%m'):
-            raise InvalidAPIUsage('date order not valid')
-            #abort(abort(make_response('date order not valid', 400)))
-        max_date = end_period2
-        max_date_minus3 = start_period2
-        max_date_last_year = end_period1
-        max_date_last_year_minus3 = start_period1
-    else:
-        max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-        max_date_minus3 = month_sub(max_date, -2)
-        max_date_last_year = month_sub(max_date, -12)
-        max_date_last_year_minus3 = month_sub(max_date, -14)
+    max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3 = check_periods(start_period1,
+                                                                                             start_period2,
+                                                                                             end_period1,
+                                                                                             end_period2)
     sql_query1 = """select lower(crime) as crime, lower(cuadrante) as cuadrante,
                                lower(sector) as sector, max(population) as population,
                                substring(CAST(:max_date_minus3 AS text) for 7) as start_period2,
@@ -1010,14 +1022,14 @@ def top5cuadrantes(crime):
       },
       ...
 
-    :query start_period: Start of the period from which to start counting
-    :query end_period: End of the period to analyze. Must be greater or equal to start_period
+    :query start_period: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period: End of the period to analyze. Must be greater or equal to start_period. Formatted as ``%Y-%m`` (e.g. 2013-01)
     :query rank: Return all cuadrantes ranked higher. Defaults to `5`
     """
     crime = crime.lower()
-    start_period = request.args.get('start_period', '', type=str)
-    end_period = request.args.get('end_period', '', type=str)
-    start_date, max_date = check_dates(start_period, end_period)
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    start_date, max_date = check_dates(start_date, end_date)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
         raise InvalidAPIUsage('No negative numbers')
@@ -1089,14 +1101,14 @@ def top5sectores(crime):
       },
       ...
 
-    :query start_period: Start of the period from which to start counting
-    :query end_period: End of the period to analyze. Must be greater or equal to start_period
+    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_date: End of the period to analyze. Must be greater or equal to start_period. Formatted as ``%Y-%m`` (e.g. 2013-01)
     :query rank: Return all sectores with a rate ranked higher. Defaults to `5`
     """
     crime = crime.lower()
-    start_period = request.args.get('start_period', '', type=str)
-    end_period = request.args.get('end_period', '', type=str)
-    start_date, max_date = check_dates(start_period, end_period)
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    start_date, max_date = check_dates(start_date, end_date)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
         raise InvalidAPIUsage('No negative numbers')
@@ -1108,7 +1120,7 @@ def top5sectores(crime):
                            where date >= :start_date and date <= :max_date"""
     sql_query2 = "" if crime == "all" else " and lower(crime) = :crime "
     sql_query3 = """   group by sector, crime)
-                       SELECT substring(CAST(start_period as text) for 7) as start_period, substring(end_period::text for 7) as end_period,
+                       SELECT substring(CAST(start_period as text) for 7) as start_date, substring(end_period::text for 7) as end_date,
                                round(rate::numeric , 1)::float as rate, crime, sector, count, rank, population from
                            (SELECT :start_date as start_period, :max_date as end_period, count, rate,
                                    lower(crime) as crime,
@@ -1173,11 +1185,11 @@ def top5changecuadrantes(crime):
       },
       ...
 
-    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period
-    :query end_period1: End of the first period
-    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period
-    :query end_period2: End of the second period
-    :query rank: Return the top X ranked cuadrantes
+    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query rank: Return the top X ranked cuadrantes.
     """
     crime = crime.lower()
     start_period1 = request.args.get('start_period1', '', type=str)
@@ -1187,37 +1199,10 @@ def top5changecuadrantes(crime):
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
         raise InvalidAPIUsage('No negative numbers')
-        #abort(abort(make_response('No negative numbers', 400)))
-    if end_period1 != '' or end_period2 != '' or start_period1 != '' or start_period2 != '':
-        if not check_date_month(end_period1):
-            raise InvalidAPIUsage('something is wrong with the end_period1 date you provided')
-            #abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
-        if not check_date_month(end_period2):
-            raise InvalidAPIUsage('something is wrong with the end_period2 date you provided')
-            #abort(abort(make_response('something is wrong with the end_period2 date you provided', 400)))
-        if not check_date_month(start_period1):
-            raise InvalidAPIUsage('something is wrong with the start_period1 date you provided')
-            #abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
-        if not check_date_month(start_period2):
-            raise InvalidAPIUsage('something is wrong with the start_period2 date you provided')
-            #abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
-        if time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period2, '%Y-%m') or \
-                        time.strptime(end_period1, '%Y-%m') >= time.strptime(start_period1, '%Y-%m') or \
-                        time.strptime(end_period2, '%Y-%m') >= time.strptime(start_period1, '%Y-%m'):
-            raise InvalidAPIUsage('date order not valid')
-            #abort(abort(make_response('date order not valid', 400)))
-        max_date = end_period2
-        max_date_minus3 = start_period2
-        max_date_last_year = end_period1
-        max_date_last_year_minus3 = start_period1
-    else:
-        max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-        max_date_minus3 = month_sub(max_date, -2)
-        max_date_last_year = month_sub(max_date, -12)
-        max_date_last_year_minus3 = month_sub(max_date, -14)
+    max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3 = check_periods(start_period1,
+                                                                                             start_period2,
+                                                                                             end_period1,
+                                                                                             end_period2)
     sql_query1 = """with difference as
                                            (select crime, cuadrante, sector, max(population) as population,
                                                    sum(case when date <= :max_date and date >= :max_date_minus3
