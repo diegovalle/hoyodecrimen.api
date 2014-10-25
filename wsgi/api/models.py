@@ -47,6 +47,11 @@ class Cuadrantes_Poly(db.Model):
 # );
 # COPY cuadrantes FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
 
+#create index date on cuadrantes (date);
+#create index sector on cuadrantes (sector);
+#create index cuadrante on cuadrantes (cuadrante);
+#create index crime on cuadrantes (crime);
+
 
 # shp2pgsql -s 4326 -W "latin1" -I -D cuadrantes-sspdf-no-errors.shp cuadrantes_poly > cuadrantes_poly.sql
 # ogr2ogr -f "GeoJSON" cuadrantes.geojson cuadrantes-sspdf-no-errors.shp
@@ -54,3 +59,5 @@ class Cuadrantes_Poly(db.Model):
 
 #psql apihoyodecrimen -c "CREATE EXTENSION postgis;"
 #psql -d apihoyodecrimen $OPENSHIFT_POSTGRESQL_DB_USERNAME  < cuadrantes_poly.sql
+
+#create index geom on cuadrantes_poly using gist (geom)
