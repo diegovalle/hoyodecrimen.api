@@ -208,9 +208,17 @@ class FlaskTestCase(unittest.TestCase):
 
     # Check the API endpoint
     def test_api_v1_top_counts_change_cuadrantes(self):
+        base_url = '/api/v1/series/df/violacion'
         tester = app.test_client(self)
-        response = tester.get('/api/v1/series/df/violacion', content_type='application/json')
+        response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        # Equal dates are allowed since it would only span that month
+        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        # Success
+        response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_pip_extras_(self):
