@@ -68,10 +68,12 @@ if __name__ == '__main__':
 
     db.create_all()
 
-    app.config['PROFILE'] = True
-    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
-
-    app.run(debug=True)
+    debug=False
+    if 'OPENSHIFT_APP_UUID' not in os.environ:
+        app.config['PROFILE'] = True
+        app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
+        debug=True
+    app.run(debug=debug)
 
 
 
