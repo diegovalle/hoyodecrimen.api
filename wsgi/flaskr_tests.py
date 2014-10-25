@@ -106,6 +106,7 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get(base_url + '?start_period1=2013-01&end_period1=2013-12&start_period2=2014-01&end_period2=2014-06', content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
         # Invalid dates or dates before 2013-01
         response = tester.get(base_url + '?start_period1=2005-19', content_type='application/json')
         self.assertEqual(response.status_code, 400)
@@ -130,27 +131,80 @@ class FlaskTestCase(unittest.TestCase):
 
     # Check the API endpoint
     def test_api_v1_list_sectores_all(self):
+        base_url = '/api/v1/list/sectores/all'
         tester = app.test_client(self)
-        response = tester.get('/api/v1/list/sectores/all', content_type='application/json')
+        response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        # End date is smaller than start date
+        response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        # Start date is smaller than 2013 (when the data started being collected)
+        response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        # Equal dates are allowed since it would only span that month
+        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+        # Success
+        response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_list_cuadrantes_all(self):
+        base_url = '/api/v1/list/cuadrantes/all'
         tester = app.test_client(self)
-        response = tester.get('/api/v1/list/cuadrantes/all', content_type='application/json')
+        response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        # End date is smaller than start date
+        response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        # Start date is smaller than 2013 (when the data started being collected)
+        response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        # Equal dates are allowed since it would only span that month
+        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+        # Success
+        response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_series_sectores_a(self):
+        base_url = '/api/v1/series/sector/angel%20-%20zona%20rosa/violacion'
         tester = app.test_client(self)
-        response = tester.get('/api/v1/series/sectores/angel%20-%20zona%20rosa/violacion', content_type='application/json')
+        response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        # End date is smaller than start date
+        response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        # Start date is smaller than 2013 (when the data started being collected)
+        response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        # Equal dates are allowed since it would only span that month
+        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+        # Success
+        response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_series_cuadrantes(self):
+        base_url = '/api/v1/series/cuadrante/c-1.1.1/violacion'
         tester = app.test_client(self)
-        response = tester.get('/api/v1/series/cuadrantes/c-1.1.1/violacion', content_type='application/json')
+        response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        # Equal dates are allowed since it would only span that month
+        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        # Success
+        response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_top_counts_change_cuadrantes(self):
