@@ -199,11 +199,13 @@ def estariamosmejorcon():
     :status 200: when the best man for the job is a good ol' regular citizen
     :status 666: when the best man for the job is president once more
 
+    :resheader Content-Type: application/json
+
     **Example request**:
 
     .. sourcecode:: http
 
-      GET /estariamosmejorcon HTTP/1.1
+      GET /api/v1//estariamosmejorcon HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -225,6 +227,8 @@ def pip(long, lat):
     :status 200: when the cuadrante corresponding to the latitude and longitude is found
     :status 400: when the latitude or longitude where incorrectly specified
 
+    :resheader Content-Type: application/json
+
     **Example request**:
 
     .. sourcecode:: http
@@ -237,17 +241,19 @@ def pip(long, lat):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
+      Vary: Accept
       Content-Type: application/json
 
       {
-      "pip": [
-      {
-          "cuadrante": "c-1.4.4",
-          "geomery": "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}",
-          "sector": "corredor - centro"
-      }
-      ]
+        "pip":
+          [
+            {
+              "cuadrante": "c-1.4.4",
+              "geomery": "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}",
+              "sector": "corredor - centro"
+            }
+          ]
       }
 
     """
@@ -292,13 +298,15 @@ def frontpage(long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
     Returns a list containg the cuadrante polygon as GeoJSON, all the crimes that occurred in the cuadrante
-    by date, the sum of crime counts that occurred in the DF, and in the cuadrante during the last year
+    by date, the sum of crime counts that occurred in the DF and in the cuadrante during the last year
 
     :param long: long
     :param lat: lat
 
     :status 200: when the cuadrante corresponding to the latitude and longitude is found
     :status 400: when the latitude or longitude where incorrectly specified
+
+    :resheader Content-Type: application/json
 
     **Example request**:
 
@@ -312,7 +320,7 @@ def frontpage(long, lat):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -428,6 +436,12 @@ def df_all(crime):
 
     :status 200: when the sum of all crimes is found
 
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+
+    :resheader Content-Type: application/json
+
+
     **Example request**:
 
     .. sourcecode:: http
@@ -440,7 +454,7 @@ def df_all(crime):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -454,8 +468,6 @@ def df_all(crime):
       },
       ...
 
-    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     crime = crime.lower()
 
@@ -499,6 +511,11 @@ def cuadrantes(crime, cuadrante):
 
     :status 200: when the sum of all crimes is found
 
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+
+    :resheader Content-Type: application/json
+
     **Example request**:
 
     .. sourcecode:: http
@@ -511,7 +528,7 @@ def cuadrantes(crime, cuadrante):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -527,8 +544,6 @@ def cuadrantes(crime, cuadrante):
       },
       ...
 
-    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     cuadrante = cuadrante.lower()
     crime = crime.lower()
@@ -573,6 +588,11 @@ def sectors(crime, sector):
 
     :status 200: when the sum of all crimes is found
 
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+
+    :resheader Content-Type: application/json
+
     **Example request**:
 
     .. sourcecode:: http
@@ -585,7 +605,7 @@ def sectors(crime, sector):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -600,8 +620,6 @@ def sectors(crime, sector):
       },
       ...
 
-    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     sector = sector.lower()
     crime = crime.lower()
@@ -635,11 +653,17 @@ def sectors(crime, sector):
 def cuadrantes_sum_all(crime):
     """Return the sum of crimes that occurred in each cuadrante for a specified period of time
 
-    By default it returns the sum of crimes during the last 12 months
+    By default it returns the sum of crimes during the last 12 months for all the cuadrantes in the database
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
 
     :status 200: when the sum of all crimes is found
+
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+
+    :resheader Content-Type: application/json
+
 
     **Example request**:
 
@@ -653,7 +677,7 @@ def cuadrantes_sum_all(crime):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -669,8 +693,6 @@ def cuadrantes_sum_all(crime):
       },
       ...
 
-    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     crime = crime.lower()
     start_date = request.args.get('start_date', '', type=str)
@@ -701,13 +723,18 @@ def cuadrantes_sum_all(crime):
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def sectores_sum_all(crime):
-    """Return the sum of crimes that occurred in each sectore for a specified period of time
+    """Return the sum of crimes that occurred in each sector for a specified period of time
 
-    By default it returns the sum of crimes during the last 12 months
+    By default it returns the sum of crimes during the last 12 months for all the sectores in the database
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
 
     :status 200: when the sum of all crimes is found
+
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+
+    :resheader Content-Type: application/json
 
     **Example request**:
 
@@ -721,7 +748,7 @@ def sectores_sum_all(crime):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -736,8 +763,6 @@ def sectores_sum_all(crime):
       },
       ...
 
-    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     crime = crime.lower()
     start_date = request.args.get('start_date', '', type=str)
@@ -776,6 +801,13 @@ def cuadrantes_change_sum_all(crime):
 
     :status 200: when the  change in crime counts is found
 
+    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+
+    :resheader Content-Type: application/json
+
     **Example request**:
 
     .. sourcecode:: http
@@ -788,7 +820,7 @@ def cuadrantes_change_sum_all(crime):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -808,10 +840,6 @@ def cuadrantes_change_sum_all(crime):
       },
       ...
 
-    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
     """
     crime = crime.lower()
     start_period1 = request.args.get('start_period1', '', type=str)
@@ -859,6 +887,8 @@ def listcrimes():
 
    :status 200: when all the crimes were found
 
+    :resheader Content-Type: application/json
+
    **Example request**:
 
    .. sourcecode:: http
@@ -871,7 +901,7 @@ def listcrimes():
 
    .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -900,6 +930,8 @@ def listcuadrantes():
 
     :status 200: when all the cuadrantes were found
 
+    :resheader Content-Type: application/json
+
     **Example request**:
 
     .. sourcecode:: http
@@ -912,7 +944,7 @@ def listcuadrantes():
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -944,6 +976,8 @@ def listsectores():
 
     :status 200: when all the sectores were found
 
+    :resheader Content-Type: application/json
+
     **Example request**:
 
     .. sourcecode:: http
@@ -956,8 +990,9 @@ def listsectores():
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
+      
       {
       "rows": [
       {
@@ -990,7 +1025,7 @@ def listsectores():
 def top5cuadrantes(crime):
     """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
 
-    When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
+    When no date parameters are specified the top 5 cuadrantes for the last 12 months are returned
     (e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
     All population data returned by this call is in persons/year and comes from the 2010 census
 
@@ -998,6 +1033,12 @@ def top5cuadrantes(crime):
 
     :status 200: when the top 5 cuadrantes are found
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
+
+    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query rank: Return all cuadrantes ranked higher. Defaults to `5`
+
+    :resheader Content-Type: application/json
 
     **Example request**:
 
@@ -1011,7 +1052,7 @@ def top5cuadrantes(crime):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
       {
       "rows": [
@@ -1027,9 +1068,6 @@ def top5cuadrantes(crime):
       },
       ...
 
-    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query rank: Return all cuadrantes ranked higher. Defaults to `5`
     """
     crime = crime.lower()
     start_date = request.args.get('start_date', '', type=str)
@@ -1074,8 +1112,15 @@ def top5sectores(crime):
     All population data returned by this call is in persons/year and comes from the 2010 census
 
     :param crime: the name of a crime or the keyword ``all``
+
     :status 200: when the top 5 cuadrantes are found
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
+
+    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query rank: Return all sectores with a rate ranked higher. Defaults to `5`
+
+    :resheader Content-Type: application/json
 
     **Example request**:
 
@@ -1089,7 +1134,7 @@ def top5sectores(crime):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -1106,9 +1151,6 @@ def top5sectores(crime):
       },
       ...
 
-    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query rank: Return all sectores with a rate ranked higher. Defaults to `5`
     """
     crime = crime.lower()
     start_date = request.args.get('start_date', '', type=str)
@@ -1154,8 +1196,17 @@ def top5changecuadrantes(crime):
     All population data returned by this call is in persons/year and comes from the 2010 census
 
     :param crime: the name of a crime or the keyword ``all``
+
     :status 200: when the top 5 cuadrantes are found
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
+
+    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query rank: Return the top X ranked cuadrantes.
+
+    :resheader Content-Type: application/json
 
     **Example request**:
 
@@ -1169,7 +1220,7 @@ def top5changecuadrantes(crime):
 
     .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
       Content-Type: application/json
 
       {
@@ -1190,11 +1241,6 @@ def top5changecuadrantes(crime):
       },
       ...
 
-    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query rank: Return the top X ranked cuadrantes.
     """
     crime = crime.lower()
     start_period1 = request.args.get('start_period1', '', type=str)
