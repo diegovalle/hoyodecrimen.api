@@ -19,6 +19,7 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get('/api/v1/top/counts/change/cuadrantes/homicidio%20doloso', content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check that the API correctly deals with date parameters
     def test_error_api_v1_top_counts_change_cuadrantes_dates(self):
@@ -87,18 +88,21 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get('/api/v1/enumerate/sectores', content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_enumerate_cuadrantes(self):
         tester = app.test_client(self)
         response = tester.get('/api/v1/enumerate/cuadrantes', content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_enumerate_crimes(self):
         tester = app.test_client(self)
         response = tester.get('/api/v1/enumerate/crimes', content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_list_change_cuadrantes_all(self):
@@ -225,12 +229,14 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get('/api/v1/pip/extras/-99.13333/19.43', content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_pip(self):
         tester = app.test_client(self)
         response = tester.get('/api/v1/pip/-99.13333/19.43', content_type='application/json')
         self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
 
 
