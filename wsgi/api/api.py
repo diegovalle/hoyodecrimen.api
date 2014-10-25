@@ -453,6 +453,9 @@ def df_all(crime):
       "year": 2013
       },
       ...
+
+    :query start_period: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
+    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     crime = crime.lower()
 
@@ -523,6 +526,9 @@ def cuadrantes(crime, cuadrante):
       "year": 2013
       },
       ...
+
+    :query start_period: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
+    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     cuadrante = cuadrante.lower()
     crime = crime.lower()
@@ -595,6 +601,8 @@ def sectors(crime, sector):
       },
       ...
 
+    :query start_period: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
+    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     sector = sector.lower()
     crime = crime.lower()
@@ -662,8 +670,8 @@ def cuadrantes_sum_all(crime):
       },
       ...
 
-    :query start_period: Start of the period from which to start aggregating in the ``%Y-%m`` format (e.g. 2013-01)
-    :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    :query start_period: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
+    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     crime = crime.lower()
     start_date = request.args.get('start_date', '', type=str)
@@ -730,8 +738,8 @@ def sectores_sum_all(crime):
       },
       ...
 
-    :query start_period: Start of the period from which to start aggregating in the ``%Y-%m`` format (e.g. 2013-01)
-    :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    :query start_period: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
+    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     crime = crime.lower()
     start_date = request.args.get('start_date', '', type=str)
@@ -802,8 +810,8 @@ def cuadrantes_change_sum_all(crime):
       },
       ...
 
-    :query start_period: Start of the period from which to start aggregating in the ``%Y-%m`` format (e.g. 2013-01)
-    :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    :query start_period: Start of the period from which to start aggregating in``%Y-%m`` format (e.g. 2013-01)
+    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     crime = crime.lower()
     start_period1 = request.args.get('start_period1', '', type=str)
