@@ -454,8 +454,8 @@ def df_all(crime):
       },
       ...
 
-    :query start_period: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     crime = crime.lower()
 
@@ -527,8 +527,8 @@ def cuadrantes(crime, cuadrante):
       },
       ...
 
-    :query start_period: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     cuadrante = cuadrante.lower()
     crime = crime.lower()
@@ -556,7 +556,6 @@ def cuadrantes(crime, cuadrante):
                       Cuadrantes.population) \
         .order_by(Cuadrantes.crime, Cuadrantes.date) \
         .all()
-    #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     return results_to_json(results)
 
 
@@ -601,8 +600,8 @@ def sectors(crime, sector):
       },
       ...
 
-    :query start_period: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     sector = sector.lower()
     crime = crime.lower()
@@ -670,8 +669,8 @@ def cuadrantes_sum_all(crime):
       },
       ...
 
-    :query start_period: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     crime = crime.lower()
     start_date = request.args.get('start_date', '', type=str)
@@ -694,7 +693,6 @@ def cuadrantes_sum_all(crime):
         .group_by(Cuadrantes.crime, Cuadrantes.sector, Cuadrantes.cuadrante) \
         .order_by(Cuadrantes.crime, Cuadrantes.cuadrante) \
         .all()
-    #results = db.session.execute("select cuadrante, sector, crime, date, count, population from cuadrantes order by crime, date, cuadrante, sector where cuadrante = ?", (cuadrante_id,))
     return results_to_json(results)
 
 
@@ -738,8 +736,8 @@ def sectores_sum_all(crime):
       },
       ...
 
-    :query start_period: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
     """
     crime = crime.lower()
     start_date = request.args.get('start_date', '', type=str)
@@ -810,8 +808,10 @@ def cuadrantes_change_sum_all(crime):
       },
       ...
 
-    :query start_period: Start of the period from which to start aggregating in``%Y-%m`` format (e.g. 2013-01)
-    :query end_period: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
+    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
     """
     crime = crime.lower()
     start_period1 = request.args.get('start_period1', '', type=str)
@@ -847,18 +847,6 @@ def cuadrantes_change_sum_all(crime):
                                                                         'max_date_last_year_minus3': max_date_last_year_minus3,
                                                                         'crime': crime})
     return ResultProxy_to_json(results)
-    # results = Cuadrantes.query. \
-    #     filter(*filters). \
-    #     with_entities(literal(start_date, type_=db.String).label('start_date'),
-    #                   literal(max_date, type_=db.String).label('end_date'),
-    #                   func.lower(Cuadrantes.sector).label('sector'),
-    #                   func.lower(Cuadrantes.crime).label('crime'),
-    #                   func.sum(Cuadrantes.count).label("count"),
-    #                   func.sum(Cuadrantes.population).op("/")(month_diff(start_date, max_date)).label("population")) \
-    #     .group_by(Cuadrantes.crime, Cuadrantes.sector) \
-    #     .order_by(Cuadrantes.crime, Cuadrantes.sector) \
-    #     .all()
-    return results_to_json(results)
 
 
 
@@ -1031,16 +1019,16 @@ def top5cuadrantes(crime):
       "count": 12,
       "crime": "homicidio doloso",
       "cuadrante": "n-2.2.1",
-      "end_period": "2014-07",
+      "end_date": "2014-07",
       "population": 1833,
       "rank": 1,
       "sector": "cuchilla",
-      "start_period": "2013-08"
+      "start_date": "2013-08"
       },
       ...
 
-    :query start_period: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period: End of the period to analyze. Must be greater or equal to start_period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
     :query rank: Return all cuadrantes ranked higher. Defaults to `5`
     """
     crime = crime.lower()
@@ -1109,17 +1097,17 @@ def top5sectores(crime):
       {
       "count": 22,
       "crime": "homicidio doloso",
-      "end_period": "2014-07",
+      "end_date": "2014-07",
       "population": 33787,
       "rank": 1,
       "rate": 65.1,
       "sector": "congreso",
-      "start_period": "2013-08"
+      "start_date": "2013-08"
       },
       ...
 
     :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_date: End of the period to analyze. Must be greater or equal to start_period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
     :query rank: Return all sectores with a rate ranked higher. Defaults to `5`
     """
     crime = crime.lower()
