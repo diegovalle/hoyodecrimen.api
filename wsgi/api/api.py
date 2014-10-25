@@ -140,25 +140,19 @@ def check_periods(start_period1, start_period2, end_period1, end_period2):
     start_period2 += '-01'
     end_period1 += '-01'
     end_period2 += '-01'
-        #abort(abort(make_response('No negative numbers', 400)))
     if end_period1 != '-01' or end_period2 != '-01' or start_period1 != '-01' or start_period2 != '-01':
         if not check_date_month(end_period1):
             raise InvalidAPIUsage('something is wrong with the end_period1 date you provided')
-            #abort(abort(make_response('something is wrong with the end_period1 date you provided', 400)))
         if not check_date_month(end_period2):
             raise InvalidAPIUsage('something is wrong with the end_period2 date you provided')
-            #abort(abort(make_response('something is wrong with the end_period2 date you provided', 400)))
         if not check_date_month(start_period1):
             raise InvalidAPIUsage('something is wrong with the start_period1 date you provided')
-            #abort(abort(make_response('something is wrong with the start_period1 date you provided', 400)))
         if not check_date_month(start_period2):
             raise InvalidAPIUsage('something is wrong with the start_period2 date you provided')
-            #abort(abort(make_response('something is wrong with the start_period2 date you provided', 400)))
         if end_period2 <= start_period2 or \
            end_period1 <= start_period1 or \
            start_period2 <= end_period1:
             raise InvalidAPIUsage('date order not valid')
-            #abort(abort(make_response('date order not valid', 400)))
         max_date = end_period2
         max_date_minus3 = start_period2
         max_date_last_year = end_period1
@@ -173,21 +167,16 @@ def check_periods(start_period1, start_period2, end_period1, end_period2):
         max_date_last_year_minus3 = month_sub(max_date, -14)
     return max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3
 
-def check_dates(start_period, end_period):
+def check_dates(start_period, end_period, default_start=None):
     start_period += '-01'
     end_period += '-01'
     if end_period != '-01' or start_period != '-01':
-        #end_period += '-01'
-        #start_period += '-01'
         if not check_date_month(start_period):
-            raise InvalidAPIUsage('something is wrong with the start_period date you provided')
-            #abort(abort(make_response('something is wrong with the start_period date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the start_date date you provided')
         if not check_date_month(end_period):
-            raise InvalidAPIUsage('something is wrong with the end_period date you provided')
-            #abort(abort(make_response('something is wrong with the end_period date you provided', 400)))
+            raise InvalidAPIUsage('something is wrong with the end_date date you provided')
         if start_period > end_period:
             raise InvalidAPIUsage('date order not valid')
-            #abort(abort(make_response('date order not valid', 400)))
         max_date = end_period
         start_date = start_period
     else:
@@ -195,7 +184,10 @@ def check_dates(start_period, end_period):
                 filter(). \
                 with_entities(func.max(Cuadrantes.date).label('date')). \
                 scalar()
-        start_date = month_sub(max_date, -11)
+        if not default_start:
+            start_date = month_sub(max_date, -11)
+        else:
+            start_date = default_start
     return start_date, max_date
 
 
@@ -463,10 +455,19 @@ def df_all(crime):
       ...
     """
     crime = crime.lower()
+
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    # Needs to default to 2013-01 when the series starts instead of a year ago
+    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+
+
     if crime == "all":
-        filters = [True]
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   ]
     else:
-        filters = [func.lower(Cuadrantes.crime) == crime]
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   func.lower(Cuadrantes.crime) == crime]
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.lower(Cuadrantes.crime).label('crime'),
@@ -481,7 +482,7 @@ def df_all(crime):
 
 
 
-@API.route('/series/cuadrantes/'
+@API.route('/series/cuadrante/'
           '<string:cuadrante>/'
           '<string:crime>',
           methods=['GET'])
@@ -499,7 +500,7 @@ def cuadrantes(crime, cuadrante):
 
     .. sourcecode:: http
 
-      GET /api/v1/series/cuadrantes/c-1.1.1/violacion HTTP/1.1
+      GET /api/v1/series/cuadrante/c-1.1.1/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -526,15 +527,18 @@ def cuadrantes(crime, cuadrante):
     cuadrante = cuadrante.lower()
     crime = crime.lower()
 
-    start_period = request.args.get('start_period', '', type=str)
-    end_period = request.args.get('end_period', '', type=str)
-    start_date, max_date = check_dates(start_period, end_period)
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    # Needs to default to 2013-01 when the series starts instead of a year ago
+    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
 
     if crime == "all":
-        filters = [func.lower(Cuadrantes.cuadrante) == cuadrante,
-                   func.lower(Cuadrantes.crime) == crime]
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   func.lower(Cuadrantes.cuadrante) == cuadrante]
     else:
-        filters = [func.lower(Cuadrantes.cuadrante) == cuadrante]
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   func.lower(Cuadrantes.cuadrante) == cuadrante,
+                   func.lower(Cuadrantes.crime) == crime]
 
     results = Cuadrantes.query. \
         filter(*filters). \
@@ -550,7 +554,7 @@ def cuadrantes(crime, cuadrante):
     return results_to_json(results)
 
 
-@API.route('/series/sectores/'
+@API.route('/series/sector/'
           '<string:sector>/'
           '<string:crime>',
           methods=['GET'])
@@ -568,7 +572,7 @@ def sectors(crime, sector):
 
     .. sourcecode:: http
 
-      GET /api/v1/series/sectores/angel%20-%20zona%20rosa/violacion HTTP/1.1
+      GET /api/v1/series/sector/angel%20-%20zona%20rosa/violacion HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -594,11 +598,16 @@ def sectors(crime, sector):
     """
     sector = sector.lower()
     crime = crime.lower()
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
     if crime == "all":
-        filters = [func.lower(Cuadrantes.sector) == sector,
-                   func.lower(Cuadrantes.crime) == crime]
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   func.lower(Cuadrantes.sector) == sector]
     else:
-        filters = [func.lower(Cuadrantes.sector) == sector]
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   func.lower(Cuadrantes.sector) == sector,
+                   func.lower(Cuadrantes.crime) == crime]
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.lower(Cuadrantes.sector).label('sector'),
@@ -657,9 +666,9 @@ def cuadrantes_sum_all(crime):
     :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     crime = crime.lower()
-    start_period = request.args.get('start_period', '', type=str)
-    end_period = request.args.get('end_period', '', type=str)
-    start_date, max_date = check_dates(start_period, end_period)
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    start_date, max_date = check_dates(start_date, end_date)
     if crime == "all":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
@@ -725,9 +734,9 @@ def sectores_sum_all(crime):
     :query end_period: End of the period to analyze in the ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_period
     """
     crime = crime.lower()
-    start_period = request.args.get('start_period', '', type=str)
-    end_period = request.args.get('end_period', '', type=str)
-    start_date, max_date = check_dates(start_period, end_period)
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    start_date, max_date = check_dates(start_date, end_date)
     if crime == "all":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
