@@ -887,7 +887,7 @@ def listcrimes():
 
    :status 200: when all the crimes were found
 
-    :resheader Content-Type: application/json
+   :resheader Content-Type: application/json
 
    **Example request**:
 
@@ -916,6 +916,7 @@ def listcrimes():
    """
     results = Cuadrantes.query. \
         with_entities(func.lower(Cuadrantes.crime).label('crime')). \
+        order_by(Cuadrantes.crime). \
         distinct(). \
         all()
     return results_to_json(results)
@@ -926,7 +927,7 @@ def listcrimes():
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def listcuadrantes():
-    """Enumerate all the cuadrantes in the database
+    """Enumerate all the cuadrantes and the sectors they belong to
 
     :status 200: when all the cuadrantes were found
 
@@ -962,6 +963,7 @@ def listcuadrantes():
     results = Cuadrantes.query. \
         with_entities(func.lower(Cuadrantes.sector).label('sector'),
                       func.lower(Cuadrantes.cuadrante).label('cuadrante')). \
+        order_by(Cuadrantes.cuadrante). \
         distinct(). \
         all()
     return results_to_json(results)
@@ -992,7 +994,7 @@ def listsectores():
 
       HTTP/1.1 200 OK
       Content-Type: application/json
-      
+
       {
       "rows": [
       {
@@ -1012,6 +1014,7 @@ def listsectores():
 
     results = Cuadrantes.query. \
         with_entities(func.lower(Cuadrantes.sector).label('sector')). \
+        order_by(Cuadrantes.sector). \
         distinct(). \
         all()
     return results_to_json(results)
