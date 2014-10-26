@@ -3,6 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. Fuck you sphinx documentation. I'm not including any god damn toctree directive
+   straight to the content for me. #FirstWorldAnarchists
+
 Welcome to HoyoDeCrimen API's documentation!
 ============================================
 
@@ -22,8 +25,8 @@ License
 
 Data accessed via this API is provided under the 
 `Creative Commons Attribution-ShareAlike (CC-BY-SA) 3.0 Unported license 
-<http://creativecommons.org/licenses/by-sa/3.0/legalcode>`_. If you use
-this data you must link back to http://hoyodecrimen.com/ as
+<https://creativecommons.org/licenses/by-sa/3.0/legalcode>`_. If you use
+this data you must link back to https://hoyodecrimen.com/ as
 the origin of the data.
 
 
@@ -32,14 +35,15 @@ Basic overview
 
 Broadly speaking, you can get a JSON representation of any type of
 crime that occurred in the Federal District. For example,
-http://hoyodecrimen.com/api/v1/enumerate/cuadrantes will return a list of
-all the cuadrantes the Federal District is made of.
-http://hoyodecrimen.com/api/v1/enumerate/crimes will return a list of all
-crimes in the database. Then you can use
-http://hoyodecrimen.com/api/v1/series/cuadrantes/homicidio%20doloso/c-1.1.1
+https://hoyodecrimen.com/api/v1/enumerate/crimes will return a list of
+all crimes in the database.
+https://hoyodecrimen.com/api/v1/enumerate/cuadrantes will return a list
+of all the cuadrantes in the Federal District. Once you have a list of
+crimes and cuadrantes you can use
+https://hoyodecrimen.com/api/v1/series/cuadrantes/homicidio%20doloso/c-1.1.1
 to get a time series of the homicide rate in cuadrante c-1.1.1. Note
-that `homicidio%20doloso` can be changed to `all` to get all the crimes
-that occurred in that cuadrante.
+that `homicidio%20doloso` can be changed to `all` to get all the
+crimes that occurred in that cuadrante.
 
 Note
 ====
@@ -54,10 +58,10 @@ What's available
 | Service                | Description                                         | Endpoint                                                         | 
 |                        |                                                     |                                                                  |
 +========================+=====================================================+==================================================================+
-| Point in Polygon       | Given a lat and longitude return the                | | **/v1/pip/(string: long)/(string: lat)**                       |
-|                        | corresponding cuadrante                             | | **/v1/pip/extras/(string: long)/(string: lat)**                |
+| Point in Polygon       | Given a longitude and latitude return the           | | **/v1/pip/(string: long)/(string: lat)**                       |
+|                        | corresponding cuadrante and sector                  | | **/v1/pip/extras/(string: long)/(string: lat)**                |
 +------------------------+-----------------------------------------------------+------------------------------------------------------------------+
-| Time Series            | Crimes ordered by month of occurrence for a         | | **/v1/series/sector/(string: sector)/(string: crime)**         |
+| Time Series            | Crimes counts ordered by month of occurrence for a  | | **/v1/series/sector/(string: sector)/(string: crime)**         |
 |                        | single cuadrante or sector                          | | **/v1/series/cuadrante/(string: cuadrante/(string: crime))**   |
 |                        |                                                     |                                                                  |
 +------------------------+-----------------------------------------------------+------------------------------------------------------------------+
