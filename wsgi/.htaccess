@@ -1,9 +1,19 @@
 IndexOptions +Charset=UTF-8
-<IfModule mod_headers.c>
-    Header unset ETag
-    Header set X-Frame-Options: deny
-    Header set X-XSS-Protection: "1; mode=block"
-    Header set X-Content-Type-Options: nosniff
-    Header set X-WebKit-CSP: "default-src 'self'"
-    Header set X-Permitted-Cross-Domain-Policies: "master-only"
-</IfModule>
+
+Header unset ETag
+
+# Don't allow any pages to be framed - Defends against CSRF
+Header set X-Frame-Options DENY
+
+# Turn on IE8-IE9 XSS prevention tools
+Header set X-XSS-Protection "1; mode=block"
+
+# prevent mime based attacks
+Header set X-Content-Type-Options "nosniff"
+
+# Only allow JavaScript from the same domain to be run.
+# Don't allow inline JavaScript to run.
+Header set X-Content-Security-Policy "allow 'self';"
+
+
+Header set X-Permitted-Cross-Domain-Policies: "master-only"
