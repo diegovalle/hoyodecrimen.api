@@ -78,6 +78,8 @@ def ResultProxy_to_json(results):
                 else:
                     d[key] = result[key]
             json_results.append(d)
+    if json_results == []:
+        raise InvalidAPIUsage("not found", 404)
     return jsonify(rows = json_results)
 
 
@@ -96,7 +98,7 @@ def results_to_array(results):
             json_results.append(d)
         return json_results
     else:
-        return []
+        raise InvalidAPIUsage('not found', 404)
 
 def results_to_json(results):
     # response = jsonify({'code': 404,'message': 'No found'})
@@ -226,6 +228,7 @@ def pip(long, lat):
 
     :status 200: when the cuadrante corresponding to the latitude and longitude is found
     :status 400: when the latitude or longitude where incorrectly specified
+    :status 404: when the latitude or longitude are outside of the Federal District cuadrante area
 
     :resheader Content-Type: application/json
 
@@ -281,10 +284,8 @@ def pip(long, lat):
         d['sector'] = results_pip[1]
         json_results.append(d)
     else:
-        results_cuad = []
-        json_results = []
-        results_df_last_year = []
-        results_cuad_last_year = []
+
+        raise InvalidAPIUsage("You're not inside the Federal District provinciano", 404)
     return jsonify(pip=json_results)
 
 
@@ -305,6 +306,7 @@ def frontpage(long, lat):
 
     :status 200: when the cuadrante corresponding to the latitude and longitude is found
     :status 400: when the latitude or longitude where incorrectly specified
+    :status 404: when the latitude or longitude are outside of the Federal District cuadrante area
 
     :resheader Content-Type: application/json
 
@@ -418,6 +420,7 @@ def frontpage(long, lat):
         json_results = []
         results_df_last_year = []
         results_cuad_last_year = []
+        raise InvalidAPIUsage("You're not inside the Federal District provinciano", 404)
     return jsonify(pip=json_results,
                    cuadrante=results_to_array(results_cuad),
                    df_last_year=results_to_array(results_df_last_year),
@@ -435,6 +438,7 @@ def df_all(crime):
     :param crime: the name of crime or the keyword ``all``
 
     :status 200: when the sum of all crimes is found
+    :status 404: when the crime is not found in the database
 
     :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
     :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
@@ -510,6 +514,7 @@ def cuadrantes(crime, cuadrante):
     :param cuadrante: the name of the cuadrante from which to return the time series
 
     :status 200: when the sum of all crimes is found
+    :status 404: when the crime or cuadrante is not found in the database
 
     :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
     :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
@@ -568,9 +573,9 @@ def cuadrantes(crime, cuadrante):
                       func.lower(Cuadrantes.crime).label('crime'),
                       Cuadrantes.date,
                       Cuadrantes.count,
-                      Cuadrantes.population) \
-        .order_by(Cuadrantes.crime, Cuadrantes.date) \
-        .all()
+                      Cuadrantes.population). \
+        order_by(Cuadrantes.crime, Cuadrantes.date). \
+        all()
     return results_to_json(results)
 
 
@@ -587,6 +592,7 @@ def sectors(crime, sector):
     :param cuadrante: the name of the cuadrante from which to return the time series
 
     :status 200: when the sum of all crimes is found
+    :status 404: when the crime or cuadrante is not found in the database
 
     :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
     :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
@@ -658,6 +664,7 @@ def cuadrantes_sum_all(crime):
     :param crime: the name of crime or the keyword ``all`` to return all crimes
 
     :status 200: when the sum of all crimes is found
+    :status 404: when the crime is not found in the database
 
     :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
     :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
@@ -730,6 +737,7 @@ def sectores_sum_all(crime):
     :param crime: the name of crime or the keyword ``all`` to return all crimes
 
     :status 200: when the sum of all crimes is found
+    :status 404: when the crime is not found in the database
 
     :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
     :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
@@ -800,6 +808,7 @@ def cuadrantes_change_sum_all(crime):
     :param crime: the name of crime or the keyword ``all`` to return all crimes
 
     :status 200: when the  change in crime counts is found
+    :status 404: when the crime is not found in the database
 
     :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
     :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
@@ -1036,6 +1045,7 @@ def top5cuadrantes(crime):
 
     :status 200: when the top 5 cuadrantes are found
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
+    :status 404: when the crime is not found in the database
 
     :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
     :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
@@ -1078,7 +1088,7 @@ def top5cuadrantes(crime):
     start_date, max_date = check_dates(start_date, end_date)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
-        raise InvalidAPIUsage('No negative numbers')
+        raise InvalidAPIUsage('Rank must be greater than zero')
         #abort(abort(make_response('No negative numbers', 400)))
     sql_query = """with crimes as
                           (select sum(count) as count,sector,cuadrante,max(population)as population, crime
@@ -1118,6 +1128,7 @@ def top5sectores(crime):
 
     :status 200: when the top 5 cuadrantes are found
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
+    :status 404: when the crime is not found in the database
 
     :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
     :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
@@ -1161,7 +1172,7 @@ def top5sectores(crime):
     start_date, max_date = check_dates(start_date, end_date)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
-        raise InvalidAPIUsage('No negative numbers')
+        raise InvalidAPIUsage('Rank must be greater than zero')
         #abort(abort(make_response('No negative numbers', 400)))
     sql_query = """with crimes as
                            (select (sum(count) / (sum(population::float) / :num_months )* 100000) as rate,sum(count) as count,
@@ -1202,6 +1213,7 @@ def top5changecuadrantes(crime):
 
     :status 200: when the top 5 cuadrantes are found
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
+    :status 404: when the crime is not found in the database
 
     :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
     :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
@@ -1252,7 +1264,7 @@ def top5changecuadrantes(crime):
     end_period2 = request.args.get('end_period2', '', type=str)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
-        raise InvalidAPIUsage('No negative numbers')
+        raise InvalidAPIUsage('Rank must be greater than zero')
     max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3 = check_periods(start_period1,
                                                                                              start_period2,
                                                                                              end_period1,
