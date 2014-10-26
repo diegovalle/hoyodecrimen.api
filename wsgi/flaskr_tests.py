@@ -238,6 +238,10 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
+    def test_api_404(self):
+        tester = app.test_client(self)
+        response = tester.get('/adsflsdklfjaskljfkldsjfkjasklfjklsafsadfs', content_type='html/text')
+        self.assertEqual(response.status_code, 404)
 
 
 if __name__ == '__main__':
