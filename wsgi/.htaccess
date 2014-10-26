@@ -1,0 +1,9 @@
+<IfModule mod_headers.c>
+    Header unset ETag
+    IndexOptions +Charset=UTF-8
+    Header set X-Frame-Options: deny
+    Header set X-XSS-Protection: "1; mode=block"
+    Header set X-Content-Type-Options: nosniff
+    Header set X-WebKit-CSP: "default-src 'self'"
+    Header set X-Permitted-Cross-Domain-Policies: "master-only"
+</IfModule>
