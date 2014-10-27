@@ -494,7 +494,7 @@ def df_all(crime):
                       func.sum(Cuadrantes.count).label('count'),
                       func.sum(Cuadrantes.population).label('population')). \
         group_by(Cuadrantes.date, Cuadrantes.crime). \
-        order_by(Cuadrantes.date, Cuadrantes.crime). \
+        order_by(Cuadrantes.crime, Cuadrantes.date). \
         all()
     return results_to_json(results)
 
