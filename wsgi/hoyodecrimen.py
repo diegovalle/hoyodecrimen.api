@@ -36,9 +36,13 @@ def not_found(error):
 def api_html():
     return app.send_static_file(os.path.join('api', 'index.html'))
 
-@app.route('/')
+@app.route('/rates')
 def index():
-    return app.send_static_file(os.path.join('', 'index.html'))
+    return app.send_static_file(os.path.join('', 'rates.html'))
+
+@app.route('/counts')
+def counts():
+    return app.send_static_file(os.path.join('', 'counts.html'))
 
 @app.route('/api/_static/<path:filename>')
 def static__api(filename):
