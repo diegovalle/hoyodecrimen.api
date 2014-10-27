@@ -254,6 +254,18 @@ d3.json(mapFile, function(error, df) {
         }
         cuadrantesMap =cuadrantes
         crimeData=data
+
+        var monthNames = [ "January", "February", "March", "April", "May", "June",
+                           "July", "August", "September", "October", "November", "December" ];
+        var startDate = new Date(cuadrantesMap.rows[0].start_date + '-15');
+        var endDate = new Date(cuadrantesMap.rows[0].end_date + '-15');
+        var dates = monthNames[startDate.getMonth()] + ' ' + startDate.getFullYear() + ' to ' + monthNames[endDate.getMonth()] + ' ' +  endDate.getFullYear();
+        d3.select('#hom-date').text((topoName == "sectores" ? 'homicide rate from ' : 'total homicides from ') + dates);
+        d3.select('#rncv-date').text((topoName == "sectores" ?'violent robbery to a business rate from ' : 'total (violent robberies to a business rate from') + dates);
+        d3.select('#rvcv-date').text((topoName == "sectores" ?'violent car robbery rate from ' : 'total violent car robberies from ') + dates);
+        d3.select('#rvsv-date').text((topoName == "sectores" ?'non-violent car robbery rate from ': 'total non-violent car robberies from ') + dates);
+        d3.select('#viol-date').text((topoName == "sectores" ?'rape rate from ' : 'total rapes from ') + dates);
+
         quantizeRed = createQuantized(findRange('hom'), mapColors.hom)
         quantizeBlue = createQuantized(findRange('rncv'), mapColors.rncv)
         quantizePurple = createQuantized(findRange('rvcv'), mapColors.rvcv)

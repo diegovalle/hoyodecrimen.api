@@ -205,7 +205,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                            
 					    <div class="4u">
                                               <div id="map-homicide" style="height:500px;">
-                                                <small style="font-size:12px;text-align:left;">homicide rate from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;" id="hom-date"></small>
                                                 <div id = "legend-homicides"></div>
                                               </div>
                                             </div>
@@ -228,7 +228,7 @@ app.config(['$translateProvider', function ($translateProvider) {
           <td data-title="'Crime'">{{sector.crime}}</td>
           <td data-title="'Sector'">{{sector.sector}}</td>
           <td data-title="'Count'">{{sector.count}}</td>
-          <td data-title="'Population'">{{sector.population}}</td>
+          <td data-title="'Population'">{{sector.population | number:0}}</td>
           <td data-title="'Rate'">{{sector.rate}}</td>
         </tr>
      </table>
@@ -241,7 +241,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                           <div class="row">
 					    <div class="4u">
                                               <div id="map-rncv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;">violent robbery to a business rate from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;" id="rncv-date"></small>
                                                 <div id = "legend-rncv"></div>
                                               </div>
                                             </div>
@@ -260,7 +260,7 @@ app.config(['$translateProvider', function ($translateProvider) {
           <td data-title="'Crime'">{{sector.crime}}</td>
           <td data-title="'Sector'">{{sector.sector}}</td>
           <td data-title="'Count'">{{sector.count}}</td>
-          <td data-title="'Population'">{{sector.population}}</td>
+          <td data-title="'Population'">{{sector.population | number:0}}</td>
           <td data-title="'Rate'">{{sector.rate}}</td>
         </tr>
      </table>
@@ -273,7 +273,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                           <div class="row">
 					    <div class="4u">
                                               <div id="map-rvcv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;">violent car robbery rate from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;" id="rvcv-date"></small>
                                                  <div id = "legend-rvcv"></div>
                                               </div>
                                             </div>
@@ -292,7 +292,7 @@ app.config(['$translateProvider', function ($translateProvider) {
           <td data-title="'Crime'">{{sector.crime}}</td>
           <td data-title="'Sector'">{{sector.sector}}</td>
           <td data-title="'Count'">{{sector.count}}</td>
-          <td data-title="'Population'">{{sector.population}}</td>
+          <td data-title="'Population'">{{sector.population | number:0}}</td>
           <td data-title="'Rate'">{{sector.rate}}</td>
         </tr>
      </table>
@@ -305,7 +305,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                           <div class="row">
 					    <div class="4u">
                                               <div id="map-rvsv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;">non-violent car robbery rate from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;" id="rvsv-date"></small>
                                                  <div id = "legend-rvsv"></div>
                                               </div>
                                             </div>
@@ -324,7 +324,7 @@ app.config(['$translateProvider', function ($translateProvider) {
           <td data-title="'Crime'">{{sector.crime}}</td>
           <td data-title="'Sector'">{{sector.sector}}</td>
           <td data-title="'Count'">{{sector.count}}</td>
-          <td data-title="'Population'">{{sector.population}}</td>
+          <td data-title="'Population'">{{sector.population | number:0}}</td>
           <td data-title="'Rate'">{{sector.rate}}</td>
         </tr>
      </table>
@@ -339,7 +339,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                            
 					    <div class="4u">
                                               <div id="map-viol" style="height:500px;">
-                                                <small style="font-size:12px;text-align:left;">rape rate from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;" id="viol-date"></small>
                                                 <div id = "legend-viol"></div>
                                               </div>
                                             </div>
@@ -359,7 +359,7 @@ app.config(['$translateProvider', function ($translateProvider) {
           <td data-title="'Crime'">{{sector.crime}}</td>
           <td data-title="'Sector'">{{sector.sector}}</td>
           <td data-title="'Count'">{{sector.count}}</td>
-          <td data-title="'Population'">{{sector.population}}</td>
+          <td data-title="'Population'">{{sector.population | number:0}}</td>
           <td data-title="'Rate'">{{sector.rate}}</td>
         </tr>
      </table>
