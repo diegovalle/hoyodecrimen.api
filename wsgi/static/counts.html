@@ -188,7 +188,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-homicide" style="height:500px;">
-                                                <small style="font-size:12px;text-align:left;">total homicides from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;" id="hom-date"></small>
                                                 <div id = "legend-homicides"></div>
                                               </div>
                                             </div>
@@ -222,7 +222,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-rncv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;">total violent robberies to a business from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;" id="rncv-date"></small>
                                                 <div id = "legend-rncv"></div>
                                               </div>
                                             </div>
@@ -254,7 +254,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-rvcv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;">total violent car robberies from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;" id="rvcv-date"></small>
                                                  <div id = "legend-rvcv"></div>
                                               </div>
                                             </div>
@@ -286,7 +286,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-rvsv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;">total non-violent car robberies from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;" id="rvsv-date"></small>
                                                  <div id = "legend-rvsv"></div>
                                               </div>
                                             </div>
@@ -318,7 +318,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-viol" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;">total rapes from August 2013 to July 2014</small>
+                                                <small style="font-size:12px;text-align:left;"  id="viol-date"></small>
                                                  <div id = "legend-viol"></div>
                                               </div>
                                             </div>
@@ -430,8 +430,7 @@ var crimeFile = "js/hom-dol-cuad.js";
 var mapColors = {hom:"Redsq", rncv:"Bluesq", rvcv:"Purplesq",
 rvsv:"Greensq", viol:"Graysq"}
 
- HomicidesA = ['Homicides', 62, 81, 89, 76, 97, 90, 59, 78, 60, 68, 60, 58, 69, 54, 90, 76, 62, 78, 70 ], rncvA = ['Violent robberies to a business', 389, 355, 355, 297, 328, 361, 379, 363, 348, 374, 420, 348, 306, 270, 248, 278, 260, 287, 365 ], rvcvA = ['Violent car robberies', 488, 492, 432, 434, 503, 487, 470, 501, 457, 587, 612, 510, 560, 493, 506, 474, 507, 457, 544 ], rvsvA = ['Non-violent car robberies', 944, 851, 850, 912, 949, 990, 930, 990, 903, 917, 971, 931, 980, 825, 864, 803, 884, 708, 807 ], violA = ['Rape', 64, 64, 46, 34, 40, 36, 45, 46, 27, 44, 34, 33, 23, 35, 46, 41, 51, 38, 43 ];
-crimePrefix = 'number of ';
+ crimePrefix = 'number of ';
 document.getElementById("HomicideButton").onclick = function (event) { 
 event.preventDefault(); 
 d3.select('#homicide-title').text('Homicides - DF Total');
