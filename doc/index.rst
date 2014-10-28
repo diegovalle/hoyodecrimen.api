@@ -27,7 +27,9 @@ notice an error, have any comments, or stuff you'd like added to the
 API raise an issue on `GitHub
 <https://github.com/diegovalle/hoyodecrimen.api/issues>`_ or email me
 at diegovalle@gmail.com. All data comes from freedom of information
-requests to the Mexico City government
+requests to the Mexico City government, sometimes I get data on crimes
+which happened in non-specified cuadrantes *(en blanco)* and sometimes
+not depending on how lucky I get when the FOI request is answered.
 
 License
 ========
@@ -99,7 +101,7 @@ jQuery.
        dataType: 'jsonp',
        url: 'http://localhost:5000/api/v1/series/cuadrante/c-1.1.1/homicidio%20doloso',
        success: function(data) {
-           // console.log(data)
+           // console.debug(data)
        }
    });
 
@@ -119,7 +121,7 @@ Example Error Response
        // notice the invalid start_date
        url: 'http://localhost:5000/api/v1/series/cuadrante/c-1.1.1/all?start_date=2014-99?end_date=2014-07',
        success: function(data) {
-           // console.log(data)
+           // console.debug(data)
        },
        error: function(xhr, error) {
            // console.debug(xhr.responseText); // error description
