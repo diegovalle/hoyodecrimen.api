@@ -223,7 +223,7 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
-        response = tester.get('/api/v1/series/sector/angel%20-%20zona%20rosa/robo%20a%20negocio%20c%2Fv', content_type='application/json')
+        response = tester.get('/api/v1/series/sector/angel%20-%20zona%20rosa/robo%20a%20negocio%20c.v.', content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
     # Check the API endpoint
