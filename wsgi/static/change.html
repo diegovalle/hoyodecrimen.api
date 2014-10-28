@@ -35,7 +35,7 @@ var top5;
 var app = angular.module('myApp', ['pascalprecht.translate','ngTable', 'ngResource'])
 .controller('DemoCtrl', function($scope, $timeout, $resource, ngTableParams) {
     
-    var Api = $resource('http://localhost:5000/api/v1/top/counts/cuadrantes/all');
+    var Api = $resource('/api/v1/top/counts/change/cuadrantes/all');
     Api.get(function(data) {
                 $timeout(function() {
                     // update table params
@@ -154,10 +154,13 @@ app.config(['$translateProvider', function ($translateProvider) {
 			<link rel="stylesheet" href="css/style-desktop.css" />
                         <link rel="stylesheet" href="css/ng-table.css" />
 		</noscript>
-                <style>
-.ng-table {
-    border: 1px solid #000;
+               
+<style>
+.c3-region {
+  fill: steelblue;
+  fill-opacity: .1;
 }
+                
 </style>
 	</head>
 	<body class="homepage" ng-app="myApp"  ng-controller="DemoCtrl">
@@ -174,7 +177,6 @@ app.config(['$translateProvider', function ($translateProvider) {
 </div>
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53828ddc4d27c103"></script>
-
 <!-- AddThis Button END -->
 
                                           <h2 id="homicide-title"style="text-align:left;margin: 0 0 0 4em;">Homicides - Total</h2>
@@ -188,7 +190,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-homicide" style="height:500px;">
-                                                <small style="font-size:12px;text-align:left;" id="hom-date"></small>
+                                                <small style="font-size:12px;text-align:left;" id="hom-date">change in homicides May-Jul 2013 to May-Jul 2014</small>
                                                 <div id = "legend-homicides"></div>
                                               </div>
                                             </div>
@@ -198,16 +200,17 @@ app.config(['$translateProvider', function ($translateProvider) {
 
 <div class="datagrid">
 
- <table ng-table="tableParams1" class="table">
+<table ng-table="tableParams1" class="table">
         <tr ng-repeat="cuadrante in $data | filter:'homicidio doloso'">
           <td data-title="'Rank'">{{cuadrante.rank}}</td>
-          <td data-title="'Crime'">{{cuadrante.crime}}</td>
           <td data-title="'Cuadrante'">{{cuadrante.cuadrante}}</td>
           <td data-title="'Sector'">{{cuadrante.sector}}</td>
           <td data-title="'Population'">{{cuadrante.population | number:0}}</td>
-           <td data-title="'Count'">{{cuadrante.count}}</td>
+          <td data-title="'Period1'">{{cuadrante.period1_count}}</td>
+          <td data-title="'Period2'">{{cuadrante.period2_count}}</td>
+          <td data-title="'Difference'">{{cuadrante.difference}}</td>
         </tr>
-     </table>
+</table>
 
 </div>
 
@@ -222,7 +225,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-rncv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;" id="rncv-date"></small>
+                                                <small style="font-size:12px;text-align:left;" id="rncv-date">change in violent robberies to a business May-Jul 2013 to May-Jul 2014</small>
                                                 <div id = "legend-rncv"></div>
                                               </div>
                                             </div>
@@ -230,16 +233,17 @@ app.config(['$translateProvider', function ($translateProvider) {
 <div>
 
 <div class="datagrid">
- <table ng-table="tableParams2" class="table">
+<table ng-table="tableParams2" class="table">
         <tr ng-repeat="cuadrante in $data | filter:'robo a negocio c.v.'">
           <td data-title="'Rank'">{{cuadrante.rank}}</td>
-          <td data-title="'Crime'">{{cuadrante.crime}}</td>
           <td data-title="'Cuadrante'">{{cuadrante.cuadrante}}</td>
           <td data-title="'Sector'">{{cuadrante.sector}}</td>
           <td data-title="'Population'">{{cuadrante.population | number:0}}</td>
-           <td data-title="'Count'">{{cuadrante.count}}</td>
+          <td data-title="'Period1'">{{cuadrante.period1_count}}</td>
+          <td data-title="'Period2'">{{cuadrante.period2_count}}</td>
+          <td data-title="'Difference'">{{cuadrante.difference}}</td>
         </tr>
-     </table>
+</table>
 
 </div>
 
@@ -254,7 +258,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-rvcv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;" id="rvcv-date"></small>
+                                                <small style="font-size:12px;text-align:left;" id="rvcv-date">change in violent car robberies May-Jul 2013 to May-Jul 2014</small>
                                                  <div id = "legend-rvcv"></div>
                                               </div>
                                             </div>
@@ -262,16 +266,17 @@ app.config(['$translateProvider', function ($translateProvider) {
 <div>
 
 <div class="datagrid">
- <table ng-table="tableParams3" class="table">
+<table ng-table="tableParams3" class="table">
         <tr ng-repeat="cuadrante in $data | filter:'robo de vehiculo automotor c.v.'">
           <td data-title="'Rank'">{{cuadrante.rank}}</td>
-          <td data-title="'Crime'">{{cuadrante.crime}}</td>
           <td data-title="'Cuadrante'">{{cuadrante.cuadrante}}</td>
           <td data-title="'Sector'">{{cuadrante.sector}}</td>
           <td data-title="'Population'">{{cuadrante.population | number:0}}</td>
-           <td data-title="'Count'">{{cuadrante.count}}</td>
+          <td data-title="'Period1'">{{cuadrante.period1_count}}</td>
+          <td data-title="'Period2'">{{cuadrante.period2_count}}</td>
+          <td data-title="'Difference'">{{cuadrante.difference}}</td>
         </tr>
-     </table>
+</table>
 
 </div>
 
@@ -286,7 +291,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-rvsv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;" id="rvsv-date"></small>
+                                                <small style="font-size:12px;text-align:left;" id="rvsv-date">change in non-violent car robberies May-Jul 2013 to May-Jul 2014</small>
                                                  <div id = "legend-rvsv"></div>
                                               </div>
                                             </div>
@@ -294,16 +299,17 @@ app.config(['$translateProvider', function ($translateProvider) {
 <div>
 
 <div class="datagrid">
- <table ng-table="tableParams4" class="table">
+<table ng-table="tableParams4" class="table">
         <tr ng-repeat="cuadrante in $data | filter:'robo de vehiculo automotor s.v.'">
           <td data-title="'Rank'">{{cuadrante.rank}}</td>
-          <td data-title="'Crime'">{{cuadrante.crime}}</td>
           <td data-title="'Cuadrante'">{{cuadrante.cuadrante}}</td>
           <td data-title="'Sector'">{{cuadrante.sector}}</td>
           <td data-title="'Population'">{{cuadrante.population | number:0}}</td>
-           <td data-title="'Count'">{{cuadrante.count}}</td>
+          <td data-title="'Period1'">{{cuadrante.period1_count}}</td>
+          <td data-title="'Period2'">{{cuadrante.period2_count}}</td>
+          <td data-title="'Difference'">{{cuadrante.difference}}</td>
         </tr>
-     </table>
+</table>
 
 </div>
 
@@ -318,7 +324,7 @@ app.config(['$translateProvider', function ($translateProvider) {
                                             </div>
                                             <div class="4u">
                                               <div id="map-viol" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;"  id="viol-date"></small>
+                                                <small style="font-size:12px;text-align:left;" id="vol-date">change in rapes May-Jul 2013 to May-Jul 2014</small>
                                                  <div id = "legend-viol"></div>
                                               </div>
                                             </div>
@@ -326,16 +332,17 @@ app.config(['$translateProvider', function ($translateProvider) {
 <div>
 
 <div class="datagrid">
- <table ng-table="tableParams5" class="table">
+<table ng-table="tableParams5" class="table">
         <tr ng-repeat="cuadrante in $data | filter:'violacion'">
           <td data-title="'Rank'">{{cuadrante.rank}}</td>
-          <td data-title="'Crime'">{{cuadrante.crime}}</td>
           <td data-title="'Cuadrante'">{{cuadrante.cuadrante}}</td>
           <td data-title="'Sector'">{{cuadrante.sector}}</td>
           <td data-title="'Population'">{{cuadrante.population | number:0}}</td>
-           <td data-title="'Count'">{{cuadrante.count}}</td>
+          <td data-title="'Period1'">{{cuadrante.period1_count}}</td>
+          <td data-title="'Period2'">{{cuadrante.period2_count}}</td>
+          <td data-title="'Difference'">{{cuadrante.difference}}</td>
         </tr>
-     </table>
+</table>
 
 </div>
 
@@ -424,13 +431,14 @@ app.config(['$translateProvider', function ($translateProvider) {
 			</div>
 
                         <script>
-var topoName = 'cuadrantes';    
+var topoName = 'cuadrantes-change';    
 var mapFile = "js/cuadrantes.json";
 var crimeFile = "js/hom-dol-cuad.js";
-var mapColors = {hom:"Redsq", rncv:"Bluesq", rvcv:"Purplesq",
-rvsv:"Greensq", viol:"Graysq"}
+var mapColors = {hom:"BrBGq", rncv:"PiYGq", rvcv:"PRGnq",
+rvsv:"PuOrq", viol:"RdGyq"};
 
- crimePrefix = 'number of ';
+
+crimePrefix = 'number of ';
 document.getElementById("HomicideButton").onclick = function (event) { 
 event.preventDefault(); 
 d3.select('#homicide-title').text('Homicides - DF Total');
