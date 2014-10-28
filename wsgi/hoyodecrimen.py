@@ -24,9 +24,6 @@ app.config.from_pyfile('apihoyodecrimen.cfg')
 cache.init_app(app)
 
 
-
-
-
 # Sample HTTP error handling
 @app.errorhandler(404)
 def not_found(error):
@@ -39,6 +36,10 @@ def api_html():
 @app.route('/rates')
 def index():
     return app.send_static_file(os.path.join('', 'rates.html'))
+
+@app.route('/change')
+def change():
+    return app.send_static_file(os.path.join('', 'change.html'))
 
 @app.route('/counts')
 def counts():
