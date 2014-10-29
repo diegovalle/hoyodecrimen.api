@@ -53,6 +53,8 @@ class InvalidAPIUsage(Exception):
 def invalid_usage(error):
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
+    #h = response.headers
+    #h['Access-Control-Allow-Origin'] = "*"
     return response
 
 def jsonp(func):
@@ -198,6 +200,8 @@ def check_dates(start_period, end_period, default_start=None):
 
 
 @API.route('/estariamosmejorcon', methods=['GET'])
+@jsonp
+@cache.cached(key_prefix=make_cache_key)
 def estariamosmejorcon():
     """Return the once and future president of Mexico
 
@@ -292,9 +296,10 @@ def pip(long, lat):
     return jsonify(pip=json_results)
 
 
-@API.route('/pip/extras/'
+@API.route('/pip/'
           '<string:long>/'
-          '<string:lat>',
+          '<string:lat>/'
+          'extras',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -302,7 +307,8 @@ def frontpage(long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
     Returns a list containg the cuadrante polygon as GeoJSON, all the crimes that occurred in the cuadrante
-    by date, the sum of crime counts that occurred in the DF and in the cuadrante during the last year
+    by date, the sum of crime counts that occurred in the whole DF during the last 12 months, and the sum of crimes in
+    the cuadrante containing the longitude and latitude during the last 12 months
 
     :param long: long
     :param lat: lat
@@ -317,7 +323,7 @@ def frontpage(long, lat):
 
     .. sourcecode:: http
 
-      GET /api/v1/pip/extras/-99.13333/19.43 HTTP/1.1
+      GET /api/v1/pip/-99.13333/19.43/extras HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -430,8 +436,7 @@ def frontpage(long, lat):
                    cuadrante_last_year=results_to_array(results_cuad_last_year))
 
 
-@API.route('/series/df/'
-          '<string:crime>',
+@API.route('/df/crimes/<string:crime>/series',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -453,7 +458,7 @@ def df_all(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/series/df/violacion HTTP/1.1
+      GET /api/v1/df/crimes/violacion/series HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -504,9 +509,9 @@ def df_all(crime):
 
 
 
-@API.route('/series/cuadrante/'
-          '<string:cuadrante>/'
-          '<string:crime>',
+@API.route('/cuadrante/<string:cuadrante>'
+          '/crimes/<string:crime>/'
+           'series',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -528,7 +533,7 @@ def cuadrantes(crime, cuadrante):
 
     .. sourcecode:: http
 
-      GET /api/v1/series/cuadrante/c-1.1.1/violacion HTTP/1.1
+      GET /api/v1/cuadrante/c-1.1.1/crimes/violacion/series HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -582,9 +587,9 @@ def cuadrantes(crime, cuadrante):
     return results_to_json(results)
 
 
-@API.route('/series/sector/'
-          '<string:sector>/'
-          '<string:crime>',
+@API.route('/sector/<string:sector>'
+           '/crimes/<string:crime>/'
+           'series/',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -606,7 +611,7 @@ def sectors(crime, sector):
 
     .. sourcecode:: http
 
-      GET /api/v1/series/sector/angel%20-%20zona%20rosa/violacion HTTP/1.1
+      GET /api/v1/sector/angel%20-%20zona%20rosa/crimes/violacion/series HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -655,7 +660,7 @@ def sectors(crime, sector):
     return results_to_json(results)
 
 
-@API.route('/list/cuadrantes/<string:crime>',
+@API.route('/cuadrantes/crimes/<string:crime>/period',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -679,7 +684,7 @@ def cuadrantes_sum_all(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/list/cuadrantes/all HTTP/1.1
+      GET /api/v1/cuadrantes/crimes/all/period HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -728,7 +733,7 @@ def cuadrantes_sum_all(crime):
     return results_to_json(results)
 
 
-@API.route('/list/sectores/<string:crime>',
+@API.route('/sectores/crimes/<string:crime>/period',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -751,7 +756,7 @@ def sectores_sum_all(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/list/sectores/all HTTP/1.1
+      GET /api/v1/sectores/crimes/all/period HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -799,7 +804,7 @@ def sectores_sum_all(crime):
 
 
 
-@API.route('/list/change/cuadrantes/<string:crime>',
+@API.route('/cuadrantes/crimes/<string:crime>/period/change',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -824,7 +829,7 @@ def cuadrantes_change_sum_all(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/list/change/cuadrantes/all HTTP/1.1
+      GET /api/v1/cuadrantes/crimes/all/period/change HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -890,7 +895,7 @@ def cuadrantes_change_sum_all(crime):
 
 
 
-@API.route('/enumerate/crimes',
+@API.route('/crimes/enumerate',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -905,7 +910,7 @@ def listcrimes():
 
    .. sourcecode:: http
 
-      GET /api/v1/enumerate/crimes HTTP/1.1
+      GET /api/v1/crimes/enumerate HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -934,7 +939,7 @@ def listcrimes():
     return results_to_json(results)
 
 
-@API.route('/enumerate/cuadrantes',
+@API.route('/cuadrantes/enumerate',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -949,7 +954,7 @@ def listcuadrantes():
 
     .. sourcecode:: http
 
-       GET /api/v1/enumerate/cuadrantes HTTP/1.1
+       GET /api/v1/cuadrantes/enumerate HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
 
@@ -981,7 +986,7 @@ def listcuadrantes():
     return results_to_json(results)
 
 
-@API.route('/enumerate/sectores',
+@API.route('/sectores/enumerate',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -996,7 +1001,7 @@ def listsectores():
 
     .. sourcecode:: http
 
-      GET /api/v1/enumerate/sectores HTTP/1.1
+      GET /api/v1/sectores/enumerate HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -1033,7 +1038,7 @@ def listsectores():
 
 
 
-@API.route('/top/counts/cuadrantes/<string:crime>',
+@API.route('/cuadrantes/crimes/<string:crime>/top/counts',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -1060,7 +1065,7 @@ def top5cuadrantes(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/top/counts/cuadrantes/homicidio%20doloso HTTP/1.1
+      GET /api/v1/cuadrantes/crimes/homicidio%20doloso/top/counts HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -1116,7 +1121,7 @@ def top5cuadrantes(crime):
     return ResultProxy_to_json(results)
 
 
-@API.route('/top/rates/sectores/<string:crime>',
+@API.route('/sectores/crimes/<string:crime>/top/rates',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -1143,7 +1148,7 @@ def top5sectores(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/top/rates/sectores/homicidio%20doloso HTTP/1.1
+      GET /api/v1/sectores/crimes/homicidio%20doloso/top/rates HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -1201,7 +1206,7 @@ def top5sectores(crime):
     return ResultProxy_to_json(results)
 
 
-@API.route('/top/counts/change/cuadrantes/<string:crime>',
+@API.route('/cuadrantes/crimes/<string:crime>/top/counts/change',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -1230,7 +1235,7 @@ def top5changecuadrantes(crime):
 
     .. sourcecode:: http
 
-       GET /api/v1/top/counts/change/cuadrantes/homicidio%20doloso HTTP/1.1
+       GET /api/v1/cuadrantes/crimes/homicidio%20doloso/top/counts/change HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
 
