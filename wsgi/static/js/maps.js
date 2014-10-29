@@ -99,7 +99,7 @@ tipVIOL = tip('violacion');
 svgVIOL.call(tipVIOL);
 
 createMap=function(df, svg, crime, crimeCode, colorFun, titleId, chart, topoNam, tipFun, seriesName) {
-    type = topoName === "sectores" ? "sector" : "cuadrantes";
+    type = topoName === "sectores" ? "sectores" : "cuadrantes";
     svg.append("g")
         .attr("class", "subdivisions")
         .selectAll("path")
