@@ -51,6 +51,9 @@ class Cuadrantes_Poly(db.Model):
 #create index sector on cuadrantes (sector);
 #create index cuadrante on cuadrantes (cuadrante);
 #create index crime on cuadrantes (crime);
+#create index ds on cuadrantes (date, sector);
+#create index dc on cuadrantes (date, cuadrante);
+#create index date_crime on cuadrantes (date, crime);
 
 
 # shp2pgsql -s 4326 -W "latin1" -I -D cuadrantes-sspdf-no-errors.shp cuadrantes_poly > cuadrantes_poly.sql
