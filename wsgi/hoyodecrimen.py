@@ -35,15 +35,23 @@ def api_html():
 
 @app.route('/rates')
 def index():
-    return app.send_static_file(os.path.join('', 'rates.html'))
+    return app.send_static_file(os.path.join('', 'rates-sectores.html'))
 
 @app.route('/change')
 def change():
-    return app.send_static_file(os.path.join('', 'change.html'))
+    return app.send_static_file(os.path.join('', 'change-cuadrantes.html'))
 
 @app.route('/counts')
 def counts():
-    return app.send_static_file(os.path.join('', 'counts.html'))
+    return app.send_static_file(os.path.join('', 'counts-cuadrantes.html'))
+
+@app.route('/sectores-map')
+def sectores_map():
+    return app.send_static_file(os.path.join('', 'sectores-map.html'))
+
+@app.route('/cuadrantes-map')
+def cuadrantes_map():
+    return app.send_static_file(os.path.join('', 'cuadrantes-map.html'))
 
 @app.route('/api/_static/<path:filename>')
 def static__api(filename):
