@@ -24,7 +24,29 @@ app.config.from_pyfile('apihoyodecrimen.cfg')
 cache.init_app(app)
 
 
-# Sample HTTP error handling
+def add_response_headers(headers={}):
+    """This decorator adds the headers passed in to the response"""
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            resp = make_response(f(*args, **kwargs))
+            h = resp.headers
+            for header, value in headers.items():
+                h[header] = value
+            return resp
+        return decorated_function
+    return decorator
+
+
+def noframes(f):
+    """This decorator passes X-Robots-Tag: noindex"""
+    @wraps(f)
+    @add_response_headers({'X-Frame-Options': 'DENY'})
+    def decorated_function(*args, **kwargs):
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Simple HTTP error handling
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
