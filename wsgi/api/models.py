@@ -63,4 +63,7 @@ class Cuadrantes_Poly(db.Model):
 #psql apihoyodecrimen -c "CREATE EXTENSION postgis;"
 #psql -d apihoyodecrimen $OPENSHIFT_POSTGRESQL_DB_USERNAME  < cuadrantes_poly.sql
 
-#create index geom on cuadrantes_poly using gist (geom)
+#create index geom on cuadrantes_poly using gist (geom);
+#create index geom_cuad on cuadrantes_poly using gist (geom, id);
+#create index sector on cuadrantes_poly (sector);
+#create index cuad on cuadrantes_poly (id);
