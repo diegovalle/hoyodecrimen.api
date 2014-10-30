@@ -20,6 +20,30 @@ Welcome to HoyoDeCrimen API's documentation!
 .. * :ref:`modindex`
 .. * :ref:`search`
 
+
+Basic overview
+==============
+
+The Hoyodecrimen REST API allows you to query crime data about Mexico City. You can even do
+some fancy things like get the top 9 cuadrantes where homicide counts changed the most.
+
+Since the API is based on REST principles and returns JSON data, it's
+very easy to write applications that use it. You can use your browser
+to access any API URL, or pretty much any HTTP client in any
+programming language (yes, even something like STATA which no real
+scientist would use).
+
+For example,
+https://hoyodecrimen.com/api/v1/crimes/enumerate will return a list of
+all crimes in the database.
+https://hoyodecrimen.com/api/v1/cuadrantes/enumerate will return a list
+of all the cuadrantes in the Federal District. Once you have a list of
+crimes and cuadrantes you can use
+https://hoyodecrimen.com/api/v1/cuadrante/c-1.1.1/crimes/homicidio%20doloso/series
+to get a time series of the homicide rate in cuadrante c-1.1.1. Note
+that `homicidio%20doloso` can be changed to `all` to get all the
+crimes that occurred in that cuadrante.
+
 Status
 ======
 This is beta software and paths may break (but not much). If you
@@ -29,7 +53,7 @@ API raise an issue on `GitHub
 at diegovalle@gmail.com. All data comes from freedom of information
 requests to the Mexico City government, sometimes I get data on crimes
 which happened in non-specified cuadrantes *(en blanco)* and sometimes
-not depending on how lucky I get when the FOI request is answered.
+not, depending on how lucky I get when the FOI request is answered.
 
 License
 ========
@@ -44,48 +68,33 @@ What's available
 ================
 
 
-+------------------------+-----------------------------------------------------+------------------------------------------------------------------+
-| Service                | Action                                              | URI                                                              | 
-|                        |                                                     |                                                                  |
-+========================+=====================================================+==================================================================+
-| Point in Polygon       | Given a longitude and latitude return the           | | **/v1/pip/(string: long)/(string: lat)**                       |
-|                        | corresponding cuadrante and sector                  | | **/v1/pip/extras/(string: long)/(string: lat)**                |
-+------------------------+-----------------------------------------------------+------------------------------------------------------------------+
-| Time Series            | Crimes counts ordered by month of occurrence for a  | | **/v1/series/sector/(string: sector)/(string: crime)**         |
-|                        | single cuadrante or sector                          | | **/v1/series/cuadrante/(string: cuadrante/(string: crime))**   |
-|                        |                                                     |                                                                  |
-+------------------------+-----------------------------------------------------+------------------------------------------------------------------+
-| List Cuadrantes or     | Sum of crimes that occurred in each                 | | **/v1/list/cuadrantes/(string: crime)**                        |
-| Sectores               | and every cuadrante or sector for a specified       | | **/v1/list/sectores/(string: crime)**                          |
-|                        | period of time                                      | | **/v1/list/change/cuadrantes/(string: crime)**                 |
-+------------------------+-----------------------------------------------------+------------------------------------------------------------------+
-| Top Most Violent       | A list of the cuadrantes and sectors with the       | | **/v1/top/rates/sectores/(string: crime)**                     |
-|                        | highest rates (sectores), crime counts              | | **/v1/top/counts/cuadrantes/(string: crime)**                  |
-|                        | (cuadrantes) or change in crime counts              | | **/v1/top/counts/change/cuadrantes/(string: crime)**           | 
-+------------------------+-----------------------------------------------------+------------------------------------------------------------------+
-| DF data                | A time series of the sum of all crimes              | | **/v1/series/df/(string: crime)**                              |
-|                        | that occurred in the Federal District               |                                                                  |
-+------------------------+-----------------------------------------------------+------------------------------------------------------------------+
-| Enumerate              | Get a list of the names of all cuadrantes,          | | **/v1/enumerate/crimes**                                       |
-|                        | sectores or crimes                                  | | **/v1/enumerate/sectores**                                     |
-|                        |                                                     | | **/v1/enumerate/cuadrantes**                                   |
-+------------------------+-----------------------------------------------------+------------------------------------------------------------------+
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
+| Service                | Action                                              | URI                                                                         | 
+|                        |                                                     |                                                                             |
++========================+=====================================================+=============================================================================+
+| Point in Polygon       | Given a longitude and latitude return the           | | **/api/v1/pip/(string: long)/(string: lat)**                              |
+|                        | corresponding cuadrante and sector                  | | **/api/v1/pip/(string: long)/(string: lat)/extras**                       |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
+| Time Series            | Crimes counts ordered by month of occurrence for a  | | **/api/v1/sector/(string: sector)/crimes/(string: crime)/series/**        |
+|                        | single cuadrante or sector                          | | **/api/v1/cuadrante/(string: cuadrante)/crimes/(string: crime)/series**   |
+|                        |                                                     |                                                                             |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
+| List Cuadrantes or     | Sum of crimes that occurred in each                 | | **/api/v1/cuadrantes/crimes/(string: crime)/period¶**                     |
+| Sectores               | and every cuadrante or sector for a specified       | | **/api/v1/sectores/crimes/(string: crime)/period**                        |
+|                        | period of time                                      | | **/api/v1/cuadrantes/crimes/(string: crime)/period/change**               |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
+| Top Most Violent       | A list of the cuadrantes and sectors with the       | | **/api/v1/sectores/crimes/(string: crime)/top/rates**                     |
+|                        | highest rates (sectores), crime counts              | | **/api/v1/cuadrantes/crimes/(string: crime)/top/counts**                  |
+|                        | (cuadrantes) or change in crime counts              | | **/api/v1/cuadrantes/crimes/(string: crime)/top/counts/change**           | 
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
+| DF data                | A time series of the sum of all crimes              | | **/api/v1/df/crimes/(string: crime)/series**                              |
+|                        | that occurred in the Federal District               |                                                                             |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
+| Enumerate              | Get a list of the names of all cuadrantes,          | | **/api/v1/cuadrantes/enumerate**                                          |
+|                        | sectores or crimes                                  | | **/api/v1/sectores/enumerate**                                            |
+|                        |                                                     | | **/api/v1/crimes/enumerate**                                              |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
 
-
-Basic overview
-==============
-
-Broadly speaking, you can get a JSON representation of any type of
-crime that occurred in the Federal District. For example,
-https://hoyodecrimen.com/api/v1/enumerate/crimes will return a list of
-all crimes in the database.
-https://hoyodecrimen.com/api/v1/enumerate/cuadrantes will return a list
-of all the cuadrantes in the Federal District. Once you have a list of
-crimes and cuadrantes you can use
-https://hoyodecrimen.com/api/v1/series/cuadrante/c-1.1.1/homicidio%20doloso
-to get a time series of the homicide rate in cuadrante c-1.1.1. Note
-that `homicidio%20doloso` can be changed to `all` to get all the
-crimes that occurred in that cuadrante.
 
 Getting Started
 =================
@@ -99,7 +108,7 @@ jQuery.
 
    $.ajax({
        dataType: 'jsonp',
-       url: 'http://localhost:5000/api/v1/series/cuadrante/c-1.1.1/homicidio%20doloso',
+       url: 'https://hoyodecrimen.com/api/v1/cuadrante/c-1.1.1/crimes/homicidio%20doloso/series',
        success: function(data) {
            // console.debug(data)
        }
@@ -112,14 +121,14 @@ If there is a validation error with the request, or the cuadrante or
 crime queried does not exist, an error object will be passed back
 which contains a short description of what went wrong.
 
-Example Error Response
+Example Error Response:
 
 .. code-block:: javascript
 
    $.ajax({
        dataType: 'jsonp',
        // notice the invalid start_date
-       url: 'http://localhost:5000/api/v1/series/cuadrante/c-1.1.1/all?start_date=2014-99?end_date=2014-07',
+       url: 'https://hoyodecrimen.com/api/v1/cuadrante/c-1.1.1/crimes/all/series?start_date=2014-99?end_date=2014-07',
        success: function(data) {
            // console.debug(data)
        },
@@ -128,9 +137,6 @@ Example Error Response
            // console.debug(xhr.status); //should be 400
        }
    });
-
-If you query for a crime or cuadrante that doesn't exist a 404 error is returned
-
 
 Note
 ====
