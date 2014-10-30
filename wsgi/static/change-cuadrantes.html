@@ -35,7 +35,7 @@ var top5;
 var app = angular.module('myApp', ['pascalprecht.translate','ngTable', 'ngResource'])
 .controller('DemoCtrl', function($scope, $timeout, $resource, ngTableParams) {
     
-    var Api = $resource('/api/v1/top/counts/change/cuadrantes/all');
+    var Api = $resource('/api/v1/cuadrantes/crimes/all/top/counts/change');
     Api.get(function(data) {
                 $timeout(function() {
                     // update table params
