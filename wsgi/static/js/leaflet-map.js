@@ -23,7 +23,7 @@ var mapData;
 
 //remember this is a mustache template
 var varName = "hom_rate";
-var title = "Rates by Sector";
+var title = mapType === "sectores"? "Rates by Sector" :"Counts by Cuadrante";
 var config;
 
 //use the appropiate scale from the template
@@ -224,12 +224,17 @@ info.update = function (feature) {
     } else {
         props = null;
     }
-    
+    var start_date = new Date(mapData.rows[0].start_date + '-15');
+    var end_date = new Date(mapData.rows[0].end_date + '-15');
+    var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+    var date_text = '(' + monthNames[start_date.getMonth()] + ' ' + start_date.getFullYear() + 
+        ' - ' + monthNames[end_date.getMonth()] + ' ' + end_date.getFullYear() + ')'
     var div;
     config.color = colorbrewer.Reds["9"];
     div = '<div id="variables" class="menu-ui"><select id="seltarget" autofocus><option value="Homicide">Homicide</option><option value="Violent robberies to a business">Violent robberies to a business</option><option value="Violent car robberies">Violent car robberies</option><option value="Non-violent car robberies">Non-violent car robberies</option><option value="Rape">Rape</option></select></div><h1>'+
         title + '</h1><h3>' +
-        (props ? props.sector + (mapType === "sectores" ? "" : " / " + props.cuadrante) : 'DF (Aug 13 - Jul 14)') +'</h3>' + '<div><h4>Total Population: ' +  (props ? '' + comma(props.population) : '8,785,874') +
+        (props ? props.sector + (mapType === "sectores" ? "" : " / " + props.cuadrante) : 'DF') +'</h3>' + '<h4>' +date_text + '</h4><div><h4>Total Population: ' +  (props ? '' + comma(props.population) : '8,785,874') +
         '</h4></div>' +
         '<table class="tg">' +
         '<tr>' +
@@ -311,10 +316,18 @@ var getStyle = function(feature) {
     };
     
 };
-
+var clickedFeature;
 function highlightFeature(e) {
+    if(clickedFeature){
+        clickedFeature.target.setStyle({
+	        fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
+                fillOpacity: 0.8,
+                weight: 0.5,
+                color: '#555'
+            });
+    }
+    clickedFeature = e;
     var layer = e.target;
-    
     layer.setStyle({
         //fillColor: 'transparent',
         weight: 5,
@@ -354,9 +367,9 @@ function resetHighlight(e) {
 
 function onEachFeature(feature, layer) {
     layer.on({
-        mouseover: highlightFeature,
+        //mouseover: highlightFeature,
         click: highlightFeature,
-        mouseout: resetHighlight
+        //mouseout: resetHighlight
     });
     
 }
@@ -385,9 +398,30 @@ $.getJSON(mapFile, function (data) {
     //    return(d3.extent(d3.entries(mxcGeojson), function(d){return(+d.value.properties[name])} ));
     //}
     var api_url;
-    mapType === 'sectores' ? api_url = '/api/v1/list/sectores/all' : api_url = '/api/v1/list/cuadrantes/all';
-    $.getJSON(api_url, function (list) {
+    mapType === 'sectores' ? api_url = '/api/v1/sectores/crimes/all/period' : api_url = '/api/v1/cuadrantes/crimes/all/period';
+    d3.json(api_url, function (list) {
         mapData = list
+        d3.json('/api/v1/df/crimes/all/series', function(series){
+            calcTotal = function(crimeName) {
+                ar=_.where(series.rows, {'crime': crimeName})
+                return  _.reduce(ar, function(memo, value){ 
+                    if(value.date >= mapData.rows[0].start_date) 
+                        return memo + value.count;
+                    else
+                        return 0;
+                }, 0); }
+            homTotal = calcTotal('homicidio doloso');
+            rncvTotal = calcTotal('robo a negocio c.v.');
+            rvcvTotal = calcTotal('robo de vehiculo automotor c.v.');
+            rvsvTotal = calcTotal('robo de vehiculo automotor s.v.');
+            violTotal = calcTotal('violacion');
+            homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
+            rncvTotalRate = Math.round(rncvTotal / 8785874 * 100000)/10;
+            rvcvTotalRate = Math.round(rvcvTotal / 8785874 * 100000)/10;
+            rvsvTotalRate = Math.round(rvsvTotal / 8785874 * 100000)/10;
+            violTotalRate =Math.round( violTotal / 8785874 * 100000)/10;
+            //homTotal = 823,rncvTotal = 3867,rvcvTotal = 6208,rvsvTotal = 10583,violTotal = 461,homTotalRate = 9.4,rncvTotalRate = 44,rvcvTotalRate = 70.7,rvsvTotalRate = 120.5,violTotalRate = 5.2
+        
         findRange=function(name) {
             var ext = d3.extent(mapData.rows, function(d) {
                 if(d.crime === name)
@@ -450,9 +484,22 @@ $.getJSON(mapFile, function (data) {
         L.control.locate({drawCircle: false, 
                           locateOptions: {enableHighAccuracy: true }}).addTo(map);
         var hash = new L.Hash(map);
+        //deselect any selected polygons when the user clicks on the map
+        map.on('click', function(e) { 
+            if(clickedFeature){
+                clickedFeature.target.setStyle({
+	            fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
+                    fillOpacity: 0.8,
+                    weight: 0.5,
+                    color: '#555'
+                });
+            }
+            clickedFeature = null;
+            info.update();
+        });
     });
 });
+})
 
 
-
-homTotal = 823,rncvTotal = 3867,rvcvTotal = 6208,rvsvTotal = 10583,violTotal = 461,homTotalRate = 9.4,rncvTotalRate = 44,rvcvTotalRate = 70.7,rvsvTotalRate = 120.5,violTotalRate = 5.2;
+;
