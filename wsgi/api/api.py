@@ -32,7 +32,7 @@ API = Blueprint('API', __name__, url_prefix='/api/v1')
 
 def make_cache_key(*args, **kwargs):
     # Make sure the cache distinguishes requests with different parameters
-    return request.path
+    return request.url
 
 class InvalidAPIUsage(Exception):
     status_code = 400
