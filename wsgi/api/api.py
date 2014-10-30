@@ -78,8 +78,8 @@ def ResultProxy_to_json(results):
             d = {}
             for i, key in enumerate(keys):
                 if key == "date":
-                    d["year"] = int(result[key][0:4])
-                    d["month"] = int(result[key][5:7])
+                    d["date"] = result[key][0:7]
+                    #d["month"] = int(result[key][5:7])
                 else:
                     d[key] = result[key]
             json_results.append(d)
@@ -96,8 +96,8 @@ def results_to_array(results):
             d = {}
             for i, key in enumerate(keys):
                 if key == "date":
-                    d["year"] = int(result[i][0:4])
-                    d["month"] = int(result[i][5:7])
+                    d["date"] = result[i][0:7]
+                    #d["month"] = int(result[i][5:7])
                 else:
                     d[key] = result[i]
             json_results.append(d)
