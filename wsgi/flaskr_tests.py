@@ -195,9 +195,11 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
+        #response = tester.get('/api/v1/sector/angel%20-%20zona%20rosa/crimes/robo%20a%20negocio%20c.v./series', content_type='application/json')
+        #self.assertEqual(response.status_code, 200)
 
     # Check the API endpoint
-    def test_api_v1_series_cuadrantes(self):
+    def test_api_v1_series_cuadrantes_crimes(self):
         base_url = '/api/v1/cuadrante/c-1.1.1/crimes/violacion/series'
         tester = app.test_client(self)
         response = tester.get(base_url, content_type='application/json')
@@ -211,7 +213,7 @@ class FlaskTestCase(unittest.TestCase):
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
-    def test_df_series(self):
+    def test_df_crimes_series(self):
         base_url = '/api/v1/df/crimes/violacion/series'
         tester = app.test_client(self)
         response = tester.get(base_url, content_type='application/json')
@@ -223,8 +225,7 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
-        response = tester.get('/api/v1/series/sector/angel%20-%20zona%20rosa/robo%20a%20negocio%20c.v.', content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+
 
     # Check the API endpoint
     def test_api_v1_pip_extras_(self):

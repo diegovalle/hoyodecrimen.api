@@ -589,7 +589,7 @@ def cuadrantes(crime, cuadrante):
 
 @API.route('/sector/<string:sector>'
            '/crimes/<string:crime>/'
-           'series/',
+           'series',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
