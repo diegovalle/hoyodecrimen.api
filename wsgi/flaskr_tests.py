@@ -86,27 +86,27 @@ class FlaskTestCase(unittest.TestCase):
     # Check the API endpoint
     def test_api_v1_enumerate_sectores(self):
         tester = app.test_client(self)
-        response = tester.get('/api/v1/sectores/enumerate', content_type='application/json')
+        response = tester.get('/api/v1/sectores', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_enumerate_cuadrantes(self):
         tester = app.test_client(self)
-        response = tester.get('/api/v1/cuadrantes/enumerate', content_type='application/json')
+        response = tester.get('/api/v1/cuadrantes', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_enumerate_crimes(self):
         tester = app.test_client(self)
-        response = tester.get('/api/v1/crimes/enumerate', content_type='application/json')
+        response = tester.get('/api/v1/crimes', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_list_change_cuadrantes_all(self):
-        base_url = '/api/v1/cuadrantes/crimes/all/period/change'
+        base_url = '/api/v1/cuadrantes/all/crimes/all/period/change'
         tester = app.test_client(self)
         response = tester.get(base_url + '?start_period1=2013-01&end_period1=2013-12&start_period2=2014-01&end_period2=2014-06', content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -135,7 +135,7 @@ class FlaskTestCase(unittest.TestCase):
 
     # Check the API endpoint
     def test_api_v1_list_sectores_all(self):
-        base_url = '/api/v1/sectores/crimes/all/period'
+        base_url = '/api/v1/sectores/all/crimes/all/period'
         tester = app.test_client(self)
         response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -156,7 +156,7 @@ class FlaskTestCase(unittest.TestCase):
 
     # Check the API endpoint
     def test_api_v1_list_cuadrantes_all(self):
-        base_url = '/api/v1/cuadrantes/crimes/all/period'
+        base_url = '/api/v1/cuadrantes/all/crimes/all/period'
         tester = app.test_client(self)
         response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -177,7 +177,7 @@ class FlaskTestCase(unittest.TestCase):
 
     # Check the API endpoint
     def test_api_v1_series_sectores_a(self):
-        base_url = '/api/v1/sector/angel%20-%20zona%20rosa/crimes/violacion/series'
+        base_url = '/api/v1/sectores/angel%20-%20zona%20rosa/crimes/violacion/series'
         tester = app.test_client(self)
         response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -200,7 +200,7 @@ class FlaskTestCase(unittest.TestCase):
 
     # Check the API endpoint
     def test_api_v1_series_cuadrantes_crimes(self):
-        base_url = '/api/v1/cuadrante/c-1.1.1/crimes/violacion/series'
+        base_url = '/api/v1/cuadrantes/c-1.1.1/crimes/violacion/series'
         tester = app.test_client(self)
         response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -230,14 +230,14 @@ class FlaskTestCase(unittest.TestCase):
     # Check the API endpoint
     def test_api_v1_pip_extras_(self):
         tester = app.test_client(self)
-        response = tester.get('/api/v1/pip/-99.13333/19.43/extras', content_type='application/json')
+        response = tester.get('/api/v1/cuadrantes/crimes/all/pip/-99.13333/19.43', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
     # Check the API endpoint
     def test_api_v1_pip(self):
         tester = app.test_client(self)
-        response = tester.get('/api/v1/pip/-99.13333/19.43', content_type='application/json')
+        response = tester.get('/api/v1/cuadrantes/pip/-99.13333/19.43', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
