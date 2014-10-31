@@ -13,6 +13,7 @@ from api.models import db, Cuadrantes, Cuadrantes_Poly
 #from api.api import API
 #from redis import Redis
 from api.api import API, cache
+from flask.ext.compress import Compress
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -22,6 +23,7 @@ db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
 
 cache.init_app(app)
+Compress(app)
 
 
 def add_response_headers(headers={}):
@@ -107,7 +109,7 @@ if __name__ == '__main__':
     if 'OPENSHIFT_APP_UUID' not in os.environ:
         app.config['PROFILE'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
-        debug=True
+        debug=False
     app.run(debug=debug)
 
 
