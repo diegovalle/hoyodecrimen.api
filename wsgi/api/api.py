@@ -609,12 +609,12 @@ def cuadrantes(cuadrante, crime):
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
 
     if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.cuadrante) == cuadrante]
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.cuadrante) == cuadrante,
                    func.upper(Cuadrantes.crime) == crime]
+    if cuadrante != "ALL":
+        filters.append(func.upper(Cuadrantes.cuadrante) == cuadrante)
 
     results = Cuadrantes.query. \
         filter(*filters). \
@@ -683,12 +683,13 @@ def sectors(crime, sector):
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
     if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.sector) == sector]
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.sector) == sector,
                    func.upper(Cuadrantes.crime) == crime]
+    if sector != "ALL":
+        filters.append(func.upper(Cuadrantes.sector) == sector)
+
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.upper(Cuadrantes.sector).label('sector'),
