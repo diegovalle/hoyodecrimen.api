@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask import Blueprint, Flask, jsonify, \
     request, abort, make_response, url_for, \
     send_from_directory, send_file, current_app
@@ -12,6 +11,7 @@ from geoalchemy2.elements import WKTElement
 import time
 import os
 from models import db, Cuadrantes, Cuadrantes_Poly
+import lib
 
 # Use redis if not running in Openshift
 if 'OPENSHIFT_APP_UUID' not in os.environ:
@@ -24,7 +24,7 @@ else:
         # 'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD']
         # +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'
         # + os.environ['OPENSHIFT_REDIS_PORT'],
-        'CACHE_DEFAULT_TIMEOUT': 2592000,
+        'CACHE_DEFAULT_TIMEOUT': 2592000, # One month
         'CACHE_REDIS_PASSWORD': os.environ['REDIS_PASSWORD'],
         'CACHE_REDIS_HOST': os.environ['OPENSHIFT_REDIS_HOST'],
         'CACHE_REDIS_PORT': os.environ['OPENSHIFT_REDIS_PORT'],
@@ -80,152 +80,7 @@ def jsonp(func):
     return decorated_function
 
 
-def ResultProxy_to_json(results):
-    json_results = []
-    keys = results.keys()
-    for result in results:
-            d = {}
-            for i, key in enumerate(keys):
-                if key == "date":
-                    d["date"] = result[key][0:7]
-                    #d["month"] = int(result[key][5:7])
-                else:
-                    d[key] = result[key]
-            json_results.append(d)
-    if not json_results:
-        raise InvalidAPIUsage("not found", 404)
-    return jsonify(rows=json_results)
 
-
-def results_to_array(results):
-    json_results = []
-    if len(results) > 0:
-        keys = results[0].keys()
-        for result in results:
-            d = {}
-            for i, key in enumerate(keys):
-                if key == "date":
-                    d["date"] = result[i][0:7]
-                    #d["month"] = int(result[i][5:7])
-                else:
-                    d[key] = result[i]
-            json_results.append(d)
-        return json_results
-    else:
-        raise InvalidAPIUsage('not found', 404)
-
-
-def results_to_json(results):
-    # response = jsonify({'code': 404,'message': 'No found'})
-    # response.status_code = 404
-    # return response
-    return jsonify(rows=results_to_array(results))
-
-
-def month_sub(date, months):
-    m = (int(date[5:7]) + months) % 12
-    y = int(date[0:4]) + ((int(date[5:7])) + months - 1) // 12
-    if not m:
-        m = 12
-    d = str(y) + '-' + str(m).zfill(2) + '-01'
-    return d
-
-
-def month_diff(d1, d2):
-    date1 = datetime.strptime(d1, '%Y-%m-01')
-    date2 = datetime.strptime(d2, '%Y-%m-01')
-    return (date1.year - date2.year) * 12 + date1.month - date2.month + 1
-
-
-def check_date_month(str):
-    try:
-        time.strptime(str, '%Y-%m-01')
-        valid = True
-        if str < '2013-01-01':
-            valid = False
-    except ValueError:
-        valid = False
-    return valid
-
-
-def check_float(str):
-    try:
-        float(str)
-        valid = True
-    except ValueError:
-        valid = False
-    return valid
-
-
-def check_periods(start_period1, start_period2, end_period1, end_period2):
-    start_period1 += '-01'
-    start_period2 += '-01'
-    end_period1 += '-01'
-    end_period2 += '-01'
-    if end_period1 != '-01' or end_period2 != '-01' or \
-       start_period1 != '-01' or \
-       start_period2 != '-01':
-        if not check_date_month(end_period1):
-            raise InvalidAPIUsage('something is wrong with the '
-                                  'end_period1 date you '
-                                  'provided')
-        if not check_date_month(end_period2):
-            raise InvalidAPIUsage('something is wrong with the '
-                                  'end_period2 date you '
-                                  'provided')
-        if not check_date_month(start_period1):
-            raise InvalidAPIUsage('something is wrong with the '
-                                  'start_period1 date you '
-                                  'provided')
-        if not check_date_month(start_period2):
-            raise InvalidAPIUsage('something is wrong with the '
-                                  'start_period2 date you '
-                                  'provided')
-        if end_period2 <= start_period2 or \
-           end_period1 <= start_period1 or \
-           start_period2 <= end_period1:
-            raise InvalidAPIUsage('date order not valid')
-        max_date = end_period2
-        max_date_minus3 = start_period2
-        max_date_last_year = end_period1
-        max_date_last_year_minus3 = start_period1
-    else:
-        max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-        max_date_minus3 = month_sub(max_date, -2)
-        max_date_last_year = month_sub(max_date, -12)
-        max_date_last_year_minus3 = month_sub(max_date, -14)
-    return max_date, max_date_minus3, \
-        max_date_last_year, \
-        max_date_last_year_minus3
-
-
-def check_dates(start_period, end_period, default_start=None):
-    start_period += '-01'
-    end_period += '-01'
-    if end_period != '-01' or start_period != '-01':
-        if not check_date_month(start_period):
-            raise InvalidAPIUsage('something is wrong with the '
-                                  'start_date date you provided')
-        if not check_date_month(end_period):
-            raise InvalidAPIUsage('something is wrong with the '
-                                  'end_date date you provided')
-        if start_period > end_period:
-            raise InvalidAPIUsage('date order not valid')
-        max_date = end_period
-        start_date = start_period
-    else:
-        max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-        if not default_start:
-            start_date = month_sub(max_date, -11)
-        else:
-            start_date = default_start
-    return start_date, max_date
 
 
 @API.route('/estariamosmejorcon', methods=['GET'])
@@ -300,9 +155,9 @@ def pip(long, lat):
     # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
     #                 FROM cuadrantes_poly
     #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
-    if not check_float(long):
+    if not lib.check_float(long):
         raise InvalidAPIUsage('something is wrong with the longitude you provided')
-    if not check_float(lat):
+    if not lib.check_float(lat):
         raise InvalidAPIUsage('something is wrong with the latitude you provided')
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
     results_pip = Cuadrantes_Poly.query. \
@@ -400,12 +255,12 @@ def frontpage(crime, long, lat):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = check_dates(start_date, end_date)
+    start_date, max_date = lib.check_dates(start_date, end_date)
 
-    if not check_float(long):
+    if not lib.check_float(long):
         raise InvalidAPIUsage('something is wrong with the longitude you provided')
         #abort(abort(make_response('something is wrong with the longitude you provided', 400)))
-    if not check_float(lat):
+    if not lib.check_float(lat):
         raise InvalidAPIUsage('something is wrong with the latitude you provided')
         #abort(abort(make_response('something is wrong with the latitude you provided', 400)))
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
@@ -476,9 +331,9 @@ def frontpage(crime, long, lat):
         results_cuad_last_year = []
         raise InvalidAPIUsage("You're not inside the Federal District provinciano", 404)
     return jsonify(pip=json_results,
-                   cuadrante=results_to_array(results_cuad),
-                   df_last_year=results_to_array(results_df_last_year),
-                   cuadrante_last_year=results_to_array(results_cuad_last_year))
+                   cuadrante=lib.results_to_array(results_cuad),
+                   df_last_year=lib.results_to_array(results_df_last_year),
+                   cuadrante_last_year=lib.results_to_array(results_cuad_last_year))
 
 
 @API.route('/df/crimes/<string:crime>/series',
@@ -531,7 +386,7 @@ def df_all(crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
-    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = lib.check_dates(start_date, end_date, '2013-01-01')
 
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
@@ -548,7 +403,7 @@ def df_all(crime):
         group_by(Cuadrantes.date, Cuadrantes.crime). \
         order_by(Cuadrantes.crime, Cuadrantes.date). \
         all()
-    return results_to_json(results)
+    return lib.results_to_json(results)
 
 
 @API.route('/cuadrantes/<string:cuadrante>'
@@ -606,7 +461,7 @@ def cuadrantes(cuadrante, crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
-    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = lib.check_dates(start_date, end_date, '2013-01-01')
 
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
@@ -626,7 +481,7 @@ def cuadrantes(cuadrante, crime):
                       Cuadrantes.population). \
         order_by(Cuadrantes.crime, Cuadrantes.date). \
         all()
-    return results_to_json(results)
+    return lib.results_to_json(results)
 
 
 @API.route('/sectores/<string:sector>'
@@ -681,7 +536,7 @@ def sectors(crime, sector):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = lib.check_dates(start_date, end_date, '2013-01-01')
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
@@ -700,7 +555,7 @@ def sectors(crime, sector):
         group_by(Cuadrantes.crime, Cuadrantes.date, Cuadrantes.sector). \
         order_by(Cuadrantes.crime, Cuadrantes.date). \
         all()
-    return results_to_json(results)
+    return lib.results_to_json(results)
 
 
 @API.route('/cuadrantes/<string:cuadrante>/crimes/<string:crime>/period',
@@ -757,7 +612,7 @@ def cuadrantes_sum_all(cuadrante, crime):
     cuadrante = cuadrante.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = check_dates(start_date, end_date)
+    start_date, max_date = lib.check_dates(start_date, end_date)
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
@@ -773,11 +628,11 @@ def cuadrantes_sum_all(cuadrante, crime):
                       func.upper(Cuadrantes.sector).label('sector'),
                       func.upper(Cuadrantes.crime).label('crime'),
                       func.sum(Cuadrantes.count).label("count"),
-                      func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
+                      func.sum(Cuadrantes.population).op("/")(lib.month_diff(max_date, start_date)).label("population")) \
         .group_by(Cuadrantes.crime, Cuadrantes.sector, Cuadrantes.cuadrante) \
         .order_by(Cuadrantes.crime, Cuadrantes.cuadrante) \
         .all()
-    return results_to_json(results)
+    return lib.results_to_json(results)
 
 
 @API.route('/sectores/<string:sector>/crimes/<string:crime>/period',
@@ -832,7 +687,7 @@ def sectores_sum_all(sector, crime):
     sector = sector.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = check_dates(start_date, end_date)
+    start_date, max_date = lib.check_dates(start_date, end_date)
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
@@ -847,11 +702,11 @@ def sectores_sum_all(sector, crime):
                       func.upper(Cuadrantes.sector).label('sector'),
                       func.upper(Cuadrantes.crime).label('crime'),
                       func.sum(Cuadrantes.count).label("count"),
-                      func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
+                      func.sum(Cuadrantes.population).op("/")(lib.month_diff(max_date, start_date)).label("population")) \
         .group_by(Cuadrantes.crime, Cuadrantes.sector) \
         .order_by(Cuadrantes.crime, Cuadrantes.sector) \
         .all()
-    return results_to_json(results)
+    return lib.results_to_json(results)
 
 
 @API.route('/cuadrantes/<string:cuadrante>/crimes/<string:crime>/period/change',
@@ -915,7 +770,7 @@ def cuadrantes_change_sum_all(cuadrante, crime):
     start_period2 = request.args.get('start_period2', '', type=str)
     end_period1 = request.args.get('end_period1', '', type=str)
     end_period2 = request.args.get('end_period2', '', type=str)
-    max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3 = check_periods(start_period1,
+    max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3 = lib.check_periods(start_period1,
                                                                                              start_period2,
                                                                                              end_period1,
                                                                                              end_period2)
@@ -945,7 +800,7 @@ def cuadrantes_change_sum_all(cuadrante, crime):
                                  'max_date_last_year_minus3': max_date_last_year_minus3,
                                  'crime': crime,
                                  'cuadrante': cuadrante})
-    return ResultProxy_to_json(results)
+    return lib.ResultProxy_to_json(results)
 
 
 @API.route('/crimes',
@@ -989,7 +844,7 @@ def listcrimes():
         order_by(Cuadrantes.crime). \
         distinct(). \
         all()
-    return results_to_json(results)
+    return lib.results_to_json(results)
 
 
 @API.route('/cuadrantes',
@@ -1036,7 +891,7 @@ def listcuadrantes():
         order_by(Cuadrantes.cuadrante). \
         distinct(). \
         all()
-    return results_to_json(results)
+    return lib.results_to_json(results)
 
 
 @API.route('/sectores',
@@ -1087,7 +942,7 @@ def listsectores():
         order_by(Cuadrantes.sector). \
         distinct(). \
         all()
-    return results_to_json(results)
+    return lib.results_to_json(results)
 
 
 @API.route('/cuadrantes/crimes/<string:crime>/top/counts',
@@ -1145,7 +1000,7 @@ def top5cuadrantes(crime):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = check_dates(start_date, end_date)
+    start_date, max_date = lib.check_dates(start_date, end_date)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
         raise InvalidAPIUsage('Rank must be greater than zero')
@@ -1170,7 +1025,7 @@ def top5cuadrantes(crime):
                                                                        'max_date': max_date,
                                                                        'crime': crime,
                                                                        'rank': rank})
-    return ResultProxy_to_json(results)
+    return lib.ResultProxy_to_json(results)
 
 
 @API.route('/sectores/crimes/<string:crime>/top/rates',
@@ -1229,7 +1084,7 @@ def top5sectores(crime):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = check_dates(start_date, end_date)
+    start_date, max_date = lib.check_dates(start_date, end_date)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
         raise InvalidAPIUsage('Rank must be greater than zero')
@@ -1253,9 +1108,9 @@ def top5sectores(crime):
     results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date': start_date,
                                                                        'max_date': max_date,
                                                                        'crime': crime,
-                                                                       'num_months': month_diff(max_date, start_date),
+                                                                       'num_months': lib.month_diff(max_date, start_date),
                                                                        'rank': rank})
-    return ResultProxy_to_json(results)
+    return lib.ResultProxy_to_json(results)
 
 
 @API.route('/cuadrantes/crimes/<string:crime>/top/counts/change',
@@ -1325,7 +1180,7 @@ def top5changecuadrantes(crime):
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
         raise InvalidAPIUsage('Rank must be greater than zero')
-    max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3 = check_periods(start_period1,
+    max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3 = lib.check_periods(start_period1,
                                                                                              start_period2,
                                                                                              end_period1,
                                                                                              end_period2)
@@ -1364,4 +1219,6 @@ def top5changecuadrantes(crime):
                                                                         'max_date_last_year_minus3': max_date_last_year_minus3,
                                                                         'crime': crime,
                                                                         'rank': rank})
-    return ResultProxy_to_json(results)
+    return lib.ResultProxy_to_json(results)
+
+
