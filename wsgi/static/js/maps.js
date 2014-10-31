@@ -110,7 +110,6 @@ createMap=function(df, svg, crime, crimeCode, colorFun, titleId, chart, topoNam,
                 obj = _.findWhere(cuadrantesMap.rows, 
                                   {'sector': d.properties['sector'].toLowerCase(), 
                                    'crime':crimeCode})
-                console.log(obj)
                 return colorFun(obj['count'] / obj['population'] * 100000 )
             }
             else {
@@ -127,9 +126,9 @@ createMap=function(df, svg, crime, crimeCode, colorFun, titleId, chart, topoNam,
         .on("mouseout", tipFun.hide)
         .on("mousedown", function(d) {
             if(topoName === "sectores")
-                var url = "/api/v1/sector/" + encodeURIComponent(d.properties['sector'].toLocaleLowerCase()) + '/crimes';
+                var url = "/api/v1/sectores/" + encodeURIComponent(d.properties['sector'].toLocaleLowerCase()) + '/crimes';
             else
-                var url = "/api/v1/cuadrante/"+ encodeURIComponent(d.properties['cuadrante'].toLocaleLowerCase()) + '/crimes';
+                var url = "/api/v1/cuadrantes/"+ encodeURIComponent(d.properties['cuadrante'].toLocaleLowerCase()) + '/crimes';
             d3.json(url  + '/' + crimeCode + '/series', function(data) {
                 series = _.map(data.rows, function(x) {return summer(x)})
                 series.unshift(seriesName);
@@ -244,11 +243,11 @@ createLegend=function(selection, colorFun){
 // var crimeFile = "js/hom-dol-cuad.js";
 d3.json(mapFile, function(error, df) {      
     if(topoName == "sectores")
-        var url = "/api/v1/sectores/crimes/all/period";
+        var url = "/api/v1/sectores/all/crimes/all/period";
     else if (topoName == "cuadrantes")
-        var url = "/api/v1/cuadrantes/crimes/all/period";
+        var url = "/api/v1/cuadrantes/all/crimes/all/period";
     else
-        var url = "/api/v1/cuadrantes/crimes/all/period/change";
+        var url = "/api/v1/cuadrantes/all/crimes/all/period/change";
     d3.json('/api/v1/df/crimes/all/series', function(data) {
         d3.json(url, function(cuadrantes){
             cuadrantesMap =cuadrantes;
