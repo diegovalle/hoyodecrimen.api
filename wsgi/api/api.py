@@ -1,5 +1,7 @@
 from datetime import datetime
-from flask import Blueprint, Flask, jsonify, request, abort, make_response, url_for, send_from_directory,send_file, current_app
+from flask import Blueprint, Flask, jsonify, \
+    request, abort, make_response, url_for, \
+    send_from_directory, send_file, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy import func, and_
@@ -14,13 +16,15 @@ from models import db, Cuadrantes, Cuadrantes_Poly
 # Use redis if not running in Openshift
 if 'OPENSHIFT_APP_UUID' not in os.environ:
     cache = Cache(config={
-        'CACHE_TYPE': 'null' #or simple
+        'CACHE_TYPE': 'null'  # or simple
     })
 else:
     cache = Cache(config={
         'CACHE_TYPE': 'redis',
-        #'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD'] +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'+ os.environ['OPENSHIFT_REDIS_PORT'],
-        'CACHE_DEFAULT_TIMEOUT': 2592000 ,
+        # 'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD']
+        # +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'
+        # + os.environ['OPENSHIFT_REDIS_PORT'],
+        'CACHE_DEFAULT_TIMEOUT': 2592000,
         'CACHE_REDIS_PASSWORD': os.environ['REDIS_PASSWORD'],
         'CACHE_REDIS_HOST': os.environ['OPENSHIFT_REDIS_HOST'],
         'CACHE_REDIS_PORT': os.environ['OPENSHIFT_REDIS_PORT'],
@@ -30,9 +34,11 @@ else:
 
 API = Blueprint('API', __name__, url_prefix='/api/v1')
 
+
 def make_cache_key(*args, **kwargs):
     # Make sure the cache distinguishes requests with different parameters
     return request.url
+
 
 class InvalidAPIUsage(Exception):
     status_code = 400
@@ -49,6 +55,7 @@ class InvalidAPIUsage(Exception):
         rv['error'] = self.message
         return rv
 
+
 @API.errorhandler(InvalidAPIUsage)
 def invalid_usage(error):
     response = jsonify(error.to_dict())
@@ -56,6 +63,7 @@ def invalid_usage(error):
     #h = response.headers
     #h['Access-Control-Allow-Origin'] = "*"
     return response
+
 
 def jsonp(func):
     """Wraps JSONified output for JSONP requests."""
@@ -71,6 +79,7 @@ def jsonp(func):
             return func(*args, **kwargs)
     return decorated_function
 
+
 def ResultProxy_to_json(results):
     json_results = []
     keys = results.keys()
@@ -83,9 +92,9 @@ def ResultProxy_to_json(results):
                 else:
                     d[key] = result[key]
             json_results.append(d)
-    if json_results == []:
+    if not json_results:
         raise InvalidAPIUsage("not found", 404)
-    return jsonify(rows = json_results)
+    return jsonify(rows=json_results)
 
 
 def results_to_array(results):
@@ -105,11 +114,13 @@ def results_to_array(results):
     else:
         raise InvalidAPIUsage('not found', 404)
 
+
 def results_to_json(results):
     # response = jsonify({'code': 404,'message': 'No found'})
     # response.status_code = 404
     # return response
-    return jsonify(rows = results_to_array(results))
+    return jsonify(rows=results_to_array(results))
+
 
 def month_sub(date, months):
     m = (int(date[5:7]) + months) % 12
@@ -119,10 +130,12 @@ def month_sub(date, months):
     d = str(y) + '-' + str(m).zfill(2) + '-01'
     return d
 
+
 def month_diff(d1, d2):
     date1 = datetime.strptime(d1, '%Y-%m-01')
     date2 = datetime.strptime(d2, '%Y-%m-01')
     return (date1.year - date2.year) * 12 + date1.month - date2.month + 1
+
 
 def check_date_month(str):
     try:
@@ -134,6 +147,7 @@ def check_date_month(str):
         valid = False
     return valid
 
+
 def check_float(str):
     try:
         float(str)
@@ -142,20 +156,31 @@ def check_float(str):
         valid = False
     return valid
 
+
 def check_periods(start_period1, start_period2, end_period1, end_period2):
     start_period1 += '-01'
     start_period2 += '-01'
     end_period1 += '-01'
     end_period2 += '-01'
-    if end_period1 != '-01' or end_period2 != '-01' or start_period1 != '-01' or start_period2 != '-01':
+    if end_period1 != '-01' or end_period2 != '-01' or \
+       start_period1 != '-01' or \
+       start_period2 != '-01':
         if not check_date_month(end_period1):
-            raise InvalidAPIUsage('something is wrong with the end_period1 date you provided')
+            raise InvalidAPIUsage('something is wrong with the '
+                                  'end_period1 date you '
+                                  'provided')
         if not check_date_month(end_period2):
-            raise InvalidAPIUsage('something is wrong with the end_period2 date you provided')
+            raise InvalidAPIUsage('something is wrong with the '
+                                  'end_period2 date you '
+                                  'provided')
         if not check_date_month(start_period1):
-            raise InvalidAPIUsage('something is wrong with the start_period1 date you provided')
+            raise InvalidAPIUsage('something is wrong with the '
+                                  'start_period1 date you '
+                                  'provided')
         if not check_date_month(start_period2):
-            raise InvalidAPIUsage('something is wrong with the start_period2 date you provided')
+            raise InvalidAPIUsage('something is wrong with the '
+                                  'start_period2 date you '
+                                  'provided')
         if end_period2 <= start_period2 or \
            end_period1 <= start_period1 or \
            start_period2 <= end_period1:
@@ -172,31 +197,35 @@ def check_periods(start_period1, start_period2, end_period1, end_period2):
         max_date_minus3 = month_sub(max_date, -2)
         max_date_last_year = month_sub(max_date, -12)
         max_date_last_year_minus3 = month_sub(max_date, -14)
-    return max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3
+    return max_date, max_date_minus3, \
+        max_date_last_year, \
+        max_date_last_year_minus3
+
 
 def check_dates(start_period, end_period, default_start=None):
     start_period += '-01'
     end_period += '-01'
     if end_period != '-01' or start_period != '-01':
         if not check_date_month(start_period):
-            raise InvalidAPIUsage('something is wrong with the start_date date you provided')
+            raise InvalidAPIUsage('something is wrong with the '
+                                  'start_date date you provided')
         if not check_date_month(end_period):
-            raise InvalidAPIUsage('something is wrong with the end_date date you provided')
+            raise InvalidAPIUsage('something is wrong with the '
+                                  'end_date date you provided')
         if start_period > end_period:
             raise InvalidAPIUsage('date order not valid')
         max_date = end_period
         start_date = start_period
     else:
         max_date = Cuadrantes.query. \
-                filter(). \
-                with_entities(func.max(Cuadrantes.date).label('date')). \
-                scalar()
+            filter(). \
+            with_entities(func.max(Cuadrantes.date).label('date')). \
+            scalar()
         if not default_start:
             start_date = month_sub(max_date, -11)
         else:
             start_date = default_start
     return start_date, max_date
-
 
 
 @API.route('/estariamosmejorcon', methods=['GET'])
@@ -219,12 +248,13 @@ def estariamosmejorcon():
       Accept: application/json
 
     """
-    return(jsonify(rows = ['Calderon']))
+    return(jsonify(rows=['Calderon']))
+
 
 @API.route('/cuadrantes/pip/'
-          '<string:long>/'
-          '<string:lat>',
-          methods=['GET'])
+           '<string:long>/'
+           '<string:lat>',
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def pip(long, lat):
@@ -272,13 +302,11 @@ def pip(long, lat):
     #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
     if not check_float(long):
         raise InvalidAPIUsage('something is wrong with the longitude you provided')
-        #abort(abort(make_response('something is wrong with the longitude you provided', 400)))
     if not check_float(lat):
         raise InvalidAPIUsage('something is wrong with the latitude you provided')
-        #abort(abort(make_response('something is wrong with the latitude you provided', 400)))
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
     results_pip = Cuadrantes_Poly.query. \
-        filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom") == True). \
+        filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")). \
         with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
                       func.lower(Cuadrantes_Poly.sector).label("sector"),
                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
@@ -297,9 +325,9 @@ def pip(long, lat):
 
 
 @API.route('/cuadrantes/crimes/<string:crime>/pip/'
-          '<string:long>/'
-          '<string:lat>',
-          methods=['GET'])
+           '<string:long>/'
+           '<string:lat>',
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def frontpage(crime, long, lat):
@@ -370,7 +398,9 @@ def frontpage(crime, long, lat):
     #                 FROM cuadrantes_poly
     #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
     crime = crime.lower()
-
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    start_date, max_date = check_dates(start_date, end_date)
 
     if not check_float(long):
         raise InvalidAPIUsage('something is wrong with the longitude you provided')
@@ -380,7 +410,7 @@ def frontpage(crime, long, lat):
         #abort(abort(make_response('something is wrong with the latitude you provided', 400)))
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
     results_pip = Cuadrantes_Poly.query. \
-        filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom") == True). \
+        filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")). \
         with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
                       func.lower(Cuadrantes_Poly.sector).label("sector"),
                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
@@ -390,7 +420,7 @@ def frontpage(crime, long, lat):
             pip_filter = [func.lower(Cuadrantes.cuadrante) == results_pip[0]]
         else:
             pip_filter = [func.lower(Cuadrantes.crime) == crime,
-                      func.lower(Cuadrantes.cuadrante) == results_pip[0]]
+                          func.lower(Cuadrantes.cuadrante) == results_pip[0]]
         results_cuad = Cuadrantes.query. \
             filter(*pip_filter). \
             with_entities(func.lower(Cuadrantes.cuadrante).label('cuadrante'),
@@ -403,10 +433,10 @@ def frontpage(crime, long, lat):
             .all()
 
         # compare the cuadrante with the rest of the DF (last 12 months)
-        max_date = Cuadrantes.query. \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-        start_date = month_sub(max_date, -11)
+        # max_date = Cuadrantes.query. \
+        #     with_entities(func.max(Cuadrantes.date).label('date')). \
+        #     scalar()
+        # start_date = month_sub(max_date, -11)
 
         if crime == "all":
             filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
@@ -452,7 +482,7 @@ def frontpage(crime, long, lat):
 
 
 @API.route('/df/crimes/<string:crime>/series',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def df_all(crime):
@@ -503,7 +533,6 @@ def df_all(crime):
     # Needs to default to 2013-01 when the series starts instead of a year ago
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
 
-
     if crime == "all":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
                    ]
@@ -522,12 +551,10 @@ def df_all(crime):
     return results_to_json(results)
 
 
-
-
 @API.route('/cuadrantes/<string:cuadrante>'
-          '/crimes/<string:crime>/'
+           '/crimes/<string:crime>/'
            'series',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def cuadrantes(cuadrante, crime):
@@ -605,7 +632,7 @@ def cuadrantes(cuadrante, crime):
 @API.route('/sectores/<string:sector>'
            '/crimes/<string:crime>/'
            'series',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def sectors(crime, sector):
@@ -676,7 +703,7 @@ def sectors(crime, sector):
 
 
 @API.route('/cuadrantes/<string:cuadrante>/crimes/<string:crime>/period',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def cuadrantes_sum_all(cuadrante, crime):
@@ -739,8 +766,8 @@ def cuadrantes_sum_all(cuadrante, crime):
         filters.append(func.lower(Cuadrantes.cuadrante) == cuadrante)
     results = Cuadrantes.query. \
         filter(*filters). \
-        with_entities(func.substr(literal(start_date, type_=db.String),0,8).label('start_date'),
-                      func.substr(literal(max_date, type_=db.String),0,8).label('end_date'),
+        with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
+                      func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
                       func.lower(Cuadrantes.cuadrante).label('cuadrante'),
                       func.lower(Cuadrantes.sector).label('sector'),
                       func.lower(Cuadrantes.crime).label('crime'),
@@ -753,7 +780,7 @@ def cuadrantes_sum_all(cuadrante, crime):
 
 
 @API.route('/sectores/<string:sector>/crimes/<string:crime>/period',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def sectores_sum_all(sector, crime):
@@ -814,8 +841,8 @@ def sectores_sum_all(sector, crime):
         filters.append(func.lower(Cuadrantes.sector) == sector)
     results = Cuadrantes.query. \
         filter(*filters). \
-        with_entities(func.substr(literal(start_date, type_=db.String),0,8).label('start_date'),
-                      func.substr(literal(max_date, type_=db.String),0,8).label('end_date'),
+        with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
+                      func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
                       func.lower(Cuadrantes.sector).label('sector'),
                       func.lower(Cuadrantes.crime).label('crime'),
                       func.sum(Cuadrantes.count).label("count"),
@@ -826,9 +853,8 @@ def sectores_sum_all(sector, crime):
     return results_to_json(results)
 
 
-
 @API.route('/cuadrantes/<string:cuadrante>/crimes/<string:crime>/period/change',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def cuadrantes_change_sum_all(cuadrante, crime):
@@ -913,17 +939,16 @@ def cuadrantes_change_sum_all(cuadrante, crime):
     sql_query4 = """group by cuadrante, sector, crime
                         order by crime asc, difference desc, cuadrante asc"""
     results = db.session.execute(sql_query1 + sql_query2 + sql_query3 + sql_query4, {'max_date': max_date,
-                                                                        'max_date_minus3': max_date_minus3,
-                                                                        'max_date_last_year': max_date_last_year,
-                                                                        'max_date_last_year_minus3': max_date_last_year_minus3,
-                                                                        'crime': crime,
-                                                                        'cuadrante': cuadrante})
+                                 'max_date_minus3': max_date_minus3,
+                                 'max_date_last_year': max_date_last_year,
+                                 'max_date_last_year_minus3': max_date_last_year_minus3,
+                                 'crime': crime,
+                                 'cuadrante': cuadrante})
     return ResultProxy_to_json(results)
 
 
-
 @API.route('/crimes',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def listcrimes():
@@ -967,7 +992,7 @@ def listcrimes():
 
 
 @API.route('/cuadrantes',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def listcuadrantes():
@@ -1014,7 +1039,7 @@ def listcuadrantes():
 
 
 @API.route('/sectores',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def listsectores():
@@ -1064,9 +1089,8 @@ def listsectores():
     return results_to_json(results)
 
 
-
 @API.route('/cuadrantes/crimes/<string:crime>/top/counts',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def top5cuadrantes(crime):
@@ -1149,7 +1173,7 @@ def top5cuadrantes(crime):
 
 
 @API.route('/sectores/crimes/<string:crime>/top/rates',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def top5sectores(crime):
@@ -1234,7 +1258,7 @@ def top5sectores(crime):
 
 
 @API.route('/cuadrantes/crimes/<string:crime>/top/counts/change',
-          methods=['GET'])
+           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def top5changecuadrantes(crime):
@@ -1340,4 +1364,3 @@ def top5changecuadrantes(crime):
                                                                         'crime': crime,
                                                                         'rank': rank})
     return ResultProxy_to_json(results)
-
