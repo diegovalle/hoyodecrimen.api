@@ -679,8 +679,8 @@ def sectors(crime, sector):
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
-def cuadrantes_sum_all2(crime):
-    """Return the sum of crimes that occurred in a particular or in all cuadrantes for a specified period of time
+def cuadrantes_sum_all(cuadrante, crime):
+    """Return the sum of crimes that occurred in each cuadrante for a specified period of time
 
     By default it returns the sum of crimes during the last 12 months for all the cuadrantes in the database
 
@@ -726,7 +726,7 @@ def cuadrantes_sum_all2(crime):
 
     """
     crime = crime.lower()
-    #cuadrante = cuadrante.lower()
+    cuadrante = cuadrante.lower()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
@@ -735,8 +735,8 @@ def cuadrantes_sum_all2(crime):
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
                    func.lower(Cuadrantes.crime) == crime]
-    #if cuadrante != all:
-    #    filters.append(func.lower(Cuadrantes.cuadrante) == cuadrante)
+    if cuadrante != "all":
+        filters.append(func.lower(Cuadrantes.cuadrante) == cuadrante)
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.substr(literal(start_date, type_=db.String),0,8).label('start_date'),
