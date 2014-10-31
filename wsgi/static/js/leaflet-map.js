@@ -109,12 +109,12 @@ setChange = function(){
         mxc.eachLayer(function(layer) {
             if(mapType === 'sectores') {
                 obj = _.findWhere(mapData.rows, 
-                                  {'sector': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 
-                                   'crime':config.currentName})
+                                  {'sector': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+                                   'crime':config.currentName.toUpperCase()})
             } else {
                 obj = _.findWhere(mapData.rows, 
-                                  {'cuadrante': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 
-                                   'crime':config.currentName})
+                                  {'cuadrante': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+                                   'crime':config.currentName.toUpperCase()})
             }
             layer.setStyle({
                 fillColor:  mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
@@ -182,37 +182,37 @@ info.update = function (feature) {
     if(feature) {
         props = {};
         if(mapType === 'sectores') {
-            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'homicidio doloso'});
+            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'HOMICIDIO DOLOSO'});
         } else {
-            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'homicidio doloso'});
+            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'HOMICIDIO DOLOSO'});
         }
         props.hom_rate = Math.round(obj['count'] / obj['population'] * 100000 * 10) / 10;
         props.hom_count = obj['count'];
         if(mapType === 'sectores') {
-            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'robo a negocio c.v.'});
+            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'ROBO A NEGOCIO C.V.'});
         } else {
-            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'robo a negocio c.v.'});
+            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'ROBO A NEGOCIO C.V.'});
         }
         props.rncv_rate = Math.round(obj['count'] / obj['population'] * 100000 * 10) / 10;
         props.rncv_count = obj['count'];
         if(mapType === 'sectores') {
-            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'robo de vehiculo automotor c.v.'});
+            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'ROBO DE VEHICULO AUTOMOTOR C.V.'});
         } else {
-            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'robo de vehiculo automotor c.v.'});
+            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'ROBO DE VEHICULO AUTOMOTOR C.V.'});
         }
         props.rvcv_rate = Math.round(obj['count'] / obj['population'] * 100000 * 10) / 10;
         props.rvcv_count = obj['count'];
         if(mapType === 'sectores') {
-            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'robo de vehiculo automotor s.v.'});
+            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'ROBO DE VEHICULO AUTOMOTOR S.V.'});
         } else {
-            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'robo de vehiculo automotor s.v.'});
+            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'ROBO DE VEHICULO AUTOMOTOR S.V.'});
         }
         props.rvsv_rate = Math.round(obj['count'] / obj['population'] * 100000 * 10) / 10;
         props.rvsv_count = obj['count'];
         if(mapType === 'sectores') {
-            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'violacion'});
+            obj = _.find(mapData.rows, {'sector': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'VIOLACION'});
         } else {
-            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 'crime': 'violacion'});
+            obj = _.find(mapData.rows, {'cuadrante': feature[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 'crime': 'VIOLACION'});
         }
         props.viol_rate = Math.round(obj['count'] / obj['population'] * 100000 * 10) / 10;
         props.viol_count = obj['count'];
@@ -299,12 +299,12 @@ info.update = function (feature) {
 var getStyle = function(feature) {
     if(mapType === 'sectores') {
         obj = _.findWhere(mapData.rows, 
-                          {'sector': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 
-                           'crime':config.currentName})
+                          {'sector': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+                           'crime':config.currentName.toUpperCase()})
     } else {
         obj = _.findWhere(mapData.rows, 
-                          {'cuadrante': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 
-                           'crime':config.currentName})
+                          {'cuadrante': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+                           'crime':config.currentName.toUpperCase()})
     }
     
     return {
@@ -348,13 +348,13 @@ function resetHighlight(e) {
     if(mapType === 'sectores') {
         obj = _.findWhere(mapData.rows, 
                           {'sector': e.target.feature.
-                           properties[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 
-                           'crime':config.currentName})
+                           properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+                           'crime':config.currentName.toUpperCase()})
     } else {
         obj = _.findWhere(mapData.rows, 
                           {'cuadrante': e.target.feature.
-                           properties[mapType === "sectores" ? "sector" : "cuadrante"].toLowerCase(), 
-                           'crime':config.currentName})
+                           properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+                           'crime':config.currentName.toUpperCase()})
     }
     e.target.setStyle({
 	fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
@@ -398,12 +398,12 @@ $.getJSON(mapFile, function (data) {
     //    return(d3.extent(d3.entries(mxcGeojson), function(d){return(+d.value.properties[name])} ));
     //}
     var api_url;
-    mapType === 'sectores' ? api_url = '/api/v1/sectores/crimes/all/period' : api_url = '/api/v1/cuadrantes/crimes/all/period';
+    mapType === 'sectores' ? api_url = '/api/v1/sectores/all/crimes/all/period' : api_url = '/api/v1/cuadrantes/all/crimes/all/period';
     d3.json(api_url, function (list) {
         mapData = list
         d3.json('/api/v1/df/crimes/all/series', function(series){
             calcTotal = function(crimeName) {
-                ar=_.where(series.rows, {'crime': crimeName})
+                ar=_.where(series.rows, {'crime': crimeName.toUpperCase()})
                 return  _.reduce(ar, function(memo, value){ 
                     if(value.date >= mapData.rows[0].start_date) 
                         return memo + value.count;
@@ -423,6 +423,7 @@ $.getJSON(mapFile, function (data) {
             //homTotal = 823,rncvTotal = 3867,rvcvTotal = 6208,rvsvTotal = 10583,violTotal = 461,homTotalRate = 9.4,rncvTotalRate = 44,rvcvTotalRate = 70.7,rvsvTotalRate = 120.5,violTotalRate = 5.2
         
         findRange=function(name) {
+            name = name.toUpperCase();
             var ext = d3.extent(mapData.rows, function(d) {
                 if(d.crime === name)
                     if(mapType === "sectores")
