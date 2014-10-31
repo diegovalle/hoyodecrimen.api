@@ -12,6 +12,7 @@ import time
 import os
 from models import db, Cuadrantes, Cuadrantes_Poly
 import lib
+from lib import InvalidAPIUsage
 
 # Use redis if not running in Openshift
 if 'OPENSHIFT_APP_UUID' not in os.environ:
@@ -38,23 +39,6 @@ API = Blueprint('API', __name__, url_prefix='/api/v1')
 def make_cache_key(*args, **kwargs):
     # Make sure the cache distinguishes requests with different parameters
     return request.url
-
-
-class InvalidAPIUsage(Exception):
-    status_code = 400
-
-    def __init__(self, message, status_code=None, payload=None):
-        Exception.__init__(self)
-        self.message = message
-        if status_code is not None:
-            self.status_code = status_code
-        self.payload = payload
-
-    def to_dict(self):
-        rv = dict(self.payload or ())
-        rv['error'] = self.message
-        return rv
-
 
 @API.errorhandler(InvalidAPIUsage)
 def invalid_usage(error):
