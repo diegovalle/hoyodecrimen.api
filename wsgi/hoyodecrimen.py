@@ -25,7 +25,7 @@ db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
 
 cache.init_app(app)
-Compress(app)
+
 
 
 def add_response_headers(headers={}):
@@ -121,8 +121,11 @@ if __name__ == '__main__':
     db.create_all()
 
     debug = False
+    # Running locally
     if 'OPENSHIFT_APP_UUID' not in os.environ:
         app.config['PROFILE'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
         debug = False
+    else:
+        Compress(app)
     app.run(debug=debug)

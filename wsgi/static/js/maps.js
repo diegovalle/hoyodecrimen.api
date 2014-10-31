@@ -73,13 +73,13 @@ tip = function(crimeCode) {
     .offset([0, 10])
     .html(function(d) {
         if (topoName === "sectores") {
-            obj = _.findWhere(cuadrantesMap.rows, {'sector': d.properties['sector'].toLowerCase(), 'crime':crimeCode});
+            obj = _.findWhere(cuadrantesMap.rows, {'sector': d.properties['sector'].toUpperCase(), 'crime':crimeCode.toUpperCase()});
             rate = Math.round(obj['count'] / obj['population'] * 100000 * 10) / 10;
             return "<span>" + d.properties.sector + (topoName === "sectores" ? "" : " - " + d.properties.cuadrante) + 
                 " ⇨ " + rate + "</span>";
         }
         else {
-            obj = _.findWhere(cuadrantesMap.rows, {'cuadrante': d.properties['cuadrante'].toLowerCase(), 'crime':crimeCode});
+            obj = _.findWhere(cuadrantesMap.rows, {'cuadrante': d.properties['cuadrante'].toUpperCase(), 'crime':crimeCode.toUpperCase()});
             rate = obj[topoName === 'cuadrantes' ? 'count' : 'difference'];
             return "<span>" + d.properties.sector + (topoName === "sectores" ? "" : " - " + d.properties.cuadrante) + 
                 " ⇨ " + rate + "</span>";
@@ -108,14 +108,14 @@ createMap=function(df, svg, crime, crimeCode, colorFun, titleId, chart, topoNam,
         .attr("class", function(d) { 
             if (topoName === "sectores") {
                 obj = _.findWhere(cuadrantesMap.rows, 
-                                  {'sector': d.properties['sector'].toLowerCase(), 
-                                   'crime':crimeCode})
+                                  {'sector': d.properties['sector'].toUpperCase(), 
+                                   'crime':crimeCode.toUpperCase()})
                 return colorFun(obj['count'] / obj['population'] * 100000 )
             }
             else {
                 obj = _.findWhere(cuadrantesMap.rows, 
-                                  {'cuadrante': d.properties['cuadrante'].toLowerCase(), 
-                                   'crime':crimeCode})
+                                  {'cuadrante': d.properties['cuadrante'].toUpperCase(), 
+                                   'crime':crimeCode.toUpperCase()})
                 return colorFun(obj[topoName === 'cuadrantes' ? 'count' : 'difference'] )
             }
             
@@ -126,9 +126,9 @@ createMap=function(df, svg, crime, crimeCode, colorFun, titleId, chart, topoNam,
         .on("mouseout", tipFun.hide)
         .on("mousedown", function(d) {
             if(topoName === "sectores")
-                var url = "/api/v1/sectores/" + encodeURIComponent(d.properties['sector'].toLocaleLowerCase()) + '/crimes';
+                var url = "/api/v1/sectores/" + encodeURIComponent(d.properties['sector'].toUpperCase()) + '/crimes';
             else
-                var url = "/api/v1/cuadrantes/"+ encodeURIComponent(d.properties['cuadrante'].toLocaleLowerCase()) + '/crimes';
+                var url = "/api/v1/cuadrantes/"+ encodeURIComponent(d.properties['cuadrante'].toUpperCase()) + '/crimes';
             d3.json(url  + '/' + crimeCode + '/series', function(data) {
                 series = _.map(data.rows, function(x) {return summer(x)})
                 series.unshift(seriesName);
@@ -257,15 +257,15 @@ d3.json(mapFile, function(error, df) {
             summer = crimeCounts;
         
         byCrime = _.groupBy(data.rows, 'crime')
-        HomicidesA = _.map(byCrime['homicidio doloso'], function(x) {return summer(x)})
+        HomicidesA = _.map(byCrime['HOMICIDIO DOLOSO'], function(x) {return summer(x)})
         HomicidesA.unshift('Homicides')
-        rncvA = _.map(byCrime['robo a negocio c.v.'], function(x) {return summer(x)})
+        rncvA = _.map(byCrime['ROBO A NEGOCIO C.V.'], function(x) {return summer(x)})
         rncvA.unshift('Violent robberies to a business')
-        rvcvA = _.map(byCrime['robo de vehiculo automotor c.v.'], function(x) {return summer(x)})
+        rvcvA = _.map(byCrime['ROBO DE VEHICULO AUTOMOTOR C.V.'], function(x) {return summer(x)})
         rvcvA.unshift('Violent car robberies')
-        rvsvA = _.map(byCrime['robo de vehiculo automotor s.v.'], function(x) {return summer(x)})
+        rvsvA = _.map(byCrime['ROBO DE VEHICULO AUTOMOTOR S.V.'], function(x) {return summer(x)})
         rvsvA.unshift('Non-violent car robberies')
-        violA = _.map(byCrime['violacion'], function(x) {return summer(x)})
+        violA = _.map(byCrime['VIOLACION'], function(x) {return summer(x)})
         violA.unshift('Rape')
 
         chartHomicides = createLineChart('#chart-homicide',
@@ -291,6 +291,7 @@ d3.json(mapFile, function(error, df) {
         
         
         findRange=function(name) {
+            name = name.toUpperCase();
             var ext = d3.extent(cuadrantesMap.rows, function(d) {
                 if(d.crime === name) { 
                     if(topoName === "sectores")

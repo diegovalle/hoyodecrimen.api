@@ -307,8 +307,8 @@ def pip(long, lat):
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
     results_pip = Cuadrantes_Poly.query. \
         filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")). \
-        with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
-                      func.lower(Cuadrantes_Poly.sector).label("sector"),
+        with_entities(func.upper(Cuadrantes_Poly.id.label("cuadrante")),
+                      func.upper(Cuadrantes_Poly.sector).label("sector"),
                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
         first()
     if (results_pip is not None):
@@ -397,7 +397,7 @@ def frontpage(crime, long, lat):
     # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
     #                 FROM cuadrantes_poly
     #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
-    crime = crime.lower()
+    crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
@@ -411,21 +411,21 @@ def frontpage(crime, long, lat):
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
     results_pip = Cuadrantes_Poly.query. \
         filter(func.ST_Contains(Cuadrantes_Poly.geom, point).label("geom")). \
-        with_entities(func.lower(Cuadrantes_Poly.id.label("cuadrante")),
-                      func.lower(Cuadrantes_Poly.sector).label("sector"),
+        with_entities(func.upper(Cuadrantes_Poly.id.label("cuadrante")),
+                      func.upper(Cuadrantes_Poly.sector).label("sector"),
                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
         first()
     if (results_pip is not None):
-        if crime == "all":
-            pip_filter = [func.lower(Cuadrantes.cuadrante) == results_pip[0]]
+        if crime == "ALL":
+            pip_filter = [func.upper(Cuadrantes.cuadrante) == results_pip[0]]
         else:
-            pip_filter = [func.lower(Cuadrantes.crime) == crime,
-                          func.lower(Cuadrantes.cuadrante) == results_pip[0]]
+            pip_filter = [func.upper(Cuadrantes.crime) == crime,
+                          func.upper(Cuadrantes.cuadrante) == results_pip[0]]
         results_cuad = Cuadrantes.query. \
             filter(*pip_filter). \
-            with_entities(func.lower(Cuadrantes.cuadrante).label('cuadrante'),
-                          func.lower(Cuadrantes.sector).label('sector'),
-                          func.lower(Cuadrantes.crime).label('crime'),
+            with_entities(func.upper(Cuadrantes.cuadrante).label('cuadrante'),
+                          func.upper(Cuadrantes.sector).label('sector'),
+                          func.upper(Cuadrantes.crime).label('crime'),
                           Cuadrantes.date,
                           Cuadrantes.count,
                           Cuadrantes.population) \
@@ -438,17 +438,17 @@ def frontpage(crime, long, lat):
         #     scalar()
         # start_date = month_sub(max_date, -11)
 
-        if crime == "all":
+        if crime == "ALL":
             filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                       func.lower(Cuadrantes.cuadrante) == results_pip[0]]
+                       func.upper(Cuadrantes.cuadrante) == results_pip[0]]
         else:
             filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                       func.lower(Cuadrantes.crime) == crime,
-                       func.lower(Cuadrantes.cuadrante) == results_pip[0]]
+                       func.upper(Cuadrantes.crime) == crime,
+                       func.upper(Cuadrantes.cuadrante) == results_pip[0]]
 
         results_df_last_year = Cuadrantes.query. \
             filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
-            with_entities(func.lower(Cuadrantes.crime).label('crime'),
+            with_entities(func.upper(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population).op("/")(12).label('population')). \
             group_by(Cuadrantes.crime). \
@@ -456,7 +456,7 @@ def frontpage(crime, long, lat):
             all()
         results_cuad_last_year = Cuadrantes.query. \
             filter(*filters). \
-            with_entities(func.lower(Cuadrantes.crime).label('crime'),
+            with_entities(func.upper(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population).label('population')). \
             group_by(Cuadrantes.crime). \
@@ -526,22 +526,22 @@ def df_all(crime):
       ...
 
     """
-    crime = crime.lower()
+    crime = crime.upper()
 
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
 
-    if crime == "all":
+    if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
                    ]
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.lower(Cuadrantes.crime) == crime]
+                   func.upper(Cuadrantes.crime) == crime]
     results = Cuadrantes.query. \
         filter(*filters). \
-        with_entities(func.lower(Cuadrantes.crime).label('crime'),
+        with_entities(func.upper(Cuadrantes.crime).label('crime'),
                       Cuadrantes.date,
                       func.sum(Cuadrantes.count).label('count'),
                       func.sum(Cuadrantes.population).label('population')). \
@@ -600,27 +600,27 @@ def cuadrantes(cuadrante, crime):
       ...
 
     """
-    cuadrante = cuadrante.lower()
-    crime = crime.lower()
+    cuadrante = cuadrante.upper()
+    crime = crime.upper()
 
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
 
-    if crime == "all":
+    if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.lower(Cuadrantes.cuadrante) == cuadrante]
+                   func.upper(Cuadrantes.cuadrante) == cuadrante]
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.lower(Cuadrantes.cuadrante) == cuadrante,
-                   func.lower(Cuadrantes.crime) == crime]
+                   func.upper(Cuadrantes.cuadrante) == cuadrante,
+                   func.upper(Cuadrantes.crime) == crime]
 
     results = Cuadrantes.query. \
         filter(*filters). \
-        with_entities(func.lower(Cuadrantes.cuadrante).label('cuadrante'),
-                      func.lower(Cuadrantes.sector).label('sector'),
-                      func.lower(Cuadrantes.crime).label('crime'),
+        with_entities(func.upper(Cuadrantes.cuadrante).label('cuadrante'),
+                      func.upper(Cuadrantes.sector).label('sector'),
+                      func.upper(Cuadrantes.crime).label('crime'),
                       Cuadrantes.date,
                       Cuadrantes.count,
                       Cuadrantes.population). \
@@ -677,22 +677,22 @@ def sectors(crime, sector):
       ...
 
     """
-    sector = sector.lower()
-    crime = crime.lower()
+    sector = sector.upper()
+    crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
-    if crime == "all":
+    if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.lower(Cuadrantes.sector) == sector]
+                   func.upper(Cuadrantes.sector) == sector]
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.lower(Cuadrantes.sector) == sector,
-                   func.lower(Cuadrantes.crime) == crime]
+                   func.upper(Cuadrantes.sector) == sector,
+                   func.upper(Cuadrantes.crime) == crime]
     results = Cuadrantes.query. \
         filter(*filters). \
-        with_entities(func.lower(Cuadrantes.sector).label('sector'),
-                      func.lower(Cuadrantes.crime).label('crime'),
+        with_entities(func.upper(Cuadrantes.sector).label('sector'),
+                      func.upper(Cuadrantes.crime).label('crime'),
                       Cuadrantes.date,
                       func.sum(Cuadrantes.count).label('count'),
                       func.sum(Cuadrantes.population).label('population')). \
@@ -752,25 +752,25 @@ def cuadrantes_sum_all(cuadrante, crime):
       ...
 
     """
-    crime = crime.lower()
-    cuadrante = cuadrante.lower()
+    crime = crime.upper()
+    cuadrante = cuadrante.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
-    if crime == "all":
+    if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.lower(Cuadrantes.crime) == crime]
-    if cuadrante != "all":
-        filters.append(func.lower(Cuadrantes.cuadrante) == cuadrante)
+                   func.upper(Cuadrantes.crime) == crime]
+    if cuadrante != "ALL":
+        filters.append(func.upper(Cuadrantes.cuadrante) == cuadrante)
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
                       func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
-                      func.lower(Cuadrantes.cuadrante).label('cuadrante'),
-                      func.lower(Cuadrantes.sector).label('sector'),
-                      func.lower(Cuadrantes.crime).label('crime'),
+                      func.upper(Cuadrantes.cuadrante).label('cuadrante'),
+                      func.upper(Cuadrantes.sector).label('sector'),
+                      func.upper(Cuadrantes.crime).label('crime'),
                       func.sum(Cuadrantes.count).label("count"),
                       func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
         .group_by(Cuadrantes.crime, Cuadrantes.sector, Cuadrantes.cuadrante) \
@@ -827,24 +827,24 @@ def sectores_sum_all(sector, crime):
       ...
 
     """
-    crime = crime.lower()
-    sector = sector.lower()
+    crime = crime.upper()
+    sector = sector.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
-    if crime == "all":
+    if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.lower(Cuadrantes.crime) == crime]
-    if sector != "all":
-        filters.append(func.lower(Cuadrantes.sector) == sector)
+                   func.upper(Cuadrantes.crime) == crime]
+    if sector != "ALL":
+        filters.append(func.upper(Cuadrantes.sector) == sector)
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
                       func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
-                      func.lower(Cuadrantes.sector).label('sector'),
-                      func.lower(Cuadrantes.crime).label('crime'),
+                      func.upper(Cuadrantes.sector).label('sector'),
+                      func.upper(Cuadrantes.crime).label('crime'),
                       func.sum(Cuadrantes.count).label("count"),
                       func.sum(Cuadrantes.population).op("/")(month_diff(max_date, start_date)).label("population")) \
         .group_by(Cuadrantes.crime, Cuadrantes.sector) \
@@ -908,8 +908,8 @@ def cuadrantes_change_sum_all(cuadrante, crime):
       ...
 
     """
-    crime = crime.lower()
-    cuadrante = cuadrante.lower()
+    crime = crime.upper()
+    cuadrante = cuadrante.upper()
     start_period1 = request.args.get('start_period1', '', type=str)
     start_period2 = request.args.get('start_period2', '', type=str)
     end_period1 = request.args.get('end_period1', '', type=str)
@@ -918,8 +918,8 @@ def cuadrantes_change_sum_all(cuadrante, crime):
                                                                                              start_period2,
                                                                                              end_period1,
                                                                                              end_period2)
-    sql_query1 = """select lower(crime) as crime, lower(cuadrante) as cuadrante,
-                               lower(sector) as sector, max(population) as population,
+    sql_query1 = """select upper(crime) as crime, upper(cuadrante) as cuadrante,
+                               upper(sector) as sector, max(population) as population,
                                substring(CAST(:max_date_minus3 AS text) for 7) as start_period2,
                                substring(CAST(:max_date AS text) for 7) as end_period2,
                                substring(CAST(:max_date_last_year AS text) for 7) as end_period1,
@@ -934,8 +934,8 @@ def cuadrantes_change_sum_all(cuadrante, crime):
                                                    THEN count ELSE 0 END) as difference
                                             from cuadrantes
                                             """
-    sql_query2 = "" if crime == "all" else " where lower(crime) = :crime "
-    sql_query3 = "" if cuadrante == "all" else " where lower(cuadrante) = :cuadrante "
+    sql_query2 = "" if crime == "ALL" else " where upper(crime) = :crime "
+    sql_query3 = "" if cuadrante == "ALL" else " where upper(cuadrante) = :cuadrante "
     sql_query4 = """group by cuadrante, sector, crime
                         order by crime asc, difference desc, cuadrante asc"""
     results = db.session.execute(sql_query1 + sql_query2 + sql_query3 + sql_query4, {'max_date': max_date,
@@ -984,7 +984,7 @@ def listcrimes():
       ...
    """
     results = Cuadrantes.query. \
-        with_entities(func.lower(Cuadrantes.crime).label('crime')). \
+        with_entities(func.upper(Cuadrantes.crime).label('crime')). \
         order_by(Cuadrantes.crime). \
         distinct(). \
         all()
@@ -1030,8 +1030,8 @@ def listcuadrantes():
       ...
     """
     results = Cuadrantes.query. \
-        with_entities(func.lower(Cuadrantes.sector).label('sector'),
-                      func.lower(Cuadrantes.cuadrante).label('cuadrante')). \
+        with_entities(func.upper(Cuadrantes.sector).label('sector'),
+                      func.upper(Cuadrantes.cuadrante).label('cuadrante')). \
         order_by(Cuadrantes.cuadrante). \
         distinct(). \
         all()
@@ -1082,7 +1082,7 @@ def listsectores():
     """
 
     results = Cuadrantes.query. \
-        with_entities(func.lower(Cuadrantes.sector).label('sector')). \
+        with_entities(func.upper(Cuadrantes.sector).label('sector')). \
         order_by(Cuadrantes.sector). \
         distinct(). \
         all()
@@ -1141,7 +1141,7 @@ def top5cuadrantes(crime):
       ...
 
     """
-    crime = crime.lower()
+    crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
@@ -1153,14 +1153,14 @@ def top5cuadrantes(crime):
                           (select sum(count) as count,sector,cuadrante,max(population)as population, crime
                           from cuadrantes
                           where date >= :start_date and date <= :max_date"""
-    sql_query2 = "" if crime == "all" else " and lower(crime) = :crime "
+    sql_query2 = "" if crime == "ALL" else " and upper(crime) = :crime "
     sql_query3 = """
                           group by cuadrante, sector, crime)
                        SELECT *
                        from
                           (SELECT substring(CAST(:start_date AS text) for 7) as start_period,
-                                  substring(CAST(:max_date AS text) for 7) as end_period, count,lower(crime) as crime,
-                                  lower(sector) as sector,lower(cuadrante) as cuadrante,
+                                  substring(CAST(:max_date AS text) for 7) as end_period, count,upper(crime) as crime,
+                                  upper(sector) as sector,upper(cuadrante) as cuadrante,
                                   rank() over (partition by crime order by count desc) as rank,population
                           from crimes group by count,crime,sector,cuadrante,population) as temp2
                           where rank <= :rank
@@ -1225,7 +1225,7 @@ def top5sectores(crime):
       ...
 
     """
-    crime = crime.lower()
+    crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
@@ -1238,13 +1238,13 @@ def top5sectores(crime):
                            sector,sum(population) / :num_months as population, crime
                            from cuadrantes
                            where date >= :start_date and date <= :max_date"""
-    sql_query2 = "" if crime == "all" else " and lower(crime) = :crime "
+    sql_query2 = "" if crime == "ALL" else " and upper(crime) = :crime "
     sql_query3 = """   group by sector, crime)
                        SELECT substring(CAST(start_period as text) for 7) as start_date, substring(end_period::text for 7) as end_date,
                                round(rate::numeric , 1)::float as rate, crime, sector, count, rank, population from
                            (SELECT :start_date as start_period, :max_date as end_period, count, rate,
-                                   lower(crime) as crime,
-                                   lower(sector) as sector,
+                                   upper(crime) as crime,
+                                   upper(sector) as sector,
                                    rank() over (partition by crime order by rate desc) as rank,population
                            from crimes
                            group by count,crime,sector,population, rate) as temp2
@@ -1316,7 +1316,7 @@ def top5changecuadrantes(crime):
       ...
 
     """
-    crime = crime.lower()
+    crime = crime.upper()
     start_period1 = request.args.get('start_period1', '', type=str)
     start_period2 = request.args.get('start_period2', '', type=str)
     end_period1 = request.args.get('end_period1', '', type=str)
@@ -1340,7 +1340,7 @@ def top5changecuadrantes(crime):
                                                    THEN count ELSE 0 END) as difference
                                             from cuadrantes
                                             """
-    sql_query2 = "" if crime == "all" else " where lower(crime) = :crime "
+    sql_query2 = "" if crime == "ALL" else " where upper(crime) = :crime "
     sql_query3 = """
                                             group by cuadrante, sector, crime)
                                         SELECT *
@@ -1350,8 +1350,8 @@ def top5changecuadrantes(crime):
                                                    substring(CAST(:max_date_last_year as text) for 7) as end_period1,
                                                    substring(CAST(:max_date_last_year_minus3 as text) for 7) as start_period1,
                                                    rank() over (partition by crime order by difference desc) as rank,
-                                                   lower(crime) as crime, lower(cuadrante) as cuadrante,
-                                                   lower(sector) as sector,population, period1_count, period2_count,
+                                                   upper(crime) as crime, upper(cuadrante) as cuadrante,
+                                                   upper(sector) as sector,population, period1_count, period2_count,
                                                    difference from difference
                                             group by difference,crime,sector,cuadrante, population,  period1_count, period2_count)
                                         as temp
