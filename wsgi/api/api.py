@@ -221,7 +221,7 @@ def estariamosmejorcon():
     """
     return(jsonify(rows = ['Calderon']))
 
-@API.route('/pip/'
+@API.route('/cuadrantes/pip/'
           '<string:long>/'
           '<string:lat>',
           methods=['GET'])
@@ -243,7 +243,7 @@ def pip(long, lat):
 
     .. sourcecode:: http
 
-      GET /api/v1/pip/-99.13333/19.43 HTTP/1.1
+      GET /api/v1/cuadrante/pip/-99.13333/19.43 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -296,14 +296,13 @@ def pip(long, lat):
     return jsonify(pip=json_results)
 
 
-@API.route('/pip/'
+@API.route('/cuadrantes/crimes/<string:crime>/pip/'
           '<string:long>/'
-          '<string:lat>/'
-          'extras',
+          '<string:lat>',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
-def frontpage(long, lat):
+def frontpage(crime, long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
     Returns a list containg the cuadrante polygon as GeoJSON, all the crimes that occurred in the cuadrante
@@ -323,7 +322,7 @@ def frontpage(long, lat):
 
     .. sourcecode:: http
 
-      GET /api/v1/pip/-99.13333/19.43/extras HTTP/1.1
+      GET /api/v1/cuadrante/crimes/all/pip/-99.13333/19.43 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -370,6 +369,9 @@ def frontpage(long, lat):
     # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
     #                 FROM cuadrantes_poly
     #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
+    crime = crime.lower()
+
+
     if not check_float(long):
         raise InvalidAPIUsage('something is wrong with the longitude you provided')
         #abort(abort(make_response('something is wrong with the longitude you provided', 400)))
@@ -384,8 +386,13 @@ def frontpage(long, lat):
                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
         first()
     if (results_pip is not None):
+        if crime == "all":
+            pip_filter = [func.lower(Cuadrantes.cuadrante) == results_pip[0]]
+        else:
+            pip_filter = [func.lower(Cuadrantes.crime) == crime,
+                      func.lower(Cuadrantes.cuadrante) == results_pip[0]]
         results_cuad = Cuadrantes.query. \
-            filter(func.lower(Cuadrantes.cuadrante) == results_pip[0]). \
+            filter(*pip_filter). \
             with_entities(func.lower(Cuadrantes.cuadrante).label('cuadrante'),
                           func.lower(Cuadrantes.sector).label('sector'),
                           func.lower(Cuadrantes.crime).label('crime'),
@@ -400,6 +407,15 @@ def frontpage(long, lat):
             with_entities(func.max(Cuadrantes.date).label('date')). \
             scalar()
         start_date = month_sub(max_date, -11)
+
+        if crime == "all":
+            filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                       func.lower(Cuadrantes.cuadrante) == results_pip[0]]
+        else:
+            filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                       func.lower(Cuadrantes.crime) == crime,
+                       func.lower(Cuadrantes.cuadrante) == results_pip[0]]
+
         results_df_last_year = Cuadrantes.query. \
             filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
             with_entities(func.lower(Cuadrantes.crime).label('crime'),
@@ -409,8 +425,7 @@ def frontpage(long, lat):
             order_by(Cuadrantes.crime). \
             all()
         results_cuad_last_year = Cuadrantes.query. \
-            filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date),
-                   func.lower(Cuadrantes.cuadrante) == results_pip[0]). \
+            filter(*filters). \
             with_entities(func.lower(Cuadrantes.crime).label('crime'),
                           func.sum(Cuadrantes.count).label('count'),
                           func.sum(Cuadrantes.population).label('population')). \
@@ -509,13 +524,13 @@ def df_all(crime):
 
 
 
-@API.route('/cuadrante/<string:cuadrante>'
+@API.route('/cuadrantes/<string:cuadrante>'
           '/crimes/<string:crime>/'
            'series',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
-def cuadrantes(crime, cuadrante):
+def cuadrantes(cuadrante, crime):
     """Return the count of crimes that occurred in a cuadrante, by date
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
@@ -533,7 +548,7 @@ def cuadrantes(crime, cuadrante):
 
     .. sourcecode:: http
 
-      GET /api/v1/cuadrante/c-1.1.1/crimes/violacion/series HTTP/1.1
+      GET /api/v1/cuadrantes/c-1.1.1/crimes/violacion/series HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -587,7 +602,7 @@ def cuadrantes(crime, cuadrante):
     return results_to_json(results)
 
 
-@API.route('/sector/<string:sector>'
+@API.route('/sectores/<string:sector>'
            '/crimes/<string:crime>/'
            'series',
           methods=['GET'])
@@ -611,7 +626,7 @@ def sectors(crime, sector):
 
     .. sourcecode:: http
 
-      GET /api/v1/sector/angel%20-%20zona%20rosa/crimes/violacion/series HTTP/1.1
+      GET /api/v1/sectores/angel%20-%20zona%20rosa/crimes/violacion/series HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -660,16 +675,17 @@ def sectors(crime, sector):
     return results_to_json(results)
 
 
-@API.route('/cuadrantes/crimes/<string:crime>/period',
+@API.route('/cuadrantes/<string:cuadrante>/crimes/<string:crime>/period',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
-def cuadrantes_sum_all(crime):
-    """Return the sum of crimes that occurred in each cuadrante for a specified period of time
+def cuadrantes_sum_all2(crime):
+    """Return the sum of crimes that occurred in a particular or in all cuadrantes for a specified period of time
 
     By default it returns the sum of crimes during the last 12 months for all the cuadrantes in the database
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
+    :param cuadrante: the name of the cuadrante or the keyword ``all` to return all cuadrantes
 
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
@@ -684,7 +700,7 @@ def cuadrantes_sum_all(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/cuadrantes/crimes/all/period HTTP/1.1
+      GET /api/v1/cuadrantes/all/crimes/all/period HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -710,6 +726,7 @@ def cuadrantes_sum_all(crime):
 
     """
     crime = crime.lower()
+    #cuadrante = cuadrante.lower()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
@@ -718,6 +735,8 @@ def cuadrantes_sum_all(crime):
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
                    func.lower(Cuadrantes.crime) == crime]
+    #if cuadrante != all:
+    #    filters.append(func.lower(Cuadrantes.cuadrante) == cuadrante)
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.substr(literal(start_date, type_=db.String),0,8).label('start_date'),
@@ -733,16 +752,17 @@ def cuadrantes_sum_all(crime):
     return results_to_json(results)
 
 
-@API.route('/sectores/crimes/<string:crime>/period',
+@API.route('/sectores/<string:sector>/crimes/<string:crime>/period',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
-def sectores_sum_all(crime):
-    """Return the sum of crimes that occurred in each sector for a specified period of time
+def sectores_sum_all(sector, crime):
+    """Return the sum of crimes that occurred in a particular or in all sectores for a specified period of time
 
     By default it returns the sum of crimes during the last 12 months for all the sectores in the database
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
+    :param sector: the name of the sector or the keyword ``all` to return all sectores
 
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
@@ -756,7 +776,7 @@ def sectores_sum_all(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/sectores/crimes/all/period HTTP/1.1
+      GET /api/v1/sectores/all/crimes/all/period HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -781,6 +801,7 @@ def sectores_sum_all(crime):
 
     """
     crime = crime.lower()
+    sector = sector.lower()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
@@ -789,6 +810,8 @@ def sectores_sum_all(crime):
     else:
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
                    func.lower(Cuadrantes.crime) == crime]
+    if sector != "all":
+        filters.append(func.lower(Cuadrantes.sector) == sector)
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.substr(literal(start_date, type_=db.String),0,8).label('start_date'),
@@ -804,16 +827,17 @@ def sectores_sum_all(crime):
 
 
 
-@API.route('/cuadrantes/crimes/<string:crime>/period/change',
+@API.route('/cuadrantes/<string:cuadrante>/crimes/<string:crime>/period/change',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
-def cuadrantes_change_sum_all(crime):
+def cuadrantes_change_sum_all(cuadrante, crime):
     """Return the change in crime counts for a specified period of time at the cuadrante level
 
     By default it returns the sum of crimes during the last 12 months
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
+    :param cuadrante: the name of the cuadrante or the keyword ``all` to return all cuadrantes
 
     :status 200: when the  change in crime counts is found
     :status 404: when the crime is not found in the database
@@ -829,7 +853,7 @@ def cuadrantes_change_sum_all(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/cuadrantes/crimes/all/period/change HTTP/1.1
+      GET /api/v1/cuadrantes/all/crimes/all/period/change HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -859,6 +883,7 @@ def cuadrantes_change_sum_all(crime):
 
     """
     crime = crime.lower()
+    cuadrante = cuadrante.lower()
     start_period1 = request.args.get('start_period1', '', type=str)
     start_period2 = request.args.get('start_period2', '', type=str)
     end_period1 = request.args.get('end_period1', '', type=str)
@@ -884,18 +909,20 @@ def cuadrantes_change_sum_all(crime):
                                             from cuadrantes
                                             """
     sql_query2 = "" if crime == "all" else " where lower(crime) = :crime "
-    sql_query3 = """group by cuadrante, sector, crime
+    sql_query3 = "" if cuadrante == "all" else " where lower(cuadrante) = :cuadrante "
+    sql_query4 = """group by cuadrante, sector, crime
                         order by crime asc, difference desc, cuadrante asc"""
-    results = db.session.execute(sql_query1 + sql_query2 + sql_query3, {'max_date': max_date,
+    results = db.session.execute(sql_query1 + sql_query2 + sql_query3 + sql_query4, {'max_date': max_date,
                                                                         'max_date_minus3': max_date_minus3,
                                                                         'max_date_last_year': max_date_last_year,
                                                                         'max_date_last_year_minus3': max_date_last_year_minus3,
-                                                                        'crime': crime})
+                                                                        'crime': crime,
+                                                                        'cuadrante': cuadrante})
     return ResultProxy_to_json(results)
 
 
 
-@API.route('/crimes/enumerate',
+@API.route('/crimes',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -910,7 +937,7 @@ def listcrimes():
 
    .. sourcecode:: http
 
-      GET /api/v1/crimes/enumerate HTTP/1.1
+      GET /api/v1/crimes HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -939,7 +966,7 @@ def listcrimes():
     return results_to_json(results)
 
 
-@API.route('/cuadrantes/enumerate',
+@API.route('/cuadrantes',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -954,7 +981,7 @@ def listcuadrantes():
 
     .. sourcecode:: http
 
-       GET /api/v1/cuadrantes/enumerate HTTP/1.1
+       GET /api/v1/cuadrantes HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
 
@@ -986,7 +1013,7 @@ def listcuadrantes():
     return results_to_json(results)
 
 
-@API.route('/sectores/enumerate',
+@API.route('/sectores',
           methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -1001,7 +1028,7 @@ def listsectores():
 
     .. sourcecode:: http
 
-      GET /api/v1/sectores/enumerate HTTP/1.1
+      GET /api/v1/sectores HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
