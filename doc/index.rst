@@ -68,32 +68,32 @@ What's available
 ================
 
 
-+------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
-| Service                | Action                                              | URI                                                                         | 
-|                        |                                                     |                                                                             |
-+========================+=====================================================+=============================================================================+
-| Point in Polygon       | Given a longitude and latitude return the           | | **/api/v1/pip/(string: long)/(string: lat)**                              |
-|                        | corresponding cuadrante and sector                  | | **/api/v1/pip/(string: long)/(string: lat)/extras**                       |
-+------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
-| Time Series            | Crimes counts ordered by month of occurrence for a  | | **/api/v1/sector/(string: sector)/crimes/(string: crime)/series/**        |
-|                        | single cuadrante or sector                          | | **/api/v1/cuadrante/(string: cuadrante)/crimes/(string: crime)/series**   |
-|                        |                                                     |                                                                             |
-+------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
-| List Cuadrantes or     | Sum of crimes that occurred in each                 | | **/api/v1/cuadrantes/crimes/(string: crime)/period¶**                     |
-| Sectores               | and every cuadrante or sector for a specified       | | **/api/v1/sectores/crimes/(string: crime)/period**                        |
-|                        | period of time                                      | | **/api/v1/cuadrantes/crimes/(string: crime)/period/change**               |
-+------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
-| Top Most Violent       | A list of the cuadrantes and sectors with the       | | **/api/v1/sectores/crimes/(string: crime)/top/rates**                     |
-|                        | highest rates (sectores), crime counts              | | **/api/v1/cuadrantes/crimes/(string: crime)/top/counts**                  |
-|                        | (cuadrantes) or change in crime counts              | | **/api/v1/cuadrantes/crimes/(string: crime)/top/counts/change**           | 
-+------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
-| DF data                | A time series of the sum of all crimes              | | **/api/v1/df/crimes/(string: crime)/series**                              |
-|                        | that occurred in the Federal District               |                                                                             |
-+------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
-| Enumerate              | Get a list of the names of all cuadrantes,          | | **/api/v1/cuadrantes/enumerate**                                          |
-|                        | sectores or crimes                                  | | **/api/v1/sectores/enumerate**                                            |
-|                        |                                                     | | **/api/v1/crimes/enumerate**                                              |
-+------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------+
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
+| Service                | Action                                              | URI                                                                               | 
+|                        |                                                     |                                                                                   |
++========================+=====================================================+===================================================================================+
+| Point in Polygon       | Given a longitude and latitude return the           | | **/api/v1/cuadrantes/pip/(string: long)/(string: lat)**                         |
+|                        | corresponding cuadrante and sector                  | | **/api/v1/cuadrantes/crimes/(string: crime)/pip/(string: long)/(string: lat)**  |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
+| Time Series            | Crimes counts ordered by month of occurrence for a  | | **/api/v1/sector/(string: sector)/crimes/(string: crime)/series/**              |
+|                        | single cuadrante or sector                          | | **/api/v1/cuadrante/(string: cuadrante)/crimes/(string: crime)/series**         |
+|                        |                                                     |                                                                                   |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
+| List Cuadrantes or     | Sum of crimes that occurred in each                 | | **/api/v1/cuadrantes/(string: cuadrante)/crimes/(string: crime)/period**        |
+| Sectores               | and every cuadrante or sector for a specified       | | **/api/v1/sectores/(string: sector)/crimes/(string: crime)/period**             |
+|                        | period of time                                      | | **/api/v1/cuadrantes/(string: cuadrante)/crimes/(string: crime)/period/change** |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
+| Top Most Violent       | A list of the cuadrantes and sectors with the       | | **/api/v1/sectores/crimes/(string: crime)/top/rates**                           |
+|                        | highest rates (sectores), crime counts              | | **/api/v1/cuadrantes/crimes/(string: crime)/top/counts**                        |
+|                        | (cuadrantes) or change in crime counts              | | **/api/v1/cuadrantes/crimes/(string: crime)/top/counts/change**                 | 
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
+| DF data                | A time series of the sum of all crimes              | | **/api/v1/df/crimes/(string: crime)/series**                                    |
+|                        | that occurred in the Federal District               |                                                                                   |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
+| Enumerate              | Get a list of the names of all cuadrantes,          | | **/api/v1/cuadrantes**                                                          |
+|                        | sectores or crimes                                  | | **/api/v1/sectores**                                                            |
+|                        |                                                     | | **/api/v1/crimes**                                                              |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
 
 
 Getting Started
