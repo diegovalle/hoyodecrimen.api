@@ -2,6 +2,23 @@ from flask import jsonify
 from models import db, Cuadrantes, Cuadrantes_Poly
 from datetime import datetime
 from sqlalchemy import func, and_
+import time
+
+class InvalidAPIUsage(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['error'] = self.message
+        return rv
+
 
 def ResultProxy_to_json(results):
     json_results = []
