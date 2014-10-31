@@ -125,7 +125,7 @@ if __name__ == '__main__':
     if 'OPENSHIFT_APP_UUID' not in os.environ:
         app.config['PROFILE'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
-        debug = False
+        debug = True
     else:
         Compress(app)
     app.run(debug=debug)
