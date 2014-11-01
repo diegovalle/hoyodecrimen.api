@@ -13,6 +13,7 @@ import os
 from models import db, Cuadrantes, Cuadrantes_Poly
 import lib
 from lib import InvalidAPIUsage
+from urlparse import urlparse
 
 # Use redis if not running in Openshift
 if 'OPENSHIFT_APP_UUID' not in os.environ:
@@ -38,7 +39,9 @@ API = Blueprint('API', __name__, url_prefix='/api/v1')
 
 def make_cache_key(*args, **kwargs):
     # Make sure the cache distinguishes requests with different parameters
-    return request.url
+    o = urlparse(request.url)
+    # remove the scheme and netloc to make caching more portable
+    return o.path + o.query
 
 @API.errorhandler(InvalidAPIUsage)
 def invalid_usage(error):
