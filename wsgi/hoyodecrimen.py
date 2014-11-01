@@ -90,7 +90,7 @@ def cuadrantes_map():
 
 # Google webmaster verification
 @app.route('/google055ef027e7764e4d.html')
-def cuadrantes_map():
+def google055ef027e7764e4d():
     return ''
 
 
