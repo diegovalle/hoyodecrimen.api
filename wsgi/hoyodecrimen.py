@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy import func, and_
 from flask.ext.cache import Cache
+from flask.ext.assets import Environment, Bundle
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
 from geoalchemy2.elements import WKTElement
@@ -25,7 +26,7 @@ db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
 
 cache.init_app(app)
-
+assets = Environment(app)
 
 
 def add_response_headers(headers={}):
@@ -59,7 +60,7 @@ def not_found(error):
 
 @app.route('/api/')
 def api_html():
-    return app.send_static_file(os.path.join('api', 'index.html'))
+    return app.send_static_file(os.path.join('sphinx', 'html', 'index.html'))
 
 
 @app.route('/rates')
@@ -87,9 +88,16 @@ def cuadrantes_map():
     return app.send_static_file(os.path.join('', 'cuadrantes-map.html'))
 
 
+# Google webmaster verification
+@app.route('/google055ef027e7764e4d.html')
+def cuadrantes_map():
+    return ''
+
+
 @app.route('/api/_static/<path:filename>')
 def static__api(filename):
-    return send_from_directory(os.path.join(_basedir, 'static/api/_static'),
+    return send_from_directory(os.path.join(_basedir, 'static',
+                                            'sphinx', 'html', '_static'),
                                filename)
 
 
