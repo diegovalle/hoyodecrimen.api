@@ -91,7 +91,7 @@ def cuadrantes_map():
 # Google webmaster verification
 @app.route('/google055ef027e7764e4d.html')
 def google055ef027e7764e4d():
-    return ''
+    return 'google-site-verification: google055ef027e7764e4d.html'
 
 
 @app.route('/api/_static/<path:filename>')
