@@ -142,35 +142,35 @@ changeConfig = function(seltarget) {
         case "Homicide":
             config.colorFun =  scaleHomicide;
             config.color = colorbrewer.Reds["9"];
-            config.currentName ='homicidio doloso';
+            config.currentName ='HOMICIDIO DOLOSO';
             config.lastSelect = "Homicide";
             config.selector = ".homicides";
             break;
         case "Violent robberies to a business":
             config.colorFun =  scaleRNCV;
             config.color = colorbrewer.Blues["9"];
-            config.currentName = 'robo a negocio c.v.';
+            config.currentName = 'ROBO A NEGOCIO C.V.';
             config.lastSelect = "Violent robberies to a business";
             config.selector = ".rncv";
             break;
         case "Violent car robberies":
             config.colorFun =  scaleRVCV;
             config.color = colorbrewer.Purples["9"];
-            config.currentName = 'robo de vehiculo automotor c.v.';
+            config.currentName = 'ROBO DE VEHICULO AUTOMOTOR C.V.';
             config.lastSelect = 'Violent car robberies';
             config.selector = ".rvcv";
             break;
         case "Non-violent car robberies":
             config.colorFun =  scaleRVSV;
             config.color = colorbrewer.Greens["9"];
-            config.currentName = 'robo de vehiculo automotor s.v.';
+            config.currentName = 'ROBO DE VEHICULO AUTOMOTOR S.V.';
             config.lastSelect = "Non-violent car robberies";
             config.selector = ".rvsv";
             break;
         case "Rape":
             config.colorFun =  scaleVIOL;
             config.color = colorbrewer.Greys["9"];
-            config.currentName = 'violacion';
+            config.currentName = 'VIOLACION';
             config.lastSelect = "Rape";
             config.selector = ".viol";
             break;
@@ -319,13 +319,14 @@ var getStyle = function(feature) {
 var clickedFeature;
 function highlightFeature(e) {
     if(clickedFeature){
+        resetHighlight(clickedFeature)
         clickedFeature.target.setStyle({
 	        fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
                 fillOpacity: 0.8,
                 weight: 0.5,
                 color: '#555'
             });
-    }
+    } 
     clickedFeature = e;
     var layer = e.target;
     layer.setStyle({
