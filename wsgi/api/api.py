@@ -115,7 +115,7 @@ def pip(long, lat):
 
     .. sourcecode:: http
 
-      GET /api/v1/cuadrante/pip/-99.13333/19.43 HTTP/1.1
+      GET /api/v1/cuadrantes/pip/-99.13333/19.43 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -131,9 +131,9 @@ def pip(long, lat):
         "pip":
           [
             {
-              "cuadrante": "c-1.4.4",
+              "cuadrante": "C-1.4.4",
               "geomery": "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}",
-              "sector": "corredor - centro"
+              "sector": "CORREDOR - CENTRO"
             }
           ]
       }
@@ -192,7 +192,7 @@ def frontpage(crime, long, lat):
 
     .. sourcecode:: http
 
-      GET /api/v1/cuadrante/crimes/all/pip/-99.13333/19.43 HTTP/1.1
+      GET /api/v1/cuadrantes/crimes/all/pip/-99.13333/19.43 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -207,31 +207,31 @@ def frontpage(crime, long, lat):
       "cuadrante": [
       {
       "count": 0,
-      "crime": "homicidio doloso",
-      "cuadrante": "c-1.4.4",
+      "crime": "HOMICIDIO DOLOSO",
+      "cuadrante": "C-1.4.4",
       "month": 1,
       "population": 1405,
-      "sector": "corredor - centro",
+      "sector": "CORREDOR - CENTRO",l
       "year": 2013
       },
       ...
       "cuadrante_last_year": [
       {
       "count": 0,
-      "crime": "homicidio doloso",
+      "crime": "HOMICIDIO DOLOSO",
       "population": 16860
       },
       ...
       "df_last_year": [
       {
       "count": 823,
-      "crime": "homicidio doloso",
+      "crime": "HOMICIDIO DOLOSO",
       "population": 8785874
       },
       ...
       "pip": [
       {
-      "cuadrante": "c-1.4.4",
+      "cuadrante": "C-1.4.4",
       "geomery": "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}",
       "sector": "corredor - centro"
       }
@@ -330,7 +330,7 @@ def frontpage(crime, long, lat):
 def df_all(crime):
     """Return the sum of crimes that occurred in the Federal District
 
-    :param crime: the name of crime or the keyword ``all``
+    :param crime: the name of crime or the keyword ``all`` to return all crimes
 
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
@@ -360,7 +360,7 @@ def df_all(crime):
       "rows": [
       {
       "count": 64,
-      "crime": "violacion",
+      "crime": "VIOLACION",
       "month": 1,
       "population": 8785874,
       "year": 2013
@@ -403,7 +403,7 @@ def cuadrantes(cuadrante, crime):
     """Return the count of crimes that occurred in a cuadrante, by date
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
-    :param cuadrante: the name of the cuadrante from which to return the time series
+    :param cuadrante: the name of the cuadrante from which to return the time series or the keyword ``all to return all cuadrantes
 
     :status 200: when the sum of all crimes is found
     :status 404: when the crime or cuadrante is not found in the database
@@ -432,11 +432,11 @@ def cuadrantes(cuadrante, crime):
       "rows": [
       {
       "count": 0,
-      "crime": "homicidio doloso",
-      "cuadrante": "c-1.1.1",
+      "crime": "HOMICIDIO DOLOSO",
+      "cuadrante": "C-1.1.1",
       "month": 1,
       "population": 1594,
-      "sector": "angel - zona rosa",
+      "sector": "ANGEL - ZONA ROSA",
       "year": 2013
       },
       ...
@@ -481,7 +481,7 @@ def sectors(crime, sector):
     """Return the count of crimes that occurred in a sector, by date
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
-    :param cuadrante: the name of the cuadrante from which to return the time series
+    :param cuadrante: the name of the cuadrante from which to return the time series or the keyword ``all to return all sectores
 
     :status 200: when the sum of all crimes is found
     :status 404: when the crime or cuadrante is not found in the database
@@ -510,10 +510,10 @@ def sectors(crime, sector):
       "rows": [
       {
       "count": 0,
-      "crime": "homicidio doloso",
+      "crime": "HOMICIDIO DOLOSO",
       "month": 1,
       "population": 25606,
-      "sector": "angel - zona rosa",
+      "sector": "ANGEL - ZONA ROSA",
       "year": 2013
       },
       ...
@@ -555,7 +555,7 @@ def cuadrantes_sum_all(cuadrante, crime):
     By default it returns the sum of crimes during the last 12 months for all the cuadrantes in the database
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
-    :param cuadrante: the name of the cuadrante or the keyword ``all` to return all cuadrantes
+    :param cuadrante: the name of the cuadrante or the keyword ``all`` to return all cuadrantes
 
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
@@ -585,11 +585,11 @@ def cuadrantes_sum_all(cuadrante, crime):
       "rows": [
       {
       "count": 0,
-      "crime": "homicidio doloso",
-      "cuadrante": "c-1.1.1",
+      "crime": "HOMICIDIO DOLOSO",
+      "cuadrante": "C-1.1.1",
       "end_date": "2014-07",
       "population": 1594,
-      "sector": "angel - zona rosa",
+      "sector": "ANGEL - ZONA ROSA",
       "start_date": "2013-08"
       },
       ...
@@ -632,7 +632,7 @@ def sectores_sum_all(sector, crime):
     By default it returns the sum of crimes during the last 12 months for all the sectores in the database
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
-    :param sector: the name of the sector or the keyword ``all` to return all sectores
+    :param sector: the name of the sector or the keyword ``all`` to return all sectores
 
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
@@ -661,10 +661,10 @@ def sectores_sum_all(sector, crime):
       "rows": [
       {
       "count": 26,
-      "crime": "homicidio doloso",
+      "crime": "HOMICIDIO DOLOSO",
       "end_date": "2014-07",
       "population": 171047,
-      "sector": "abasto-reforma",
+      "sector": "ABASTO-REFORMA",
       "start_date": "2013-08"
       },
       ...
@@ -706,7 +706,7 @@ def cuadrantes_change_sum_all(cuadrante, crime):
     By default it returns the sum of crimes during the last 12 months
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
-    :param cuadrante: the name of the cuadrante or the keyword ``all` to return all cuadrantes
+    :param cuadrante: the name of the cuadrante or the keyword ``all`` to return all cuadrantes
 
     :status 200: when the  change in crime counts is found
     :status 404: when the crime is not found in the database
@@ -736,15 +736,15 @@ def cuadrantes_change_sum_all(cuadrante, crime):
       {
       "rows": [
       {
-      "crime": "homicidio doloso",
-      "cuadrante": "o-2.2.9",
+      "crime": "HOMICIDIO DOLOSO",
+      "cuadrante": "O-2.2.9",
       "difference": 5,
       "end_period1": "2013-07",
       "end_period2": "2014-07",
       "period1_count": 0,
       "period2_count": 5,
       "population": 43116,
-      "sector": "quetzal",
+      "sector": "QUETZAL",
       "start_period1": "2013-05",
       "start_period2": "2014-05"
       },
@@ -819,10 +819,13 @@ def listcrimes():
       {
       "rows": [
       {
-      "crime": "violacion"
+      "crime": "HOMICIDIO DOLOSO"
       },
       {
-      "crime": "robo a negocio c/v"
+      "crime": "ROBO A NEGOCIO C.V."
+      },
+      {
+      "crime": "ROBO DE VEHICULO AUTOMOTOR C.V."
       }
       ...
    """
@@ -863,12 +866,12 @@ def listcuadrantes():
       {
       "rows": [
       {
-      "cuadrante": "s-1.1.16",
-      "sector": "narvarte - alamos"
+      "cuadrante": "S-1.1.16",
+      "sector": "NARVARTE - ALAMOS"
       },
       {
-      "cuadrante": "n-2.1.1",
-      "sector": "aragon"
+      "cuadrante": "N-2.1.1",
+      "sector": "ARAGON"
       }
       ...
     """
@@ -910,16 +913,16 @@ def listsectores():
       {
       "rows": [
       {
-      "sector": "abasto-reforma"
+      "sector": "ABASTO-REFORMA"
       },
       {
-      "sector": "san angel"
+      "sector": "SAN ANGEL"
       },
       {
-      "sector": "coyoacan"
+      "sector": "COYOACAN"
       },
       {
-      "sector": "tezonco"
+      "sector": "TEZONCO"
       },
       ...
     """
@@ -939,7 +942,7 @@ def listsectores():
 def top5cuadrantes(crime):
     """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
 
-    When no date parameters are specified the top 5 cuadrantes for the last 12 months are returned
+    When no dates parameters are specified the top 5 cuadrantes for the last 12 months are returned
     (e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
     All population data returned by this call is in persons/year and comes from the 2010 census
 
@@ -973,12 +976,12 @@ def top5cuadrantes(crime):
       "rows": [
       {
       "count": 12,
-      "crime": "homicidio doloso",
-      "cuadrante": "n-2.2.1",
+      "crime": "HOMICIDIO DOLOSO",
+      "cuadrante": "N-2.2.1",
       "end_date": "2014-07",
       "population": 1833,
       "rank": 1,
-      "sector": "cuchilla",
+      "sector": "CUCHILLA",
       "start_date": "2013-08"
       },
       ...
@@ -1057,12 +1060,12 @@ def top5sectores(crime):
       "rows": [
       {
       "count": 22,
-      "crime": "homicidio doloso",
+      "crime": "HOMICIDIO DOLOSO",
       "end_date": "2014-07",
       "population": 33787,
       "rank": 1,
       "rate": 65.1,
-      "sector": "congreso",
+      "sector": "CONGRESO",
       "start_date": "2013-08"
       },
       ...
@@ -1143,7 +1146,7 @@ def top5changecuadrantes(crime):
       {
       "rows": [
       {
-      "crime": "homicidio doloso",
+      "crime": "HOMICIDIO DOLOSO",
       "cuadrante": "o-2.2.9",
       "difference": 5,
       "end_period1": "2013-07",
@@ -1152,7 +1155,7 @@ def top5changecuadrantes(crime):
       "period2_count": 5,
       "population": 43116,
       "rank": 1,
-      "sector": "quetzal",
+      "sector": "QUETZAL",
       "start_period1": "2013-05",
       "start_period2": "2014-05"
       },
