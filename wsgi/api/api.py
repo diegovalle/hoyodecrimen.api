@@ -156,7 +156,7 @@ def pip(long, lat):
     if (results_pip is not None):
         json_results = []
         d = {}
-        d['geomery'] = results_pip[2]
+        d['geometry'] = results_pip[2]
         d['cuadrante'] = results_pip[0]
         d['sector'] = results_pip[1]
         json_results.append(d)
@@ -307,7 +307,7 @@ def frontpage(crime, long, lat):
 
         json_results = []
         d = {}
-        d['geomery'] = results_pip[2]
+        d['geometry'] = results_pip[2]
         d['cuadrante'] = results_pip[0]
         d['sector'] = results_pip[1]
         json_results.append(d)
@@ -1147,7 +1147,7 @@ def top5changecuadrantes(crime):
       "rows": [
       {
       "crime": "HOMICIDIO DOLOSO",
-      "cuadrante": "o-2.2.9",
+      "cuadrante": "O-2.2.9",
       "difference": 5,
       "end_period1": "2013-07",
       "end_period2": "2014-07",
