@@ -18,7 +18,7 @@ from urlparse import urlparse
 # Use redis if not running in Openshift
 if 'OPENSHIFT_APP_UUID' not in os.environ:
     cache = Cache(config={
-        'CACHE_TYPE': 'null'  # or simple
+        'CACHE_TYPE': 'simple'  # null or simple
     })
 else:
     cache = Cache(config={
@@ -98,7 +98,7 @@ def estariamosmejorcon():
            '<string:lat>',
            methods=['GET'])
 @jsonp
-@cache.cached(key_prefix=make_cache_key)
+#@cache.cached(key_prefix=make_cache_key)
 def pip(long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to.
 
@@ -165,13 +165,65 @@ def pip(long, lat):
         raise InvalidAPIUsage("You're not inside the Federal District provinciano", 404)
     return jsonify(pip=json_results)
 
+@cache.memoize()
+def get_extra_crimes(cuadrante, crime, start_date, max_date):
+    if crime == "ALL":
+        pip_filter = [func.upper(Cuadrantes.cuadrante) == cuadrante]
+    else:
+        pip_filter = [func.upper(Cuadrantes.crime) == crime,
+                      func.upper(Cuadrantes.cuadrante) == cuadrante]
+    results_cuad = Cuadrantes.query. \
+        filter(*pip_filter). \
+        with_entities(func.upper(Cuadrantes.cuadrante).label('cuadrante'),
+                      func.upper(Cuadrantes.sector).label('sector'),
+                      func.upper(Cuadrantes.crime).label('crime'),
+                      Cuadrantes.date,
+                      Cuadrantes.count,
+                      Cuadrantes.population) \
+        .order_by(Cuadrantes.crime, Cuadrantes.date) \
+        .all()
+
+    # compare the cuadrante with the rest of the DF (last 12 months)
+    # max_date = Cuadrantes.query. \
+    #     with_entities(func.max(Cuadrantes.date).label('date')). \
+    #     scalar()
+    # start_date = month_sub(max_date, -11)
+
+    if crime == "ALL":
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   func.upper(Cuadrantes.cuadrante) == cuadrante]
+    else:
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   func.upper(Cuadrantes.crime) == crime,
+                   func.upper(Cuadrantes.cuadrante) == cuadrante]
+
+    results_df_last_year = Cuadrantes.query. \
+        filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
+        with_entities(func.upper(Cuadrantes.crime).label('crime'),
+                      func.sum(Cuadrantes.count).label('count'),
+                      func.sum(Cuadrantes.population).op("/")(12).label('population')). \
+        group_by(Cuadrantes.crime). \
+        order_by(Cuadrantes.crime). \
+        all()
+    results_cuad_last_year = Cuadrantes.query. \
+        filter(*filters). \
+        with_entities(func.upper(Cuadrantes.crime).label('crime'),
+                      func.sum(Cuadrantes.count).label('count'),
+                      func.sum(Cuadrantes.population).label('population')). \
+        group_by(Cuadrantes.crime). \
+        order_by(Cuadrantes.crime). \
+        all()
+
+
+    return results_cuad, results_df_last_year, results_cuad_last_year
+
 
 @API.route('/cuadrantes/crimes/<string:crime>/pip/'
            '<string:long>/'
            '<string:lat>',
            methods=['GET'])
 @jsonp
-@cache.cached(key_prefix=make_cache_key)
+#@cache.cached(key_prefix=make_cache_key)
 def frontpage(crime, long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
@@ -258,64 +310,67 @@ def frontpage(crime, long, lat):
                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
         first()
     if (results_pip is not None):
-        if crime == "ALL":
-            pip_filter = [func.upper(Cuadrantes.cuadrante) == results_pip[0]]
-        else:
-            pip_filter = [func.upper(Cuadrantes.crime) == crime,
-                          func.upper(Cuadrantes.cuadrante) == results_pip[0]]
-        results_cuad = Cuadrantes.query. \
-            filter(*pip_filter). \
-            with_entities(func.upper(Cuadrantes.cuadrante).label('cuadrante'),
-                          func.upper(Cuadrantes.sector).label('sector'),
-                          func.upper(Cuadrantes.crime).label('crime'),
-                          Cuadrantes.date,
-                          Cuadrantes.count,
-                          Cuadrantes.population) \
-            .order_by(Cuadrantes.crime, Cuadrantes.date) \
-            .all()
-
-        # compare the cuadrante with the rest of the DF (last 12 months)
-        # max_date = Cuadrantes.query. \
-        #     with_entities(func.max(Cuadrantes.date).label('date')). \
-        #     scalar()
-        # start_date = month_sub(max_date, -11)
-
-        if crime == "ALL":
-            filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                       func.upper(Cuadrantes.cuadrante) == results_pip[0]]
-        else:
-            filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                       func.upper(Cuadrantes.crime) == crime,
-                       func.upper(Cuadrantes.cuadrante) == results_pip[0]]
-
-        results_df_last_year = Cuadrantes.query. \
-            filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
-            with_entities(func.upper(Cuadrantes.crime).label('crime'),
-                          func.sum(Cuadrantes.count).label('count'),
-                          func.sum(Cuadrantes.population).op("/")(12).label('population')). \
-            group_by(Cuadrantes.crime). \
-            order_by(Cuadrantes.crime). \
-            all()
-        results_cuad_last_year = Cuadrantes.query. \
-            filter(*filters). \
-            with_entities(func.upper(Cuadrantes.crime).label('crime'),
-                          func.sum(Cuadrantes.count).label('count'),
-                          func.sum(Cuadrantes.population).label('population')). \
-            group_by(Cuadrantes.crime). \
-            order_by(Cuadrantes.crime). \
-            all()
-
+        results_cuad, results_df_last_year, results_cuad_last_year = get_extra_crimes(results_pip[0], crime, start_date, max_date)
         json_results = []
         d = {}
         d['geometry'] = results_pip[2]
         d['cuadrante'] = results_pip[0]
         d['sector'] = results_pip[1]
         json_results.append(d)
+        # if crime == "ALL":
+        #     pip_filter = [func.upper(Cuadrantes.cuadrante) == results_pip[0]]
+        # else:
+        #     pip_filter = [func.upper(Cuadrantes.crime) == crime,
+        #                   func.upper(Cuadrantes.cuadrante) == results_pip[0]]
+        # results_cuad = Cuadrantes.query. \
+        #     filter(*pip_filter). \
+        #     with_entities(func.upper(Cuadrantes.cuadrante).label('cuadrante'),
+        #                   func.upper(Cuadrantes.sector).label('sector'),
+        #                   func.upper(Cuadrantes.crime).label('crime'),
+        #                   Cuadrantes.date,
+        #                   Cuadrantes.count,
+        #                   Cuadrantes.population) \
+        #     .order_by(Cuadrantes.crime, Cuadrantes.date) \
+        #     .all()
+        #
+        # # compare the cuadrante with the rest of the DF (last 12 months)
+        # # max_date = Cuadrantes.query. \
+        # #     with_entities(func.max(Cuadrantes.date).label('date')). \
+        # #     scalar()
+        # # start_date = month_sub(max_date, -11)
+        #
+        # if crime == "ALL":
+        #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+        #                func.upper(Cuadrantes.cuadrante) == results_pip[0]]
+        # else:
+        #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+        #                func.upper(Cuadrantes.crime) == crime,
+        #                func.upper(Cuadrantes.cuadrante) == results_pip[0]]
+        #
+        # results_df_last_year = Cuadrantes.query. \
+        #     filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
+        #     with_entities(func.upper(Cuadrantes.crime).label('crime'),
+        #                   func.sum(Cuadrantes.count).label('count'),
+        #                   func.sum(Cuadrantes.population).op("/")(12).label('population')). \
+        #     group_by(Cuadrantes.crime). \
+        #     order_by(Cuadrantes.crime). \
+        #     all()
+        # results_cuad_last_year = Cuadrantes.query. \
+        #     filter(*filters). \
+        #     with_entities(func.upper(Cuadrantes.crime).label('crime'),
+        #                   func.sum(Cuadrantes.count).label('count'),
+        #                   func.sum(Cuadrantes.population).label('population')). \
+        #     group_by(Cuadrantes.crime). \
+        #     order_by(Cuadrantes.crime). \
+        #     all()
+        #
+        # json_results = []
+        # d = {}
+        # d['geometry'] = results_pip[2]
+        # d['cuadrante'] = results_pip[0]
+        # d['sector'] = results_pip[1]
+        # json_results.append(d)
     else:
-        results_cuad = []
-        json_results = []
-        results_df_last_year = []
-        results_cuad_last_year = []
         raise InvalidAPIUsage("You're not inside the Federal District provinciano", 404)
     return jsonify(pip=json_results,
                    cuadrante=lib.results_to_array(results_cuad),
