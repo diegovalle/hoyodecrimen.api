@@ -59,6 +59,11 @@ def not_found(error):
     return render_template('404.html'), 404
 
 
+@app.route('/home')
+def api_home_html():
+    return send_from_directory(os.path.join(_basedir, 'static'), 'home.html')
+
+
 @app.route('/api/')
 def api_index_html():
     return send_from_directory(os.path.join(_basedir, 'static', 'sphinx', 'html'), 'index.html')
@@ -114,6 +119,11 @@ def static_css(filename):
     return send_from_directory(os.path.join(_basedir, 'static','css'), filename)
 
 
+@app.route('/font/<path:filename>')
+def static_ont(filename):
+    return send_from_directory(os.path.join(_basedir, 'static','font'), filename)
+
+
 @app.route('/js/<path:filename>')
 def static_js(filename):
     return send_from_directory(os.path.join(_basedir, 'static','js'), filename)
@@ -128,6 +138,58 @@ def static_font(filename):
 def static_images(filename):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                filename)
+
+@app.route('/favicon.ico')
+def static_images_favicon():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'favicon.ico')
+
+@app.route('/apple-touch-icon-57x57.png')
+def static_images_57():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon-57x57.png')
+
+
+@app.route('/apple-touch-icon.png')
+def static_images_apple():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon.png')
+
+@app.route('/apple-touch-icon-72x72.png')
+def static_images_72():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon-72x72.png')
+
+
+@app.route('/apple-touch-icon-76x76.png')
+def static_images_76():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon-76x76.png')
+
+
+@app.route('/apple-touch-icon-114x114.png')
+def static_images_114():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon-114x114.png')
+
+
+@app.route('/apple-touch-icon-120x120.png')
+def static_images_120():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon-120x120.png')
+
+
+@app.route('/apple-touch-icon-144x144.png')
+def static_images_144():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon-144x144.png')
+
+
+@app.route('/apple-touch-icon-152x152.png')
+def static_images_152():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon-152x152.png')
+
 
 
 if __name__ == '__main__':
