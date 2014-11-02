@@ -1,0 +1,166 @@
+a.addthis_button_facebook_like.at300b, a.addthis_button_tweet.at300b{
+    border-bottom: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 5px;
+  margin-bottom:5px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+#legend-homicides {
+    padding: 0 0 0 .5em;
+}
+
+li.key {
+    border-top-width: 10px;
+    border-top-style: solid;
+    font-size: .75em;
+    text-align: left;
+    width: 10%;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+ul.list-inline{
+    margin-bottom: 0em;
+}
+
+.list-inline>li {
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 0px;
+}
+
+.subdivisions {
+    fill: none;
+    stroke: #666;
+    stroke-width: .2px;
+}
+
+.boundary {
+    fill: none;
+    stroke: #999;
+}
+
+.selected {
+    fill:black;
+}
+.chart-crime {
+  margin-top:80px;
+}
+.Bluesq0-9{border-top-color:rgb(247,251,255);fill:rgb(247,251,255)}
+.Bluesq1-9{border-top-color:rgb(222,235,247);fill:rgb(222,235,247)}
+.Bluesq2-9{border-top-color:rgb(198,219,239);fill:rgb(198,219,239)}
+.Bluesq3-9{border-top-color:rgb(158,202,225);fill:rgb(158,202,225)}
+.Bluesq4-9{border-top-color:rgb(107,174,214);fill:rgb(107,174,214)}
+.Bluesq5-9{border-top-color:rgb(66,146,198);fill:rgb(66,146,198)}
+.Bluesq6-9{border-top-color:rgb(33,113,181);fill:rgb(33,113,181)}
+.Bluesq7-9{border-top-color:rgb(8,81,156);fill:rgb(8,81,156)}
+.Bluesq8-9{border-top-color:rgb(8,48,107);fill:rgb(8,48,107)}
+
+.Redsq0-9{border-top-color:rgb(255,245,240);fill:rgb(255,245,240)}
+.Redsq1-9{border-top-color:rgb(254,224,210);fill:rgb(254,224,210)}
+.Redsq2-9{border-top-color:rgb(252,187,161);fill:rgb(252,187,161)}
+.Redsq3-9{border-top-color:rgb(252,146,114);fill:rgb(252,146,114)}
+.Redsq4-9{border-top-color:rgb(251,106,74);fill:rgb(251,106,74)}
+.Redsq5-9{border-top-color:rgb(239,59,44);fill:rgb(239,59,44)}
+.Redsq6-9{border-top-color:rgb(203,24,29);fill:rgb(203,24,29)}
+.Redsq7-9{border-top-color:rgb(165,15,21);fill:rgb(165,15,21)}
+.Redsq8-9{border-top-color:rgb(103,0,13);fill:rgb(103,0,13)}
+
+.Greensq0-9{border-top-color:rgb(247,252,245);fill:rgb(247,252,245)}
+.Greensq1-9{border-top-color:rgb(229,245,224);fill:rgb(229,245,224)}
+.Greensq2-9{border-top-color:rgb(199,233,192);fill:rgb(199,233,192)}
+.Greensq3-9{border-top-color:rgb(161,217,155);fill:rgb(161,217,155)}
+.Greensq4-9{border-top-color:rgb(116,196,118);fill:rgb(116,196,118)}
+.Greensq5-9{border-top-color:rgb(65,171,93);fill:rgb(65,171,93)}
+.Greensq6-9{border-top-color:rgb(35,139,69);fill:rgb(35,139,69)}
+.Greensq7-9{border-top-color:rgb(0,109,44);fill:rgb(0,109,44)}
+.Greensq8-9{border-top-color:rgb(0,68,27);fill:rgb(0,68,27)}
+
+.Purplesq0-9{border-top-color:rgb(252,251,253);fill:rgb(252,251,253)}
+.Purplesq1-9{border-top-color:rgb(239,237,245);fill:rgb(239,237,245)}
+.Purplesq2-9{border-top-color:rgb(218,218,235);fill:rgb(218,218,235)}
+.Purplesq3-9{border-top-color:rgb(188,189,220);fill:rgb(188,189,220)}
+.Purplesq4-9{border-top-color:rgb(158,154,200);fill:rgb(158,154,200)}
+.Purplesq5-9{border-top-color:rgb(128,125,186);fill:rgb(128,125,186)}
+.Purplesq6-9{border-top-color:rgb(106,81,163);fill:rgb(106,81,163)}
+.Purplesq7-9{border-top-color:rgb(84,39,143);fill:rgb(84,39,143)}
+.Purplesq8-9{border-top-color:rgb(63,0,125);fill:rgb(63,0,125)}
+
+.Graysq0-9{border-top-color:rgb(255,255,255);fill:rgb(255,255,255)}
+.Graysq1-9{border-top-color:rgb(240,240,240);fill:rgb(240,240,240)}
+.Graysq2-9{border-top-color:rgb(217,217,217);fill:rgb(217,217,217)}
+.Graysq3-9{border-top-color:rgb(189,189,189);fill:rgb(189,189,189)}
+.Graysq4-9{border-top-color:rgb(150,150,150);fill:rgb(150,150,150)}
+.Graysq5-9{border-top-color:rgb(115,115,115);fill:rgb(115,115,115)}
+.Graysq6-9{border-top-color:rgb(82,82,82);fill:rgb(82,82,82)}
+.Graysq7-9{border-top-color:rgb(37,37,37);fill:rgb(37,37,37)}
+.Graysq8-9{border-top-color:rgb(0,0,0);fill:rgb(0,0,0)}
+
+.BrBGq8-9{border-top-color:rgb(140,81,10);fill:rgb(140,81,10)}
+.BrBGq7-9{border-top-color:rgb(191,129,45);fill:rgb(191,129,45)}
+.BrBGq6-9{border-top-color:rgb(223,194,125);fill:rgb(223,194,125)}
+.BrBGq5-9{border-top-color:rgb(246,232,195);fill:rgb(246,232,195)}
+.BrBGq4-9{border-top-color:rgb(245,245,245);fill:rgb(245,245,245)}
+.BrBGq3-9{border-top-color:rgb(199,234,229);fill:rgb(199,234,229)}
+.BrBGq2-9{border-top-color:rgb(128,205,193);fill:rgb(128,205,193)}
+.BrBGq1-9{border-top-color:rgb(53,151,143);fill:rgb(53,151,143)}
+.BrBGq0-9{border-top-color:rgb(1,102,94);fill:rgb(1,102,94)}
+
+.PiYGq8-9{border-top-color:rgb(197,27,125);fill:rgb(197,27,125)}
+.PiYGq7-9{border-top-color:rgb(222,119,174);fill:rgb(222,119,174)}
+.PiYGq6-9{border-top-color:rgb(241,182,218);fill:rgb(241,182,218)}
+.PiYGq5-9{border-top-color:rgb(253,224,239);fill:rgb(253,224,239)}
+.PiYGq4-9{border-top-color:rgb(247,247,247);fill:rgb(247,247,247)}
+.PiYGq3-9{border-top-color:rgb(230,245,208);fill:rgb(230,245,208)}
+.PiYGq2-9{border-top-color:rgb(184,225,134);fill:rgb(184,225,134)}
+.PiYGq1-9{border-top-color:rgb(127,188,65);fill:rgb(127,188,65)}
+.PiYGq0-9{border-top-color:rgb(77,146,33);fill:rgb(77,146,33)}
+
+.PRGnq8-9{border-top-color:rgb(118,42,131);fill:rgb(118,42,131)}
+.PRGnq7-9{border-top-color:rgb(153,112,171);fill:rgb(153,112,171)}
+.PRGnq6-9{border-top-color:rgb(194,165,207);fill:rgb(194,165,207)}
+.PRGnq5-9{border-top-color:rgb(231,212,232);fill:rgb(231,212,232)}
+.PRGnq4-9{border-top-color:rgb(247,247,247);fill:rgb(247,247,247)}
+.PRGnq3-9{border-top-color:rgb(217,240,211);fill:rgb(217,240,211)}
+.PRGnq2-9{border-top-color:rgb(166,219,160);fill:rgb(166,219,160)}
+.PRGnq1-9{border-top-color:rgb(90,174,97);fill:rgb(90,174,97)}
+.PRGnq0-9{border-top-color:rgb(27,120,55);fill:rgb(27,120,55)}
+
+.PuOrq8-9{border-top-color:rgb(179,88,6);fill:rgb(179,88,6)}
+.PuOrq7-9{border-top-color:rgb(224,130,20);fill:rgb(224,130,20)}
+.PuOrq6-9{border-top-color:rgb(253,184,99);fill:rgb(253,184,99)}
+.PuOrq5-9{border-top-color:rgb(254,224,182);fill:rgb(254,224,182)}
+.PuOrq4-9{border-top-color:rgb(247,247,247);fill:rgb(247,247,247)}
+.PuOrq3-9{border-top-color:rgb(216,218,235);fill:rgb(216,218,235)}
+.PuOrq2-9{border-top-color:rgb(178,171,210);fill:rgb(178,171,210)}
+.PuOrq1-9{border-top-color:rgb(128,115,172);fill:rgb(128,115,172)}
+.PuOrq0-9{border-top-color:rgb(84,39,136);fill:rgb(84,39,136)}
+
+.RdGyq8-9{border-top-color:rgb(178,24,43);fill:rgb(178,24,43)}
+.RdGyq7-9{border-top-color:rgb(214,96,77);fill:rgb(214,96,77)}
+.RdGyq6-9{border-top-color:rgb(244,165,130);fill:rgb(244,165,130)}
+.RdGyq5-9{border-top-color:rgb(253,219,199);fill:rgb(253,219,199)}
+.RdGyq4-9{border-top-color:rgb(255,255,255);fill:rgb(255,255,255)}
+.RdGyq3-9{border-top-color:rgb(224,224,224);fill:rgb(224,224,224)}
+.RdGyq2-9{border-top-color:rgb(186,186,186);fill:rgb(186,186,186)}
+.RdGyq1-9{border-top-color:rgb(135,135,135);fill:rgb(135,135,135)}
+.RdGyq0-9{border-top-color:rgb(77,77,77);fill:rgb(77,77,77)}
+
+.c3-line {
+    stroke-width:2.7;
+}
