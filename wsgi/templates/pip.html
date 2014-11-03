@@ -37,6 +37,10 @@ visibility:hidden;
 <div id="barchart-rvsv" style="height:100px;width:400px"></div>
 <div id="barchart-viol" style="height:100px;width:400px"></div>
 	<script src="js/modernizr.js"></script>
-	<script src="js/pip.js"></script>
+	{% assets  filters="jsmin", output="js/pip-packed.js",
+          "js/pip.js"  %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %} 
+
 </body>
 </html>
