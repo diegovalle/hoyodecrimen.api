@@ -26,7 +26,7 @@ else:
         # 'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD']
         # +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'
         # + os.environ['OPENSHIFT_REDIS_PORT'],
-        'CACHE_DEFAULT_TIMEOUT': 2592000, # One month
+        'CACHE_DEFAULT_TIMEOUT': 2592000,  # One month
         'CACHE_REDIS_PASSWORD': os.environ['REDIS_PASSWORD'],
         'CACHE_REDIS_HOST': os.environ['OPENSHIFT_REDIS_HOST'],
         'CACHE_REDIS_PORT': os.environ['OPENSHIFT_REDIS_PORT'],
@@ -42,6 +42,7 @@ def make_cache_key(*args, **kwargs):
     o = urlparse(request.url)
     # remove the scheme and netloc to make caching more portable
     return o.path + o.query
+
 
 @API.errorhandler(InvalidAPIUsage)
 def invalid_usage(error):
@@ -66,8 +67,31 @@ def jsonp(func):
             return func(*args, **kwargs)
     return decorated_function
 
-
-
+@cache.memoize()
+def check_dates(start_period, end_period, default_start=None):
+    start_period += '-01'
+    end_period += '-01'
+    if end_period != '-01' or start_period != '-01':
+        if not lib.check_date_month(start_period):
+            raise InvalidAPIUsage('something is wrong with the '
+                                  'start_date date you provided')
+        if not lib.check_date_month(end_period):
+            raise InvalidAPIUsage('something is wrong with the '
+                                  'end_date date you provided')
+        if start_period > end_period:
+            raise InvalidAPIUsage('date order not valid')
+        max_date = end_period
+        start_date = start_period
+    else:
+        max_date = Cuadrantes.query. \
+            filter(). \
+            with_entities(func.max(Cuadrantes.date).label('date')). \
+            scalar()
+        if not default_start:
+            start_date = lib.month_sub(max_date, -11)
+        else:
+            start_date = default_start
+    return start_date, max_date
 
 
 @API.route('/estariamosmejorcon', methods=['GET'])
@@ -90,7 +114,7 @@ def estariamosmejorcon():
       Accept: application/json
 
     """
-    return(jsonify(rows=['Calderon']))
+    return jsonify(rows=['Calderon'])
 
 
 @API.route('/cuadrantes/pip/'
@@ -153,20 +177,48 @@ def pip(long, lat):
                       func.upper(Cuadrantes_Poly.sector).label("sector"),
                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
         first()
-    if (results_pip is not None):
-        json_results = []
-        d = {}
-        d['geometry'] = results_pip[2]
-        d['cuadrante'] = results_pip[0]
-        d['sector'] = results_pip[1]
-        json_results.append(d)
+    if results_pip is not None:
+        json_results = [{'geometry': results_pip[2],
+             'cuadrante': results_pip[0],
+             'sector': results_pip[1]}]
     else:
-
         raise InvalidAPIUsage("You're not inside the Federal District provinciano", 404)
     return jsonify(pip=json_results)
 
+
 @cache.memoize()
-def get_extra_crimes(cuadrante, crime, start_date, max_date):
+def get_df_period(start_date, max_date):
+    return Cuadrantes.query. \
+        filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
+        with_entities(func.upper(Cuadrantes.crime).label('crime'),
+                      func.sum(Cuadrantes.count).label('count'),
+                      func.sum(Cuadrantes.population).op("/")(lib.month_diff(max_date, start_date)).label('population')). \
+        group_by(Cuadrantes.crime). \
+        order_by(Cuadrantes.crime). \
+        all()
+
+
+@cache.memoize()
+def get_cuad_period(cuadrante, crime, start_date, max_date):
+    if crime == "ALL":
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   func.upper(Cuadrantes.cuadrante) == cuadrante]
+    else:
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+                   func.upper(Cuadrantes.crime) == crime,
+                   func.upper(Cuadrantes.cuadrante) == cuadrante]
+    return Cuadrantes.query. \
+        filter(*filters). \
+        with_entities(func.upper(Cuadrantes.crime).label('crime'),
+                      func.sum(Cuadrantes.count).label('count'),
+                      func.sum(Cuadrantes.population).op("/")(lib.month_diff(max_date, start_date)).label('population')). \
+        group_by(Cuadrantes.crime). \
+        order_by(Cuadrantes.crime). \
+        all()
+
+
+@cache.memoize()
+def get_cuad_series(cuadrante, crime):
     if crime == "ALL":
         pip_filter = [func.upper(Cuadrantes.cuadrante) == cuadrante]
     else:
@@ -182,40 +234,40 @@ def get_extra_crimes(cuadrante, crime, start_date, max_date):
                       Cuadrantes.population) \
         .order_by(Cuadrantes.crime, Cuadrantes.date) \
         .all()
-
+    return results_cuad
     # compare the cuadrante with the rest of the DF (last 12 months)
     # max_date = Cuadrantes.query. \
     #     with_entities(func.max(Cuadrantes.date).label('date')). \
     #     scalar()
     # start_date = month_sub(max_date, -11)
 
-    if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.cuadrante) == cuadrante]
-    else:
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.crime) == crime,
-                   func.upper(Cuadrantes.cuadrante) == cuadrante]
+    # if crime == "ALL":
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                func.upper(Cuadrantes.cuadrante) == cuadrante]
+    # else:
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                func.upper(Cuadrantes.crime) == crime,
+    #                func.upper(Cuadrantes.cuadrante) == cuadrante]
+    #
+    # results_df_period = Cuadrantes.query. \
+    #     filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
+    #     with_entities(func.upper(Cuadrantes.crime).label('crime'),
+    #                   func.sum(Cuadrantes.count).label('count'),
+    #                   func.sum(Cuadrantes.population).op("/")(lib.month_diff(max_date, start_date)).label('population')). \
+    #     group_by(Cuadrantes.crime). \
+    #     order_by(Cuadrantes.crime). \
+    #     all()
+    # results_cuad_period = Cuadrantes.query. \
+    #     filter(*filters). \
+    #     with_entities(func.upper(Cuadrantes.crime).label('crime'),
+    #                   func.sum(Cuadrantes.count).label('count'),
+    #                   func.sum(Cuadrantes.population).op("/")(lib.month_diff(max_date, start_date)).label('population')). \
+    #     group_by(Cuadrantes.crime). \
+    #     order_by(Cuadrantes.crime). \
+    #     all()
 
-    results_df_last_year = Cuadrantes.query. \
-        filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
-        with_entities(func.upper(Cuadrantes.crime).label('crime'),
-                      func.sum(Cuadrantes.count).label('count'),
-                      func.sum(Cuadrantes.population).op("/")(12).label('population')). \
-        group_by(Cuadrantes.crime). \
-        order_by(Cuadrantes.crime). \
-        all()
-    results_cuad_last_year = Cuadrantes.query. \
-        filter(*filters). \
-        with_entities(func.upper(Cuadrantes.crime).label('crime'),
-                      func.sum(Cuadrantes.count).label('count'),
-                      func.sum(Cuadrantes.population).label('population')). \
-        group_by(Cuadrantes.crime). \
-        order_by(Cuadrantes.crime). \
-        all()
 
-
-    return results_cuad, results_df_last_year, results_cuad_last_year
+    #return results_cuad, results_df_period, results_cuad_period
 
 
 @API.route('/cuadrantes/crimes/<string:crime>/pip/'
@@ -294,7 +346,7 @@ def frontpage(crime, long, lat):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = lib.check_dates(start_date, end_date)
+    start_date, max_date = check_dates(start_date, end_date)
 
     if not lib.check_float(long):
         raise InvalidAPIUsage('something is wrong with the longitude you provided')
@@ -310,72 +362,18 @@ def frontpage(crime, long, lat):
                       func.ST_AsGeoJSON(Cuadrantes_Poly.geom).label("geom")). \
         first()
     if (results_pip is not None):
-        results_cuad, results_df_last_year, results_cuad_last_year = get_extra_crimes(results_pip[0], crime, start_date, max_date)
-        json_results = []
-        d = {}
-        d['geometry'] = results_pip[2]
-        d['cuadrante'] = results_pip[0]
-        d['sector'] = results_pip[1]
-        json_results.append(d)
-        # if crime == "ALL":
-        #     pip_filter = [func.upper(Cuadrantes.cuadrante) == results_pip[0]]
-        # else:
-        #     pip_filter = [func.upper(Cuadrantes.crime) == crime,
-        #                   func.upper(Cuadrantes.cuadrante) == results_pip[0]]
-        # results_cuad = Cuadrantes.query. \
-        #     filter(*pip_filter). \
-        #     with_entities(func.upper(Cuadrantes.cuadrante).label('cuadrante'),
-        #                   func.upper(Cuadrantes.sector).label('sector'),
-        #                   func.upper(Cuadrantes.crime).label('crime'),
-        #                   Cuadrantes.date,
-        #                   Cuadrantes.count,
-        #                   Cuadrantes.population) \
-        #     .order_by(Cuadrantes.crime, Cuadrantes.date) \
-        #     .all()
-        #
-        # # compare the cuadrante with the rest of the DF (last 12 months)
-        # # max_date = Cuadrantes.query. \
-        # #     with_entities(func.max(Cuadrantes.date).label('date')). \
-        # #     scalar()
-        # # start_date = month_sub(max_date, -11)
-        #
-        # if crime == "ALL":
-        #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-        #                func.upper(Cuadrantes.cuadrante) == results_pip[0]]
-        # else:
-        #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-        #                func.upper(Cuadrantes.crime) == crime,
-        #                func.upper(Cuadrantes.cuadrante) == results_pip[0]]
-        #
-        # results_df_last_year = Cuadrantes.query. \
-        #     filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
-        #     with_entities(func.upper(Cuadrantes.crime).label('crime'),
-        #                   func.sum(Cuadrantes.count).label('count'),
-        #                   func.sum(Cuadrantes.population).op("/")(12).label('population')). \
-        #     group_by(Cuadrantes.crime). \
-        #     order_by(Cuadrantes.crime). \
-        #     all()
-        # results_cuad_last_year = Cuadrantes.query. \
-        #     filter(*filters). \
-        #     with_entities(func.upper(Cuadrantes.crime).label('crime'),
-        #                   func.sum(Cuadrantes.count).label('count'),
-        #                   func.sum(Cuadrantes.population).label('population')). \
-        #     group_by(Cuadrantes.crime). \
-        #     order_by(Cuadrantes.crime). \
-        #     all()
-        #
-        # json_results = []
-        # d = {}
-        # d['geometry'] = results_pip[2]
-        # d['cuadrante'] = results_pip[0]
-        # d['sector'] = results_pip[1]
-        # json_results.append(d)
+        results_cuad = get_cuad_series(results_pip[0], crime)
+        results_df_period = get_df_period(start_date, max_date)
+        results_cuad_period = get_cuad_period(results_pip[0], crime, start_date, max_date)
+        json_results = [{'geometry': results_pip[2],
+             'cuadrante': results_pip[0],
+             'sector': results_pip[1]}]
     else:
         raise InvalidAPIUsage("You're not inside the Federal District provinciano", 404)
     return jsonify(pip=json_results,
                    cuadrante=lib.results_to_array(results_cuad),
-                   df_last_year=lib.results_to_array(results_df_last_year),
-                   cuadrante_last_year=lib.results_to_array(results_cuad_last_year))
+                   df_period=lib.results_to_array(results_df_period),
+                   cuadrante_period=lib.results_to_array(results_cuad_period))
 
 
 @API.route('/df/crimes/<string:crime>/series',
@@ -428,7 +426,7 @@ def df_all(crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
-    start_date, max_date = lib.check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
 
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
@@ -503,7 +501,7 @@ def cuadrantes(cuadrante, crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
-    start_date, max_date = lib.check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
 
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
@@ -578,7 +576,7 @@ def sectors(crime, sector):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = lib.check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
@@ -654,7 +652,7 @@ def cuadrantes_sum_all(cuadrante, crime):
     cuadrante = cuadrante.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = lib.check_dates(start_date, end_date)
+    start_date, max_date = check_dates(start_date, end_date)
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
@@ -729,7 +727,7 @@ def sectores_sum_all(sector, crime):
     sector = sector.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = lib.check_dates(start_date, end_date)
+    start_date, max_date = check_dates(start_date, end_date)
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
     else:
@@ -1045,7 +1043,7 @@ def top5cuadrantes(crime):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = lib.check_dates(start_date, end_date)
+    start_date, max_date = check_dates(start_date, end_date)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
         raise InvalidAPIUsage('Rank must be greater than zero')
@@ -1129,7 +1127,7 @@ def top5sectores(crime):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = lib.check_dates(start_date, end_date)
+    start_date, max_date = check_dates(start_date, end_date)
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
         raise InvalidAPIUsage('Rank must be greater than zero')
