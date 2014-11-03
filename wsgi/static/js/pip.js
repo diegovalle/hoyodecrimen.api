@@ -18,9 +18,9 @@ var allDF = {hom:0,rncv:0,
 var sql_statement;
 var last3Months_sql = "SELECT sum(count) as count,sum(population)/3 as population, crime FROM cuadrantes where cuadrante='C-1.1.1' and (date='2014-07-01' OR date='2014-06-01' or date='2014-05-01') GROUP BY crime"
 
-$.getJSON('js/cuadrantes-interactive.json', function (cuads) {
-    $.getJSON('js/sectores.json', function (secs) {
-        $.getJSON('js/single.json', function (single) {
+
+    
+        $.getJSON('js/df-outline.json', function (single) {
             var southWest = L.latLng(19.152952023808638, -99.55192565917969),
             northEast = L.latLng(19.597959855171077, -98.67919921875),
                 bounds = L.latLngBounds(southWest, northEast);
@@ -100,9 +100,8 @@ $.getJSON('js/cuadrantes-interactive.json', function (cuads) {
             //map.locate({setView: true});
         });
         
-    } );
-    
-});
+  
+   
 
 function get_data(data){
         
