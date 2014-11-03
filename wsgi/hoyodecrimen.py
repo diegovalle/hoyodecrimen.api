@@ -59,9 +59,14 @@ def not_found(error):
     return render_template('404.html'), 404
 
 
+@app.route('/')
+def index_html():
+    return "If it's in a word, or if it's in a book you can't get rid of the Babadook"
+
+
 @app.route('/home')
 def api_home_html():
-    return send_from_directory(os.path.join(_basedir, 'static'), 'home.html')
+    return render_template('pip.html')
 
 
 @app.route('/api/')
