@@ -142,27 +142,4 @@ def check_periods(start_period1, start_period2, end_period1, end_period2):
            max_date_last_year_minus3
 
 
-def check_dates(start_period, end_period, default_start=None):
-    start_period += '-01'
-    end_period += '-01'
-    if end_period != '-01' or start_period != '-01':
-        if not check_date_month(start_period):
-            raise InvalidAPIUsage('something is wrong with the '
-                                  'start_date date you provided')
-        if not check_date_month(end_period):
-            raise InvalidAPIUsage('something is wrong with the '
-                                  'end_date date you provided')
-        if start_period > end_period:
-            raise InvalidAPIUsage('date order not valid')
-        max_date = end_period
-        start_date = start_period
-    else:
-        max_date = Cuadrantes.query. \
-            filter(). \
-            with_entities(func.max(Cuadrantes.date).label('date')). \
-            scalar()
-        if not default_start:
-            start_date = month_sub(max_date, -11)
-        else:
-            start_date = default_start
-    return start_date, max_date
+
