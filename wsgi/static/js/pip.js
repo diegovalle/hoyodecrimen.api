@@ -17,7 +17,7 @@ var allDF = {hom:0,rncv:0,
                     viol:0};
 var sql_statement;
 var last3Months_sql = "SELECT sum(count) as count,sum(population)/3 as population, crime FROM cuadrantes where cuadrante='C-1.1.1' and (date='2014-07-01' OR date='2014-06-01' or date='2014-05-01') GROUP BY crime"
-
+L.Icon.Default.imagePath = 'js/images';
 
     
         $.getJSON('js/df-outline.json', function (single) {
@@ -78,11 +78,16 @@ var last3Months_sql = "SELECT sum(count) as count,sum(population)/3 as populatio
                 }
             }, 5000+ 1000);
 
-	    L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-	        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
+	    L.tileLayer('https://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/normal.day/{z}/{x}/{y}/256/png8?app_id=2xIqG1pjt7OdQnzqAHmm&app_code=t0G_EMNWEWEpFEIoJYEncg', {
+	        attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
+	        subdomains: '1234',
+	        mapID: 'newest',
+	        app_id: '2xIqG1pjt7OdQnzqAHmm',
+	        app_code: 't0G_EMNWEWEpFEIoJYEncg',
+	        base: 'base',
 	        minZoom: 0,
 	        maxZoom: 20
-	    }).addTo(map);
+            }).addTo(map);
 
             var myStyle = {
                 "color": "red",
@@ -94,8 +99,8 @@ var last3Months_sql = "SELECT sum(count) as count,sum(population)/3 as populatio
             L.geoJson(singleGeojson, {
                 style: myStyle
             }).addTo(map);
-            sectorsGeojson = topojson.feature(secs, secs.objects.sectores).features;
-            cuadsGeojson = topojson.feature(cuads, cuads.objects.cuadrantes).features;
+            //sectorsGeojson = topojson.feature(secs, secs.objects.sectores).features;
+            //cuadsGeojson = topojson.feature(cuads, cuads.objects.cuadrantes).features;
             //map.on('locationfound', onLocationFound);
             //map.locate({setView: true});
         });
