@@ -24,10 +24,10 @@
 		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
                 <!-- Load c3.css -->
 
-{% assets  filters="cssmin", output="js/packed.css",
+{% assets  filters="cssmin", output="js/packed.css", 
           "css/c3.css", "css/crime.css", "css/skel-noscript.css",
-          "css/style.css","css/style-desktop.css","css/ng-table.css"
-             %}
+          "css/style.css","css/style-desktop.css","css/ng-table.css",
+          "css/personalized.css"   %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
 {% endassets %}
 <style>
@@ -233,23 +233,24 @@
 						<!-- Nav -->
 							<nav id="nav">
 								<ul>
-									<li><a class="fa fa-home" href="//www.diegovalle.net/maps/cuadrantes-delictivos/"><span>Rates (Sectors)</span></a></li>
-                                                                        <li><a class="fa fa-bar-chart-o" href="counts.html"><span>Counts (Quadrants)</span></a></li>
+									<li><a class="fa fa-home" href="//www.diegovalle.net/maps/cuadrantes-delictivos/"><span>Home</span></a></li>
+                                                                        <li><a class="fa fa-bar-chart-o" href="counts.html"><span>Cuadrantes</span></a></li>
 									<li>
-										<a href="#" class="fa fa-map-marker"><span>Interactive Maps</span></a>
 										
+										<a href="#" class="fa fa-map-marker"><span>Interactive Maps</span></a>
 										<ul>
-											<li><a href="sectores.html">Sectors (rates)</a></li>
+											<li><a href="sectores.html">Sectores (rates)</a></li>
 											
-                                                                                        <li><a href="cuadrantes.html">Quadrants (counts)</a></li>
+                                                                                        <li><a href="cuadrantes.html">Cuadrantes (counts)</a></li>
 											
 										</ul>
                                                                                 
 									</li>
-                                                                        <li><a class="fa fa-signal" href="other.html">Charts</span></a></li>
+                                                                        <li><a class="fa fa-signal" href="other.html"><span>Charts</span></a></li>
+<li><a class="fa fa-signal" href="change.html"><span>Change</span></a></li>
+<li><a class="fa fa-signal" href="change.html"><span>About</span></a></li>
 								</ul>
 							</nav>
-
 
 					</div>
 
