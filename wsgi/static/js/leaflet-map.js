@@ -29,22 +29,22 @@ var config;
 //use the appropiate scale from the template
 var getColor;
 
-var nokiaStreets = L.tileLayer('http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/normal.night/{z}/{x}/{y}/256/png8?app_id={app_id}&app_code={app_code}', {
+var nokiaStreets = L.tileLayer('https://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/normal.night/{z}/{x}/{y}/256/png8?app_id={app_id}&app_code={app_code}', {
     attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
     subdomains: '1234',
     mapID: 'newest',
-    app_id: '6nA3IVXYrizzTDgFJMIN',
-    app_code: '6o4Vvdk1QIkytF-bmyH_Yg',
+    app_id: '2xIqG1pjt7OdQnzqAHmm',
+    app_code: 't0G_EMNWEWEpFEIoJYEncg',
     base: 'base',
     minZoom: 0,
     maxZoom: 20
 });
-var nokiaSat = L.tileLayer('http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/satellite.day/{z}/{x}/{y}/256/png8?app_id={app_id}&app_code={app_code}', {
+var nokiaSat = L.tileLayer('https://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/satellite.day/{z}/{x}/{y}/256/png8?app_id={app_id}&app_code={app_code}', {
     attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
     subdomains: '1234',
     mapID: 'newest',
-    app_id: '6nA3IVXYrizzTDgFJMIN',
-    app_code: '6o4Vvdk1QIkytF-bmyH_Yg',
+    app_id: '2xIqG1pjt7OdQnzqAHmm',
+    app_code: 't0G_EMNWEWEpFEIoJYEncg',
     base: 'aerial',
     minZoom: 0,
     maxZoom: 20
@@ -287,8 +287,8 @@ info.update = function (feature) {
     setChange();
     
     if(document.getElementById("seltarget")) {
-    document.getElementById("seltarget").onmouseover = controlEnter;
-    document.getElementById("seltarget").onmouseout = controlLeave; 
+        document.getElementById("seltarget").onmouseover = controlEnter;
+        document.getElementById("seltarget").onmouseout = controlLeave; 
     }
 
 };
