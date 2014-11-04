@@ -1,14 +1,48 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<!--
+	Strongly Typed by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
-<head>
-	<title>Leaflet Quick Start Guide Example</title>
-	<meta charset="utf-8" />
+	<head>
+		<title>Crime in Mexico City</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+                <link rel="alternate" hreflang="es" href="https://hoyodecrimen.com/" />
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% assets  filters="cssmin", output="css/packed-pip.css",
+          "css/c3.css", "css/skel.css", "css/style.css", "css/style-desktop.css",
+          "css/leaflet.css","css/crime.css","css/personalized.css"
+             %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
+{% endassets %}
+	<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+<style>
+.tick line{
+opacity:0;
+visibility:hidden;
+}
+</style>
 
-	<link rel="stylesheet" href="css/leaflet.css" />
-<link href="css/c3.css" rel="stylesheet" type="text/css">
-<link href="css/crime.css" rel="stylesheet" type="text/css">
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+{% assets   output="js/packed-pip.js",
+          "js/jquery.min.js", "js/jquery.dropotron.min.js", "js/skel.min.js", "js/skel-layers.min.js",
+          "js/init.js","js/underscore-min.js","js/leaflet.js", "js/leaflet-pip.js",
+"js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
+"js/jquery.1.8.3.min.js", "js/modernizr.js"
+             %}
+    <script src="{{ ASSET_URL }}""></script>
+{% endassets %}
+	<!--	<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		
+	
+
 <script src="js/underscore-min.js"></script>
 <script src="js/leaflet.js"></script>
 <script src="js/leaflet-pip.js"></script>
@@ -16,31 +50,120 @@
  <script src="js/d3.v3.min.js"></script>
 <script src="js/c3.min.js"></script>
 <script src="js/jquery.1.8.3.min.js"></script>
-<style>
-.tick line{
-opacity:0;
-visibility:hidden;
-}
-</style>
-</head>
-<body>
-<p id="cuadrante"><p>
-	<div id="map" style="width: 600px; height: 400px"></div>
+<script src="js/modernizr.js"></script>-->
+
+	</head>
+	<body class="homepage">
+
+		<!-- Header -->
+			<div id="header-wrapper">
+				<div id="header" class="container">
+					
+					<!-- Logo -->
+					
+					<p id="cuadrante"><p>
+	<div id="map" style="height: 400px"></div>
+<p>Crime in your Cuadrante</p>
+<div class="row">
+<div class="1u">&nbsp;</div>
+
+<div id="linecharts" class="5u">
+<p>Crimes counts by month in your cuadrante</p>
 <div id="chart-homicide" style="height:100px;width:400px"></div>
 <div id="chart-rncv" style="height:100px;width:400px"></div>
 <div id="chart-rvcv" style="height:100px;width:400px"></div>
 <div id="chart-rvsv" style="height:100px;width:400px"></div>
 <div id="chart-viol" style="height:100px;width:400px"></div>
+</div>
+<div id="barcharts" class="5u">
+<p>Crimes rates during the last 12 months compared to the rest of the DF</p>
 <div id="barchart-homicide" style="height:100px;width:400px"></div>
 <div id="barchart-rncv" style="height:100px;width:400px"></div>
 <div id="barchart-rvcv" style="height:100px;width:400px"></div>
 <div id="barchart-rvsv" style="height:100px;width:400px"></div>
 <div id="barchart-viol" style="height:100px;width:400px"></div>
-	<script src="js/modernizr.js"></script>
-	{% assets  filters="jsmin", output="js/pip-packed.js",
-          "js/pip.js"  %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %} 
+</div>	
+</div>
+    <script type="text/javascript" src="js/pip.js"></script>
 
-</body>
+					<!-- Nav -->
+							<nav id="nav">
+								<ul>
+									<li><a class="fa fa-home" href="/"><span>Home</span></a></li>
+                                                                        <li><a class="fa fa-bar-chart-o" href="rates"><span>Rates</span></a></li>
+                                                                        <li><a class="fa fa-bar-chart-o" href="counts"><span>Counts</span></a></li>
+									<li>
+										
+										<a href="#" class="fa fa-map-marker"><span>Maps</span></a>
+										<ul>
+											<li><a href="sectores-map">Sectores (rates)</a></li>
+											
+                                                                                        <li><a href="cuadrantes-map">Cuadrantes (counts)</a></li>
+											
+										</ul>
+                                                                                
+									</li>
+                                                                        <li><a class="fa fa-signal" href="charts"><span>Charts</span></a></li>
+<li><a class="fa fa-bar-chart-o" href="change"><span>Change</span></a></li>
+								</ul>
+							</nav>
+
+					</div>
+
+			</div>
+			
+
+		<!-- Footer Wrapper -->
+			<div id="footer-wrapper">
+
+				<!-- Footer -->
+					<div id="footer" class="container">
+						<header>
+							<h2>Questions or comments? <strong>Get in touch:</strong></h2>
+						</header>
+						<div class="row">
+							<div class="6u">
+<p>Created by <a href="https://www.diegovalle.net">Diego Valle-Jones</a></p>
+							<p>Crime data from a <a href="https://github.com/diegovalle/crimeDF/tree/master/sspdf-data">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://201.144.220.174/pid/gps/cuadrantesWeb.php">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>.</p>
+							</div>
+							<div class="6u">
+								<section>
+									
+									<div class="row">
+										<ul class="icons 6u">
+                                                                                  <li class="fa fa-envelope">
+												<a href="mailto:diegovalle@gmail.com">diegovalle@gmail.com</a>
+											</li>
+											<li class="fa fa-github">
+												<a href="http://github.com/diegovalle">@diegovalle</a>
+											</li>
+											
+										</ul>
+										<ul class="icons 6u">
+											<li class="fa fa-twitter">
+												<a href="http://twitter.com/diegovalle">@diegovalle</a>
+											</li>
+											<li class="fa fa-facebook">
+												<a href="http://www.facebook.com/diegovalle">facebook.com/diegovalle</a>
+											</li>
+											<li class="fa fa-google-plus">
+												<a href="https://plus.google.com/112417668983107842349?rel=author">google.com/+DiegoValleJones</a>
+											</li>
+										</ul>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+
+				<!-- Copyright -->
+					<div id="copyright" class="container">
+						<ul class="links">
+							<li> &copy; Diego Valle-Jones. All rights reserved</li>
+							<li>Design: <a href="http://html5up.net/">HTML5 UP</a></li>
+						</ul>
+					</div>
+
+			</div>
+	</body>
 </html>
