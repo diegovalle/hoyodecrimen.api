@@ -27,6 +27,7 @@ app.config.from_pyfile('apihoyodecrimen.cfg')
 
 cache.init_app(app)
 assets = Environment(app)
+assets.versions = 'timestamp'    # use the last modified timestamp
 babel = Babel(app)
 
 
@@ -125,18 +126,17 @@ def static_css(filename):
 
 
 @app.route('/font/<path:filename>')
-def static_ont(filename):
+def static_font(filename):
     return send_from_directory(os.path.join(_basedir, 'static','font'), filename)
+
+@app.route('/fonts/<path:filename>')
+def static_fonts(filename):
+    return send_from_directory(os.path.join(_basedir, 'static','fonts'), filename)
 
 
 @app.route('/js/<path:filename>')
 def static_js(filename):
     return send_from_directory(os.path.join(_basedir, 'static','js'), filename)
-
-
-@app.route('/font/<path:filename>')
-def static_font(filename):
-    return send_from_directory(os.path.join(_basedir, 'static','font'), filename)
 
 
 @app.route('/images/<path:filename>')
