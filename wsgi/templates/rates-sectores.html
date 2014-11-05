@@ -24,9 +24,7 @@
 		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
                 <!-- Load c3.css -->
 
-{% assets  filters="cssmin", output="js/packed.css", 
-"css/c3.css", "css/skel.css", "css/style.css", "css/style-desktop.css",
-          "css/leaflet.css","css/crime.css","css/ng-table.css"   %}
+{% assets  'css_maps_req'   %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
 {% endassets %}
 
@@ -37,12 +35,7 @@
 // URL for the angular table
 anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
 </script>
-{% assets  filters="jsmin", output="js/packed.js",
-          "js/jquery.min.js", "js/jquery.dropotron.min.js", "js/config.js", 
-          "js/skel.min.js", "js/skel-layers.min.js", "js/init.js", "js/d3.v3.min.js",
-           "js/topojson.v1.min.js","js/c3.min.js","js/d3.tip.v0.6.3.js",
-           "js/tooltip.js","js/angular.min.js","js/underscore-min.js", "js/angular-translate.js",
-           "js/ng-table.min.js", "js/angular-resource.js", "js/angular-tables.js"  %}
+{% assets  'js_maps_req'  %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 
@@ -382,8 +375,7 @@ chartviol.load({
                 columns: [violA],
             }); };
 </script>
-{% assets  filters="jsmin", output="js/packed-maps.js",
-          "js/maps.js"  %}
+{% assets  'js_maps'  %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 <script>
