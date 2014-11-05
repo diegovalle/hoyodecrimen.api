@@ -127,8 +127,8 @@ def google055ef027e7764e4d():
     return 'google-site-verification: google055ef027e7764e4d.html'
 
 # Blitz verification
-@app.route('//mu-01188fe9-0b813050-b0f51076-c96f41fb')
-def google055ef027e7764e4d():
+@app.route('/mu-01188fe9-0b813050-b0f51076-c96f41fb')
+def mu01188fe9():
     return '42'
 
 
