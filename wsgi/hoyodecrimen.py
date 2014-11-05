@@ -78,7 +78,7 @@ assets.register("js_pip", js_pip)
 def index_html():
     return "If it's in a word, or if it's in a book you can't get rid of the Babadook"
 
-
+@cache.cached()
 @app.route('/en/')
 def api_home_html():
     return render_template('pip.html')
