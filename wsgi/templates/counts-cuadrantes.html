@@ -24,10 +24,9 @@
 		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
                 <!-- Load c3.css -->
 
-{% assets  filters="cssmin", output="js/packed.css",
-          "css/c3.css", "css/crime.css", "css/skel-noscript.css",
-          "css/style.css","css/style-desktop.css","css/ng-table.css",
-           "css/personalized.css"  %}
+{% assets  filters="cssmin", output="js/packed.css", 
+"css/c3.css", "css/skel.css", "css/style.css", "css/style-desktop.css",
+          "css/leaflet.css","css/crime.css","css/ng-table.css"   %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
 {% endassets %}
                 <style>
@@ -37,16 +36,16 @@
 </style>
 <script>
 // URL for the angular table
-anuglar_table_url = "https://hoyodecrimen.com/api/v1/cuadrantes/crimes/all/top/counts"
+anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts"
 </script>	
-		{% assets  filters="jsmin", output="js/packed.js",
-          "js/jquery.min.js", "js/jquery.dropotron.min.js", "js/config.js",
-          "js/skel.min.js", "js/skel-panels.min.js", "js/d3.v3.min.js",
+{% assets  filters="jsmin", output="js/packed.js",
+          "js/jquery.min.js", "js/jquery.dropotron.min.js", "js/config.js", 
+          "js/skel.min.js", "js/skel-layers.min.js", "js/init.js", "js/d3.v3.min.js",
            "js/topojson.v1.min.js","js/c3.min.js","js/d3.tip.v0.6.3.js",
            "js/tooltip.js","js/angular.min.js","js/underscore-min.js", "js/angular-translate.js",
            "js/ng-table.min.js", "js/angular-resource.js", "js/angular-tables.js"  %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %} 
+{% endassets %}
 
                 
 
@@ -58,15 +57,7 @@ anuglar_table_url = "https://hoyodecrimen.com/api/v1/cuadrantes/crimes/all/top/c
 						
 				<!-- Header -->
 					<div id="header" class="container">
-<!-- AddThis Button BEGIN -->
-<div class="addthis_toolbox addthis_default_style">
-<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-<a class="addthis_button_tweet"></a>
-</div>
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53828ddc4d27c103"></script>
 
-<!-- AddThis Button END -->
 
                                           <h2 id="homicide-title"style="text-align:left;margin: 0 0 0 4em;">Homicides - Total</h2>
 
@@ -237,24 +228,24 @@ anuglar_table_url = "https://hoyodecrimen.com/api/v1/cuadrantes/crimes/all/top/c
 							<p>A responsive HTML5 site template. Manufactured by HTML5 UP.</p>-->
 						
 						<!-- Nav -->
-								<nav id="nav">
+									<nav id="nav">
 								<ul>
-									<li><a class="fa fa-home" href="//www.diegovalle.net/maps/cuadrantes-delictivos/"><span>Home</span></a></li>
-                                                                        <li><a class="fa fa-bar-chart-o" href="counts.html"><span>Cuadrantes</span></a></li>
+									<li><a class="fa fa-home" href="/en/"><span>Home</span></a></li>
+                                                                        <li><a class="fa fa-bar-chart-o" href="/en/rates"><span>Rates</span></a></li>
+                                                                        <li><a class="fa fa-bar-chart-o" href="/en/counts"><span>Counts</span></a></li>
 									<li>
 										
-										<a href="#" class="fa fa-map-marker"><span>Interactive Maps</span></a>
+										<a href="#" class="fa fa-map-marker"><span>Maps</span></a>
 										<ul>
-											<li><a href="sectores.html">Sectores (rates)</a></li>
+											<li><a href="/en/sectores-map">Sectores (rates)</a></li>
 											
-                                                                                        <li><a href="cuadrantes.html">Cuadrantes (counts)</a></li>
+                                                                                        <li><a href="/en/cuadrantes-map">Cuadrantes (counts)</a></li>
 											
 										</ul>
                                                                                 
 									</li>
-                                                                        <li><a class="fa fa-signal" href="other.html"><span>Charts</span></a></li>
-<li><a class="fa fa-signal" href="change.html"><span>Change</span></a></li>
-<li><a class="fa fa-signal" href="change.html"><span>About</span></a></li>
+                                                                        <li><a class="fa fa-signal" href="/en/charts"><span>Charts</span></a></li>
+<li><a class="fa fa-bar-chart-o" href="/en/trends"><span>Trends</span></a></li>
 								</ul>
 							</nav>
 
@@ -317,8 +308,8 @@ anuglar_table_url = "https://hoyodecrimen.com/api/v1/cuadrantes/crimes/all/top/c
 
                         <script>
 var topoName = 'cuadrantes';    
-var mapFile = "js/cuadrantes.json";
-var crimeFile = "js/hom-dol-cuad.js";
+var mapFile = "/js/cuadrantes.json";
+//var crimeFile = "js/hom-dol-cuad.js";
 var mapColors = {hom:"Redsq", rncv:"Bluesq", rvcv:"Purplesq",
 rvsv:"Greensq", viol:"Graysq"}
 
@@ -358,7 +349,10 @@ chartviol.load({
                 columns: [violA],
             }); };
 </script>
-<script src="js/maps.js"></script>
+{% assets  filters="jsmin", output="js/packed-maps.js",
+          "js/maps.js"  %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

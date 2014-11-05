@@ -17,10 +17,11 @@ var allDF = {hom:0,rncv:0,
                     viol:0};
 var sql_statement;
 var last3Months_sql = "SELECT sum(count) as count,sum(population)/3 as population, crime FROM cuadrantes where cuadrante='C-1.1.1' and (date='2014-07-01' OR date='2014-06-01' or date='2014-05-01') GROUP BY crime"
-L.Icon.Default.imagePath = 'js/images';
+L.Icon.Default.imagePath = '/js/images';
+var comma = d3.format("0,000")
 
     
-        $.getJSON('js/df-outline.json', function (single) {
+        $.getJSON('/js/df-outline.json', function (single) {
             var southWest = L.latLng(19.152952023808638, -99.55192565917969),
             northEast = L.latLng(19.597959855171077, -98.67919921875),
                 bounds = L.latLngBounds(southWest, northEast);
@@ -160,6 +161,11 @@ function get_data(data){
 
     crimeCompare.viol  = Math.round(cuad_last['VIOLACION'].count / cuad_last['VIOLACION'].population * Math.pow(10,5) * 10) / 10
     allDF.viol =  Math.round(totals['VIOLACION'].count / totals['VIOLACION'].population * Math.pow(10,5) * 10) / 10
+
+// set the population and cuadrante
+    $("#poblacion").text("Population: " + comma(cuad_last['HOMICIDIO DOLOSO'].population))
+    $("#cuadrante").text("Cuadrante: " + data.pip[0].cuadrante)
+    $("#sector").text("Sector: " + data.pip[0].sector)
 
         chartHomicides.load({
             columns: [crime.hom],
@@ -316,7 +322,7 @@ function createBarChart(selection, DFRate, color){
         axis:{
             y:{
                 min:-7,
-                tick : {format: function (d) { return ""  } },
+                tick : {format: function (d) {  return d % 10 == 0 ? d : ""   } },
             }
         },
         tooltip: {
@@ -361,8 +367,8 @@ function createLineChart(selection, totalCrime, labelText, color) {
             colors: {
                 "Cuadrante Homicides": color,
                 "Cuadrante Violent robberies to a business": color,
-                'Cuadrante Violent car robberies': color,
-                'Cuadrante Non-violent car robberies': color,
+                'Cuadrante Vehicle robberies with violence': color,
+                'Cuadrante Vehicle robberies without violence': color,
                 'Cuadrante Rape': color
             }
             //types:{'Homicides':'area', 

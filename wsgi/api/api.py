@@ -275,7 +275,7 @@ def get_cuad_series(cuadrante, crime):
            '<string:lat>',
            methods=['GET'])
 @jsonp
-#@cache.cached(key_prefix=make_cache_key)
+@cache.cached(key_prefix=make_cache_key)
 def frontpage(crime, long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 

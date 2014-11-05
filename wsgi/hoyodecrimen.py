@@ -60,12 +60,25 @@ def not_found(error):
     return render_template('404.html'), 404
 
 
+js_pip_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js", "js/skel.min.js",
+            "js/skel-layers.min.js",
+            "js/init.js", "js/underscore-min.js", "js/leaflet.js",
+            "js/leaflet-pip.js",
+            "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
+            "js/jquery.1.8.3.min.js", "js/modernizr.js",
+            filters='jsmin', output='js/packed-pip-req.js')
+assets.register('js_pip_req', js_pip_req)
+
+js_pip = Bundle("js/pip.js", filters ="jsmin", output="js/js_pip.js")
+assets.register("js_pip", js_pip)
+
+
 @app.route('/')
 def index_html():
     return "If it's in a word, or if it's in a book you can't get rid of the Babadook"
 
 
-@app.route('/home')
+@app.route('/en/')
 def api_home_html():
     return render_template('pip.html')
 
@@ -82,27 +95,27 @@ def api_html(filename):
     return send_from_directory(os.path.join(_basedir, 'static', 'sphinx', 'html'), filename)
 
 
-@app.route('/rates')
+@app.route('/en/rates')
 def index():
     return render_template('rates-sectores.html')
 
 
-@app.route('/change')
+@app.route('/en/trends')
 def change():
     return render_template('change-cuadrantes.html')
 
 
-@app.route('/counts')
+@app.route('/en/counts')
 def counts():
     return render_template('counts-cuadrantes.html')
 
 
-@app.route('/sectores-map')
+@app.route('/en/sectores-map')
 def sectores_map():
     return render_template('sectores-map.html')
 
 
-@app.route('/cuadrantes-map')
+@app.route('/en/cuadrantes-map')
 def cuadrantes_map():
     return render_template('cuadrantes-map.html')
 
