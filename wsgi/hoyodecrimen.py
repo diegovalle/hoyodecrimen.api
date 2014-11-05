@@ -74,6 +74,23 @@ js_pip = Bundle("js/pip.js", filters ="jsmin", output="js/js_pip.js")
 assets.register("js_pip", js_pip)
 
 
+css_maps_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
+                      "css/style-desktop.css",
+                      "css/leaflet.css", "css/crime.css", "css/ng-table.css",
+                      filters="cssmin", output="css/packed-maps-reqs.css",)
+assets.register('css_maps_req', css_maps_req)
+
+js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js", "js/config.js",
+          "js/skel.min.js", "js/skel-layers.min.js", "js/init.js", "js/d3.v3.min.js",
+           "js/topojson.v1.min.js","js/c3.min.js","js/d3.tip.v0.6.3.js",
+           "js/tooltip.js","js/angular.min.js","js/underscore-min.js", "js/angular-translate.js",
+           "js/ng-table.min.js", "js/angular-resource.js", "js/angular-tables.js",
+           filters="jsmin", output="js/packed-maps-reqs.js")
+assets.register('js_maps_req', js_maps_req)
+
+js_maps = Bundle("js/maps.js", filters="jsmin", output="packed-maps.js")
+assets.register('js_maps', js_maps)
+
 @app.route('/')
 def index_html():
     return "If it's in a word, or if it's in a book you can't get rid of the Babadook"
@@ -127,7 +144,7 @@ def google055ef027e7764e4d():
     return 'google-site-verification: google055ef027e7764e4d.html'
 
 # Blitz verification
-@app.route('/mu-01188fe9-0b813050-b0f51076-c96f41fb')
+@app.route('/mu-01188fe9-0b813050-b0f51076-c96f41fb.txt')
 def mu01188fe9():
     return '42'
 
