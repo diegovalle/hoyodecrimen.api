@@ -1,6 +1,6 @@
 //The map
 var mxc;
-
+L.Icon.Default.imagePath = '/js/images';
 //return a color scale for the choropleths
 var createScale = function(colors, domain, numcol){
     return chroma.scale(colors).domain(domain, numcol);
