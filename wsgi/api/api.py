@@ -109,7 +109,7 @@ def estariamosmejorcon():
 
     .. sourcecode:: http
 
-      GET /api/v1//estariamosmejorcon HTTP/1.1
+      GET /api/v1/estariamosmejorcon HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -285,10 +285,11 @@ def frontpage(crime, long, lat):
 
     :param long: long
     :param lat: lat
+    :param crime: the name of a crime or the keyword ``all``
 
     :status 200: when the cuadrante corresponding to the latitude and longitude is found
     :status 400: when the latitude or longitude where incorrectly specified
-    :status 404: when the latitude or longitude are outside of the Federal District cuadrante area
+    :status 404: when the latitude or longitude are outside of the Federal District cuadrante area or the crime requested doesn't exist
 
     :resheader Content-Type: application/json
 
@@ -1161,7 +1162,7 @@ def top5sectores(crime):
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def top5changecuadrantes(crime):
-    """Return the top ranked cuadrantes were crime **counts** increased the most.
+    """Return the top ranked cuadrantes where crime **counts** increased the most.
 
     When no date parameters are specified the top 5 cuadrantes are returned for the last 3 months compared
     with the same period during the previous year (e.g. July-May 2014 compared with July-May 2013).

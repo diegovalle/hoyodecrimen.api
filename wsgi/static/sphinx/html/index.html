@@ -1,0 +1,1183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to HoyoDeCrimen API’s documentation! &mdash; HoyoDeCrimen API 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HoyoDeCrimen API 1 documentation" href="#" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">HoyoDeCrimen API 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-hoyodecrimen-api-s-documentation">
+<h1><a class="toc-backref" href="#id5">Welcome to HoyoDeCrimen API&#8217;s documentation!</a><a class="headerlink" href="#welcome-to-hoyodecrimen-api-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#welcome-to-hoyodecrimen-api-s-documentation" id="id5">Welcome to HoyoDeCrimen API&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#basic-overview" id="id6">Basic overview</a></li>
+<li><a class="reference internal" href="#status" id="id7">Status</a></li>
+<li><a class="reference internal" href="#license" id="id8">License</a></li>
+<li><a class="reference internal" href="#what-s-available" id="id9">What&#8217;s available</a></li>
+<li><a class="reference internal" href="#getting-started" id="id10">Getting Started</a></li>
+<li><a class="reference internal" href="#handling-errors" id="id11">Handling Errors</a></li>
+<li><a class="reference internal" href="#note" id="id12">Note</a></li>
+<li><a class="reference internal" href="#api-reference" id="id13">API Reference</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="basic-overview">
+<h1><a class="toc-backref" href="#id6">Basic overview</a><a class="headerlink" href="#basic-overview" title="Permalink to this headline">¶</a></h1>
+<p>The Hoyodecrimen REST API allows you to query crime data about Mexico
+City. You can even do some fancy things like get the top 9 cuadrantes
+where homicide counts changed the most.</p>
+<p>Since the API is based on REST principles and returns JSON data, it&#8217;s
+very easy to write applications that use it. You can use your browser
+to access any API URL, or pretty much any HTTP client in any
+programming language (yes, even something like STATA which no real
+scientist would use).</p>
+<p>For example, <a class="reference external" href="https://hoyodecrimen.com/api/v1/crimes">https://hoyodecrimen.com/api/v1/crimes</a> will return a list
+of all crimes in the database.
+<a class="reference external" href="https://hoyodecrimen.com/api/v1/cuadrantes">https://hoyodecrimen.com/api/v1/cuadrantes</a> will return a list of all
+the cuadrantes in the Federal District. Once you have a list of crimes
+and cuadrantes you can use
+<a class="reference external" href="https://hoyodecrimen.com/api/v1/cuadrantes/c-1.1.1/crimes/homicidio%20doloso/series">https://hoyodecrimen.com/api/v1/cuadrantes/c-1.1.1/crimes/homicidio%20doloso/series</a>
+to get a time series of the homicide rate in cuadrante C-1.1.1 (the
+API is case insensitive). Note that <cite>homicidio%20doloso</cite> can be
+changed to <cite>all</cite> to get all the crimes that occurred in that
+cuadrante.</p>
+</div>
+<div class="section" id="status">
+<h1><a class="toc-backref" href="#id7">Status</a><a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h1>
+<p>This is beta software and paths may break (but not much). If you
+notice an error, have any comments, or stuff you&#8217;d like added to the
+API raise an issue on <a class="reference external" href="https://github.com/diegovalle/hoyodecrimen.api/issues">GitHub</a> or email me
+at <a class="reference external" href="mailto:diegovalle&#37;&#52;&#48;gmail&#46;com">diegovalle<span>&#64;</span>gmail<span>&#46;</span>com</a>. All data comes from freedom of information
+requests to the Mexico City government, sometimes I get data on crimes
+which happened in non-specified cuadrantes <em>(en blanco)</em> and sometimes
+not, depending on how lucky I get when the FOI request is answered.</p>
+</div>
+<div class="section" id="license">
+<h1><a class="toc-backref" href="#id8">License</a><a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
+<p>Data accessed via this API is provided under the
+<a class="reference external" href="https://creativecommons.org/licenses/by-sa/3.0/legalcode">Creative Commons Attribution-ShareAlike (CC-BY-SA) 3.0 Unported license</a>. If you use
+this data you must link back to <a class="reference external" href="https://hoyodecrimen.com/">https://hoyodecrimen.com/</a> as
+the origin of the data.</p>
+</div>
+<div class="section" id="what-s-available">
+<h1><a class="toc-backref" href="#id9">What&#8217;s available</a><a class="headerlink" href="#what-s-available" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="33%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service</th>
+<th class="head">Action</th>
+<th class="head">URI</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Point in Polygon</td>
+<td>Given a longitude and latitude return the
+corresponding cuadrante and sector</td>
+<td><div class="first last line-block">
+<div class="line"><strong>/api/v1/cuadrantes/pip/(string: long)/(string: lat)</strong></div>
+<div class="line"><strong>/api/v1/cuadrantes/crimes/(string: crime)/pip/(string: long)/(string: lat)</strong></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>Time Series</td>
+<td>Crime counts ordered by month of occurrence for a
+cuadrante or sector</td>
+<td><div class="first last line-block">
+<div class="line"><strong>/api/v1/sectores/(string: sector)/crimes/(string: crime)/series/</strong></div>
+<div class="line"><strong>/api/v1/cuadrantes/(string: cuadrante)/crimes/(string: crime)/series</strong></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>List Cuadrantes or
+Sectores</td>
+<td>Sum of crimes that occurred in a
+cuadrante or sector for a specified
+period of time</td>
+<td><div class="first last line-block">
+<div class="line"><strong>/api/v1/cuadrantes/(string: cuadrante)/crimes/(string: crime)/period</strong></div>
+<div class="line"><strong>/api/v1/sectores/(string: sector)/crimes/(string: crime)/period</strong></div>
+<div class="line"><strong>/api/v1/cuadrantes/(string: cuadrante)/crimes/(string: crime)/period/change</strong></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>Top Most Violent</td>
+<td>A list of the cuadrantes and sectors with the
+highest rates (sectores), crime counts
+(cuadrantes) or change in crime counts (cuadrantes)</td>
+<td><div class="first last line-block">
+<div class="line"><strong>/api/v1/sectores/crimes/(string: crime)/top/rates</strong></div>
+<div class="line"><strong>/api/v1/cuadrantes/crimes/(string: crime)/top/counts</strong></div>
+<div class="line"><strong>/api/v1/cuadrantes/crimes/(string: crime)/top/counts/change</strong></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>DF data</td>
+<td>A time series of the sum of all crimes
+that occurred in the Federal District</td>
+<td><div class="first last line-block">
+<div class="line"><strong>/api/v1/df/crimes/(string: crime)/series</strong></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>Enumerate</td>
+<td>Get a list of the names of all cuadrantes,
+sectores or crimes</td>
+<td><div class="first last line-block">
+<div class="line"><strong>/api/v1/cuadrantes</strong></div>
+<div class="line"><strong>/api/v1/sectores</strong></div>
+<div class="line"><strong>/api/v1/crimes</strong></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="getting-started">
+<h1><a class="toc-backref" href="#id10">Getting Started</a><a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>All endpoints are GET requests that send back an object filled will
+the relevant data. You really want to use JSONP to access the
+API. Here is a basic example of how to handle JSONP requests using
+jQuery.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;jsonp&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://hoyodecrimen.com/api/v1/cuadrantes/c-1.1.1/crimes/homicidio%20doloso/series&#39;</span><span class="p">,</span>
+    <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// console.debug(data)</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>or in python:</p>
+</div>
+<div class="section" id="handling-errors">
+<h1><a class="toc-backref" href="#id11">Handling Errors</a><a class="headerlink" href="#handling-errors" title="Permalink to this headline">¶</a></h1>
+<p>If there is a validation error with the request, or the cuadrante or
+crime queried does not exist, an error object will be passed back
+which contains a short description of what went wrong.</p>
+<p>Example Error Response:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;jsonp&#39;</span><span class="p">,</span>
+    <span class="c1">// notice the invalid start_date</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://hoyodecrimen.com/api/v1/cuadrantes/c-1.1.1/crimes/all/series?start_date=2014-99?end_date=2014-07&#39;</span><span class="p">,</span>
+    <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// console.debug(data)</span>
+    <span class="p">},</span>
+    <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// console.debug(xhr.responseText); // error description</span>
+        <span class="c1">// console.debug(xhr.status); //should be 400</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="note">
+<h1><a class="toc-backref" href="#id12">Note</a><a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h1>
+<p>Population is given in persons/year and corresponds to that of the
+2010 census.</p>
+</div>
+<div class="section" id="api-reference">
+<h1><a class="toc-backref" href="#id13">API Reference</a><a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<dl class="get">
+<dt id="get--api-v1-estariamosmejorcon">
+<code class="descname">GET </code><code class="descname">/api/v1/estariamosmejorcon</code><a class="headerlink" href="#get--api-v1-estariamosmejorcon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the once and future president of Mexico</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the best man for the job is a good ol&#8217; regular citizen</li>
+<li><span class="problematic">666</span> &#8211; when the best man for the job is president once more</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/estariamosmejorcon</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-cuadrantes">
+<code class="descname">GET </code><code class="descname">/api/v1/cuadrantes</code><a class="headerlink" href="#get--api-v1-cuadrantes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumerate all the cuadrantes and the sectors they belong to</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when all the cuadrantes were found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;cuadrante&quot;: &quot;S-1.1.16&quot;,
+&quot;sector&quot;: &quot;NARVARTE - ALAMOS&quot;
+},
+{
+&quot;cuadrante&quot;: &quot;N-2.1.1&quot;,
+&quot;sector&quot;: &quot;ARAGON&quot;
+}
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-sectores">
+<code class="descname">GET </code><code class="descname">/api/v1/sectores</code><a class="headerlink" href="#get--api-v1-sectores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumerate all the sectores in the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when all the sectores were found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/sectores</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;sector&quot;: &quot;ABASTO-REFORMA&quot;
+},
+{
+&quot;sector&quot;: &quot;SAN ANGEL&quot;
+},
+{
+&quot;sector&quot;: &quot;COYOACAN&quot;
+},
+{
+&quot;sector&quot;: &quot;TEZONCO&quot;
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-crimes">
+<code class="descname">GET </code><code class="descname">/api/v1/crimes</code><a class="headerlink" href="#get--api-v1-crimes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumerate all the crimes in the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when all the crimes were found</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/crimes</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;
+},
+{
+&quot;crime&quot;: &quot;ROBO A NEGOCIO C.V.&quot;
+},
+{
+&quot;crime&quot;: &quot;ROBO DE VEHICULO AUTOMOTOR C.V.&quot;
+}
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-cuadrantes-crimes-(string-crime)-top-counts-change">
+<code class="descname">GET </code><code class="descname">/api/v1/cuadrantes/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/top/counts/change</code><a class="headerlink" href="#get--api-v1-cuadrantes-crimes-(string-crime)-top-counts-change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the top ranked cuadrantes where crime <strong>counts</strong> increased the most.</p>
+<p>When no date parameters are specified the top 5 cuadrantes are returned for the last 3 months compared
+with the same period during the previous year (e.g. July-May 2014 compared with July-May 2013).
+All population data returned by this call is in persons/year and comes from the 2010 census</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>crime</strong> &#8211; the name of a crime or the keyword <code class="docutils literal"><span class="pre">all</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the top 5 cuadrantes are found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> &#8211; when the one of the dates was incorrectly specified or the periods overlap</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime is not found in the database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>start_period1</strong> &#8211; Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>end_period1</strong> &#8211; End of the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>start_period2</strong> &#8211; Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>end_period2</strong> &#8211; End of the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>rank</strong> &#8211; Return the top X ranked cuadrantes.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes/crimes/homicidio%20doloso/top/counts/change</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;cuadrante&quot;: &quot;O-2.2.9&quot;,
+&quot;difference&quot;: 5,
+&quot;end_period1&quot;: &quot;2013-07&quot;,
+&quot;end_period2&quot;: &quot;2014-07&quot;,
+&quot;period1_count&quot;: 0,
+&quot;period2_count&quot;: 5,
+&quot;population&quot;: 43116,
+&quot;rank&quot;: 1,
+&quot;sector&quot;: &quot;QUETZAL&quot;,
+&quot;start_period1&quot;: &quot;2013-05&quot;,
+&quot;start_period2&quot;: &quot;2014-05&quot;
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-cuadrantes-crimes-(string-crime)-pip-(string-long)-(string-lat)">
+<code class="descname">GET </code><code class="descname">/api/v1/cuadrantes/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/pip/</code><span class="sig-paren">(</span><em class="property">string: </em><em>long</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>lat</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-cuadrantes-crimes-(string-crime)-pip-(string-long)-(string-lat)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info</p>
+<p>Returns a list containg the cuadrante polygon as GeoJSON, all the crimes that occurred in the cuadrante
+by date, the sum of crime counts that occurred in the whole DF during the last 12 months, and the sum of crimes in
+the cuadrante containing the longitude and latitude during the last 12 months</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>long</strong> &#8211; long</li>
+<li><strong>lat</strong> &#8211; lat</li>
+<li><strong>crime</strong> &#8211; the name of a crime or the keyword <code class="docutils literal"><span class="pre">all</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the cuadrante corresponding to the latitude and longitude is found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> &#8211; when the latitude or longitude where incorrectly specified</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the latitude or longitude are outside of the Federal District cuadrante area or the crime requested doesn&#8217;t exist</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes/crimes/all/pip/-99.13333/19.43</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;cuadrante&quot;: [
+{
+&quot;count&quot;: 0,
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;cuadrante&quot;: &quot;C-1.4.4&quot;,
+&quot;month&quot;: 1,
+&quot;population&quot;: 1405,
+&quot;sector&quot;: &quot;CORREDOR - CENTRO&quot;,l
+&quot;year&quot;: 2013
+},
+...
+&quot;cuadrante_last_year&quot;: [
+{
+&quot;count&quot;: 0,
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;population&quot;: 16860
+},
+...
+&quot;df_last_year&quot;: [
+{
+&quot;count&quot;: 823,
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;population&quot;: 8785874
+},
+...
+&quot;pip&quot;: [
+{
+&quot;cuadrante&quot;: &quot;C-1.4.4&quot;,
+&quot;geomery&quot;: &quot;{&quot;type&quot;:&quot;MultiPolygon&quot;,&quot;coordinates&quot;:[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}&quot;,
+&quot;sector&quot;: &quot;corredor - centro&quot;
+}
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-cuadrantes-(string-cuadrante)-crimes-(string-crime)-period-change">
+<code class="descname">GET </code><code class="descname">/api/v1/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>cuadrante</em><span class="sig-paren">)</span><code class="descname">/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/period/change</code><a class="headerlink" href="#get--api-v1-cuadrantes-(string-cuadrante)-crimes-(string-crime)-period-change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the change in crime counts for a specified period of time at the cuadrante level</p>
+<p>By default it returns the sum of crimes during the last 12 months</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>crime</strong> &#8211; the name of crime or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all crimes</li>
+<li><strong>cuadrante</strong> &#8211; the name of the cuadrante or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all cuadrantes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the  change in crime counts is found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime is not found in the database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>start_period1</strong> &#8211; Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>end_period1</strong> &#8211; End of the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>start_period2</strong> &#8211; Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>end_period2</strong> &#8211; End of the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes/all/crimes/all/period/change</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;cuadrante&quot;: &quot;O-2.2.9&quot;,
+&quot;difference&quot;: 5,
+&quot;end_period1&quot;: &quot;2013-07&quot;,
+&quot;end_period2&quot;: &quot;2014-07&quot;,
+&quot;period1_count&quot;: 0,
+&quot;period2_count&quot;: 5,
+&quot;population&quot;: 43116,
+&quot;sector&quot;: &quot;QUETZAL&quot;,
+&quot;start_period1&quot;: &quot;2013-05&quot;,
+&quot;start_period2&quot;: &quot;2014-05&quot;
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-cuadrantes-crimes-(string-crime)-top-counts">
+<code class="descname">GET </code><code class="descname">/api/v1/cuadrantes/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/top/counts</code><a class="headerlink" href="#get--api-v1-cuadrantes-crimes-(string-crime)-top-counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the top ranked cuadrantes with the highest crime <strong>counts</strong> for a given period of time.</p>
+<p>When no dates parameters are specified the top 5 cuadrantes for the last 12 months are returned
+(e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
+All population data returned by this call is in persons/year and comes from the 2010 census</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>crime</strong> &#8211; the name of a crime or the keyword <code class="docutils literal"><span class="pre">all</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the top 5 cuadrantes are found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> &#8211; when the one of the dates was incorrectly specified or the periods overlap</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime is not found in the database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>start_date</strong> &#8211; Start of the period from which to start counting. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>end_date</strong> &#8211; End of the period to analyze. Must be greater or equal to start_date. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>rank</strong> &#8211; Return all cuadrantes ranked higher. Defaults to <cite>5</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes/crimes/homicidio%20doloso/top/counts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+{
+&quot;rows&quot;: [
+{
+&quot;count&quot;: 12,
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;cuadrante&quot;: &quot;N-2.2.1&quot;,
+&quot;end_date&quot;: &quot;2014-07&quot;,
+&quot;population&quot;: 1833,
+&quot;rank&quot;: 1,
+&quot;sector&quot;: &quot;CUCHILLA&quot;,
+&quot;start_date&quot;: &quot;2013-08&quot;
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-cuadrantes-(string-cuadrante)-crimes-(string-crime)-series">
+<code class="descname">GET </code><code class="descname">/api/v1/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>cuadrante</em><span class="sig-paren">)</span><code class="descname">/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/series</code><a class="headerlink" href="#get--api-v1-cuadrantes-(string-cuadrante)-crimes-(string-crime)-series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the count of crimes that occurred in a cuadrante, by date</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>crime</strong> &#8211; the name of crime or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all crimes</li>
+<li><strong>cuadrante</strong> &#8211; the name of the cuadrante from which to return the time series or the keyword <a href="#id1"><span class="problematic" id="id2">``</span></a>all to return all cuadrantes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the sum of all crimes is found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime or cuadrante is not found in the database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>start_date</strong> &#8211; Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
+<li><strong>end_date</strong> &#8211; End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes/c-1.1.1/crimes/violacion/series</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;count&quot;: 0,
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;cuadrante&quot;: &quot;C-1.1.1&quot;,
+&quot;month&quot;: 1,
+&quot;population&quot;: 1594,
+&quot;sector&quot;: &quot;ANGEL - ZONA ROSA&quot;,
+&quot;year&quot;: 2013
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-cuadrantes-(string-cuadrante)-crimes-(string-crime)-period">
+<code class="descname">GET </code><code class="descname">/api/v1/cuadrantes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>cuadrante</em><span class="sig-paren">)</span><code class="descname">/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/period</code><a class="headerlink" href="#get--api-v1-cuadrantes-(string-cuadrante)-crimes-(string-crime)-period" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sum of crimes that occurred in each cuadrante for a specified period of time</p>
+<p>By default it returns the sum of crimes during the last 12 months for all the cuadrantes in the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>crime</strong> &#8211; the name of crime or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all crimes</li>
+<li><strong>cuadrante</strong> &#8211; the name of the cuadrante or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all cuadrantes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the sum of all crimes is found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime is not found in the database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>start_date</strong> &#8211; Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
+<li><strong>end_date</strong> &#8211; End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes/all/crimes/all/period</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;count&quot;: 0,
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;cuadrante&quot;: &quot;C-1.1.1&quot;,
+&quot;end_date&quot;: &quot;2014-07&quot;,
+&quot;population&quot;: 1594,
+&quot;sector&quot;: &quot;ANGEL - ZONA ROSA&quot;,
+&quot;start_date&quot;: &quot;2013-08&quot;
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-sectores-crimes-(string-crime)-top-rates">
+<code class="descname">GET </code><code class="descname">/api/v1/sectores/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/top/rates</code><a class="headerlink" href="#get--api-v1-sectores-crimes-(string-crime)-top-rates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the top ranked sectors with the highest crime <strong>rates</strong> for a given period of time.</p>
+<p>When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
+(e.g. If July is the last date in the database then the period July 2014 to Aug 2013 will be analyzed).
+All population data returned by this call is in persons/year and comes from the 2010 census</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>crime</strong> &#8211; the name of a crime or the keyword <code class="docutils literal"><span class="pre">all</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the top 5 cuadrantes are found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> &#8211; when the one of the dates was incorrectly specified or the periods overlap</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime is not found in the database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>start_date</strong> &#8211; Start of the period from which to start counting. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>end_date</strong> &#8211; End of the period to analyze. Must be greater or equal to start_date. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>rank</strong> &#8211; Return all sectores with a rate ranked higher. Defaults to <cite>5</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/sectores/crimes/homicidio%20doloso/top/rates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;count&quot;: 22,
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;end_date&quot;: &quot;2014-07&quot;,
+&quot;population&quot;: 33787,
+&quot;rank&quot;: 1,
+&quot;rate&quot;: 65.1,
+&quot;sector&quot;: &quot;CONGRESO&quot;,
+&quot;start_date&quot;: &quot;2013-08&quot;
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-sectores-(string-sector)-crimes-(string-crime)-series">
+<code class="descname">GET </code><code class="descname">/api/v1/sectores/</code><span class="sig-paren">(</span><em class="property">string: </em><em>sector</em><span class="sig-paren">)</span><code class="descname">/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/series</code><a class="headerlink" href="#get--api-v1-sectores-(string-sector)-crimes-(string-crime)-series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the count of crimes that occurred in a sector, by date</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>crime</strong> &#8211; the name of crime or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all crimes</li>
+<li><strong>cuadrante</strong> &#8211; the name of the cuadrante from which to return the time series or the keyword <a href="#id3"><span class="problematic" id="id4">``</span></a>all to return all sectores</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the sum of all crimes is found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime or cuadrante is not found in the database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>start_date</strong> &#8211; Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
+<li><strong>end_date</strong> &#8211; End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/sectores/angel%20-%20zona%20rosa/crimes/violacion/series</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;count&quot;: 0,
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;month&quot;: 1,
+&quot;population&quot;: 25606,
+&quot;sector&quot;: &quot;ANGEL - ZONA ROSA&quot;,
+&quot;year&quot;: 2013
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-sectores-(string-sector)-crimes-(string-crime)-period">
+<code class="descname">GET </code><code class="descname">/api/v1/sectores/</code><span class="sig-paren">(</span><em class="property">string: </em><em>sector</em><span class="sig-paren">)</span><code class="descname">/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/period</code><a class="headerlink" href="#get--api-v1-sectores-(string-sector)-crimes-(string-crime)-period" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sum of crimes that occurred in a particular or in all sectores for a specified period of time</p>
+<p>By default it returns the sum of crimes during the last 12 months for all the sectores in the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>crime</strong> &#8211; the name of crime or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all crimes</li>
+<li><strong>sector</strong> &#8211; the name of the sector or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all sectores</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the sum of all crimes is found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime is not found in the database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>start_date</strong> &#8211; Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
+<li><strong>end_date</strong> &#8211; End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/sectores/all/crimes/all/period</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;count&quot;: 26,
+&quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
+&quot;end_date&quot;: &quot;2014-07&quot;,
+&quot;population&quot;: 171047,
+&quot;sector&quot;: &quot;ABASTO-REFORMA&quot;,
+&quot;start_date&quot;: &quot;2013-08&quot;
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-cuadrantes-pip-(string-long)-(string-lat)">
+<code class="descname">GET </code><code class="descname">/api/v1/cuadrantes/pip/</code><span class="sig-paren">(</span><em class="property">string: </em><em>long</em><span class="sig-paren">)</span><code class="descname">/</code><span class="sig-paren">(</span><em class="property">string: </em><em>lat</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-v1-cuadrantes-pip-(string-long)-(string-lat)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a latitude and longitude determine the cuadrante they correspond to.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>long</strong> &#8211; longitude</li>
+<li><strong>lat</strong> &#8211; longitude</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the cuadrante corresponding to the latitude and longitude is found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> &#8211; when the latitude or longitude where incorrectly specified</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the latitude or longitude are outside of the Federal District cuadrante area</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes/pip/-99.13333/19.43</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Vary: Accept
+Content-Type: application/json
+
+{
+  &quot;pip&quot;:
+    [
+      {
+        &quot;cuadrante&quot;: &quot;C-1.4.4&quot;,
+        &quot;geomery&quot;: &quot;{&quot;type&quot;:&quot;MultiPolygon&quot;,&quot;coordinates&quot;:[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}&quot;,
+        &quot;sector&quot;: &quot;CORREDOR - CENTRO&quot;
+      }
+    ]
+}
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--api-v1-df-crimes-(string-crime)-series">
+<code class="descname">GET </code><code class="descname">/api/v1/df/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/series</code><a class="headerlink" href="#get--api-v1-df-crimes-(string-crime)-series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sum of crimes that occurred in the Federal District</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>crime</strong> &#8211; the name of crime or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all crimes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the sum of all crimes is found</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime is not found in the database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>start_date</strong> &#8211; Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
+<li><strong>end_date</strong> &#8211; End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; application/json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example request</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/df/crimes/violacion/series</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p><strong>Example response (truncated)</strong>:</p>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+&quot;rows&quot;: [
+{
+&quot;count&quot;: 64,
+&quot;crime&quot;: &quot;VIOLACION&quot;,
+&quot;month&quot;: 1,
+&quot;population&quot;: 8785874,
+&quot;year&quot;: 2013
+},
+...
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to HoyoDeCrimen API&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#basic-overview">Basic overview</a></li>
+<li><a class="reference internal" href="#status">Status</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#what-s-available">What&#8217;s available</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#handling-errors">Handling Errors</a></li>
+<li><a class="reference internal" href="#note">Note</a></li>
+<li><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">HoyoDeCrimen API 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Diego Valle-Jones.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-100264-9', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

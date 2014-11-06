@@ -1,0 +1,560 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sphinxcontrib.httpdomain — Documenting RESTful HTTP APIs &mdash; HoyoDeCrimen API 1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="HoyoDeCrimen API 1 documentation" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HoyoDeCrimen API 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <span class="target" id="module-sphinxcontrib.httpdomain"></span><div class="section" id="sphinxcontrib-httpdomain-documenting-restful-http-apis">
+<h1><a class="reference internal" href="#module-sphinxcontrib.httpdomain" title="sphinxcontrib.httpdomain"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.httpdomain</span></code></a> &#8212; Documenting RESTful HTTP APIs<a class="headerlink" href="#sphinxcontrib-httpdomain-documenting-restful-http-apis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="directives">
+<h2>Directives<a class="headerlink" href="#directives" title="Permalink to this headline">¶</a></h2>
+<dl class="patch">
+<dt id="patch--users-(int-user_id)-posts-(tag)">
+<code class="descname">PATCH </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#patch--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="options">
+<dt id="options--users-(int-user_id)-posts-(tag)">
+<code class="descname">OPTIONS </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#options--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="get">
+<dt id="get--users-(int-user_id)-posts-(tag)">
+<code class="descname">GET </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#get--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="head">
+<dt id="head--users-(int-user_id)-posts-(tag)">
+<code class="descname">HEAD </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#head--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="post">
+<dt id="post--users-(int-user_id)-posts-(tag)">
+<code class="descname">POST </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#post--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="put">
+<dt id="put--users-(int-user_id)-posts-(tag)">
+<code class="descname">PUT </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#put--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="delete">
+<dt id="delete--users-(int-user_id)-posts-(tag)">
+<code class="descname">DELETE </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#delete--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="trace">
+<dt id="trace--users-(int-user_id)-posts-(tag)">
+<code class="descname">TRACE </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#trace--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="connect">
+<dt id="connect--users-(int-user_id)-posts-(tag)">
+<code class="descname">CONNECT </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#connect--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="copy">
+<dt id="copy--users-(int-user_id)-posts-(tag)">
+<code class="descname">COPY </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#copy--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="sourcecode">
+<h2>Sourcecode<a class="headerlink" href="#sourcecode" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/users/123/posts/web</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">example.com</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json, text/javascript</span>
+</pre></div>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">text/javascript</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;post_id&quot;</span><span class="o">:</span> <span class="mi">12345</span><span class="p">,</span>
+    <span class="s2">&quot;author_id&quot;</span><span class="o">:</span> <span class="mi">123</span><span class="p">,</span>
+    <span class="s2">&quot;tags&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;web&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;subject&quot;</span><span class="o">:</span> <span class="s2">&quot;I tried Nginx&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;post_id&quot;</span><span class="o">:</span> <span class="mi">12346</span><span class="p">,</span>
+    <span class="s2">&quot;author_id&quot;</span><span class="o">:</span> <span class="mi">123</span><span class="p">,</span>
+    <span class="s2">&quot;tags&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;html5&quot;</span><span class="p">,</span> <span class="s2">&quot;standards&quot;</span><span class="p">,</span> <span class="s2">&quot;web&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;subject&quot;</span><span class="o">:</span> <span class="s2">&quot;We go to HTML 5&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="resource-fields">
+<h2>Resource fields<a class="headerlink" href="#resource-fields" title="Permalink to this headline">¶</a></h2>
+<dl class="get">
+<dt id="get--foo">
+<code class="descname">GET </code><code class="descname">/foo</code><a class="headerlink" href="#get--foo" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> &#8211; description for <code class="docutils literal"><span class="pre">resource</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; description for 200</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; description for 404</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--short-syntax">
+<code class="descname">GET </code><code class="descname">/short-syntax</code><a class="headerlink" href="#get--short-syntax" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> &#8211; <em class="mimetype">application/json</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>foo</strong> (<em>string</em>) &#8211; Foo key value</li>
+<li><strong>bar</strong> (<em>number</em>) &#8211; Bar key value</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; <em class="mimetype">application/json</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Response JSON Array of Objects:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><strong>baz</strong> (<em>string</em>) &#8211; Some baz field</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; Success</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="get">
+<dt>
+<code class="descname">GET </code><code class="descname">/bar</code></dt>
+<dd></dd></dl>
+
+<dl class="put">
+<dt id="put--baz">
+<code class="descname">PUT </code><code class="descname">/baz</code><a class="headerlink" href="#put--baz" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="post">
+<dt id="post--baz">
+<code class="descname">POST </code><code class="descname">/baz</code><a class="headerlink" href="#post--baz" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="roles">
+<h2>Roles<a class="headerlink" href="#roles" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="referring-to-existing-directives">
+<h3>Referring to existing directives<a class="headerlink" href="#referring-to-existing-directives" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#patch--users-(int-user_id)-posts-(tag)" title="PATCH /users/(int:user_id)/posts/(tag)"><code class="xref http http-patch docutils literal"><span class="pre">PATCH</span> <span class="pre">/users/(int:user_id)/posts/(tag)</span></code></a></p>
+<p><a class="reference internal" href="#options--users-(int-user_id)-posts-(tag)" title="OPTIONS /users/(int:user_id)/posts/(tag)"><code class="xref http http-options docutils literal"><span class="pre">OPTIONS</span> <span class="pre">/users/(int:user_id)/posts/(tag)</span></code></a></p>
+<p><a class="reference internal" href="#get--users-(int-user_id)-posts-(tag)" title="GET /users/(int:user_id)/posts/(tag)"><code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/users/(int:user_id)/posts/(tag)</span></code></a></p>
+<p><a class="reference internal" href="#head--users-(int-user_id)-posts-(tag)" title="HEAD /users/(int:user_id)/posts/(tag)"><code class="xref http http-head docutils literal"><span class="pre">HEAD</span> <span class="pre">/users/(int:user_id)/posts/(tag)</span></code></a></p>
+<p><a class="reference internal" href="#post--users-(int-user_id)-posts-(tag)" title="POST /users/(int:user_id)/posts/(tag)"><code class="xref http http-post docutils literal"><span class="pre">POST</span> <span class="pre">/users/(int:user_id)/posts/(tag)</span></code></a></p>
+<p><a class="reference internal" href="#put--users-(int-user_id)-posts-(tag)" title="PUT /users/(int:user_id)/posts/(tag)"><code class="xref http http-put docutils literal"><span class="pre">PUT</span> <span class="pre">/users/(int:user_id)/posts/(tag)</span></code></a></p>
+<p><a class="reference internal" href="#delete--users-(int-user_id)-posts-(tag)" title="DELETE /users/(int:user_id)/posts/(tag)"><code class="xref http http-delete docutils literal"><span class="pre">DELETE</span> <span class="pre">/users/(int:user_id)/posts/(tag)</span></code></a></p>
+<p><a class="reference internal" href="#trace--users-(int-user_id)-posts-(tag)" title="TRACE /users/(int:user_id)/posts/(tag)"><code class="xref http http-trace docutils literal"><span class="pre">TRACE</span> <span class="pre">/users/(int:user_id)/posts/(tag)</span></code></a></p>
+<p><a class="reference internal" href="#connect--users-(int-user_id)-posts-(tag)" title="CONNECT /users/(int:user_id)/posts/(tag)"><code class="xref http http-connect docutils literal"><span class="pre">CONNECT</span> <span class="pre">/users/(int:user_id)/posts/(tag)</span></code></a></p>
+</div>
+<div class="section" id="method-roles">
+<h3>Method roles<a class="headerlink" href="#method-roles" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://tools.ietf.org/html/rfc5789#section-2">PATCH</a></p>
+<p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.2">OPTIONS</a></p>
+<p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.3">GET</a></p>
+<p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.4">HEAD</a></p>
+<p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5">POST</a></p>
+<p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6">PUT</a></p>
+<p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.7">DELETE</a></p>
+<p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.8">TRACE</a></p>
+<p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.9">CONNECT</a></p>
+</div>
+</div>
+<div class="section" id="here-be-errors">
+<h2>Here be Errors!<a class="headerlink" href="#here-be-errors" title="Permalink to this headline">¶</a></h2>
+<p>A request with method <span class="problematic">foo</span> followed by <span class="problematic">bar</span> and
+<em>x-baz</em> headers receives response with <span class="problematic">42 Answer</span>
+status code.</p>
+<span class="target" id="module-sphinxcontrib.autohttp.flask"></span></div>
+<div class="section" id="sphinxcontrib-autohttp-flask-exporting-api-reference-from-flask-app">
+<h2><a class="reference internal" href="#module-sphinxcontrib.autohttp.flask" title="sphinxcontrib.autohttp.flask"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.flask</span></code></a> &#8212; Exporting API reference from Flask app<a class="headerlink" href="#sphinxcontrib-autohttp-flask-exporting-api-reference-from-flask-app" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basic-option">
+<h3>Basic option<a class="headerlink" href="#basic-option" title="Permalink to this headline">¶</a></h3>
+<dl class="get">
+<dt id="get--">
+<code class="descname">GET </code><code class="descname">/</code><a class="headerlink" href="#get--" title="Permalink to this definition">¶</a></dt>
+<dd><p>Home page.</p>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--(user)-posts-(int-post_id)">
+<code class="descname">GET </code><code class="descname">/</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em class="property">int: </em><em>post_id</em><span class="sig-paren">)</span><a class="headerlink" href="#get--(user)-posts-(int-post_id)" title="Permalink to this definition">¶</a></dt>
+<dd><p>User&#8217;s post.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> &#8211; user login name</li>
+<li><strong>post_id</strong> &#8211; post unique id</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when user and post exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when user and post doesn&#8217;t exist</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--(user)">
+<code class="descname">GET </code><code class="descname">/</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="headerlink" href="#get--(user)" title="Permalink to this definition">¶</a></dt>
+<dd><p>User profile page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> &#8211; user login name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when user exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when user doesn&#8217;t exist</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="basic-option-with-empty-args">
+<h3>Basic option with empty args<a class="headerlink" href="#basic-option-with-empty-args" title="Permalink to this headline">¶</a></h3>
+<dl class="get">
+<dt id="get--">
+<code class="descname">GET </code><code class="descname">/</code><a class="headerlink" href="#get--" title="Permalink to this definition">¶</a></dt>
+<dd><p>Home page.</p>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--(user)-posts-(int-post_id)">
+<code class="descname">GET </code><code class="descname">/</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em class="property">int: </em><em>post_id</em><span class="sig-paren">)</span><a class="headerlink" href="#get--(user)-posts-(int-post_id)" title="Permalink to this definition">¶</a></dt>
+<dd><p>User&#8217;s post.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> &#8211; user login name</li>
+<li><strong>post_id</strong> &#8211; post unique id</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when user and post exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when user and post doesn&#8217;t exist</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--(user)">
+<code class="descname">GET </code><code class="descname">/</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="headerlink" href="#get--(user)" title="Permalink to this definition">¶</a></dt>
+<dd><p>User profile page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> &#8211; user login name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when user exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when user doesn&#8217;t exist</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="filter-some-endpoints">
+<h3>Filter some endpoints<a class="headerlink" href="#filter-some-endpoints" title="Permalink to this headline">¶</a></h3>
+<dl class="get">
+<dt id="get--(user)-posts-(int-post_id)">
+<code class="descname">GET </code><code class="descname">/</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em class="property">int: </em><em>post_id</em><span class="sig-paren">)</span><a class="headerlink" href="#get--(user)-posts-(int-post_id)" title="Permalink to this definition">¶</a></dt>
+<dd><p>User&#8217;s post.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> &#8211; user login name</li>
+<li><strong>post_id</strong> &#8211; post unique id</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when user and post exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when user and post doesn&#8217;t exist</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--(user)">
+<code class="descname">GET </code><code class="descname">/</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="headerlink" href="#get--(user)" title="Permalink to this definition">¶</a></dt>
+<dd><p>User profile page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> &#8211; user login name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when user exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when user doesn&#8217;t exist</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="documenting-by-non-ascii-characters">
+<h3>Documenting by non-ASCII characters<a class="headerlink" href="#documenting-by-non-ascii-characters" title="Permalink to this headline">¶</a></h3>
+<dl class="get">
+<dt id="get--">
+<code class="descname">GET </code><code class="descname">/</code><a class="headerlink" href="#get--" title="Permalink to this definition">¶</a></dt>
+<dd><p>홈 페이지.</p>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--(user)-posts-(int-post_id)">
+<code class="descname">GET </code><code class="descname">/</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em class="property">int: </em><em>post_id</em><span class="sig-paren">)</span><a class="headerlink" href="#get--(user)-posts-(int-post_id)" title="Permalink to this definition">¶</a></dt>
+<dd><p>사용자의 게시물.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> &#8211; 사용자 접속명</li>
+<li><strong>post_id</strong> &#8211; 게시물의 고유 번호</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; 사용자와 게시물이 존재함</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; 사용자 혹은 게시물이 존재하지 않음</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--(user)">
+<code class="descname">GET </code><code class="descname">/</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="headerlink" href="#get--(user)" title="Permalink to this definition">¶</a></dt>
+<dd><p>사용자 정보 페이지.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> &#8211; 사용자 접속명</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; 사용자가 존재함</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; 사용자가 존재하지 않음</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sphinxcontrib.httpdomain</span></code> &#8212; Documenting RESTful HTTP APIs</a><ul>
+<li><a class="reference internal" href="#directives">Directives</a></li>
+<li><a class="reference internal" href="#sourcecode">Sourcecode</a></li>
+<li><a class="reference internal" href="#resource-fields">Resource fields</a></li>
+<li><a class="reference internal" href="#options">Options</a></li>
+<li><a class="reference internal" href="#roles">Roles</a><ul>
+<li><a class="reference internal" href="#referring-to-existing-directives">Referring to existing directives</a></li>
+<li><a class="reference internal" href="#method-roles">Method roles</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#here-be-errors">Here be Errors!</a></li>
+<li><a class="reference internal" href="#sphinxcontrib-autohttp-flask-exporting-api-reference-from-flask-app"><code class="docutils literal"><span class="pre">sphinxcontrib.autohttp.flask</span></code> &#8212; Exporting API reference from Flask app</a><ul>
+<li><a class="reference internal" href="#basic-option">Basic option</a></li>
+<li><a class="reference internal" href="#basic-option-with-empty-args">Basic option with empty args</a></li>
+<li><a class="reference internal" href="#filter-some-endpoints">Filter some endpoints</a></li>
+<li><a class="reference internal" href="#documenting-by-non-ascii-characters">Documenting by non-ASCII characters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/ext/httpdomain/test/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../http-routingtable.html" title="HTTP Routing Table"
+             >routing table</a> |</li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">HoyoDeCrimen API 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Diego Valle-Jones.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-100264-9', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>
