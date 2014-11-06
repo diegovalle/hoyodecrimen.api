@@ -78,17 +78,16 @@ var baseMaps = {
 var info = L.control();
 var legend = L.control({position: 'bottomright'});
 
-
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info');
+info.onAdd=function(map){
+    this._div=L.DomUtil.create('div','info', L.DomUtil.get('control'));
     this.update();
-    //document.getElementById("seltarget").onmouseover = controlEnter;
-    //document.getElementById("seltarget").onmouseout = controlLeave;  
-    return this._div;
-    };
+
+    //return this._div;
+    return L.DomUtil.create('adsf')
+};
 
 legend.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info legend');
+    this._div = L.DomUtil.create('div', 'info legend', L.DomUtil.get('control'));
     this.update();
     //document.getElementById("seltarget").onmouseover = controlEnter;
     //document.getElementById("seltarget").onmouseout = controlLeave;  
@@ -483,7 +482,8 @@ $.getJSON(mapFile, function (data) {
         document.getElementById("seltarget").onmouseover = controlEnter;
         document.getElementById("seltarget").onmouseout = controlLeave; 
         L.control.layers(null,baseMaps, {position: 'topleft'}).addTo(map);
-        L.control.locate({drawCircle: false, 
+            L.control.locate({
+                              drawCircle: false, 
                           locateOptions: {enableHighAccuracy: true }}).addTo(map);
         var hash = new L.Hash(map);
         //deselect any selected polygons when the user clicks on the map

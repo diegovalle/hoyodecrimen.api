@@ -12,13 +12,10 @@
 		<meta name="keywords" content="" />
                 <link rel="alternate" hreflang="es" href="https://hoyodecrimen.com/" />
 
-{% assets  filters="cssmin", output="css/packed-pip.css",
-          "css/c3.css", "css/skel.css", "css/style.css", "css/style-desktop.css",
-          "css/leaflet.css","css/crime.css"
-             %}
+{% assets  'css_pip_req' %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
 {% endassets %}
-	<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	<!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
 <style>
 .tick line{
 opacity:0;
@@ -26,7 +23,7 @@ visibility:hidden;
 }
 </style>
 
-		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<!--[if lte IE 8]><script src="/css/ie/html5shiv.js"></script><![endif]-->
 {% assets "js_pip_req" %}
     <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
@@ -150,10 +147,10 @@ visibility:hidden;
 										</ul>
 										<ul class="icons 6u">
 											<li class="fa fa-twitter">
-												<a href="http://twitter.com/diegovalle">@diegovalle</a>
+												<a href="https://twitter.com/diegovalle">@diegovalle</a>
 											</li>
 											<li class="fa fa-facebook">
-												<a href="http://www.facebook.com/diegovalle">/diegovalle</a>
+												<a href="https://www.facebook.com/diegovalle">/diegovalle</a>
 											</li>
 											<li class="fa fa-google-plus">
 												<a href="https://plus.google.com/112417668983107842349?rel=author">+DiegoValleJones</a>

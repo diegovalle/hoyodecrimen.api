@@ -21,7 +21,7 @@ from flask.ext.babel import Babel
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 43200 * 20
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 600 #43200 * 20 # 20 days
 app.register_blueprint(API)
 db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
@@ -61,35 +61,60 @@ def not_found(error):
     return render_template('404.html'), 404
 
 
-js_pip_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js", "js/skel.min.js",
-            "js/skel-layers.min.js",
-            "js/init.js", "js/underscore-min.js", "js/leaflet.js",
-            "js/leaflet-pip.js",
-            "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
-            "js/jquery.1.8.3.min.js", "js/modernizr.js",
-            filters='jsmin', output='js/packed-pip-req.js')
+css_pip_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
+                     "css/style-desktop.css",
+                     "css/leaflet.css", "css/crime.css",
+                     filters="cssmin", output="css/packed-pip-req.css")
+assets.register('css_pip_req', css_pip_req)
+
+js_pip_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
+                    "js/skel.min.js",
+                    "js/skel-layers.min.js",
+                    "js/init.js", "js/underscore-min.js", "js/leaflet.js",
+                    "js/leaflet-pip.js",
+                    "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
+                    "js/jquery.1.8.3.min.js", "js/modernizr.js",
+                    filters='jsmin', output='js/packed-pip-req.js')
 assets.register('js_pip_req', js_pip_req)
 
-js_pip = Bundle("js/pip.js", filters ="jsmin", output="js/js_pip.js")
+js_pip = Bundle("js/pip.js", filters="jsmin", output="js/packed-pip.js")
 assets.register("js_pip", js_pip)
-
 
 css_maps_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
                       "css/style-desktop.css",
                       "css/leaflet.css", "css/crime.css", "css/ng-table.css",
-                      filters="cssmin", output="css/packed-maps-reqs.css",)
+                      filters="cssmin", output="css/packed-maps-reqs.css", )
 assets.register('css_maps_req', css_maps_req)
 
 js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js", "js/config.js",
-          "js/skel.min.js", "js/skel-layers.min.js", "js/init.js", "js/d3.v3.min.js",
-           "js/topojson.v1.min.js","js/c3.min.js","js/d3.tip.v0.6.3.js",
-           "js/tooltip.js","js/angular.min.js","js/underscore-min.js", "js/angular-translate.js",
-           "js/ng-table.min.js", "js/angular-resource.js", "js/angular-tables.js",
-           filters="jsmin", output="js/packed-maps-reqs.js")
+                     "js/skel.min.js", "js/skel-layers.min.js", "js/init.js",
+                     "js/d3.v3.min.js",
+                     "js/topojson.v1.min.js", "js/c3.min.js", "js/d3.tip.v0.6.3.js",
+                     "js/tooltip.js", "js/angular.min.js", "js/underscore-min.js",
+                     "js/angular-translate.js",
+                     "js/ng-table.min.js", "js/angular-resource.js",
+                     "js/angular-tables.js",
+                     filters="jsmin", output="js/packed-maps-reqs.js")
 assets.register('js_maps_req', js_maps_req)
 
-js_maps = Bundle("js/maps.js", filters="jsmin", output="packed-maps.js")
+js_maps = Bundle("js/maps.js", filters="jsmin", output="js/packed-maps.js")
 assets.register('js_maps', js_maps)
+
+js_leaflet = Bundle("js/leaflet-map.js",  output="js/packed-leaflet-map.js")
+assets.register('js_leaflet', js_maps)
+
+css_leaflet_req = Bundle("css/l.geosearch.css", "css/leaflet.css", "css/L.Control.Locate.css",
+                         filters="cssmin", output="css/packed-leaflet-req.css")
+assets.register('css_leaflet_req', css_leaflet_req)
+
+js_leaflet_req = Bundle("js/leaflet.js", "js/L.Control.Locate.js",
+                        "js/leaflet-hash.js", "js/jquery.1.8.3.min.js",
+                        "js/topojson.v1.min.js",
+                        "js/topojson.v1.min.js", "js/l.control.geosearch.js",
+                        "js/l.geosearch.provider.google.js",
+                        "js/d3.v3.min.js", "js/colorbrewer.js", "js/underscore-min.js",
+                        filters="jsmin", output="js/packed-leaflet.js", )
+assets.register('js_leaflet_req', js_leaflet_req)
 
 @app.route('/')
 def index_html():
