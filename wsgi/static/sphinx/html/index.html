@@ -72,8 +72,7 @@ where homicide counts changed the most.</p>
 <p>Since the API is based on REST principles and returns JSON data, it&#8217;s
 very easy to write applications that use it. You can use your browser
 to access any API URL, or pretty much any HTTP client in any
-programming language (yes, even something like STATA which no real
-scientist would use).</p>
+programming language (yes, even something like STATA).</p>
 <p>For example, <a class="reference external" href="https://hoyodecrimen.com/api/v1/crimes">https://hoyodecrimen.com/api/v1/crimes</a> will return a list
 of all crimes in the database.
 <a class="reference external" href="https://hoyodecrimen.com/api/v1/cuadrantes">https://hoyodecrimen.com/api/v1/cuadrantes</a> will return a list of all
@@ -98,9 +97,9 @@ not, depending on how lucky I get when the FOI request is answered.</p>
 <div class="section" id="license">
 <h1><a class="toc-backref" href="#id8">License</a><a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
 <p>Data accessed via this API is provided under the
-<a class="reference external" href="https://creativecommons.org/licenses/by-sa/3.0/legalcode">Creative Commons Attribution-ShareAlike (CC-BY-SA) 3.0 Unported license</a>. If you use
-this data you must link back to <a class="reference external" href="https://hoyodecrimen.com/">https://hoyodecrimen.com/</a> as
-the origin of the data.</p>
+<a class="reference external" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Attribution-NonCommercial-ShareAlike 4.0 International</a>. If you use this
+data you must link back to <a class="reference external" href="https://hoyodecrimen.com/">https://hoyodecrimen.com/</a> as the origin of
+the data.</p>
 </div>
 <div class="section" id="what-s-available">
 <h1><a class="toc-backref" href="#id9">What&#8217;s available</a><a class="headerlink" href="#what-s-available" title="Permalink to this headline">¶</a></h1>
@@ -194,7 +193,6 @@ jQuery.</p>
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>or in python:</p>
 </div>
 <div class="section" id="handling-errors">
 <h1><a class="toc-backref" href="#id11">Handling Errors</a><a class="headerlink" href="#handling-errors" title="Permalink to this headline">¶</a></h1>
@@ -524,14 +522,14 @@ Content-Type: application/json
 &quot;year&quot;: 2013
 },
 ...
-&quot;cuadrante_last_year&quot;: [
+&quot;cuadrante_period&quot;: [
 {
 &quot;count&quot;: 0,
 &quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
 &quot;population&quot;: 16860
 },
 ...
-&quot;df_last_year&quot;: [
+&quot;df_period&quot;: [
 {
 &quot;count&quot;: 823,
 &quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
@@ -542,7 +540,7 @@ Content-Type: application/json
 {
 &quot;cuadrante&quot;: &quot;C-1.4.4&quot;,
 &quot;geomery&quot;: &quot;{&quot;type&quot;:&quot;MultiPolygon&quot;,&quot;coordinates&quot;:[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}&quot;,
-&quot;sector&quot;: &quot;corredor - centro&quot;
+&quot;sector&quot;: &quot;CORREDOR - CENTRO&quot;
 }
 </pre></div>
 </div>

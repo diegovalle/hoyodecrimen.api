@@ -31,8 +31,7 @@ where homicide counts changed the most.
 Since the API is based on REST principles and returns JSON data, it's
 very easy to write applications that use it. You can use your browser
 to access any API URL, or pretty much any HTTP client in any
-programming language (yes, even something like STATA which no real
-scientist would use).
+programming language (yes, even something like STATA).
 
 For example, https://hoyodecrimen.com/api/v1/crimes will return a list
 of all crimes in the database.
@@ -59,11 +58,11 @@ not, depending on how lucky I get when the FOI request is answered.
 License
 ========
 
-Data accessed via this API is provided under the 
-`Creative Commons Attribution-ShareAlike (CC-BY-SA) 3.0 Unported license 
-<https://creativecommons.org/licenses/by-sa/3.0/legalcode>`_. If you use
-this data you must link back to https://hoyodecrimen.com/ as
-the origin of the data.
+Data accessed via this API is provided under the
+`Attribution-NonCommercial-ShareAlike 4.0 International
+<http://creativecommons.org/licenses/by-nc-sa/4.0/>`_. If you use this
+data you must link back to https://hoyodecrimen.com/ as the origin of
+the data.
 
 What's available
 ================
@@ -115,7 +114,7 @@ jQuery.
        }
    });
 
-or in python:
+.. or in python:
 
 .. python
 
