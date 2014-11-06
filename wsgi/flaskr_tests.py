@@ -246,6 +246,41 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/adsflsdklfjaskljfkldsjfkjasklfjklsafsadfs', content_type='html/text')
         self.assertEqual(response.status_code, 404)
 
+    def test_df_en_home(self):
+        base_url = '/en/'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series(self):
+        base_url = '/en/rates'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series(self):
+        base_url = '/en/counts'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series(self):
+        base_url = '/en/trends'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series(self):
+        base_url = '/en/sectors-map'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series(self):
+        base_url = '/en/cuadrantes-map'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()

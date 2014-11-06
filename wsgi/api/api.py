@@ -320,14 +320,14 @@ def frontpage(crime, long, lat):
       "year": 2013
       },
       ...
-      "cuadrante_last_year": [
+      "cuadrante_period": [
       {
       "count": 0,
       "crime": "HOMICIDIO DOLOSO",
       "population": 16860
       },
       ...
-      "df_last_year": [
+      "df_period": [
       {
       "count": 823,
       "crime": "HOMICIDIO DOLOSO",
@@ -338,7 +338,7 @@ def frontpage(crime, long, lat):
       {
       "cuadrante": "C-1.4.4",
       "geomery": "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}",
-      "sector": "corredor - centro"
+      "sector": "CORREDOR - CENTRO"
       }
     """
     # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
