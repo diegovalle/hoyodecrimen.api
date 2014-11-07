@@ -1,0 +1,1 @@
+msgcat $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/translations/es/LC_MESSAGES/messages.po | msgfmt -o $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/translations/es/LC_MESSAGES/messages.mo -
