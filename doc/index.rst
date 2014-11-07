@@ -25,7 +25,7 @@ Basic overview
 ==============
 
 The Hoyodecrimen REST API allows you to query crime data about Mexico
-City. You can even do some fancy things like get the top 9 cuadrantes
+City. You can even do fancy things like get the top 9 cuadrantes
 where homicide counts changed the most.
 
 Since the API is based on REST principles and returns JSON data, it's
