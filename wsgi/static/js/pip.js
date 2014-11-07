@@ -163,9 +163,9 @@ function get_data(data){
     allDF.viol =  Math.round(totals['VIOLACION'].count / totals['VIOLACION'].population * Math.pow(10,5) * 10) / 10
 
 // set the population and cuadrante
-    $("#poblacion").text("Population: " + comma(cuad_last['HOMICIDIO DOLOSO'].population))
-    $("#cuadrante").text("Cuadrante: " + data.pip[0].cuadrante)
-    $("#sector").text("Sector: " + data.pip[0].sector)
+    $("#poblacion").text(comma(cuad_last['HOMICIDIO DOLOSO'].population))
+    $("#cuadrante").text(data.pip[0].cuadrante)
+    $("#sector").text(data.pip[0].sector)
 
         chartHomicides.load({
             columns: [crime.hom],

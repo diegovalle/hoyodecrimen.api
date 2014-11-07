@@ -1,0 +1,169 @@
+# Spanish translations for PROJECT.
+# Copyright (C) 2014 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2014-11-06 20:26-0600\n"
+"PO-Revision-Date: 2014-11-06 20:29-0600\n"
+"Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: templates/pip.html:9 templates/pip.html:16 templates/pip.html:54
+msgid "Crime in Mexico City"
+msgstr "Crimen por tu Rumbo"
+
+#: templates/pip.html:17
+msgid "Find out how many crimens there were in your Cuadrante Delictivo"
+msgstr "Cuantos crímenes ocurrieron en tu cuadrante"
+
+#: templates/pip.html:19 templates/pip.html:22
+msgid "https://hoyodecrimen.com/en/"
+msgstr "https://hoyodecrimen.com/"
+
+#: templates/pip.html:21
+msgid ""
+"Crime in Mexico City. Find out how many crimens there were in your Cuadrante "
+"Delictivo."
+msgstr ""
+"Crimen en la Ciudad de Mexico. Averigua cuantos crímenes ocurrieron por tu "
+"rumbu"
+
+#: templates/pip.html:56
+msgid "Crime in your Cuadrante"
+msgstr "Crimen en tu cuadrante"
+
+#: templates/pip.html:59
+msgid "Cuadrante: "
+msgstr "Cuadrante: "
+
+#: templates/pip.html:60
+msgid "Sector: "
+msgstr "Sector: "
+
+#: templates/pip.html:61
+msgid "Population: "
+msgstr "Población: "
+
+#: templates/pip.html:68
+msgid "Crimes counts by month in your cuadrante"
+msgstr "Número de crímenes en tu cuadrante"
+
+#: templates/pip.html:76
+msgid "Crimes rates compared to the rest of the DF during the last 12 months"
+msgstr ""
+"Tasas de criminalidad comparadas con el resto del DF (12 últimos meses)"
+
+#: templates/pip.html:89
+msgid "/en/"
+msgstr "/"
+
+#: templates/pip.html:89
+msgid "Home"
+msgstr "Inicio"
+
+#: templates/pip.html:90
+msgid "/en/rates"
+msgstr "/tasas"
+
+#: templates/pip.html:90
+msgid "Rates"
+msgstr "Tasas"
+
+#: templates/pip.html:91
+msgid "/en/counts"
+msgstr "/numero"
+
+#: templates/pip.html:91
+msgid "Counts"
+msgstr "Número"
+
+#: templates/pip.html:94
+msgid "Maps"
+msgstr "MApas"
+
+#: templates/pip.html:96
+msgid "/en/sectores-map"
+msgstr "sectores-mapa"
+
+#: templates/pip.html:96
+msgid "Sectores (rates)"
+msgstr "Sectores (tasas)"
+
+#: templates/pip.html:98
+msgid "/en/cuadrantes-map"
+msgstr "/cuadrantes-mapa"
+
+#: templates/pip.html:98
+msgid "Cuadrantes (counts)"
+msgstr "Cuadrantes (número)"
+
+#: templates/pip.html:103
+msgid "/en/charts"
+msgstr "/charts"
+
+#: templates/pip.html:103
+msgid "Charts"
+msgstr "Gráficas"
+
+#: templates/pip.html:104
+msgid "/en/trends"
+msgstr "/tendencias"
+
+#: templates/pip.html:104
+msgid "Trends"
+msgstr "Tendencias"
+
+#: templates/pip.html:116
+msgid "Free email when new information is available"
+msgstr "Email cuando tenga nueva información"
+
+#: templates/pip.html:121
+msgid "Subscribe"
+msgstr "Suscribirse"
+
+#: templates/pip.html:122
+msgid "(No spam)"
+msgstr "(Cero Spam)"
+
+#: templates/pip.html:141
+msgid "Questions or comments? <strong>Get in touch:</strong>"
+msgstr "Preguntas o comentarios? <strong>Contáctame:</strong>"
+
+#: templates/pip.html:145
+msgid "Created by <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
+msgstr ""
+"Creado por <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
+
+#: templates/pip.html:146
+msgid ""
+"Crime data from a <a href=\"https://github.com/diegovalle/crimeDF/tree/"
+"master/sspdf-data\">FOIA request</a> to the SSPDF. Cuadrante coordinates "
+"scraped from <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php"
+"\">Consulta de Cuadrantes</a>. The population figures are based on the <a "
+"href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-"
+"manzanas-etc.html\">2010 Census by Manzana</a>."
+msgstr ""
+"Los datos de información delictiva vienen de una <a href=\"https://github."
+"com/diegovalle/crimeDF/tree/master/sspdf-data\">solicitud de información</a> "
+"a la SSPDF. El mapa de cuadrantes es de <a href=\"http://201.144.220.174/pid/"
+"gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. La población está basada "
+"en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-"
+"of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
+
+#: templates/pip.html:147
+msgid "There's also a "
+msgstr "También hay una versión en"
+
+#: templates/pip.html:147
+msgid "Spanish version"
+msgstr "Inglés"

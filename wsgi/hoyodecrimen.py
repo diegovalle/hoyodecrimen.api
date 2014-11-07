@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, Flask, jsonify, request, abort, \
     make_response, url_for, send_from_directory,\
-    send_file, render_template
+    send_file, render_template, g
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy import func, and_
@@ -17,6 +17,7 @@ from api.models import db, Cuadrantes, Cuadrantes_Poly
 from api.api import API, cache
 from flask.ext.compress import Compress
 from flask.ext.babel import Babel
+from flask.ext.babel import gettext, ngettext
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -116,13 +117,26 @@ js_leaflet_req = Bundle("js/leaflet.js", "js/L.Control.Locate.js",
                         filters="jsmin", output="js/packed-leaflet.js", )
 assets.register('js_leaflet_req', js_leaflet_req)
 
+@babel.localeselector
+def get_locale():
+    return getattr(g, 'lang')
+
+
 @app.route('/')
 def index_html():
     return "If it's in a word, or if it's in a book you can't get rid of the Babadook"
 
+
 @cache.cached()
 @app.route('/en/')
 def api_home_html():
+    setattr(g, 'lang', 'en')
+    return render_template('pip.html')
+
+@cache.cached()
+@app.route('/es')
+def api_home_html_es():
+    setattr(g, 'lang', 'es')
     return render_template('pip.html')
 
 
@@ -255,7 +269,6 @@ def static_images_144():
 def static_images_152():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'apple-touch-icon-152x152.png')
-
 
 
 if __name__ == '__main__':
