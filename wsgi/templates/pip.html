@@ -6,16 +6,24 @@
 -->
 <html>
 	<head>
-		<title>Crime in Mexico City</title>
+		<title>{{_('Crime in Mexico City')}}</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
+
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@diegovalle" />
-<meta name="twitter:title" content="Crime in Mexico City" />
-<meta name="twitter:description" content="Find out how many crimens there were in your Cuadrante Delictivo" />
+<meta name="twitter:title" content="{{_('Crime in Mexico City')}}" />
+<meta name="twitter:description" content="{{_('Find out how many crimens there were in your Cuadrante Delictivo')}}" />
 <meta name="twitter:image" content="https://hoyodecrimen.com/images/choropleth.png" />
-<meta name="twitter:url" content="https://hoyodecrimen.com/en/" />
+<meta name="twitter:url" content="{{_('https://hoyodecrimen.com/en/')}}" />
+
+<meta property="og:description" content="{{_('Crime in Mexico City. Find out how many crimens there were in your Cuadrante Delictivo.')}}"/>
+<meta property="og:url" content="{{_('https://hoyodecrimen.com/en/')}}"/>
+<meta property="og:image" content="https://hoyodecrimen.com/images/choropleth.png"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Hoyo de Crimen"/>
+
                 <link rel="alternate" hreflang="es" href="https://hoyodecrimen.com/" />
 
 {% assets  'css_pip_req' %}
@@ -43,21 +51,21 @@ visibility:hidden;
 					
 					<!-- Logo -->
 					
-					<h1 id="logo" style="margin-bottom:50px">Crime in Mexico City</h1>
+					<h1 id="logo" style="margin-bottom:50px">{{_('Crime in Mexico City')}}</h1>
 	<div id="map" style="height: 400px"></div>
-<p>Crime in your Cuadrante</p>
+<p>{{_('Crime in your Cuadrante')}}</p>
 
 <p>
-<span id="cuadrante"></span><br/>
-<span id="sector"></span><br/>
-<span id="poblacion"></span>
+<span>{{_('Cuadrante: ')}}</span><span id="cuadrante"></span><br/>
+<span>{{_('Sector: ')}}</span><span id="sector"></span><br/>
+<span>{{_('Population: ')}}</span><span id="poblacion"></span>
 </p>
 
 <div class="row">
 <div class="1u">&nbsp;</div>
 
 <div id="linecharts" class="5u">
-<p style="height:3em;margin-bottom:10px">Crimes counts by month in your cuadrante</p>
+<p style="height:3em;margin-bottom:10px">{{_('Crimes counts by month in your cuadrante')}}</p>
 <div id="chart-homicide" style="height:100px;width:400px"></div>
 <div id="chart-rncv" style="height:100px;width:400px"></div>
 <div id="chart-rvcv" style="height:100px;width:400px"></div>
@@ -65,7 +73,7 @@ visibility:hidden;
 <div id="chart-viol" style="height:100px;width:400px"></div>
 </div>
 <div id="barcharts" class="5u">
-<p style="height:3em;margin-bottom:10px">Crimes rates compared to the rest of the DF during the last 12 months</p>
+<p style="height:3em;margin-bottom:10px">{{_('Crimes rates compared to the rest of the DF during the last 12 months')}}</p>
 <div id="barchart-homicide" style="height:100px;width:400px"></div>
 <div id="barchart-rncv" style="height:100px;width:400px"></div>
 <div id="barchart-rvcv" style="height:100px;width:400px"></div>
@@ -77,24 +85,24 @@ visibility:hidden;
 
 					<!-- Nav -->
 							<nav id="nav">
-								<ul>
-									<li><a class="fa fa-home" href="/en/"><span>Home</span></a></li>
-                                                                        <li><a class="fa fa-bar-chart-o" href="/en/rates"><span>Rates</span></a></li>
-                                                                        <li><a class="fa fa-bar-chart-o" href="/en/counts"><span>Counts</span></a></li>
-									<li>
-										
-										<a href="#" class="fa fa-map-marker"><span>Maps</span></a>
-										<ul>
-											<li><a href="/en/sectores-map">Sectores (rates)</a></li>
-											
-                                                                                        <li><a href="/en/cuadrantes-map">Cuadrantes (counts)</a></li>
-											
-										</ul>
-                                                                                
-									</li>
-                                                                        <li><a class="fa fa-signal" href="/en/charts"><span>Charts</span></a></li>
-<li><a class="fa fa-bar-chart-o" href="/en/trends"><span>Trends</span></a></li>
-								</ul>
+							  <ul>
+							    <li><a class="fa fa-home" href="{{_('/en/')}}"><span>{{_('Home')}}</span></a></li>
+                                                            <li><a class="fa fa-bar-chart-o" href="{{_('/en/rates')}}"><span>{{_('Rates')}}</span></a></li>
+                                                            <li><a class="fa fa-bar-chart-o" href="{{_('/en/counts')}}"><span>{{_('Counts')}}</span></a></li>
+							    <li>
+							      
+							      <a href="#" class="fa fa-map-marker"><span>{{_('Maps')}}</span></a>
+							      <ul>
+								<li><a href="{{_('/en/sectores-map')}}">{{_('Sectores (rates)')}}</a></li>
+								
+                                                                <li><a href="{{_('/en/cuadrantes-map')}}">{{_('Cuadrantes (counts)')}}</a></li>
+								
+							      </ul>
+                                                              
+							    </li>
+                                                            <li><a class="fa fa-signal" href="{{_('/en/charts')}}"><span>{{_('Charts')}}</span></a></li>
+                                                            <li><a class="fa fa-bar-chart-o" href="{{_('/en/trends')}}"><span>{{_('Trends')}}</span></a></li>
+							  </ul>
 							</nav>
 <hr/>
 <!-- Begin MailChimp Signup Form -->
@@ -105,13 +113,13 @@ visibility:hidden;
 <form action="//diegovalle.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=102491489b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
 	<div class="center">
           <div>
-            <span style="color:white;font-weight:bold;">Free email when new information is available</span>
-	<input type="email" value=" " size="30" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+            <span style="color:white;font-weight:bold;">{{_('Free email when new information is available')}}</span>
+	<input type="email" value=" " size="30" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email" required>
 
     <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
     <div style="position: absolute; left: -5000px;"><input type="text" name="b_787fae824c502d9f3ad7d0b73_102491489b" tabindex="-1" value=""></div>
-   <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button" style="background:green;color:white;padding: .7em 2em;font-size: .9em;padding-bottom: 6px;">
-<span style="color:white;font-weight:bold;">(No spam)</span>
+   <input type="submit" value="{{_('Subscribe')}}" name="subscribe" id="mc-embedded-subscribe" class="button" style="background:green;color:white;padding: .7em 2em;font-size: .9em;padding-bottom: 6px;">
+<span style="color:white;font-weight:bold;">{{_('(No spam)')}}</span>
 </div></div>
 </form>
 
@@ -130,13 +138,13 @@ visibility:hidden;
 				<!-- Footer -->
 					<div id="footer" class="container">
 						<header>
-							<h2>Questions or comments? <strong>Get in touch:</strong></h2>
+							<h2>{{_('Questions or comments? <strong>Get in touch:</strong>')}}</h2>
 						</header>
 						<div class="row">
 							<div class="6u">
-<p>Created by <a href="https://www.diegovalle.net">Diego Valle-Jones</a></p>
-							<p>Crime data from a <a href="https://github.com/diegovalle/crimeDF/tree/master/sspdf-data">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://201.144.220.174/pid/gps/cuadrantesWeb.php">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>.</p>
-<p>There's also a <a href="/">Spanish version</a></p>
+<p>{{_('Created by <a href="https://www.diegovalle.net">Diego Valle-Jones</a>')}}</p>
+							<p>{{_('Crime data from a <a href="https://github.com/diegovalle/crimeDF/tree/master/sspdf-data">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://201.144.220.174/pid/gps/cuadrantesWeb.php">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>.')}}</p>
+<p>{{_("There's also a ")}}<a href="/">{{_("Spanish version")}}</a></p>
 							</div>
 							<div class="6u">
 								<section>
