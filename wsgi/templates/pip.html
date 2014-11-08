@@ -15,6 +15,28 @@
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="Hoyo de Crimen"/>
 {{ super() }}
+
+{% block css %}
+{% assets  'css_pip_req' %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
+{% endassets %}
+	<!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
+<style>
+.tick line{
+opacity:0;
+visibility:hidden;
+}
+</style>
+{% endblock %}
+
+{% block js %}
+	<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<!--[if lte IE 8]><script src="/css/ie/html5shiv.js"></script><![endif]-->
+{% assets "js_pip_req" %}
+    <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
+
 {% endblock %}
 {% block content %}
 			
@@ -49,3 +71,9 @@
 </div>	
 </div>
     {% endblock %}
+
+{% block js_bottom %}
+{% assets "js_pip" %}
+    <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+ {% endblock %}

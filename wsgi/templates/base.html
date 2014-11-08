@@ -6,41 +6,42 @@
 -->
 <html>
 	<head>
-{% block head %}
-		<title>{% block title %}{% endblock %}</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
-
-
-
-                <link rel="alternate" hreflang="es" href="https://hoyodecrimen.com/" />
-
-{% assets  'css_pip_req' %}
-    <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
-{% endassets %}
-	<!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
-<style>
-.tick line{
-opacity:0;
-visibility:hidden;
-}
-</style>
-
-		<!--[if lte IE 8]><script src="/css/ie/html5shiv.js"></script><![endif]-->
-{% assets "js_pip_req" %}
-    <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Arvo:700" rel="stylesheet" type="text/css" />
+	
+{% block head %}
+		<title>{% block title %}{% endblock %}</title>
+		
+                
+{% block css %}
 {% endblock %}
+
+{% block js %}
+{% endblock %}
+
+{% endblock %}
+
+
 	</head>
-	<body class="homepage">
+	<body class="homepage"  ng-app="myApp"  ng-controller="DemoCtrl">
 
 		<!-- Header -->
 			<div id="header-wrapper">
 				<div id="header" class="container">
 {% block content %}					
 				
-    {% endblock %}
+{% endblock %}
 
 					<!-- Nav -->
 							<nav id="nav">
@@ -119,14 +120,23 @@ visibility:hidden;
 					<div id="copyright" class="container">
 						<ul class="links">
 							<li> &copy; Diego Valle-Jones. All rights reserved</li>
-							<li>Design: <a href="http://html5up.net/">HTML5 UP</a></li>
+							<li>{{_('Design: ')}}<a href="http://html5up.net/">HTML5 UP</a></li>
 						</ul>
 					</div>
 
 			</div>
-{% assets "js_pip" %}
-    <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
 {% endblock %}
+{% block js_bottom %}
+{% endblock %}
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-100264-9', 'auto');
+  ga('send', 'pageview');
+
+</script>
 	</body>
 </html>

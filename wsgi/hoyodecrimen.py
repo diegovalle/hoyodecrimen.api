@@ -159,26 +159,31 @@ def api_html(filename):
 
 @app.route('/en/rates')
 def index():
+    setattr(g, 'lang', 'en')
     return render_template('rates-sectores.html')
 
 
 @app.route('/en/trends')
 def change():
+    setattr(g, 'lang', 'en')
     return render_template('change-cuadrantes.html')
 
 
 @app.route('/en/counts')
 def counts():
+    setattr(g, 'lang', 'en')
     return render_template('counts-cuadrantes.html')
 
 
 @app.route('/en/sectores-map')
 def sectores_map():
+    setattr(g, 'lang', 'en')
     return render_template('sectores-map.html')
 
 
 @app.route('/en/cuadrantes-map')
 def cuadrantes_map():
+    setattr(g, 'lang', 'en')
     return render_template('cuadrantes-map.html')
 
 

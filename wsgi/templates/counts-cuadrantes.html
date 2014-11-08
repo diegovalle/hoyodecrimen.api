@@ -1,56 +1,47 @@
-<!DOCTYPE HTML>
-<!--
-	Strongly Typed 1.1 by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html lang="en">
-	<head>
-		<title>Crime Counts by Cuadrante in Mexico City</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
-		<meta name="viewport" content="width=1040" />
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
-  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
-  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
-  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
-<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Arvo:700" rel="stylesheet" type="text/css" />
-		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
-                <!-- Load c3.css -->
-
-{% assets "css_maps_req"   %}
+{% extends "base.html" %}
+{% block title %}{{_('Crime Counts by Cuadrante in Mexico City')}}{% endblock %}
+{% block head %}
+{% block css %}
+{% assets  'css_maps_req'   %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
 {% endassets %}
-                <style>
-.ng-table {
-    border: 1px solid #000;
-}
-</style>
+{% endblock %}
+
+{% block js %}
 <script>
 // URL for the angular table
-anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts"
-</script>	
+anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
+</script>
 {% assets  'js_maps_req'  %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
+{% endblock %}
 
-                
 
-	</head>
-	<body class="homepage" ng-app="myApp"  ng-controller="DemoCtrl">
+{% endblock %}
+{% block content %}
 
-		<!-- Header Wrapper -->
-			<div id="header-wrapper">
-						
-				<!-- Header -->
-					<div id="header" class="container">
+<!-- Begin MailChimp Signup Form -->
 
+
+
+<div id="mc_embed_signup">
+<form action="//diegovalle.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=102491489b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+	<div class="center">
+          <div>
+            <span style="color:white;font-weight:bold;">Free email when new information is available</span>
+	<input type="email" value=" " size="30" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+
+    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+    <div style="position: absolute; left: -5000px;"><input type="text" name="b_787fae824c502d9f3ad7d0b73_102491489b" tabindex="-1" value=""></div>
+   <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button" style="background:green;color:white;padding: .7em 2em;font-size: .9em;padding-bottom: 6px;">
+<span style="color:white;font-weight:bold;">(No spam)</span>
+</div></div>
+</form>
+
+</div>
+
+<!--End mc_embed_signup-->
 
                                           <h2 id="homicide-title"style="text-align:left;margin: 0 0 0 4em;">Homicides - Total</h2>
 
@@ -215,90 +206,8 @@ anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts"
 </div>
 
 </div>
-                                          
-						<!-- Logo -->
-							<!--<h1 id="logo"><a href="#">Strongly Typed</a></h1>
-							<p>A responsive HTML5 site template. Manufactured by HTML5 UP.</p>-->
-						
-						<!-- Nav -->
-									<nav id="nav">
-								<ul>
-									<li><a class="fa fa-home" href="/en/"><span>Home</span></a></li>
-                                                                        <li><a class="fa fa-bar-chart-o" href="/en/rates"><span>Rates</span></a></li>
-                                                                        <li><a class="fa fa-bar-chart-o" href="/en/counts"><span>Counts</span></a></li>
-									<li>
-										
-										<a href="#" class="fa fa-map-marker"><span>Maps</span></a>
-										<ul>
-											<li><a href="/en/sectores-map">Sectores (rates)</a></li>
-											
-                                                                                        <li><a href="/en/cuadrantes-map">Cuadrantes (counts)</a></li>
-											
-										</ul>
-                                                                                
-									</li>
-                                                                        <li><a class="fa fa-signal" href="/en/charts"><span>Charts</span></a></li>
-<li><a class="fa fa-bar-chart-o" href="/en/trends"><span>Trends</span></a></li>
-								</ul>
-							</nav>
-
-					</div>
-
-			</div>
-			
-	
-
-		<!-- Footer Wrapper -->
-			<div id="footer-wrapper">
-
-				<!-- Footer -->
-					<div id="footer" class="container">
-						<header>
-							<h2>Questions or comments? <strong>Get in touch:</strong></h2>
-						</header>
-						<div class="row">
-							<div class="6u">
-							Crime data from a <a href="https://github.com/diegovalle/crimeDF/tree/master/sspdf-data">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://201.144.220.174/pid/gps/cuadrantesWeb.php">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>. Visit the <a href="http://blog.diegovalle.net/2014/05/crime-in-mexico-city-at-cuadrante.html">blog post</a>.
-							</div>
-							<div class="6u">
-								<section>
-									
-									<div class="row">
-										<ul class="icons 6u">
-											<li class="fa fa-github">
-												<a href="http://github.com/diegovalle">@diegovalle</a>
-											</li>
-											<li class="fa fa-envelope">
-												<a href="mailto:diegovalle@gmail.com">diegovalle@gmail.com</a>
-											</li>
-										</ul>
-										<ul class="icons 6u">
-											<li class="fa fa-twitter">
-												<a href="http://twitter.com/diegovalle">@diegovalle</a>
-											</li>
-											<li class="fa fa-facebook">
-												<a href="http://www.facebook.com/diegovalle">facebook.com/diegovalle</a>
-											</li>
-											<li class="fa fa-google-plus">
-												<a href="https://plus.google.com/112417668983107842349?rel=author">google.com/+DiegoValleJones</a>
-											</li>
-										</ul>
-									</div>
-								</section>
-							</div>
-						</div>
-					</div>
-
-				<!-- Copyright -->
-					<div id="copyright" class="container">
-						<ul class="links">
-							<li>&copy; Diego Valle-Jones. All rights reserved</li>
-							<li>Design: <a href="http://html5up.net/">HTML5 UP</a></li>
-						</ul>
-					</div>
-
-			</div>
-
+                                           {% endblock %}
+              {% block js_bottom %}   
                         <script>
 var topoName = 'cuadrantes';    
 var mapFile = "/js/cuadrantes.json";
@@ -355,5 +264,4 @@ chartviol.load({
   ga('send', 'pageview');
 
 </script>
-	</body>
-</html>
+ {% endblock %}
