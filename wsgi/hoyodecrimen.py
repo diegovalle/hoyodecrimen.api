@@ -127,6 +127,11 @@ def index_html():
     return "If it's in a word, or if it's in a book you can't get rid of the Babadook"
 
 
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory(os.path.join(_basedir, 'static'), 'robots.txt')
+
+
 @cache.cached()
 @app.route('/en/')
 def api_home_html():
