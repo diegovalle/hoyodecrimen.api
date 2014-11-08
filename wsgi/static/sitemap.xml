@@ -198,4 +198,9 @@
                  href="https://hoyodecrimen.com/en/trends"
                  />
   </url>
+ 
+  <url>
+    <loc>https://hoyodecrimen.com/api/</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>
