@@ -1,36 +1,18 @@
-<!DOCTYPE HTML>
-<!--
-	Strongly Typed 1.1 by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html lang="en">
-	<head>
-		<title>Crime by Sector in Mexico City</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
-		<meta name="viewport" content="width=1040" />
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
-  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
-  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
-  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
-<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Arvo:700" rel="stylesheet" type="text/css" />
-		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
-                <!-- Load c3.css -->
+{% extends "base.html" %}
 
+{% block title %}{{_('Crime by Sector in Mexico City')}}{% endblock %}
+
+{% block head %}
+
+
+
+{% block css %}
 {% assets  'css_maps_req'   %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
 {% endassets %}
+{% endblock %}
 
-              
-                <style>
-</style>
+{% block js %}
 <script>
 // URL for the angular table
 anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
@@ -38,27 +20,11 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
 {% assets  'js_maps_req'  %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
+{% endblock %}
 
-                
+{% endblock %}
 
-	</head>
-	<body class="homepage" ng-app="myApp"  ng-controller="DemoCtrl">
-
-		<!-- Header Wrapper -->
-			<div id="header-wrapper">
-				<!--<p ng-cloak>{['TITLE' | translate]}</p>-->		
-				<!-- Header -->
-					<div id="header" class="container">
-<!-- AddThis Button BEGIN-->
-<!--<div class="addthis_toolbox addthis_default_style">
-<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-<a class="addthis_button_tweet"></a>
-</div>
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53828ddc4d27c103"></script>-->
-<!-- AddThis Button END -->
-
-
+{% block content %}
 
 <!-- Begin MailChimp Signup Form -->
 
@@ -248,89 +214,8 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
 
 </div>
 </div>
-                 
-						<!-- Logo -->
-							<!--<h1 id="logo"><a href="#">Strongly Typed</a></h1>
-							<p>A responsive HTML5 site template. Manufactured by HTML5 UP.</p>-->
-						
-						<!-- Nav -->
-							<nav id="nav">
-								<ul>
-									<li><a class="fa fa-home" href="/en/"><span>Home</span></a></li>
-                                                                        <li><a class="fa fa-bar-chart-o" href="/en/rates"><span>Rates</span></a></li>
-                                                                        <li><a class="fa fa-bar-chart-o" href="/en/counts"><span>Counts</span></a></li>
-									<li>
-										
-										<a href="#" class="fa fa-map-marker"><span>Maps</span></a>
-										<ul>
-											<li><a href="/en/sectores-map">Sectores (rates)</a></li>
-											
-                                                                                        <li><a href="/en/cuadrantes-map">Cuadrantes (counts)</a></li>
-											
-										</ul>
-                                                                                
-									</li>
-                                                                        <li><a class="fa fa-signal" href="/en/charts"><span>Charts</span></a></li>
-<li><a class="fa fa-bar-chart-o" href="/en/trends"><span>Trends</span></a></li>
-								</ul>
-							</nav>
-
-					</div>
-
-			</div>
-			
-
-
-		<!-- Footer Wrapper -->
-			<div id="footer-wrapper">
-
-				<!-- Footer -->
-					<div id="footer" class="container">
-						<header>
-							<h2>Questions or comments? <strong>Get in touch:</strong></h2>
-						</header>
-						<div class="row">
-							<div class="6u">
-							Crime data from a <a href="https://github.com/diegovalle/crimeDF/tree/master/sspdf-data">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://201.144.220.174/pid/gps/cuadrantesWeb.php">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>. Visit the <a href="http://blog.diegovalle.net/2014/05/crime-in-mexico-city-at-cuadrante.html">blog post</a>.
-							</div>
-							<div class="6u">
-								<section>
-									
-									<div class="row">
-										<ul class="icons 6u">
-											<li class="fa fa-github">
-												<a href="http://github.com/diegovalle">@diegovalle</a>
-											</li>
-											<li class="fa fa-envelope">
-												<a href="mailto:diegovalle@gmail.com">diegovalle@gmail.com</a>
-											</li>
-										</ul>
-										<ul class="icons 6u">
-											<li class="fa fa-twitter">
-												<a href="http://twitter.com/diegovalle">@diegovalle</a>
-											</li>
-											<li class="fa fa-facebook">
-												<a href="http://www.facebook.com/diegovalle">facebook.com/diegovalle</a>
-											</li>
-											<li class="fa fa-google-plus">
-												<a href="https://plus.google.com/112417668983107842349?rel=author">google.com/+DiegoValleJones</a>
-											</li>
-										</ul>
-									</div>
-								</section>
-							</div>
-						</div>
-					</div>
-
-				<!-- Copyright -->
-					<div id="copyright" class="container">
-						<ul class="links">
-							<li>&copy; Diego Valle-Jones. All rights reserved</li>
-							<li>Design: <a href="http://html5up.net/">HTML5 UP</a></li>
-						</ul>
-					</div>
-
-			</div>
+ {% endblock %}
+              {% block js_bottom %}   
 <script type="x-jst" id="tooltip-template">
 </script>
 <script>
@@ -378,15 +263,4 @@ chartviol.load({
 {% assets  'js_maps'  %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-100264-9', 'auto');
-  ga('send', 'pageview');
-
-</script>
-	</body>
-</html>
+{% endblock %}
