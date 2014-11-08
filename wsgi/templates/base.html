@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<!--
+	Strongly Typed by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+{% block head %}
+		<title>{% block title %}{% endblock %}</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+
+
+
+                <link rel="alternate" hreflang="es" href="https://hoyodecrimen.com/" />
+
+{% assets  'css_pip_req' %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
+{% endassets %}
+	<!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
+<style>
+.tick line{
+opacity:0;
+visibility:hidden;
+}
+</style>
+
+		<!--[if lte IE 8]><script src="/css/ie/html5shiv.js"></script><![endif]-->
+{% assets "js_pip_req" %}
+    <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
+	</head>
+	<body class="homepage">
+
+		<!-- Header -->
+			<div id="header-wrapper">
+				<div id="header" class="container">
+{% block content %}					
+				
+    {% endblock %}
+
+					<!-- Nav -->
+							<nav id="nav">
+							  <ul>
+							    <li><a class="fa fa-home" href="{{_('/en/')}}"><span>{{_('Home')}}</span></a></li>
+                                                            <li><a class="fa fa-bar-chart-o" href="{{_('/en/rates')}}"><span>{{_('Rates')}}</span></a></li>
+                                                            <li><a class="fa fa-bar-chart-o" href="{{_('/en/counts')}}"><span>{{_('Counts')}}</span></a></li>
+							    <li>
+							      
+							      <a href="#" class="fa fa-map-marker"><span>{{_('Maps')}}</span></a>
+							      <ul>
+								<li><a href="{{_('/en/sectores-map')}}">{{_('Sectores (rates)')}}</a></li>
+								
+                                                                <li><a href="{{_('/en/cuadrantes-map')}}">{{_('Cuadrantes (counts)')}}</a></li>
+								
+							      </ul>
+                                                              
+							    </li>
+                                                            <li><a class="fa fa-signal" href="{{_('/en/charts')}}"><span>{{_('Charts')}}</span></a></li>
+                                                            <li><a class="fa fa-bar-chart-o" href="{{_('/en/trends')}}"><span>{{_('Trends')}}</span></a></li>
+							  </ul>
+							</nav>
+<hr/>
+
+					</div>
+
+			</div>
+			
+
+{% block footer %}
+		<!-- Footer Wrapper -->
+			<div id="footer-wrapper">
+
+				<!-- Footer -->
+					<div id="footer" class="container">
+						<header>
+							<h2>{{_('Questions or comments? <strong>Get in touch:</strong>')}}</h2>
+						</header>
+						<div class="row">
+							<div class="6u">
+<p>{{_('Created by <a href="https://www.diegovalle.net">Diego Valle-Jones</a>')}}</p>
+							<p>{{_('Crime data from a <a href="https://github.com/diegovalle/crimeDF/tree/master/sspdf-data">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://201.144.220.174/pid/gps/cuadrantesWeb.php">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>.')}}</p>
+<p>{{_("There's also a ")}}<a href="/">{{_("Spanish version")}}</a></p>
+							</div>
+							<div class="6u">
+								<section>
+									
+									<div class="row">
+										<ul class="icons 6u">
+                                                                                  <li class="fa fa-envelope">
+												<a href="mailto:diegovalle@gmail.com">diegovalle@gmail.com</a>
+											</li>
+											<li class="fa fa-github">
+												<a href="http://github.com/diegovalle">diegovalle</a>
+											</li>
+											
+										</ul>
+										<ul class="icons 6u">
+											<li class="fa fa-twitter">
+												<a href="https://twitter.com/diegovalle">@diegovalle</a>
+											</li>
+											<li class="fa fa-facebook">
+												<a href="https://www.facebook.com/diegovalle">/diegovalle</a>
+											</li>
+											<li class="fa fa-google-plus">
+												<a href="https://plus.google.com/112417668983107842349?rel=author">+DiegoValleJones</a>
+											</li>
+										</ul>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+
+				<!-- Copyright -->
+					<div id="copyright" class="container">
+						<ul class="links">
+							<li> &copy; Diego Valle-Jones. All rights reserved</li>
+							<li>Design: <a href="http://html5up.net/">HTML5 UP</a></li>
+						</ul>
+					</div>
+
+			</div>
+{% assets "js_pip" %}
+    <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
+	</body>
+</html>
