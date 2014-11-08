@@ -1,5 +1,7 @@
 config.sh
 venv/*
+wsgi/static/js/packed*
+wsgi/static/css/packed*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
