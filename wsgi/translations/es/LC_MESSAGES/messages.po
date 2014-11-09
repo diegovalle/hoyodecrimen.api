@@ -7,144 +7,99 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-06 20:26-0600\n"
-"PO-Revision-Date: 2014-11-06 20:29-0600\n"
+"POT-Creation-Date: 2014-11-08 19:22-0600\n"
+"PO-Revision-Date: 2014-11-08 19:30-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
+"Generated-By: Babel 1.3\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: templates/pip.html:9 templates/pip.html:16 templates/pip.html:54
-msgid "Crime in Mexico City"
-msgstr "Crimen por tu Rumbo"
-
-#: templates/pip.html:17
-msgid "Find out how many crimens there were in your Cuadrante Delictivo"
-msgstr "Cuantos crímenes ocurrieron en tu cuadrante"
-
-#: templates/pip.html:19 templates/pip.html:22
-msgid "https://hoyodecrimen.com/en/"
-msgstr "https://hoyodecrimen.com/"
-
-#: templates/pip.html:21
-msgid ""
-"Crime in Mexico City. Find out how many crimens there were in your Cuadrante "
-"Delictivo."
-msgstr ""
-"Crimen en la Ciudad de Mexico. Averigua cuantos crímenes ocurrieron por tu "
-"rumbu"
-
-#: templates/pip.html:56
-msgid "Crime in your Cuadrante"
-msgstr "Crimen en tu cuadrante"
-
-#: templates/pip.html:59
-msgid "Cuadrante: "
-msgstr "Cuadrante: "
-
-#: templates/pip.html:60
-msgid "Sector: "
-msgstr "Sector: "
-
-#: templates/pip.html:61
-msgid "Population: "
-msgstr "Población: "
-
-#: templates/pip.html:68
-msgid "Crimes counts by month in your cuadrante"
-msgstr "Número de crímenes en tu cuadrante"
-
-#: templates/pip.html:76
-msgid "Crimes rates compared to the rest of the DF during the last 12 months"
-msgstr ""
-"Tasas de criminalidad comparadas con el resto del DF (12 últimos meses)"
-
-#: templates/pip.html:89
+#: templates/base.html:49
 msgid "/en/"
 msgstr "/"
 
-#: templates/pip.html:89
+#: templates/base.html:49
 msgid "Home"
 msgstr "Inicio"
 
-#: templates/pip.html:90
+#: templates/base.html:50
 msgid "/en/rates"
 msgstr "/tasas"
 
-#: templates/pip.html:90
+#: templates/base.html:50
 msgid "Rates"
 msgstr "Tasas"
 
-#: templates/pip.html:91
+#: templates/base.html:51
 msgid "/en/counts"
 msgstr "/numero"
 
-#: templates/pip.html:91
+#: templates/base.html:51
 msgid "Counts"
 msgstr "Número"
 
-#: templates/pip.html:94
+#: templates/base.html:54
 msgid "Maps"
-msgstr "MApas"
+msgstr "Mapas"
 
-#: templates/pip.html:96
+#: templates/base.html:56
 msgid "/en/sectores-map"
-msgstr "sectores-mapa"
+msgstr "/sectores-mapa"
 
-#: templates/pip.html:96
+#: templates/base.html:56
 msgid "Sectores (rates)"
 msgstr "Sectores (tasas)"
 
-#: templates/pip.html:98
+#: templates/base.html:58
 msgid "/en/cuadrantes-map"
-msgstr "/cuadrantes-mapa"
+msgstr "/cuadrates-mapa"
 
-#: templates/pip.html:98
+#: templates/base.html:58
 msgid "Cuadrantes (counts)"
-msgstr "Cuadrantes (número)"
+msgstr "Cuadrantes"
 
-#: templates/pip.html:103
+#: templates/base.html:63
 msgid "/en/charts"
 msgstr "/charts"
 
-#: templates/pip.html:103
+#: templates/base.html:63
 msgid "Charts"
 msgstr "Gráficas"
 
-#: templates/pip.html:104
+#: templates/base.html:64
 msgid "/en/trends"
 msgstr "/tendencias"
 
-#: templates/pip.html:104
+#: templates/base.html:64
 msgid "Trends"
 msgstr "Tendencias"
 
-#: templates/pip.html:116
+#: templates/base.html:74 templates/change-cuadrantes.html:29
+#: templates/charts.html:29 templates/counts-cuadrantes.html:29
+#: templates/rates-sectores.html:35
 msgid "Free email when new information is available"
-msgstr "Email cuando tenga nueva información"
+msgstr "Email cuando haya nueva información"
 
-#: templates/pip.html:121
+#: templates/base.html:79 templates/change-cuadrantes.html:34
+#: templates/charts.html:34 templates/counts-cuadrantes.html:34
+#: templates/rates-sectores.html:40
 msgid "Subscribe"
 msgstr "Suscribirse"
 
-#: templates/pip.html:122
-msgid "(No spam)"
-msgstr "(Cero Spam)"
-
-#: templates/pip.html:141
+#: templates/base.html:98
 msgid "Questions or comments? <strong>Get in touch:</strong>"
-msgstr "Preguntas o comentarios? <strong>Contáctame:</strong>"
+msgstr "Preguntas o comentarios... ¡Contáctame!"
 
-#: templates/pip.html:145
+#: templates/base.html:102
 msgid "Created by <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
 msgstr ""
 "Creado por <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
 
-#: templates/pip.html:146
+#: templates/base.html:103
 msgid ""
 "Crime data from a <a href=\"https://github.com/diegovalle/crimeDF/tree/"
 "master/sspdf-data\">FOIA request</a> to the SSPDF. Cuadrante coordinates "
@@ -160,10 +115,246 @@ msgstr ""
 "en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-"
 "of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
 
-#: templates/pip.html:147
-msgid "There's also a "
-msgstr "También hay una versión en"
+#: templates/base.html:104
+msgid "There's also a"
+msgstr "También hay una"
 
-#: templates/pip.html:147
+#: templates/base.html:104
+msgid "/"
+msgstr "/en/"
+
+#: templates/base.html:104
 msgid "Spanish version"
-msgstr "Inglés"
+msgstr "versión en español"
+
+#: templates/base.html:104
+msgid "and a really cool"
+msgstr "y un muy cool"
+
+#: templates/base.html:140
+msgid "Design: "
+msgstr "Diseño"
+
+#: templates/change-cuadrantes.html:2
+msgid "Crime Trends by Cuadrante in Mexico City"
+msgstr "Número de crímenes por cuadrante"
+
+#: templates/change-cuadrantes.html:44
+msgid ""
+"The last 3 months of crime data compared with the same period last year (the "
+"highlighted gray regions in the line chart)"
+msgstr ""
+"Los últimos tres meses en comparación con el mismo periodo hace 12 meses "
+"(regiones grises en la serie de tiempo)"
+
+#: templates/change-cuadrantes.html:45 templates/counts-cuadrantes.html:40
+msgid "Homicides - Total"
+msgstr "Homicidios - Total DF"
+
+#: templates/change-cuadrantes.html:52 templates/change-cuadrantes.html:87
+#: templates/change-cuadrantes.html:120 templates/change-cuadrantes.html:154
+#: templates/change-cuadrantes.html:187 templates/counts-cuadrantes.html:47
+#: templates/counts-cuadrantes.html:81 templates/counts-cuadrantes.html:113
+#: templates/counts-cuadrantes.html:145 templates/counts-cuadrantes.html:177
+#: templates/rates-sectores.html:59 templates/rates-sectores.html:94
+#: templates/rates-sectores.html:126 templates/rates-sectores.html:158
+#: templates/rates-sectores.html:192
+msgid "Reset Chart to show all DF data"
+msgstr "Reinicializar con valores del DF"
+
+#: templates/change-cuadrantes.html:64 templates/change-cuadrantes.html:98
+#: templates/change-cuadrantes.html:132 templates/change-cuadrantes.html:165
+#: templates/change-cuadrantes.html:198
+msgid "Cuadrantes with the biggest increases during the last 3 months"
+msgstr "Cuadrantes con el mayor incremento de crímenes"
+
+#: templates/change-cuadrantes.html:68 templates/change-cuadrantes.html:101
+#: templates/change-cuadrantes.html:135 templates/change-cuadrantes.html:168
+#: templates/change-cuadrantes.html:201 templates/counts-cuadrantes.html:63
+#: templates/counts-cuadrantes.html:95 templates/counts-cuadrantes.html:127
+#: templates/counts-cuadrantes.html:159 templates/counts-cuadrantes.html:191
+#: templates/rates-sectores.html:71 templates/rates-sectores.html:103
+#: templates/rates-sectores.html:135 templates/rates-sectores.html:167
+#: templates/rates-sectores.html:202
+msgid "Rank"
+msgstr "Lugar"
+
+#: templates/change-cuadrantes.html:69 templates/change-cuadrantes.html:102
+#: templates/change-cuadrantes.html:136 templates/change-cuadrantes.html:169
+#: templates/change-cuadrantes.html:202 templates/counts-cuadrantes.html:65
+#: templates/counts-cuadrantes.html:97 templates/counts-cuadrantes.html:129
+#: templates/counts-cuadrantes.html:161 templates/counts-cuadrantes.html:193
+msgid "Cuadrante"
+msgstr "Cuadrante"
+
+#: templates/change-cuadrantes.html:70 templates/change-cuadrantes.html:103
+#: templates/change-cuadrantes.html:137 templates/change-cuadrantes.html:170
+#: templates/change-cuadrantes.html:203 templates/counts-cuadrantes.html:66
+#: templates/counts-cuadrantes.html:98 templates/counts-cuadrantes.html:130
+#: templates/counts-cuadrantes.html:162 templates/counts-cuadrantes.html:194
+#: templates/rates-sectores.html:73 templates/rates-sectores.html:105
+#: templates/rates-sectores.html:137 templates/rates-sectores.html:169
+#: templates/rates-sectores.html:204
+msgid "Sector"
+msgstr "Sector"
+
+#: templates/change-cuadrantes.html:71 templates/change-cuadrantes.html:104
+#: templates/change-cuadrantes.html:138 templates/change-cuadrantes.html:171
+#: templates/change-cuadrantes.html:204 templates/counts-cuadrantes.html:67
+#: templates/counts-cuadrantes.html:99 templates/counts-cuadrantes.html:131
+#: templates/counts-cuadrantes.html:163 templates/counts-cuadrantes.html:195
+#: templates/rates-sectores.html:75 templates/rates-sectores.html:107
+#: templates/rates-sectores.html:139 templates/rates-sectores.html:171
+#: templates/rates-sectores.html:206
+msgid "Population"
+msgstr "Población"
+
+#: templates/change-cuadrantes.html:72 templates/change-cuadrantes.html:105
+#: templates/change-cuadrantes.html:139 templates/change-cuadrantes.html:172
+#: templates/change-cuadrantes.html:205
+msgid "Period1"
+msgstr "Periodo1"
+
+#: templates/change-cuadrantes.html:73 templates/change-cuadrantes.html:106
+#: templates/change-cuadrantes.html:140 templates/change-cuadrantes.html:173
+#: templates/change-cuadrantes.html:206
+msgid "Period2"
+msgstr "Periodo2"
+
+#: templates/change-cuadrantes.html:74 templates/change-cuadrantes.html:107
+#: templates/change-cuadrantes.html:141 templates/change-cuadrantes.html:174
+#: templates/change-cuadrantes.html:207
+msgid "Difference"
+msgstr "Diferencia"
+
+#: templates/change-cuadrantes.html:82 templates/counts-cuadrantes.html:76
+msgid "VIOLENT ROBBERIES TO A BUSINESS - Total"
+msgstr "ROBO A NEGOCIO C.V. - TOTAL DF"
+
+#: templates/change-cuadrantes.html:115 templates/counts-cuadrantes.html:108
+msgid "VIOLENT CAR ROBBERIES- Total"
+msgstr "ROBO DE VEHICULO C.V. - Total DF"
+
+#: templates/change-cuadrantes.html:149 templates/counts-cuadrantes.html:140
+msgid "NON-VIOLENT CAR ROBBERIES - Total"
+msgstr "ROBO DE VEHICULO S.V. - Total DF"
+
+#: templates/change-cuadrantes.html:182 templates/counts-cuadrantes.html:172
+msgid "Rape - Total"
+msgstr "Violación - Total DF"
+
+#: templates/charts.html:2
+msgid "Crime Charts of Mexico City"
+msgstr "Gráficas del crimen el Distrito Federal"
+
+#: templates/charts.html:40 templates/charts.html:44 templates/charts.html:48
+#: templates/charts.html:52
+msgid "Crime by Sector"
+msgstr "Crimen por Sector"
+
+#: templates/counts-cuadrantes.html:2
+msgid "Crime Counts by Cuadrante in Mexico City"
+msgstr "Número de crímenes en tu cuadrante"
+
+#: templates/counts-cuadrantes.html:59 templates/counts-cuadrantes.html:92
+#: templates/counts-cuadrantes.html:124 templates/counts-cuadrantes.html:156
+#: templates/counts-cuadrantes.html:188
+msgid "Cuadrantes with the highest number of crimes"
+msgstr "Cuadrantes con el mayor número de crímenes"
+
+#: templates/counts-cuadrantes.html:64 templates/counts-cuadrantes.html:96
+#: templates/counts-cuadrantes.html:128 templates/counts-cuadrantes.html:160
+#: templates/counts-cuadrantes.html:192 templates/rates-sectores.html:72
+#: templates/rates-sectores.html:104 templates/rates-sectores.html:136
+#: templates/rates-sectores.html:168 templates/rates-sectores.html:203
+msgid "Crime"
+msgstr "Crimen"
+
+#: templates/counts-cuadrantes.html:68 templates/counts-cuadrantes.html:100
+#: templates/counts-cuadrantes.html:132 templates/counts-cuadrantes.html:164
+#: templates/counts-cuadrantes.html:196 templates/rates-sectores.html:74
+#: templates/rates-sectores.html:106 templates/rates-sectores.html:138
+#: templates/rates-sectores.html:170 templates/rates-sectores.html:205
+msgid "Count"
+msgstr "Número"
+
+#: templates/pip.html:2 templates/pip.html:7 templates/pip.html:43
+msgid "Crime in Mexico City"
+msgstr "Crimen por tu Rumbo"
+
+#: templates/pip.html:8
+msgid "Find out how many crimens there were in your Cuadrante Delictivo"
+msgstr "Cuantos crímenes ocurrieron en tu cuadrante"
+
+#: templates/pip.html:10 templates/pip.html:13
+msgid "https://hoyodecrimen.com/en/"
+msgstr "https://hoyodecrimen.com/"
+
+#: templates/pip.html:12
+msgid ""
+"Crime in Mexico City. Find out how many crimens there were in your Cuadrante "
+"Delictivo."
+msgstr ""
+"Crimen en la Ciudad de Mexico. Averigua cuantos crímenes ocurrieron por tu "
+"rumbu"
+
+#: templates/pip.html:45
+msgid "Crime in your Cuadrante"
+msgstr "Crimen en tu cuadrante"
+
+#: templates/pip.html:48
+msgid "Cuadrante: "
+msgstr "Cuadrante: "
+
+#: templates/pip.html:49
+msgid "Sector: "
+msgstr "Sector: "
+
+#: templates/pip.html:50
+msgid "Population: "
+msgstr "Población: "
+
+#: templates/pip.html:57
+msgid "Crimes counts by month in your cuadrante"
+msgstr "Número de crímenes en tu cuadrante"
+
+#: templates/pip.html:65
+msgid "Crimes rates compared to the rest of the DF during the last 12 months"
+msgstr ""
+"Tasas de criminalidad comparadas con el resto del DF (12 últimos meses)"
+
+#: templates/rates-sectores.html:3
+msgid "Crime by Sector in Mexico City"
+msgstr "Crimen por tu Rumbo"
+
+#: templates/rates-sectores.html:46
+msgid "Homicides - rates"
+msgstr "Homicidios - Total DF"
+
+#: templates/rates-sectores.html:64 templates/rates-sectores.html:99
+#: templates/rates-sectores.html:131 templates/rates-sectores.html:163
+#: templates/rates-sectores.html:198
+msgid "Sectors with the highest rates of crime"
+msgstr "Sectores con las mayores tasas de crimen"
+
+#: templates/rates-sectores.html:76 templates/rates-sectores.html:108
+#: templates/rates-sectores.html:140 templates/rates-sectores.html:172
+#: templates/rates-sectores.html:207
+msgid "Rate"
+msgstr "Tasa"
+
+#: templates/rates-sectores.html:84
+msgid "Violent robberies to a business - rates"
+msgstr "ROBO A NEGOCIO C.V. - tasas"
+
+#: templates/rates-sectores.html:116
+msgid "Violent car robberies - rates"
+msgstr "ROBO DE VEHICULO C.V."
+
+#: templates/rates-sectores.html:148
+msgid "Non-violent car robberies - rates"
+msgstr "ROBO DE VEHICULO S.V."
+
+#: templates/rates-sectores.html:180
+msgid "Rape - rates"
+msgstr "Violación - Tasas"

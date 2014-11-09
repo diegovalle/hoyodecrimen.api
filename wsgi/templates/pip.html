@@ -15,6 +15,7 @@
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="Hoyo de Crimen"/>
 {{ super() }}
+{% endblock %}
 
 {% block css %}
 {% assets  'css_pip_req' %}
@@ -37,7 +38,6 @@ visibility:hidden;
 {% endassets %}
 {% endblock %}
 
-{% endblock %}
 {% block content %}
 			
 					<h1 id="logo" style="margin-bottom:50px">{{_('Crime in Mexico City')}}</h1>
@@ -70,7 +70,14 @@ visibility:hidden;
 <div id="barchart-viol" style="height:100px;width:400px"></div>
 </div>	
 </div>
+<hr/>
+
     {% endblock %}
+
+{% block subscribe %}
+{{ super() }}
+{% endblock %}
+
 
 {% block js_bottom %}
 {% assets "js_pip" %}

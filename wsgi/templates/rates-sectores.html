@@ -24,30 +24,26 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
 
 {% endblock %}
 
+{% block subscribe %}   
+{% endblock %}
 {% block content %}
-
-<!-- Begin MailChimp Signup Form -->
-
-
-
+ <!-- Begin MailChimp Signup Form -->
 <div id="mc_embed_signup">
 <form action="//diegovalle.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=102491489b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
 	<div class="center">
           <div>
-            <span style="color:white;font-weight:bold;">Free email when new information is available</span>
-	<input type="email" value=" " size="30" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+            <span style="color:white;font-weight:bold;">{{_('Free email when new information is available')}}</span>
+	<input type="email" value=" " size="30" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email" required>
 
     <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
     <div style="position: absolute; left: -5000px;"><input type="text" name="b_787fae824c502d9f3ad7d0b73_102491489b" tabindex="-1" value=""></div>
-   <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button" style="background:green;color:white;padding: .7em 2em;font-size: .9em;padding-bottom: 6px;">
-<span style="color:white;font-weight:bold;">(No spam)</span>
+   <input type="submit" value="{{_('Subscribe')}}" name="subscribe" id="mc-embedded-subscribe" class="button" style="background:green;color:white;padding: .7em 2em;font-size: .9em;padding-bottom: 6px;">
 </div></div>
 </form>
-
 </div>
-
 <!--End mc_embed_signup-->
-                                          <h2 id="homicide-title" style="text-align:right;margin: 0 7em 0 0;">Homicides - rates</h2>
+
+                                          <h2 id="homicide-title" style="text-align:right;margin: 0 7em 0 0;">{{_('Homicides - rates')}}</h2>
 
 					  <div class="row">
                                            
@@ -60,24 +56,24 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
                                             <div class="7u">
                                               
                                               <div class="chart-crime" id="chart-homicide"></div>
-                                              <a href="#" class="button" id="HomicideButton">Reset Chart to show all DF data</a>
+                                              <a href="#" class="button" id="HomicideButton">{{_('Reset Chart to show all DF data')}}</a>
                                             </div>
                                           </div>
 <div>
 
-<p>Sectors with the highest rates of crime</p><div class="datagrid">
+<p>{{_('Sectors with the highest rates of crime')}}</p><div class="datagrid">
 <div class="table-responsive" style="box-sizing: border-box;">
 
 
 
      <table ng-table="tableParams1" class="table">
         <tr ng-repeat="sector in $data | filter:'homicidio doloso'">
-          <td data-title="'Rank'">{[sector.rank]}</td>
-          <td data-title="'Crime'">{[sector.crime]}</td>
-          <td data-title="'Sector'">{[sector.sector]}</td>
-          <td data-title="'Count'">{[sector.count]}</td>
-          <td data-title="'Population'">{[sector.population | number:0]}</td>
-          <td data-title="'Rate'">{[sector.rate]}</td>
+          <td data-title="'{{_('Rank')}}'">{[sector.rank]}</td>
+          <td data-title="'{{_('Crime')}}'">{[sector.crime]}</td>
+          <td data-title="'{{_('Sector')}}'">{[sector.sector]}</td>
+          <td data-title="'{{_('Count')}}'">{[sector.count]}</td>
+          <td data-title="'{{_('Population')}}'">{[sector.population | number:0]}</td>
+          <td data-title="'{{_('Rate')}}'">{[sector.rate]}</td>
         </tr>
      </table>
      
@@ -85,7 +81,7 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
 </div>
 </div>
 <hr/>
-                                          <h2 id="rncv-title" style="text-align:right;margin: 0 7em 0 0;">Violent robberies to a business - rates</h2>
+                                          <h2 id="rncv-title" style="text-align:right;margin: 0 7em 0 0;">{{_('Violent robberies to a business - rates')}}</h2>
                                           <div class="row">
 					    <div class="4u">
                                               <div id="map-rncv" style="height:500px">
@@ -95,21 +91,21 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
                                             </div>
                                             <div class="7u">
                                               <div class="chart-crime" id="chart-rncv"></div>
-                                              <a href="#" class="button" id="RNCVButton">Reset Chart to show all DF data</a>
+                                              <a href="#" class="button" id="RNCVButton">{{_('Reset Chart to show all DF data')}}</a>
                                             </div>
                                           </div>
 <div>
 <div class="table-responsive" style="box-sizing: border-box;">
-<p>Sectors with the highest rates of crime</p><div class="datagrid">
+<p>{{_('Sectors with the highest rates of crime')}}</p><div class="datagrid">
 
 <table ng-table="tableParams2" class="table">
         <tr ng-repeat="sector in $data | filter:'robo a negocio c.v.'">
-          <td data-title="'Rank'">{[sector.rank]}</td>
-          <td data-title="'Crime'">{[sector.crime]}</td>
-          <td data-title="'Sector'">{[sector.sector]}</td>
-          <td data-title="'Count'">{[sector.count]}</td>
-          <td data-title="'Population'">{[sector.population | number:0]}</td>
-          <td data-title="'Rate'">{[sector.rate]}</td>
+          <td data-title="'{{_('Rank')}}'">{[sector.rank]}</td>
+          <td data-title="'{{_('Crime')}}'">{[sector.crime]}</td>
+          <td data-title="'{{_('Sector')}}'">{[sector.sector]}</td>
+          <td data-title="'{{_('Count')}}'">{[sector.count]}</td>
+          <td data-title="'{{_('Population')}}'">{[sector.population | number:0]}</td>
+          <td data-title="'{{_('Rate')}}'">{[sector.rate]}</td>
         </tr>
      </table>
 
@@ -117,7 +113,7 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
 </div>
 </div>
 <hr/>
-                                          <h2 id="rvcv-title" style="text-align:right;margin: 0 7em 0 0;">Violent car robberies - rates</h2>
+                                          <h2 id="rvcv-title" style="text-align:right;margin: 0 7em 0 0;">{{_('Violent car robberies - rates')}}</h2>
                                           <div class="row">
 					    <div class="4u">
                                               <div id="map-rvcv" style="height:500px">
@@ -127,21 +123,21 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
                                             </div>
                                             <div class="7u">
                                               <div class="chart-crime" id="chart-rvcv"></div>
-                                              <a href="#" class="button" id="RVCVButton">Reset Chart to show all DF data</a>
+                                              <a href="#" class="button" id="RVCVButton">{{_('Reset Chart to show all DF data')}}</a>
                                             </div>
                                           </div>
 <div>
 
-<p>Sectors with the highest rates of crime</p><div class="datagrid">
+<p>{{_('Sectors with the highest rates of crime')}}</p><div class="datagrid">
 
 <table ng-table="tableParams3" class="table">
         <tr ng-repeat="sector in $data | filter:'robo de vehiculo automotor c.v.'">
-          <td data-title="'Rank'">{[sector.rank]}</td>
-          <td data-title="'Crime'">{[sector.crime]}</td>
-          <td data-title="'Sector'">{[sector.sector]}</td>
-          <td data-title="'Count'">{[sector.count]}</td>
-          <td data-title="'Population'">{[sector.population | number:0]}</td>
-          <td data-title="'Rate'">{[sector.rate]}</td>
+          <td data-title="'{{_('Rank')}}'">{[sector.rank]}</td>
+          <td data-title="'{{_('Crime')}}'">{[sector.crime]}</td>
+          <td data-title="'{{_('Sector')}}'">{[sector.sector]}</td>
+          <td data-title="'{{_('Count')}}'">{[sector.count]}</td>
+          <td data-title="'{{_('Population')}}'">{[sector.population | number:0]}</td>
+          <td data-title="'{{_('Rate')}}'">{[sector.rate]}</td>
         </tr>
      </table>
 
@@ -149,7 +145,7 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
 
 </div>
 <hr/>
-                                          <h2 id="rvsv-title" style="text-align:right;margin: 0 7em 0 0;">Non-violent car robberies - rates</h2> <!--  -->
+                                          <h2 id="rvsv-title" style="text-align:right;margin: 0 7em 0 0;">{{_('Non-violent car robberies - rates')}}</h2> <!--  -->
                                           <div class="row">
 					    <div class="4u">
                                               <div id="map-rvsv" style="height:500px">
@@ -159,21 +155,21 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
                                             </div>
                                             <div class="7u">
                                               <div class="chart-crime" id="chart-rvsv"></div>
-                                              <a href="#" class="button" id="RVSVButton">Reset Chart to show all DF data</a>
+                                              <a href="#" class="button" id="RVSVButton">{{_('Reset Chart to show all DF data')}}</a>
                                             </div>
                                           </div>
 <div>
 
-<p>Sectors with the highest rates of crime</p><div class="datagrid">
+<p>{{_('Sectors with the highest rates of crime')}}</p><div class="datagrid">
 
 <table ng-table="tableParams4" class="table">
         <tr ng-repeat="sector in $data | filter:'robo de vehiculo automotor s.v.'">
-          <td data-title="'Rank'">{[sector.rank]}</td>
-          <td data-title="'Crime'">{[sector.crime]}</td>
-          <td data-title="'Sector'">{[sector.sector]}</td>
-          <td data-title="'Count'">{[sector.count]}</td>
-          <td data-title="'Population'">{[sector.population | number:0]}</td>
-          <td data-title="'Rate'">{[sector.rate]}</td>
+          <td data-title="'{{_('Rank')}}'">{[sector.rank]}</td>
+          <td data-title="'{{_('Crime')}}'">{[sector.crime]}</td>
+          <td data-title="'{{_('Sector')}}'">{[sector.sector]}</td>
+          <td data-title="'{{_('Count')}}'">{[sector.count]}</td>
+          <td data-title="'{{_('Population')}}'">{[sector.population | number:0]}</td>
+          <td data-title="'{{_('Rate')}}'">{[sector.rate]}</td>
         </tr>
      </table>
 
@@ -181,7 +177,7 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
 </div>
 <hr/>
 
-                                          <h2 id="viol-title" style="text-align:right;margin: 0 7em 0 0;">Rape - rates</h2>
+                                          <h2 id="viol-title" style="text-align:right;margin: 0 7em 0 0;">{{_('Rape - rates')}}</h2>
 
 					  <div class="row">
                                            
@@ -193,28 +189,32 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
                                             </div>
                                             <div class="7u">
                                               <div class="chart-crime" id="chart-viol"></div>
-                                              <a href="#" class="button" id="RapeButton">Reset Chart to show all DF data</a>
+                                              <a href="#" class="button" id="RapeButton">{{_('Reset Chart to show all DF data')}}</a>
                                             </div>
                                           
                                           </div>
 <div>
 
-<p>Sectors with the highest rates of crime</p><div class="datagrid">
+<p>{{_('Sectors with the highest rates of crime')}}</p><div class="datagrid">
 
 <table ng-table="tableParams5" class="table">
         <tr ng-repeat="sector in $data | filter:'violacion'">
-          <td data-title="'Rank'">{[sector.rank]}</td>
-          <td data-title="'Crime'">{[sector.crime]}</td>
-          <td data-title="'Sector'">{[sector.sector]}</td>
-          <td data-title="'Count'">{[sector.count]}</td>
-          <td data-title="'Population'">{[sector.population | number:0]}</td>
-          <td data-title="'Rate'">{[sector.rate]}</td>
+          <td data-title="'{{_('Rank')}}'">{[sector.rank]}</td>
+          <td data-title="'{{_('Crime')}}'">{[sector.crime]}</td>
+          <td data-title="'{{_('Sector')}}'">{[sector.sector]}</td>
+          <td data-title="'{{_('Count')}}'">{[sector.count]}</td>
+          <td data-title="'{{_('Population')}}'">{[sector.population | number:0]}</td>
+          <td data-title="'{{_('Rate')}}'">{[sector.rate]}</td>
         </tr>
      </table>
 
 </div>
 </div>
  {% endblock %}
+
+
+
+
               {% block js_bottom %}   
 <script type="x-jst" id="tooltip-template">
 </script>

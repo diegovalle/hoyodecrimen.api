@@ -42,3 +42,9 @@ Upload sql file to postgresql database
 psql apihoyodecrimen -c "CREATE EXTENSION postgis;"
 psql -d apihoyodecrimen $OPENSHIFT_POSTGRESQL_DB_USERNAME  < cuadrantes_poly.sql
 ```
+To create the Spanish translation
+
+```
+pybabel extract -F babel.cfg -o messages.pot .
+pybabel update -i messages.pot -d translations
+```
