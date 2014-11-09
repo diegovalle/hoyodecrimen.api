@@ -66,21 +66,7 @@
 							</nav>
 <hr/>
 {% block subscribe %}
-<!-- Begin MailChimp Signup Form -->
-<div id="mc_embed_signup">
-<form action="//diegovalle.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=102491489b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-	<div class="center">
-          <div>
-            <span style="color:white;font-weight:bold;">{{_('Free email when new information is available')}}</span>
-	<input type="email" value=" " size="30" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email" required>
 
-    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-    <div style="position: absolute; left: -5000px;"><input type="text" name="b_787fae824c502d9f3ad7d0b73_102491489b" tabindex="-1" value=""></div>
-   <input type="submit" value="{{_('Subscribe')}}" name="subscribe" id="mc-embedded-subscribe" class="button" style="background:green;color:white;padding: .7em 2em;font-size: .9em;padding-bottom: 6px;">
-</div></div>
-</form>
-</div>
-<!--End mc_embed_signup-->
 {% endblock %}
 					</div>
 
@@ -100,8 +86,10 @@
 						<div class="row">
 							<div class="6u">
 <p>{{_('Created by <a href="https://www.diegovalle.net">Diego Valle-Jones</a>')}}</p>
-							<p>{{_('Crime data from a <a href="https://github.com/diegovalle/crimeDF/tree/master/sspdf-data">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://201.144.220.174/pid/gps/cuadrantesWeb.php">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>.')}}</p>
+<p>{{_('Crime data from a <a href="https://github.com/diegovalle/crimeDF/tree/master/sspdf-data">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://201.144.220.174/pid/gps/cuadrantesWeb.php">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>.')}}</p>
 <p>{{_("There's also a")}} <a href="{{_('/')}}">{{_("Spanish version")}}</a> {{_("and a really cool")}} <a href="/api">API</a></p>
+
+<p>Download the data as a <a href="/data/cuadrantes.csv">csv file</a> and the <a href="">cuadrantes shapefile</a></p>
 							</div>
 							<div class="6u">
 								<section>

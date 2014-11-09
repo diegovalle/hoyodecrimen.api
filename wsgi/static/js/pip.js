@@ -117,11 +117,11 @@ function get_data(data){
         crime.rvcv.length = 0;
         crime.rvsv.length = 0;
         crime.viol.length = 0;
-    crime.hom.push('Cuadrante Homicides');
-    crime.rncv.push('Cuadrante Violent robberies to a business');
-    crime.rvcv.push('Cuadrante Vehicle robberies with violence');
-    crime.rvsv.push('Cuadrante Vehicle robberies without violence');
-    crime.viol.push('Cuadrante Rape');
+    crime.hom.push(hom_txt);
+    crime.rncv.push(rncv_txt);
+    crime.rvcv.push(rvcv_txt);
+    crime.rvsv.push(rvsv_txt);
+    crime.viol.push(viol_txt);
         $.each(data.cuadrante, function(i, value){
             switch(value.crime) {
             case "HOMICIDIO DOLOSO":               
@@ -183,19 +183,19 @@ function get_data(data){
             columns: [crime.viol],
         });
         barHomicides.load({
-            columns: [["All DF", allDF.hom],["Cuadrante", crimeCompare.hom]],
+            columns: [[all_df_txt, allDF.hom],[hom_txt, crimeCompare.hom]],
         });
     barRNCV.load({
-        columns: [["All DF", allDF.rncv],["Cuadrante", crimeCompare.rncv]],
+        columns: [[all_df_txt, allDF.rncv],[rncv_txt, crimeCompare.rncv]],
     })
     barRVCV.load({
-        columns: [["All DF", allDF.rvcv],["Cuadrante", crimeCompare.rvcv]],
+        columns: [[all_df_txt, allDF.rvcv],[rvcv_txt, crimeCompare.rvcv]],
     });
     barRVSV.load({
-        columns: [["All DF", allDF.rvsv],["Cuadrante", crimeCompare.rvsv]],
+        columns: [[all_df_txt, allDF.rvsv],[rvsv_txt, crimeCompare.rvsv]],
     });
     barVIOL.load({
-        columns: [["All DF", allDF.viol],["Cuadrante", crimeCompare.viol]],
+        columns: [[all_df_txt, allDF.viol],[viol_txt, crimeCompare.viol]],
     });
         
    
@@ -206,24 +206,24 @@ function createMarker(lat, lng) {
                                      HomicidesA,
                                      'number of homicides',
                                      'rgb(203,24,29)');
-    barHomicides = createBarChart("#barchart-homicide", 10, 'rgb(203,24,29)');
+    barHomicides = createBarChart("#barchart-homicide", 10, 'rgb(203,24,29)', hom_txt);
     chartrncv = createLineChart('#chart-rncv',
                                 rncvA,
                                 'number of violent robberies to a business','rgb(8,48,107)' );
-    barRNCV = createBarChart("#barchart-rncv", 10, 'rgb(8,48,107)');
+    barRNCV = createBarChart("#barchart-rncv", 10, 'rgb(8,48,107)', rncv_txt);
 
     chartrvcv = createLineChart('#chart-rvcv',
                                 rvcvA,
                                 'number of violent car robberies','rgb(63,0,125)')
-    barRVCV = createBarChart("#barchart-rvcv", 10, 'rgb(63,0,125)');
+    barRVCV = createBarChart("#barchart-rvcv", 10, 'rgb(63,0,125)', rvcv_txt);
     chartrvsv = createLineChart('#chart-rvsv',
                                 rvsvA,
                                 'number of non-violent car robberies','rgb(0,68,27)')
-    barRVSV = createBarChart("#barchart-rvsv", 10, 'rgb(0,68,27)');
+    barRVSV = createBarChart("#barchart-rvsv", 10, 'rgb(0,68,27)', rvsv_txt);
     chartviol = createLineChart('#chart-viol',
                                 violA,
                                 'number of rapes','rgb(0,0,0)')
-    barVIOL = createBarChart("#barchart-viol", 10, 'rgb(0,0,0)');
+    barVIOL = createBarChart("#barchart-viol", 10, 'rgb(0,0,0)', viol_txt);
     //Check if the location is inside the DF
     singleLayer = L.geoJson(singleGeojson);
     isDF = leafletPip.pointInLayer(L.latLng(lat,lng), singleLayer, true);
@@ -298,18 +298,28 @@ function createMarker(lat, lng) {
     //d3.select("#homicide-title").text(polygonSectors[0].feature.id);
 }
 
-function createBarChart(selection, DFRate, color){
+function createBarChart(selection, DFRate, color, cuad_txt){
     var chart = c3.generate({
         bindto: selection,
         data: {
             columns: [
-                ['All DF', DFRate],
-                ['Cuadrante', 0]
+                [all_df_txt, DFRate],
+                [cuad_txt, 0]
             ],
             type: 'bar',
             colors: {
                 "All DF": "#444",
-                "Cuadrante": color,
+                "Todo DF": "#444",
+                "Cuadrante Homicides":color,
+                "Cuadrante Violent robberies to a business":color,
+                'Cuadrante Vehicle robberies with violence':color,
+                'Cuadrante Vehicle robberies without violence':color,
+                'Cuadrante Rape':color,
+                'Cuadrante - Homicidios': color,
+                'Cuadrante - Robo a Negocio C.V.': color,
+                'Cuadrante - Robo de Vehículo C.V': color,
+                'Cuadrante - Robo de Vehículo S.V.': color,
+                'Cuadrante - Violaciones': color
                 }
         },
         bar: {
@@ -365,11 +375,16 @@ function createLineChart(selection, totalCrime, labelText, color) {
                 [name,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             ],
             colors: {
-                "Cuadrante Homicides": color,
-                "Cuadrante Violent robberies to a business": color,
-                'Cuadrante Vehicle robberies with violence': color,
-                'Cuadrante Vehicle robberies without violence': color,
-                'Cuadrante Rape': color
+                "Cuadrante Homicides":color,
+                "Cuadrante Violent robberies to a business":color,
+                'Cuadrante Vehicle robberies with violence':color,
+                'Cuadrante Vehicle robberies without violence':color,
+                'Cuadrante Rape':color,
+                'Cuadrante - Homicidios': color,
+                'Cuadrante - Robo a Negocio C.V.': color,
+                'Cuadrante - Robo de Vehículo C.V': color,
+                'Cuadrante - Robo de Vehículo S.V.': color,
+                'Cuadrante - Violaciones': color
             }
             //types:{'Homicides':'area', 
             //       'Violent robberies to a business':'area'},
@@ -390,7 +405,7 @@ function createLineChart(selection, totalCrime, labelText, color) {
                 tick : {format: function (d) { return d % 1 == 0 ? d : ""  } },
                 min: 0,
                 label: {
-                    text: "count", 
+                    text: count_txt, 
                     position:'outer-middle'
                 },
                 padding: {
@@ -415,7 +430,7 @@ function createLineChart(selection, totalCrime, labelText, color) {
 }
 
 
-HomicidesA = ['Cuadrante Homicides', 62, 81, 89, 76, 97, 90, 59, 78, 60, 68, 60, 58, 69, 54, 90, 76, 62, 78, 70 ], rncvA = ['Cuadrante Violent robberies to a business', 389, 355, 355, 297, 328, 361, 379, 363, 348, 374, 420, 348, 306, 270, 248, 278, 260, 287, 365 ], rvcvA = ['Cuadrante Vehicle robberies with violence', 488, 492, 432, 434, 503, 487, 470, 501, 457, 587, 612, 510, 560, 493, 506, 474, 507, 457, 544 ], rvsvA = ['Cuadrante Vehicle robberies without violence', 944, 851, 850, 912, 949, 990, 930, 990, 903, 917, 971, 931, 980, 825, 864, 803, 884, 708, 807 ], violA = ['Cuadrante Rape', 64, 64, 46, 34, 40, 36, 45, 46, 27, 44, 34, 33, 23, 35, 46, 41, 51, 38, 43 ];
+HomicidesA = [hom_txt, 62, 81, 89, 76, 97, 90, 59, 78, 60, 68, 60, 58, 69, 54, 90, 76, 62, 78, 70 ], rncvA = [rncv_txt, 389, 355, 355, 297, 328, 361, 379, 363, 348, 374, 420, 348, 306, 270, 248, 278, 260, 287, 365 ], rvcvA = [rvcv_txt, 488, 492, 432, 434, 503, 487, 470, 501, 457, 587, 612, 510, 560, 493, 506, 474, 507, 457, 544 ], rvsvA = [rvsv_txt, 944, 851, 850, 912, 949, 990, 930, 990, 903, 917, 971, 931, 980, 825, 864, 803, 884, 708, 807 ], violA = [viol_txt, 64, 64, 46, 34, 40, 36, 45, 46, 27, 44, 34, 33, 23, 35, 46, 41, 51, 38, 43 ];
 
 
 
