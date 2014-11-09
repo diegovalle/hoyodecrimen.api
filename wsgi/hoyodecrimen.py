@@ -122,11 +122,6 @@ def get_locale():
     return getattr(g, 'lang')
 
 
-@app.route('/')
-def index_html():
-    return "If it's in a word, or if it's in a book you can't get rid of the Babadook"
-
-
 @app.route('/robots.txt')
 def robots():
     return send_from_directory(os.path.join(_basedir, 'static'), 'robots.txt')
@@ -139,7 +134,7 @@ def api_home_html():
     return render_template('pip.html')
 
 @cache.cached()
-@app.route('/es')
+@app.route('/')
 def api_home_html_es():
     setattr(g, 'lang', 'es')
     return render_template('pip.html')
