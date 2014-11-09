@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-11-08 19:22-0600\n"
-"PO-Revision-Date: 2014-11-08 20:25-0600\n"
+"PO-Revision-Date: 2014-11-08 20:30-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -125,7 +125,7 @@ msgstr "/en/"
 
 #: templates/base.html:104
 msgid "Spanish version"
-msgstr "versión en español"
+msgstr "versión en inglés"
 
 #: templates/base.html:104
 msgid "and a really cool"
