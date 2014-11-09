@@ -143,6 +143,15 @@ def api_home_html_es():
 def sitemap():
     return send_from_directory(os.path.join(_basedir, 'static'), 'sitemap.xml')
 
+@app.route('/data/cuadrantes.csv')
+def cuadrantes_csv():
+    return send_from_directory(os.path.join(_basedir, '..', 'data'), 'cuadrantes.csv')
+
+
+@app.route('/data/cuadrantes_shp.zip')
+def shapefile():
+    return send_from_directory(os.path.join(_basedir, '..', 'data'), 'cuadrantes_shp.zip')
+
 
 @app.route('/api/')
 def api_index_html():
