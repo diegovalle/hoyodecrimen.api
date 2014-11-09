@@ -282,5 +282,47 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get(base_url, content_type="text/html")
         self.assertEqual(response.status_code, 200)
 
+    def test_df_en_home2(self):
+        base_url = '/'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series2(self):
+        base_url = '/tasas'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series2(self):
+        base_url = '/numero'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series2(self):
+        base_url = '/tendencias'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series2(self):
+        base_url = '/sectors-mapa'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_crimes_series2(self):
+        base_url = '/cuadrantes-mapa'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
+    def test_df_api(self):
+        base_url = '/api/'
+        tester = app.test_client(self)
+        response = tester.get(base_url, content_type="text/html")
+        self.assertEqual(response.status_code, 200)
+
 if __name__ == '__main__':
     unittest.main()
