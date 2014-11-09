@@ -55,19 +55,19 @@ visibility:hidden;
 
 <div id="linecharts" class="5u">
 <p style="height:3em;margin-bottom:10px">{{_('Crimes counts by month in your cuadrante')}}</p>
-<div id="chart-homicide" style="height:100px;width:400px"></div>
-<div id="chart-rncv" style="height:100px;width:400px"></div>
-<div id="chart-rvcv" style="height:100px;width:400px"></div>
-<div id="chart-rvsv" style="height:100px;width:400px"></div>
-<div id="chart-viol" style="height:100px;width:400px"></div>
+<div id="chart-homicide" style="height:100px;width:100%"></div>
+<div id="chart-rncv" style="height:100px;width:100%"></div>
+<div id="chart-rvcv" style="height:100px;width:100%"></div>
+<div id="chart-rvsv" style="height:100px;width:100%"></div>
+<div id="chart-viol" style="height:100px;width:100%"></div>
 </div>
 <div id="barcharts" class="5u">
 <p style="height:3em;margin-bottom:10px">{{_('Crimes rates compared to the rest of the DF during the last 12 months')}}</p>
-<div id="barchart-homicide" style="height:100px;width:400px"></div>
-<div id="barchart-rncv" style="height:100px;width:400px"></div>
-<div id="barchart-rvcv" style="height:100px;width:400px"></div>
-<div id="barchart-rvsv" style="height:100px;width:400px"></div>
-<div id="barchart-viol" style="height:100px;width:400px"></div>
+<div id="barchart-homicide" style="height:100px;width:100%"></div>
+<div id="barchart-rncv" style="height:100px;width:100%"></div>
+<div id="barchart-rvcv" style="height:100px;width:100%"></div>
+<div id="barchart-rvsv" style="height:100px;width:100%"></div>
+<div id="barchart-viol" style="height:100px;width:100%"></div>
 </div>	
 </div>
 <hr/>
@@ -107,6 +107,8 @@ rvsv_txt='{{_('Cuadrante Vehicle robberies without violence')}}'
 viol_txt='{{_('Cuadrante Rape')}}'
 count_txt = '{{_("count")}}'
 all_df_txt = '{{_("All DF")}}'
+rate_txt = '{{_("rate")}}'
+
 </script>
 {% assets "js_pip" %}
     <script  type="text/javascript" src="{{ ASSET_URL }}"></script>

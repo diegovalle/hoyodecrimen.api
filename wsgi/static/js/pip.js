@@ -332,7 +332,11 @@ function createBarChart(selection, DFRate, color, cuad_txt){
         axis:{
             y:{
                 min:-7,
-                tick : {format: function (d) {  return d % 10 == 0 ? d : ""   } },
+                tick : {format: function (d) {  return ((d % 100 == 0 & d != 0)| d == 10 ) ? d : ""   } },
+                label: {
+                    text: rate_txt, 
+                    position:'outer-middle'
+                }
             }
         },
         tooltip: {
