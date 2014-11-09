@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{_('Crime Charts of Mexico City')}}{% endblock %}
+{% block head %}
+{% block css %}
+{% assets  'css_maps_req'   %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
+{% endassets %}
+{% endblock %}
+
+{% block js %}
+<script>
+// URL for the angular table
+anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
+</script>
+{% assets  'js_maps_req'  %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
+
+
+{% endblock %}
+{% block content %}
+
+<!-- Begin MailChimp Signup Form -->
+<div id="mc_embed_signup">
+<form action="//diegovalle.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=102491489b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+	<div class="center">
+          <div>
+            <span style="color:white;font-weight:bold;">{{_('Free email when new information is available')}}</span>
+	<input type="email" value=" " size="30" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email" required>
+
+    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+    <div style="position: absolute; left: -5000px;"><input type="text" name="b_787fae824c502d9f3ad7d0b73_102491489b" tabindex="-1" value=""></div>
+   <input type="submit" value="{{_('Subscribe')}}" name="subscribe" id="mc-embedded-subscribe" class="button" style="background:green;color:white;padding: .7em 2em;font-size: .9em;padding-bottom: 6px;">
+</div></div>
+</form>
+</div>
+<!--End mc_embed_signup-->
+
+<h2>{{_('Crime by Sector')}}</h2>
+<img src="/images/total-sector-hom.png" >
+<hr/>
+
+<h2>{{_('Crime by Sector')}}</h2>
+<img src="/images/total-sector-rncv.png" >
+<hr/>
+
+<h2>{{_('Crime by Sector')}}</h2>
+<img src="/images/total-sector-rvcv.png" >
+<hr/>
+
+<h2>{{_('Crime by Sector')}}</h2>
+<img src="/images/total-sector-rvsv.png" >
+<hr/>
+{% endblock %}
+
+{% block js_bottom %}   
+{% endblock %}

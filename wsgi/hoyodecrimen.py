@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, Flask, jsonify, request, abort, \
     make_response, url_for, send_from_directory,\
-    send_file, render_template, g
+    send_file, render_template, g, Response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy import func, and_
@@ -158,8 +158,13 @@ def api_html(filename):
 
 
 @app.route('/en/rates')
-def index():
+def rates():
     setattr(g, 'lang', 'en')
+    return render_template('rates-sectores.html')
+
+@app.route('/tasas')
+def tasas():
+    setattr(g, 'lang', 'es')
     return render_template('rates-sectores.html')
 
 
@@ -169,10 +174,33 @@ def change():
     return render_template('change-cuadrantes.html')
 
 
+@app.route('/tendencias')
+def tendencias():
+    setattr(g, 'lang', 'es')
+    return render_template('change-cuadrantes.html')
+
 @app.route('/en/counts')
 def counts():
     setattr(g, 'lang', 'en')
     return render_template('counts-cuadrantes.html')
+
+
+@app.route('/numero')
+def numero():
+    setattr(g, 'lang', 'es')
+    return render_template('counts-cuadrantes.html')
+
+
+@app.route('/en/charts')
+def charts():
+    setattr(g, 'lang', 'en')
+    return render_template('charts.html')
+
+
+@app.route('/charts')
+def charts_es():
+    setattr(g, 'lang', 'es')
+    return render_template('charts.html')
 
 
 @app.route('/en/sectores-map')
@@ -181,9 +209,19 @@ def sectores_map():
     return render_template('sectores-map.html')
 
 
+@app.route('/sectores-mapa')
+def sectores_map_es():
+    setattr(g, 'lang', 'es')
+    return render_template('sectores-map.html')
+
 @app.route('/en/cuadrantes-map')
 def cuadrantes_map():
     setattr(g, 'lang', 'en')
+    return render_template('cuadrantes-map.html')
+
+@app.route('/cuadrantes-mapa')
+def cuadrantes_mapa():
+    setattr(g, 'lang', 'es')
     return render_template('cuadrantes-map.html')
 
 
@@ -195,7 +233,7 @@ def google055ef027e7764e4d():
 # Blitz verification
 @app.route('/mu-01188fe9-0b813050-b0f51076-c96f41fb.txt')
 def mu01188fe9():
-    return '42'
+    return '42', 200,  {'Content-Type': 'text/plain; charset=utf-8'}
 
 
 @app.route('/api/_static/<path:filename>')
