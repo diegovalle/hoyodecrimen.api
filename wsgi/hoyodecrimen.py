@@ -144,6 +144,10 @@ def api_home_html_es():
     setattr(g, 'lang', 'es')
     return render_template('pip.html')
 
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory(os.path.join(_basedir, 'static'), 'sitemap.xml')
+
 
 @app.route('/api/')
 def api_index_html():
