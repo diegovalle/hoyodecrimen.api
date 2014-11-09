@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-09 16:04-0600\n"
-"PO-Revision-Date: 2014-11-09 16:04-0600\n"
+"POT-Creation-Date: 2014-11-09 16:43-0600\n"
+"PO-Revision-Date: 2014-11-09 16:45-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -118,6 +118,15 @@ msgstr "versión en inglés"
 #: templates/base.html:90
 msgid "and a really cool"
 msgstr "y un muy cool"
+
+#: templates/base.html:92
+msgid ""
+"Download the data as a <a href=\"/data/cuadrantes.csv\">csv file</a> and the "
+"<a href=\"/data/cuadrantes_shp.zip\">cuadrantes shapefile</a>"
+msgstr ""
+"Descargar los datos de criminalidad <a href=\"/data/cuadrantes.csv\">como "
+"csv</a> o el shapefile de los <a href=\"/data/cuadrantes_shp.zip"
+"\">cuadrantes</a>"
 
 #: templates/base.html:128
 msgid "Design: "
