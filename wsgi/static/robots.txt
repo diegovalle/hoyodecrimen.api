@@ -1,3 +1,3 @@
 User-agent: *
-Disallow:
+Disallow: /api/v1/*
 Sitemap: https://hoyodecrimen.com/sitemap.xml
