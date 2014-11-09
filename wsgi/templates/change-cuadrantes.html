@@ -2,9 +2,17 @@
 {% block title %}{{_('Crime Trends by Cuadrante in Mexico City')}}{% endblock %}
 {% block head %}
 {% block css %}
+
 {% assets  'css_maps_req'   %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
 {% endassets %}
+<style>
+.c3-region {
+  fill: steelblue;
+  fill-opacity: .1;
+}
+                
+</style>
 {% endblock %}
 
 {% block js %}
@@ -17,8 +25,11 @@ anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts/change"
 {% endassets %}
 {% endblock %}
 
-
 {% endblock %}
+
+{% block subscribe %}   
+{% endblock %}
+
 {% block content %}
 
 <!-- Begin MailChimp Signup Form -->
@@ -213,13 +224,7 @@ anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts/change"
 </div>
                                           {% endblock %}
               {% block js_bottom %}   
-	<script>
-// URL for the angular table
-anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts/change"
-</script>
-{% assets  "js_maps_req"  %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
+
                         <script>
 var topoName = 'cuadrantes-change';    
 var mapFile = "/js/cuadrantes.json";
