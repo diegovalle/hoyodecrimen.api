@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-09 16:43-0600\n"
-"PO-Revision-Date: 2014-11-09 16:45-0600\n"
+"POT-Creation-Date: 2014-11-09 17:29-0600\n"
+"PO-Revision-Date: 2014-11-09 17:30-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -129,8 +129,8 @@ msgstr ""
 "\">cuadrantes</a>"
 
 #: templates/base.html:128
-msgid "Design: "
-msgstr "Diseño"
+msgid "Design:"
+msgstr "Diseño:"
 
 #: templates/change-cuadrantes.html:2
 msgid "Crime Trends by Cuadrante in Mexico City"
@@ -381,6 +381,10 @@ msgstr "número"
 #: templates/pip.html:109
 msgid "All DF"
 msgstr "Todo DF"
+
+#: templates/pip.html:110
+msgid "rate"
+msgstr "tasa"
 
 #: templates/rates-sectores.html:3
 msgid "Crime by Sector in Mexico City"
