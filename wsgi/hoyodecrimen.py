@@ -22,7 +22,7 @@ from flask.ext.babel import gettext, ngettext
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 600 #43200 * 20 # 20 days
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 43200 * 20 # 20 days
 app.register_blueprint(API)
 db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
