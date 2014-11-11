@@ -1081,6 +1081,7 @@ def top5sectores(crime):
 
     When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
     (e.g. If July is the last date in the database then the period July 2014 to Aug 2013 will be analyzed).
+    Crimes where no sector was specified (NO ESPECIFICADO) are ignored.
     All population data returned by this call is in persons/year and comes from the 2010 census
 
     :param crime: the name of a crime or the keyword ``all``
@@ -1137,7 +1138,7 @@ def top5sectores(crime):
                            (select (sum(count) / (sum(population::float) / :num_months )* 100000) as rate,sum(count) as count,
                            sector,sum(population) / :num_months as population, crime
                            from cuadrantes
-                           where date >= :start_date and date <= :max_date"""
+                           where date >= :start_date and date <= :max_date and population is not null"""
     sql_query2 = "" if crime == "ALL" else " and upper(crime) = :crime "
     sql_query3 = """   group by sector, crime)
                        SELECT substring(CAST(start_period as text) for 7) as start_date, substring(end_period::text for 7) as end_date,

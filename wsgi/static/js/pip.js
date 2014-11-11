@@ -109,7 +109,7 @@ var comma = d3.format("0,000")
   
    
 
-function get_data(data){
+function get_data(data, dates){
         
         var i = 0;
         crime.hom.length = 0;
@@ -202,28 +202,7 @@ function get_data(data){
 }
 
 function createMarker(lat, lng) {
-    chartHomicides = createLineChart('#chart-homicide',
-                                     HomicidesA,
-                                     'number of homicides',
-                                     'rgb(203,24,29)');
-    barHomicides = createBarChart("#barchart-homicide", 10, 'rgb(203,24,29)', hom_txt);
-    chartrncv = createLineChart('#chart-rncv',
-                                rncvA,
-                                'number of violent robberies to a business','rgb(8,48,107)' );
-    barRNCV = createBarChart("#barchart-rncv", 10, 'rgb(8,48,107)', rncv_txt);
-
-    chartrvcv = createLineChart('#chart-rvcv',
-                                rvcvA,
-                                'number of violent car robberies','rgb(63,0,125)')
-    barRVCV = createBarChart("#barchart-rvcv", 10, 'rgb(63,0,125)', rvcv_txt);
-    chartrvsv = createLineChart('#chart-rvsv',
-                                rvsvA,
-                                'number of non-violent car robberies','rgb(0,68,27)')
-    barRVSV = createBarChart("#barchart-rvsv", 10, 'rgb(0,68,27)', rvsv_txt);
-    chartviol = createLineChart('#chart-viol',
-                                violA,
-                                'number of rapes','rgb(0,0,0)')
-    barVIOL = createBarChart("#barchart-viol", 10, 'rgb(0,0,0)', viol_txt);
+    
     //Check if the location is inside the DF
     singleLayer = L.geoJson(singleGeojson);
     isDF = leafletPip.pointInLayer(L.latLng(lat,lng), singleLayer, true);
@@ -231,36 +210,23 @@ function createMarker(lat, lng) {
         lat= 19.432605540309215;
         lng= -99.133208;
     }
-        
+    
     marker = new L.marker([lat, lng], {draggable: true});
     marker.on('dragend', function(event){
         var marker = event.target;
         var position = marker.getLatLng();
         
-        
-        
-        //console.time("PIP");
-        //polygonCuads = leafletPip.pointInLayer(position, cuadsLayer, true);
-        
-        //if(polygonCuads[0]) {
-            // $.each(sectorsLayer._layers, function(i, value){
-            // if(value.feature.id == polygonCuads[0].feature.properties.sector)
-            //     polygonSectors[0] = value
-            // });
-            //polygonCuads[0].addTo(map);
-            //polygonSectors[0].setStyle({fillColor: '#fff',
-            //                            color: '#000', opacity:1})
-            //polygonSectors[0].addTo(map);
-
-            //sql_statement = "SELECT count, date, crime, population FROM cuadrantes where cuadrante='"+ polygonCuads[0].feature.id + "' ORDER BY crime,date";
         $.getJSON('/api/v1/cuadrantes/crimes/all/pip/' +marker.getLatLng().lng +'/' + marker.getLatLng().lat, function(data) {      
+            var dates = _.uniq(_.pluck(data.cuadrante, 'date'));
+            dates = _.map(dates, function(x) {return x + '-15'});
+            dates.unshift("x")
             if(pipCuad)
                 map.removeLayer(pipCuad);
             pipCuad = L.geoJson(JSON.parse(data.pip[0].geometry))
             if(pipCuad)
                 pipCuad.addTo(map); 
             pipData = data;
-            get_data(pipData);
+            get_data(pipData, dates);
         });
             
             
@@ -278,12 +244,37 @@ function createMarker(lat, lng) {
     //polygonCuads[0].addTo(map);
     //polygonSectors[0].setStyle({fillColor: '#fff',color: '#000', opacity:1})
     //polygonSectors[0].addTo(map);
-    $.getJSON('/api/v1/cuadrantes/crimes/all/pip/' +marker.getLatLng().lng +'/' + marker.getLatLng().lat, function(data) {      
+    $.getJSON('/api/v1/cuadrantes/crimes/all/pip/' +marker.getLatLng().lng +'/' + marker.getLatLng().lat, function(data) {
+        var dates = _.uniq(_.pluck(data.cuadrante, 'date'));
+        dates = _.map(dates, function(x) {return x + '-15'});
+        dates.unshift("x")
+chartHomicides = createLineChart('#chart-homicide',
+                                     HomicidesA,
+                                     'number of homicides',
+                                     'rgb(203,24,29)', dates);
+    barHomicides = createBarChart("#barchart-homicide", 10, 'rgb(203,24,29)', hom_txt);
+    chartrncv = createLineChart('#chart-rncv',
+                                rncvA,
+                                'number of violent robberies to a business','rgb(8,48,107)', dates );
+    barRNCV = createBarChart("#barchart-rncv", 10, 'rgb(8,48,107)', rncv_txt);
+    
+    chartrvcv = createLineChart('#chart-rvcv',
+                                rvcvA,
+                                'number of violent car robberies','rgb(63,0,125)', dates)
+    barRVCV = createBarChart("#barchart-rvcv", 10, 'rgb(63,0,125)', rvcv_txt);
+    chartrvsv = createLineChart('#chart-rvsv',
+                                rvsvA,
+                                'number of non-violent car robberies','rgb(0,68,27)', dates)
+    barRVSV = createBarChart("#barchart-rvsv", 10, 'rgb(0,68,27)', rvsv_txt);
+    chartviol = createLineChart('#chart-viol',
+                                violA,
+                                'number of rapes','rgb(0,0,0)', dates)
+    barVIOL = createBarChart("#barchart-viol", 10, 'rgb(0,0,0)', viol_txt);
         pipCuad = L.geoJson(JSON.parse(data.pip[0].geometry))
         if(pipCuad)
             pipCuad.addTo(map); 
         pipData = data;
-        get_data(pipData);
+        get_data(pipData, dates);
     });
     // data = crimeData['hom'][polygonSectors[0].feature.id].slice(0);
     // data.unshift('Sector homicide rate');
@@ -351,13 +342,13 @@ function createBarChart(selection, DFRate, color, cuad_txt){
     return(chart);
 }
 
-function createLineChart(selection, totalCrime, labelText, color) {
+function createLineChart(selection, totalCrime, labelText, color, dates) {
     name=totalCrime[0];
     var chart1 = c3.generate({
         
         padding: {
         //    top: 0,
-            right: 20,
+            right: 30,
         //    bottom: 0,
         //    left: 20,
         },
@@ -371,11 +362,7 @@ function createLineChart(selection, totalCrime, labelText, color) {
         data: {
             x: 'x',
             columns: [
-                [ "x", "2013-01-15", "2013-02-15", "2013-03-15", "2013-04-15", 
-                  "2013-05-15", "2013-06-15", "2013-07-15", "2013-08-15", 
-                  "2013-09-15", "2013-10-15", "2013-11-15", "2013-12-15", 
-                  "2014-01-15", "2014-02-15", "2014-03-15", "2014-04-15",
-                  "2014-05-15", "2014-06-15", "2014-07-15" ],
+                dates,
                 [name,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             ],
             colors: {

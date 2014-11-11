@@ -427,13 +427,20 @@ $.getJSON(mapFile, function (data) {
             var ext = d3.extent(mapData.rows, function(d) {
                 if(d.crime === name)
                     if(mapType === "sectores")
-                        return d.count / d.population * 100000;
-                    else
-                        return d.count;
+                        if(d.population)
+                            return d.count / d.population * 100000;
+                        else
+                            return 0;
+                    else if (mapType === "cuadrantes") 
+                        if(d.population)
+                            return d.count 
+                        else
+                            return 0;
             })
             
             
-            return(ext);};
+            return(ext);
+        };
         
         //The scales for the various maps
         scaleHomicide = createScale(colorbrewer.Reds["9"],
