@@ -153,12 +153,12 @@ d3.select(self.frameElement).style("height", height + "px");
 
 
 
-function createLineChart(selection, totalCrime, labelText, color) {
+function createLineChart(selection, totalCrime, labelText, color, dates) {
     name = totalCrime[0];
     var chart1 = c3.generate({
         padding: {
         //    top: 0,
-            right: 20,
+            right: 27,
         //    bottom: 0,
         //    left: 20,
         },
@@ -174,11 +174,7 @@ function createLineChart(selection, totalCrime, labelText, color) {
         data: {
             x: 'x',
             columns: [
-                [ "x", "2013-01-15", "2013-02-15", "2013-03-15", "2013-04-15", 
-                  "2013-05-15", "2013-06-15", "2013-07-15", "2013-08-15", 
-                  "2013-09-15", "2013-10-15", "2013-11-15", "2013-12-15", 
-                  "2014-01-15", "2014-02-15", "2014-03-15", "2014-04-15",
-                  "2014-05-15", "2014-06-15", "2014-07-15" ],
+                dates,
                 totalCrime
             ],
             //types:{'Homicides':'area', 
@@ -256,6 +252,10 @@ d3.json(mapFile, function(error, df) {
         else
             summer = crimeCounts;
         
+            var dates = _.uniq(_.pluck(data.rows, 'date'));
+            dates = _.map(dates, function(x) {return x + '-15'});
+            dates.unshift("x")
+
         byCrime = _.groupBy(data.rows, 'crime')
         HomicidesA = _.map(byCrime['HOMICIDIO DOLOSO'], function(x) {return summer(x)})
         HomicidesA.unshift('Homicides')
@@ -271,23 +271,23 @@ d3.json(mapFile, function(error, df) {
         chartHomicides = createLineChart('#chart-homicide',
                                          HomicidesA,
                                          crimePrefix + 'homicides',
-                                         'rgb(203,24,29)')
+                                         'rgb(203,24,29)', dates)
         
         chartrncv = createLineChart('#chart-rncv',
                                     rncvA,
-                                    crimePrefix + 'violent robberies to a business','rgb(8,48,107)' )
+                                    crimePrefix + 'violent robberies to a business','rgb(8,48,107)',dates )
         
         chartrvcv = createLineChart('#chart-rvcv',
                                         rvcvA,
-                                    crimePrefix + 'violent car robberies','rgb(63,0,125)')
+                                    crimePrefix + 'violent car robberies','rgb(63,0,125)', dates)
 
         chartrvsv = createLineChart('#chart-rvsv',
                                     rvsvA,
-                                    crimePrefix + 'non-violent car robberies','rgb(0,68,27)')
+                                    crimePrefix + 'non-violent car robberies','rgb(0,68,27)', dates)
         
         chartviol = createLineChart('#chart-viol',
                                     violA,
-                                    crimePrefix + 'rapes','rgb(0,0,0)')
+                                    crimePrefix + 'rapes','rgb(0,0,0)', dates)
         
         
         findRange=function(name) {
@@ -295,11 +295,20 @@ d3.json(mapFile, function(error, df) {
             var ext = d3.extent(cuadrantesMap.rows, function(d) {
                 if(d.crime === name) { 
                     if(topoName === "sectores")
-                        return d.count / d.population * 100000
+                        if(d.population)
+                            return d.count / d.population * 100000;
+                        else
+                            return 0;
                     else if (topoName === "cuadrantes") 
-                        return d.count;
+                        if(d.population)
+                            return d.count 
+                        else
+                            return 0;
                     else
-                        return d.difference
+                        if(d.population)
+                            return d.difference;
+                        else
+                            return 0;
                 }
             });
             if(ext[0] < 0)
