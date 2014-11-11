@@ -8,13 +8,16 @@ var chartHomicides, chartrncv,
     crimeData;
 var crime = {hom:[],rncv:[],
              rvcv:[], rvsv:[],
-             viol:[]};
+             viol:[], rccv:[],
+             rtcv:[], rtsv:[]};
 var crimeCompare = {hom:0,rncv:0,
                     rvcv:0, rvsv:0,
-                    viol:0};
+                    viol:0,
+                    rccv:0, rtcv:0,rtsv:0};
 var allDF = {hom:0,rncv:0,
-                    rvcv:0, rvsv:0,
-                    viol:0};
+             rvcv:0, rvsv:0,
+             viol:0,
+             rccv:0, rtcv:0,rtsv:0};
 var sql_statement;
 var last3Months_sql = "SELECT sum(count) as count,sum(population)/3 as population, crime FROM cuadrantes where cuadrante='C-1.1.1' and (date='2014-07-01' OR date='2014-06-01' or date='2014-05-01') GROUP BY crime"
 L.Icon.Default.imagePath = '/js/images';
@@ -111,38 +114,50 @@ var comma = d3.format("0,000")
 
 function get_data(data, dates){
         
-        var i = 0;
-        crime.hom.length = 0;
-        crime.rncv.length = 0;
-        crime.rvcv.length = 0;
-        crime.rvsv.length = 0;
-        crime.viol.length = 0;
+    var i = 0;
+    crime.hom.length = 0;
+    crime.rncv.length = 0;
+    crime.rvcv.length = 0;
+    crime.rvsv.length = 0;
+    crime.viol.length = 0;
     crime.hom.push(hom_txt);
     crime.rncv.push(rncv_txt);
     crime.rvcv.push(rvcv_txt);
     crime.rvsv.push(rvsv_txt);
     crime.viol.push(viol_txt);
-        $.each(data.cuadrante, function(i, value){
-            switch(value.crime) {
-            case "HOMICIDIO DOLOSO":               
-                crime.hom.push(value.count);
-                break;
-            case "ROBO A NEGOCIO C.V.":
-                crime.rncv.push(value.count);
-                break;
-            case "ROBO DE VEHICULO AUTOMOTOR C.V.":
-                crime.rvcv.push(value.count);
-                break;
-            case "ROBO DE VEHICULO AUTOMOTOR S.V.":
-                crime.rvsv.push(value.count);
-                break;
-            case "VIOLACION":
-                crime.viol.push(value.count);
-                        break;
-            }
-        });
+    crime.rtcv.push(rtcv_txt);
+    crime.rtsv.push(rtsv_txt);
+    crime.rccv.push(rccv_txt);
+    $.each(data.cuadrante, function(i, value){
+        switch(value.crime) {
+        case "HOMICIDIO DOLOSO":               
+            crime.hom.push(value.count);
+            break;
+        case "ROBO A NEGOCIO C.V.":
+            crime.rncv.push(value.count);
+            break;
+        case "ROBO DE VEHICULO AUTOMOTOR C.V.":
+            crime.rvcv.push(value.count);
+            break;
+        case "ROBO DE VEHICULO AUTOMOTOR S.V.":
+            crime.rvsv.push(value.count);
+            break;
+        case "VIOLACION":
+            crime.viol.push(value.count);
+            break;
+        case "ROBO A TRANSEUNTE C.V.":
+            crime.rtcv.push(value.count);
+            break;
+        case "ROBO A TRANSEUNTE S.V.":
+            crime.rtsv.push(value.count);
+            break;
+        case "ROBO A CASA HABITACION C.V.":
+            crime.rccv.push(value.count);
+            break;
+        }
+    });
         //len = crime.hom.length;
-        //crimeCompare.hom = 0
+    //crimeCompare.hom = 0
         //for(var i=crime.hom.length;i>(crime.hom.length-11);i--)
         //    crimeCompare.hom += crime.hom[i-1] 
     var cuad_last = _.indexBy(data.cuadrante_period, 'crime')
@@ -167,24 +182,24 @@ function get_data(data, dates){
     $("#cuadrante").text(data.pip[0].cuadrante)
     $("#sector").text(data.pip[0].sector)
 
-        chartHomicides.load({
-            columns: [crime.hom],
-        });
-        chartrncv.load({
-            columns: [crime.rncv],
-        });
-        chartrvcv.load({
-            columns: [crime.rvcv],
-        });
-        chartrvsv.load({
-            columns: [crime.rvsv],
-        });
-        chartviol.load({
-            columns: [crime.viol],
-        });
-        barHomicides.load({
-            columns: [[all_df_txt, allDF.hom],[hom_txt, crimeCompare.hom]],
-        });
+    chartHomicides.load({
+        columns: [crime.hom],
+    });
+    chartrncv.load({
+        columns: [crime.rncv],
+    });
+    chartrvcv.load({
+        columns: [crime.rvcv],
+    });
+    chartrvsv.load({
+        columns: [crime.rvsv],
+    });
+    chartviol.load({
+        columns: [crime.viol],
+    });
+    barHomicides.load({
+        columns: [[all_df_txt, allDF.hom],[hom_txt, crimeCompare.hom]],
+    });
     barRNCV.load({
         columns: [[all_df_txt, allDF.rncv],[rncv_txt, crimeCompare.rncv]],
     })
@@ -248,7 +263,7 @@ function createMarker(lat, lng) {
         var dates = _.uniq(_.pluck(data.cuadrante, 'date'));
         dates = _.map(dates, function(x) {return x + '-15'});
         dates.unshift("x")
-chartHomicides = createLineChart('#chart-homicide',
+        chartHomicides = createLineChart('#chart-homicide',
                                      HomicidesA,
                                      'number of homicides',
                                      'rgb(203,24,29)', dates);
@@ -266,10 +281,12 @@ chartHomicides = createLineChart('#chart-homicide',
                                 rvsvA,
                                 'number of non-violent car robberies','rgb(0,68,27)', dates)
     barRVSV = createBarChart("#barchart-rvsv", 10, 'rgb(0,68,27)', rvsv_txt);
+
     chartviol = createLineChart('#chart-viol',
                                 violA,
                                 'number of rapes','rgb(0,0,0)', dates)
     barVIOL = createBarChart("#barchart-viol", 10, 'rgb(0,0,0)', viol_txt);
+
         pipCuad = L.geoJson(JSON.parse(data.pip[0].geometry))
         if(pipCuad)
             pipCuad.addTo(map); 
