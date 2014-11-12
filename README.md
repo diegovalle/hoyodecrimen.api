@@ -16,7 +16,7 @@ Create database with crime data csv file
 ```
 psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W
 CREATE TABLE cuadrantes (
-	cuadrante varchar (10),
+	cuadrante varchar (15),
 	crime varchar (60),
 	date  varchar (10),
 	count int,
