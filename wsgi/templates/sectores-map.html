@@ -1,108 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{_('en')}}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="description" content="{{_('Interactive map of crime rate in the sectores of Mexico Shitty')}}">
     <title>Interactive Map of Crime Rates by Sector in Mexico City</title>
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
-  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
-  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
-  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+    <link rel="alternate" hreflang="{{_('es')}}" href="{{_('https://hoyodecrimen.com/sectores-mapa')}}" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Bootstrap -->
-   <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-
-
-
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+    
+    
+    
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-{% assets  
-            "css_leaflet_req" %}
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    {% assets  
+    "css_leaflet_req" %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
-{% endassets %}
+    {% endassets %}
     
     
     <!--[if lte IE 8]>
-    <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.ie.css" />
-    <![endif]-->
-   
-<!--[if lt IE 9]>
-    <link rel="stylesheet" href="/css/L.Control.Locate.ie.css"/>
-<![endif]-->
-<style>
-    .tg  {width:100%;border-collapse:collapse;border-spacing:0;border-color:#ccc;border-width:1px;border-style:solid;}
-    .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
-    .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
-    .tg .tg-4eph{background-color:#f9f9f9}
-    .crime_name{width:60%} 
-    .crime_count{width:20%}
-    .crime_rate{width:20%}
-
-    select {
-        font-size: 24px;
-    }
+        <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.ie.css" />
+        <![endif]-->
+    
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="/css/L.Control.Locate.ie.css"/>
+        <![endif]-->
+    <style>
+      .tg  {width:100%;border-collapse:collapse;border-spacing:0;border-color:#ccc;border-width:1px;border-style:solid;}
+      .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
+      .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
+      .tg .tg-4eph{background-color:#f9f9f9}
+      .crime_name{width:60%} 
+      .crime_count{width:20%}
+      .crime_rate{width:20%}
+      
+      select {
+      font-size: 24px;
+      }
       html, body {
       height: 100%;
       }
-
+      
       
       body {
-margin: 0px;
-padding: 0px;
-height: 100%;
-}
-
-      .social-buttons {
-          display:block;
-          list-style:none;
-          padding:0px;
-          margin:4px 0 0 0px;
-          float:right;
+      margin: 0px;
+      padding: 0px;
+      height: 100%;
       }
-
-      li {
-          margin-top:5px;
-      }
-
-      #content {
-         margin-right: auto;
-         margin-left: auto;
-         height: 100%;
-      }
-
       
-
+      .social-buttons {
+      display:block;
+      list-style:none;
+      padding:0px;
+      margin:4px 0 0 0px;
+      float:right;
+      }
+      
+      li {
+      margin-top:5px;
+      }
+      
+      #content {
+      margin-right: auto;
+      margin-left: auto;
+      height: 100%;
+      }
+      
+      
+      
       .info {
-          padding: 6px 8px;
-          font: 14px/16px Arial, Helvetica, sans-serif;
-          background: white;
-          //background: rgba(255,255,255,0.8);
-          //box-shadow: 0 0 15px rgba(0,0,0,0.2);
-          //border-radius: 9px;
+      padding: 6px 8px;
+      font: 14px/16px Arial, Helvetica, sans-serif;
+      background: white;
+      //background: rgba(255,255,255,0.8);
+      //box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      //border-radius: 9px;
       }
       .info h4 {
-          margin: 0 0 0px;
-          color: #333;
+      margin: 0 0 0px;
+      color: #333;
       }
-
+      
       .info div{margin:0 0 5px;}
-
-
+      
+      
       body.hom_rate .info div.hom,
       body.hom_count .info div.hom,
       body.rncv_rate .info div.rncv,
@@ -111,54 +112,54 @@ height: 100%;
       body.rvcv_count .info div.rvcv,
       body.rvsv_rate .info div.rvsv,
       body.rvsv_count .info div.rvsv {
-          //background:#F6E493;
-          //color:#000;
-          //border-radius: 3px;
+      //background:#F6E493;
+      //color:#000;
+      //border-radius: 3px;
       }
-.legend {
-    line-height: 18px;
-    color: #555;
-}
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
-}
-#map {
-    position:absolute;
+      .legend {
+      line-height: 18px;
+      color: #555;
+      }
+      .legend i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.7;
+      }
+      #map {
+      position:absolute;
+      
+      width: 100%;
+      height: 100%;
+      margin:0;
+      padding:0; 
+      }
+      
+      #mapRow {
+      height: 100%;
+      }
+      .col-md-8, .container-fluid{
+      height:100%;
+      padding-left: 7px; 
+      }
+      
+    </style>
     
-    width: 100%;
-    height: 100%;
-    margin:0;
-    padding:0; 
-}
-
-#mapRow {
-  height: 100%;
-}
-.col-md-8, .container-fluid{
-height:100%;
-padding-left: 7px; 
-}
-
-  </style>
-
-		{% assets  "js_leaflet_req"  %}
+    {% assets  "js_leaflet_req"  %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
-   <!-- <script src="js/leaflet.js"></script>
-    <script src="js/L.Control.Locate.js" ></script>
-    <script src="js/leaflet-hash.js" ></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/topojson.v1.min.js"></script>
-    <script src="js/l.control.geosearch.js"></script>
-    <script src="js/l.geosearch.provider.google.js"></script>
-    <script src="js/d3.v3.min.js"></script>
-    <script src="js/colorbrewer.js"></script>
-    <script src="js/underscore-min.js" type="text/javascript"></script>
-    -->
+    {% endassets %}
+    <!-- <script src="js/leaflet.js"></script>
+         <script src="js/L.Control.Locate.js" ></script>
+         <script src="js/leaflet-hash.js" ></script>
+         <script src="js/jquery.min.js"></script>
+         <script src="js/topojson.v1.min.js"></script>
+         <script src="js/l.control.geosearch.js"></script>
+         <script src="js/l.geosearch.provider.google.js"></script>
+         <script src="js/d3.v3.min.js"></script>
+         <script src="js/colorbrewer.js"></script>
+         <script src="js/underscore-min.js" type="text/javascript"></script>
+         -->
   </head>
   <body>
     <div class="container-fluid">
@@ -169,34 +170,34 @@ padding-left: 7px;
         </div>
         <div class="col-md-4">
           <div id="control"></div>
-<p>{{_('Click anywhere on the map to select a sector (or outside the map to select all DF data)')}}</p>
-          </div>
+          <p>{{_('Click anywhere on the map to select a sector (or outside the map to select all DF data)')}}</p>
+        </div>
       </div>
     </div>
-
+    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- Latest compiled and minified JavaScript -->
-<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>-->
-<script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>-->
+    <script>
       var mapFile='/js/sectores-interactive.json';
       var mapType='sectores';
       var id = 'sectores';
     </script>
     
-     {% assets output="js/packed-leaflet-map.js", "js/leaflet-map.js"  %}
+    {% assets output="js/packed-leaflet-map.js", "js/leaflet-map.js"  %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
+    {% endassets %}
     <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-100264-9', 'auto');
-  ga('send', 'pageview');
-
-</script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-100264-9', 'auto');
+      ga('send', 'pageview');
+      
+    </script>
   </body>
 </html>
