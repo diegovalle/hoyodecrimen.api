@@ -52,7 +52,7 @@ API raise an issue on `GitHub
 <https://github.com/diegovalle/hoyodecrimen.api/issues>`_ or email me
 at diegovalle@gmail.com. All data comes from freedom of information
 requests to the Mexico City government, sometimes I get data on crimes
-which happened in non-specified cuadrantes *NO ESPECIFICADO* and sometimes
+which happened in non-specified cuadrantes (*NO ESPECIFICADO*) and sometimes
 not, depending on how lucky I get when the FOIA request is answered.
 
 License
