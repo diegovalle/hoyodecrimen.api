@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-11-13 12:00-0600\n"
-"PO-Revision-Date: 2014-11-13 12:01-0600\n"
+"PO-Revision-Date: 2014-11-13 15:40-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -506,7 +506,7 @@ msgstr "Mapas de las tasas de criminalidad en el Distrito Federal"
 
 #: templates/rates-sectores.html:8
 msgid "Crime by Sector in Mexico City"
-msgstr "Crimen por tu Rumbo"
+msgstr "Crimen por sector en el Distrito Federal"
 
 #: templates/rates-sectores.html:53
 msgid "Homicides - rates"
