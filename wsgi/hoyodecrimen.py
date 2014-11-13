@@ -78,7 +78,7 @@ js_pip_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
                     filters='jsmin', output='js/packed-pip-req.js')
 assets.register('js_pip_req', js_pip_req)
 
-js_pip = Bundle("js/pip.js", output="js/packed-pip.js")
+js_pip = Bundle("js/pip.js", filters='jsmin', output="js/packed-pip.js")
 assets.register("js_pip", js_pip)
 
 css_maps_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
@@ -98,10 +98,10 @@ js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js", "js/confi
                      filters="jsmin", output="js/packed-maps-reqs.js")
 assets.register('js_maps_req', js_maps_req)
 
-js_maps = Bundle("js/maps.js", output="js/packed-maps.js")
+js_maps = Bundle("js/maps.js", filters='jsmin', output="js/packed-maps.js")
 assets.register('js_maps', js_maps)
 
-js_leaflet = Bundle("js/leaflet-map.js",  output="js/packed-leaflet-map.js")
+js_leaflet = Bundle("js/leaflet-map.js", filters='jsmin', output="js/packed-leaflet-map.js")
 assets.register('js_leaflet', js_maps)
 
 css_leaflet_req = Bundle("css/l.geosearch.css", "css/leaflet.css", "css/L.Control.Locate.css",
@@ -337,6 +337,7 @@ if __name__ == '__main__':
     # Running locally
     if 'OPENSHIFT_APP_UUID' not in os.environ:
         app.config['PROFILE'] = True
+        app.config['ASSETS_DEBUG'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
         debug = True
     else:
