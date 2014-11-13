@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}{{_('Crime Charts of Mexico City')}}{% endblock %}
+{% block title %}{{_('Charts of Crime in Mexico City')}}{% endblock %}
 {% block lang %}{{_('en')}}{% endblock %}
 {% block hreflang %}{{_('es')}}{% endblock %}
 {% block alternhref %}{{_('https://hoyodecrimen.com/charts')}}{% endblock %}
 {% block description %}{{_('Small multiple charts of crime in Mexico City')}}{% endblock %}
-{% block head %}
+
 {% block css %}
 {% assets  'css_maps_req'   %}
 <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
@@ -21,7 +21,8 @@
 {% endassets %}
 {% endblock %}
 
-
+{% block head %}
+{{super()}}
 {% endblock %}
 {% block subscribe %}   
 {% endblock %}
@@ -44,19 +45,31 @@
 <!--End mc_embed_signup-->
 
 <h2>{{_('Crime by Sector')}}</h2>
-<img src="/images/total-sector-hom.png" >
+<img src="{{_('/images/total-sector-hom.png')}}" >
 <hr/>
 
 <h2>{{_('Crime by Sector')}}</h2>
-<img src="/images/total-sector-rncv.png" >
+<img src="{{_('/images/total-sector-rncv.png')}}" >
 <hr/>
 
 <h2>{{_('Crime by Sector')}}</h2>
-<img src="/images/total-sector-rvcv.png" >
+<img src="{{_('/images/total-sector-rvcv.png')}}" >
 <hr/>
 
 <h2>{{_('Crime by Sector')}}</h2>
-<img src="/images/total-sector-rvsv.png" >
+<img src="{{_('/images/total-sector-rvsv.png')}}" >
+<hr/>
+
+<h2>{{_('Crime by Sector')}}</h2>
+<img src="{{_('/images/total-sector-rtcv.png')}}" >
+<hr/>
+
+<h2>{{_('Crime by Sector')}}</h2>
+<img src="{{_('/images/total-sector-rtsv.png')}}" >
+<hr/>
+
+<h2>{{_('Crime by Sector')}}</h2>
+<img src="{{_('/images/total-sector-rccv.png')}}" >
 <hr/>
 {% endblock %}
 

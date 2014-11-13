@@ -4,7 +4,7 @@
 {% block hreflang %}{{_('es')}}{% endblock %}
 {% block alternhref %}{{_('https://hoyodecrimen.com/numero')}}{% endblock %}
 {% block description %}{{_('Maps of crime rates in Mexico City by cuadrante delictivo')}}{% endblock %}
-{% block head %}
+
 {% block css %}
 {% assets  'css_maps_req'   %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
@@ -21,10 +21,13 @@ anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts"
 {% endassets %}
 {% endblock %}
 
-
+{% block head %}
+{{super()}}
 {% endblock %}
+
 {% block subscribe %}   
 {% endblock %}
+
 {% block content %}
 
 <!-- Begin MailChimp Signup Form -->

@@ -4,9 +4,8 @@
 {% block hreflang %}{{_('es')}}{% endblock %}
 {% block alternhref %}{{_('https://hoyodecrimen.com/tendencias')}}{% endblock %}
 {% block description %}{{_('Change in crime counts at the cuadrante delictivo level in Mexico City')}}{% endblock %}
-{% block head %}
-{% block css %}
 
+{% block css %}
 {% assets  'css_maps_req'   %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
 {% endassets %}
@@ -29,6 +28,8 @@ anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts/change"
 {% endassets %}
 {% endblock %}
 
+{% block head %}
+{{super()}}
 {% endblock %}
 
 {% block subscribe %}   

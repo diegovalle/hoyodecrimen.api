@@ -1,14 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}{{_('Crime by Sector in Mexico City')}}{% endblock %}
+
 {% block lang %}{{_('en')}}{% endblock %}
 {% block hreflang %}{{_('es')}}{% endblock %}
 {% block alternhref %}{{_('https://hoyodecrimen.com/tasas')}}{% endblock %}
 {% block description %}{{_('Maps of crime rates in Mexico City by sector delictivo')}}{% endblock %}
-{% block head %}
-
-
-
+{% block title %}{{_('Crime by Sector in Mexico City')}}{% endblock %}
 {% block css %}
 {% assets  'css_maps_req'   %}
     <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
@@ -24,6 +21,13 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 {% endblock %}
+
+
+
+{% block head %}
+
+{{super()}}
+
 
 {% endblock %}
 

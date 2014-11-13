@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-11-11 20:42-0600\n"
-"PO-Revision-Date: 2014-11-11 20:42-0600\n"
+"POT-Creation-Date: 2014-11-13 12:00-0600\n"
+"PO-Revision-Date: 2014-11-13 12:01-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -158,8 +158,8 @@ msgstr "https://hoyodecrimen.com/en/trends"
 msgid "Change in crime counts at the cuadrante delictivo level in Mexico City"
 msgstr "Cambio en el número de crímenes en los cuadrantes del Distrito Federal"
 
-#: templates/change-cuadrantes.html:41 templates/counts-cuadrantes.html:32
-#: templates/pip.html:100 templates/rates-sectores.html:35
+#: templates/change-cuadrantes.html:42 templates/counts-cuadrantes.html:35
+#: templates/pip.html:100 templates/rates-sectores.html:39
 msgid ""
 "//diegovalle.us6.list-manage.com/subscribe/post?"
 "u=787fae824c502d9f3ad7d0b73&amp;id=102491489b"
@@ -167,24 +167,24 @@ msgstr ""
 "//diegovalle.us6.list-manage.com/subscribe/post?"
 "u=787fae824c502d9f3ad7d0b73&amp;id=99835eea14"
 
-#: templates/change-cuadrantes.html:44 templates/charts.html:35
-#: templates/counts-cuadrantes.html:35 templates/pip.html:103
-#: templates/rates-sectores.html:38
+#: templates/change-cuadrantes.html:45 templates/charts.html:36
+#: templates/counts-cuadrantes.html:38 templates/pip.html:103
+#: templates/rates-sectores.html:42
 msgid "Free email when new information is available"
 msgstr "Recibir un mail cuando actualice la información"
 
-#: templates/change-cuadrantes.html:48 templates/counts-cuadrantes.html:39
-#: templates/pip.html:107 templates/rates-sectores.html:42
+#: templates/change-cuadrantes.html:49 templates/counts-cuadrantes.html:42
+#: templates/pip.html:107 templates/rates-sectores.html:46
 msgid "b_787fae824c502d9f3ad7d0b73_102491489b"
 msgstr "b_787fae824c502d9f3ad7d0b73_99835eea14"
 
-#: templates/change-cuadrantes.html:49 templates/charts.html:40
-#: templates/counts-cuadrantes.html:40 templates/pip.html:108
-#: templates/rates-sectores.html:43
+#: templates/change-cuadrantes.html:50 templates/charts.html:41
+#: templates/counts-cuadrantes.html:43 templates/pip.html:108
+#: templates/rates-sectores.html:47
 msgid "Subscribe"
 msgstr "Suscribirse"
 
-#: templates/change-cuadrantes.html:59
+#: templates/change-cuadrantes.html:60
 msgid ""
 "The last 3 months of crime data compared with the same period last year (the "
 "highlighted gray regions in the line chart)"
@@ -192,105 +192,106 @@ msgstr ""
 "Los últimos tres meses en comparación con el mismo periodo hace 12 meses "
 "(regiones grises en la serie de tiempo)"
 
-#: templates/change-cuadrantes.html:60 templates/counts-cuadrantes.html:46
+#: templates/change-cuadrantes.html:61 templates/counts-cuadrantes.html:49
 msgid "Homicides - Total"
 msgstr "Homicidios - Total DF"
 
-#: templates/change-cuadrantes.html:67 templates/change-cuadrantes.html:102
-#: templates/change-cuadrantes.html:135 templates/change-cuadrantes.html:169
-#: templates/change-cuadrantes.html:202 templates/counts-cuadrantes.html:53
-#: templates/counts-cuadrantes.html:87 templates/counts-cuadrantes.html:119
-#: templates/counts-cuadrantes.html:151 templates/counts-cuadrantes.html:183
-#: templates/rates-sectores.html:62 templates/rates-sectores.html:97
-#: templates/rates-sectores.html:129 templates/rates-sectores.html:161
-#: templates/rates-sectores.html:195
+#: templates/change-cuadrantes.html:68 templates/change-cuadrantes.html:103
+#: templates/change-cuadrantes.html:136 templates/change-cuadrantes.html:170
+#: templates/change-cuadrantes.html:203 templates/counts-cuadrantes.html:56
+#: templates/counts-cuadrantes.html:90 templates/counts-cuadrantes.html:122
+#: templates/counts-cuadrantes.html:154 templates/counts-cuadrantes.html:186
+#: templates/rates-sectores.html:66 templates/rates-sectores.html:101
+#: templates/rates-sectores.html:133 templates/rates-sectores.html:165
+#: templates/rates-sectores.html:199
 msgid "Reset Chart to show all DF data"
 msgstr "Reinicializar con valores del DF"
 
-#: templates/change-cuadrantes.html:79 templates/change-cuadrantes.html:113
-#: templates/change-cuadrantes.html:147 templates/change-cuadrantes.html:180
-#: templates/change-cuadrantes.html:213
+#: templates/change-cuadrantes.html:80 templates/change-cuadrantes.html:114
+#: templates/change-cuadrantes.html:148 templates/change-cuadrantes.html:181
+#: templates/change-cuadrantes.html:214
 msgid "Cuadrantes with the biggest increases during the last 3 months"
 msgstr "Cuadrantes con el mayor incremento de crímenes"
 
-#: templates/change-cuadrantes.html:83 templates/change-cuadrantes.html:116
-#: templates/change-cuadrantes.html:150 templates/change-cuadrantes.html:183
-#: templates/change-cuadrantes.html:216 templates/counts-cuadrantes.html:69
-#: templates/counts-cuadrantes.html:101 templates/counts-cuadrantes.html:133
-#: templates/counts-cuadrantes.html:165 templates/counts-cuadrantes.html:197
-#: templates/rates-sectores.html:74 templates/rates-sectores.html:106
-#: templates/rates-sectores.html:138 templates/rates-sectores.html:170
-#: templates/rates-sectores.html:205
-msgid "Rank"
-msgstr "Lugar"
-
 #: templates/change-cuadrantes.html:84 templates/change-cuadrantes.html:117
 #: templates/change-cuadrantes.html:151 templates/change-cuadrantes.html:184
-#: templates/change-cuadrantes.html:217 templates/counts-cuadrantes.html:71
-#: templates/counts-cuadrantes.html:103 templates/counts-cuadrantes.html:135
-#: templates/counts-cuadrantes.html:167 templates/counts-cuadrantes.html:199
-msgid "Cuadrante"
-msgstr "Cuadrante"
-
-#: templates/change-cuadrantes.html:85 templates/change-cuadrantes.html:118
-#: templates/change-cuadrantes.html:152 templates/change-cuadrantes.html:185
-#: templates/change-cuadrantes.html:218 templates/counts-cuadrantes.html:72
+#: templates/change-cuadrantes.html:217 templates/counts-cuadrantes.html:72
 #: templates/counts-cuadrantes.html:104 templates/counts-cuadrantes.html:136
 #: templates/counts-cuadrantes.html:168 templates/counts-cuadrantes.html:200
-#: templates/rates-sectores.html:76 templates/rates-sectores.html:108
-#: templates/rates-sectores.html:140 templates/rates-sectores.html:172
-#: templates/rates-sectores.html:207
-msgid "Sector"
-msgstr "Sector"
-
-#: templates/change-cuadrantes.html:86 templates/change-cuadrantes.html:119
-#: templates/change-cuadrantes.html:153 templates/change-cuadrantes.html:186
-#: templates/change-cuadrantes.html:219 templates/counts-cuadrantes.html:73
-#: templates/counts-cuadrantes.html:105 templates/counts-cuadrantes.html:137
-#: templates/counts-cuadrantes.html:169 templates/counts-cuadrantes.html:201
 #: templates/rates-sectores.html:78 templates/rates-sectores.html:110
 #: templates/rates-sectores.html:142 templates/rates-sectores.html:174
 #: templates/rates-sectores.html:209
-msgid "Population"
-msgstr "Población"
+msgid "Rank"
+msgstr "Lugar"
+
+#: templates/change-cuadrantes.html:85 templates/change-cuadrantes.html:118
+#: templates/change-cuadrantes.html:152 templates/change-cuadrantes.html:185
+#: templates/change-cuadrantes.html:218 templates/counts-cuadrantes.html:74
+#: templates/counts-cuadrantes.html:106 templates/counts-cuadrantes.html:138
+#: templates/counts-cuadrantes.html:170 templates/counts-cuadrantes.html:202
+msgid "Cuadrante"
+msgstr "Cuadrante"
+
+#: templates/change-cuadrantes.html:86 templates/change-cuadrantes.html:119
+#: templates/change-cuadrantes.html:153 templates/change-cuadrantes.html:186
+#: templates/change-cuadrantes.html:219 templates/counts-cuadrantes.html:75
+#: templates/counts-cuadrantes.html:107 templates/counts-cuadrantes.html:139
+#: templates/counts-cuadrantes.html:171 templates/counts-cuadrantes.html:203
+#: templates/rates-sectores.html:80 templates/rates-sectores.html:112
+#: templates/rates-sectores.html:144 templates/rates-sectores.html:176
+#: templates/rates-sectores.html:211
+msgid "Sector"
+msgstr "Sector"
 
 #: templates/change-cuadrantes.html:87 templates/change-cuadrantes.html:120
 #: templates/change-cuadrantes.html:154 templates/change-cuadrantes.html:187
-#: templates/change-cuadrantes.html:220
-msgid "Period1"
-msgstr "Periodo1"
+#: templates/change-cuadrantes.html:220 templates/counts-cuadrantes.html:76
+#: templates/counts-cuadrantes.html:108 templates/counts-cuadrantes.html:140
+#: templates/counts-cuadrantes.html:172 templates/counts-cuadrantes.html:204
+#: templates/rates-sectores.html:82 templates/rates-sectores.html:114
+#: templates/rates-sectores.html:146 templates/rates-sectores.html:178
+#: templates/rates-sectores.html:213
+msgid "Population"
+msgstr "Población"
 
 #: templates/change-cuadrantes.html:88 templates/change-cuadrantes.html:121
 #: templates/change-cuadrantes.html:155 templates/change-cuadrantes.html:188
 #: templates/change-cuadrantes.html:221
-msgid "Period2"
-msgstr "Periodo2"
+msgid "Period1"
+msgstr "Periodo1"
 
 #: templates/change-cuadrantes.html:89 templates/change-cuadrantes.html:122
 #: templates/change-cuadrantes.html:156 templates/change-cuadrantes.html:189
 #: templates/change-cuadrantes.html:222
+msgid "Period2"
+msgstr "Periodo2"
+
+#: templates/change-cuadrantes.html:90 templates/change-cuadrantes.html:123
+#: templates/change-cuadrantes.html:157 templates/change-cuadrantes.html:190
+#: templates/change-cuadrantes.html:223
 msgid "Difference"
 msgstr "Diferencia"
 
-#: templates/change-cuadrantes.html:97 templates/counts-cuadrantes.html:82
+#: templates/change-cuadrantes.html:98 templates/counts-cuadrantes.html:85
 msgid "VIOLENT ROBBERIES TO A BUSINESS - Total"
 msgstr "ROBO A NEGOCIO C.V. - TOTAL DF"
 
-#: templates/change-cuadrantes.html:130 templates/counts-cuadrantes.html:114
+#: templates/change-cuadrantes.html:131 templates/counts-cuadrantes.html:117
 msgid "VIOLENT CAR ROBBERIES- Total"
 msgstr "ROBO DE VEHICULO C.V. - Total DF"
 
-#: templates/change-cuadrantes.html:164 templates/counts-cuadrantes.html:146
+#: templates/change-cuadrantes.html:165 templates/counts-cuadrantes.html:149
 msgid "NON-VIOLENT CAR ROBBERIES - Total"
 msgstr "ROBO DE VEHICULO S.V. - Total DF"
 
-#: templates/change-cuadrantes.html:197 templates/counts-cuadrantes.html:178
+#: templates/change-cuadrantes.html:198 templates/counts-cuadrantes.html:181
 msgid "Rape - Total"
 msgstr "Violación - Total DF"
 
 #: templates/charts.html:2
-msgid "Crime Charts of Mexico City"
-msgstr "Gráficas del crimen el Distrito Federal"
+msgid "Charts of Crime in Mexico City"
+msgstr ""
+"Gráficas de las tasas de crimen en el Distrito Federal por sector delictivo"
 
 #: templates/charts.html:5
 msgid "https://hoyodecrimen.com/charts"
@@ -301,10 +302,39 @@ msgid "Small multiple charts of crime in Mexico City"
 msgstr ""
 "Gráficas de las tasas de crimen en el Distrito Federal por sector delictivo"
 
-#: templates/charts.html:46 templates/charts.html:50 templates/charts.html:54
-#: templates/charts.html:58
+#: templates/charts.html:47 templates/charts.html:51 templates/charts.html:55
+#: templates/charts.html:59 templates/charts.html:63 templates/charts.html:67
+#: templates/charts.html:71
 msgid "Crime by Sector"
 msgstr "Crimen por Sector"
+
+#: templates/charts.html:48
+msgid "/images/total-sector-hom.png"
+msgstr "/images/total-sector-hom_es.png"
+
+#: templates/charts.html:52
+msgid "/images/total-sector-rncv.png"
+msgstr "/images/total-sector-rncv_es.png"
+
+#: templates/charts.html:56
+msgid "/images/total-sector-rvcv.png"
+msgstr "/images/total-sector-rvcv_es.png"
+
+#: templates/charts.html:60
+msgid "/images/total-sector-rvsv.png"
+msgstr "/images/total-sector-rvsv_es.png"
+
+#: templates/charts.html:64
+msgid "/images/total-sector-rtcv.png"
+msgstr "/images/total-sector-rtcv_es.png"
+
+#: templates/charts.html:68
+msgid "/images/total-sector-rtsv.png"
+msgstr "/images/total-sector-rtsv_es.png"
+
+#: templates/charts.html:72
+msgid "/images/total-sector-rccv.png"
+msgstr "/images/total-sector-rccv_es.png"
 
 #: templates/counts-cuadrantes.html:2
 msgid "Crime Counts by Cuadrante in Mexico City"
@@ -318,30 +348,36 @@ msgstr "https://hoyodecrimen.com/en/counts"
 msgid "Maps of crime rates in Mexico City by cuadrante delictivo"
 msgstr "Mapas de tasas delictivas por cuadrante en el Distrito Federal"
 
-#: templates/counts-cuadrantes.html:65 templates/counts-cuadrantes.html:98
-#: templates/counts-cuadrantes.html:130 templates/counts-cuadrantes.html:162
-#: templates/counts-cuadrantes.html:194
+#: templates/counts-cuadrantes.html:68 templates/counts-cuadrantes.html:101
+#: templates/counts-cuadrantes.html:133 templates/counts-cuadrantes.html:165
+#: templates/counts-cuadrantes.html:197
 msgid "Cuadrantes with the highest number of crimes"
 msgstr "Cuadrantes con el mayor número de crímenes"
 
-#: templates/counts-cuadrantes.html:70 templates/counts-cuadrantes.html:102
-#: templates/counts-cuadrantes.html:134 templates/counts-cuadrantes.html:166
-#: templates/counts-cuadrantes.html:198 templates/rates-sectores.html:75
-#: templates/rates-sectores.html:107 templates/rates-sectores.html:139
-#: templates/rates-sectores.html:171 templates/rates-sectores.html:206
+#: templates/counts-cuadrantes.html:73 templates/counts-cuadrantes.html:105
+#: templates/counts-cuadrantes.html:137 templates/counts-cuadrantes.html:169
+#: templates/counts-cuadrantes.html:201 templates/rates-sectores.html:79
+#: templates/rates-sectores.html:111 templates/rates-sectores.html:143
+#: templates/rates-sectores.html:175 templates/rates-sectores.html:210
 msgid "Crime"
 msgstr "Crimen"
 
-#: templates/counts-cuadrantes.html:74 templates/counts-cuadrantes.html:106
-#: templates/counts-cuadrantes.html:138 templates/counts-cuadrantes.html:170
-#: templates/counts-cuadrantes.html:202 templates/rates-sectores.html:77
-#: templates/rates-sectores.html:109 templates/rates-sectores.html:141
-#: templates/rates-sectores.html:173 templates/rates-sectores.html:208
+#: templates/counts-cuadrantes.html:77 templates/counts-cuadrantes.html:109
+#: templates/counts-cuadrantes.html:141 templates/counts-cuadrantes.html:173
+#: templates/counts-cuadrantes.html:205 templates/rates-sectores.html:81
+#: templates/rates-sectores.html:113 templates/rates-sectores.html:145
+#: templates/rates-sectores.html:177 templates/rates-sectores.html:212
 msgid "Count"
 msgstr "Número"
 
 #: templates/cuadrantes-map.html:7
 msgid "Interactive map of crime rate in the cuadrantes of Mexico Shitty"
+msgstr ""
+"Mapa interactivo del número de crimenes en los cuadrantes en el Distrito "
+"Federal"
+
+#: templates/cuadrantes-map.html:8
+msgid "Interactive Map of Crime Counts by Cuadrante in Mexico City"
 msgstr ""
 "Mapa interactivo del número de crimenes en los cuadrantes en el Distrito "
 "Federal"
@@ -379,7 +415,7 @@ msgstr ""
 msgid "Find out how many crimes there were in your Cuadrante Delictivo"
 msgstr "Averigua cuantos crímenes ocurrieron en tu cuadrante delictivo"
 
-#: templates/pip.html:14 templates/pip.html:18
+#: templates/pip.html:14 templates/pip.html:18 templates/pip.html:54
 msgid "https://hoyodecrimen.com/en/"
 msgstr "https://hoyodecrimen.com/"
 
@@ -390,10 +426,6 @@ msgid ""
 msgstr ""
 "Crimen en la Ciudad de México. Averigua cuantos crímenes ocurrieron por tu "
 "rumbo"
-
-#: templates/pip.html:54
-msgid "https://hoyodecrimen.com"
-msgstr "https://hoyodecrimen.com/en/"
 
 #: templates/pip.html:57
 msgid "Crime in your Cuadrante"
@@ -464,10 +496,6 @@ msgstr "Todo DF"
 msgid "rate"
 msgstr "tasa"
 
-#: templates/rates-sectores.html:3
-msgid "Crime by Sector in Mexico City"
-msgstr "Crimen por tu Rumbo"
-
 #: templates/rates-sectores.html:6
 msgid "https://hoyodecrimen.com/tasas"
 msgstr "https://hoyodecrimen.com/en/rates"
@@ -476,40 +504,48 @@ msgstr "https://hoyodecrimen.com/en/rates"
 msgid "Maps of crime rates in Mexico City by sector delictivo"
 msgstr "Mapas de las tasas de criminalidad en el Distrito Federal"
 
-#: templates/rates-sectores.html:49
+#: templates/rates-sectores.html:8
+msgid "Crime by Sector in Mexico City"
+msgstr "Crimen por tu Rumbo"
+
+#: templates/rates-sectores.html:53
 msgid "Homicides - rates"
 msgstr "Homicidios - Total DF"
 
-#: templates/rates-sectores.html:67 templates/rates-sectores.html:102
-#: templates/rates-sectores.html:134 templates/rates-sectores.html:166
-#: templates/rates-sectores.html:201
+#: templates/rates-sectores.html:71 templates/rates-sectores.html:106
+#: templates/rates-sectores.html:138 templates/rates-sectores.html:170
+#: templates/rates-sectores.html:205
 msgid "Sectors with the highest rates of crime"
 msgstr "Sectores con las mayores tasas de crimen"
 
-#: templates/rates-sectores.html:79 templates/rates-sectores.html:111
-#: templates/rates-sectores.html:143 templates/rates-sectores.html:175
-#: templates/rates-sectores.html:210
+#: templates/rates-sectores.html:83 templates/rates-sectores.html:115
+#: templates/rates-sectores.html:147 templates/rates-sectores.html:179
+#: templates/rates-sectores.html:214
 msgid "Rate"
 msgstr "Tasa"
 
-#: templates/rates-sectores.html:87
+#: templates/rates-sectores.html:91
 msgid "Violent robberies to a business - rates"
 msgstr "ROBO A NEGOCIO C.V. - tasas"
 
-#: templates/rates-sectores.html:119
+#: templates/rates-sectores.html:123
 msgid "Violent car robberies - rates"
 msgstr "ROBO DE VEHICULO C.V."
 
-#: templates/rates-sectores.html:151
+#: templates/rates-sectores.html:155
 msgid "Non-violent car robberies - rates"
 msgstr "ROBO DE VEHICULO S.V."
 
-#: templates/rates-sectores.html:183
+#: templates/rates-sectores.html:187
 msgid "Rape - rates"
 msgstr "Violación - Tasas"
 
 #: templates/sectores-map.html:7
 msgid "Interactive map of crime rate in the sectores of Mexico Shitty"
+msgstr "Mapa interactivo de las tasas de criminalidad en el Distrito Federal"
+
+#: templates/sectores-map.html:8
+msgid "Interactive Map of Crime Rates by Sector in Mexico City"
 msgstr "Mapa interactivo de las tasas de criminalidad en el Distrito Federal"
 
 #: templates/sectores-map.html:18
@@ -526,3 +562,12 @@ msgstr ""
 
 #~ msgid "Cuadrante House robberies without violence"
 #~ msgstr "Cuadrante - Robo a casa habitación C.V."
+
+#~ msgid "Crime Charts of Mexico City"
+#~ msgstr "Gráficas del crimen el Distrito Federal"
+
+#~ msgid "https://hoyodecrimen.com"
+#~ msgstr "https://hoyodecrimen.com/en/"
+
+#~ msgid "/images/total-sector-rcsv.png"
+#~ msgstr "/images/total-sector-rcsv_es.png"
