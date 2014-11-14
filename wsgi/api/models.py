@@ -5,7 +5,7 @@ db = SQLAlchemy()
 
 class Cuadrantes(db.Model):
     __tablename__ = 'cuadrantes'
-    cuadrante = db.Column(db.String(10), primary_key=True)
+    cuadrante = db.Column(db.String(15), primary_key=True)
     crime = db.Column(db.String(60))
     date = db.Column(db.String(10))
     count = db.Column(db.Integer)
@@ -36,7 +36,7 @@ class Cuadrantes_Poly(db.Model):
 
 # psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W
 # CREATE TABLE cuadrantes (
-# 	cuadrante varchar (10),
+# 	cuadrante varchar (15),
 # 	crime varchar (60),
 # 	date  varchar (10),
 # 	count int,
