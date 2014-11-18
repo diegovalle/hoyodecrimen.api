@@ -16,7 +16,7 @@ before_script:
     DELIMITER ',' NULL AS 'NA' CSV HEADER;" -U postgre 
   - psql -d apihoyodecrimen postgre < data/cuadrantes_poly.sql
 env:
-  - OPENSHIFT_POSTGRESQL_DB_PASSWORD="" OPENSHIFT_POSTGRESQL_DB_URL="postgres://postgre:@localhost/apihoyodecrimen" REDIS_PASSWORD="" OPENSHIFT_REDIS_HOST='127.0.0.1' OPENSHIFT_REDIS_PORT='6379'
+  - OPENSHIFT_POSTGRESQL_DB_PASSWORD="" OPENSHIFT_POSTGRESQL_DB_URL="postgres://postgres:@localhost/apihoyodecrimen" REDIS_PASSWORD="" OPENSHIFT_REDIS_HOST='127.0.0.1' OPENSHIFT_REDIS_PORT='6379'
 # command to install dependencies
 install: 
 #  - ./travis-tool.sh install_deps
