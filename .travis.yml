@@ -14,7 +14,7 @@ before_script:
     crime, date) ); COPY cuadrantes FROM
     '$TRAVIS_BUILD_DIR/data/cuadrantes.csv'
     DELIMITER ',' NULL AS 'NA' CSV HEADER;" -U postgres 
-  - psql -d apihoyodecrimen postgres < data/cuadrantes_poly.sql
+  - psql -d apihoyodecrimen postgres < $TRAVIS_BUILD_DIR/data/cuadrantes_poly.sql
   - pybabel extract -F wsgi/babel.cfg -o wsgi/messages.pot .
   - pybabel update -i wsgi/messages.pot -d wsgi/translations
 env:
