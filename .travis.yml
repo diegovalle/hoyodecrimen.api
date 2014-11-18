@@ -22,8 +22,8 @@ install:
 #  - ./travis-tool.sh install_deps
   - "pip install -r requirements.txt"
 before_script:
-  - pybabel extract -F babel.cfg -o messages.pot .
-  - pybabel update -i messages.pot -d translations
+  - pybabel extract -F wsgi/babel.cfg -o wsgi/messages.pot .
+  - pybabel update -i wsgi/messages.pot -d wsgi/translations
   #- ./install-gdal.sh
 # command to run tests
 script: 
