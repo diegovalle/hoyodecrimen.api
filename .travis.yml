@@ -6,7 +6,7 @@ env:
 addons:
   postgresql: "9.2"
 before_script:
-  - psql -U postgres -c "create extension postgis"
+  - psql apihoyodecrimen -U postgres -c "create extension postgis;"
   - psql -c 'create database apihoyodecrimen;' -U postgres
   - psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (15), crime
     varchar (60), date varchar (10), count int, year int, sector
