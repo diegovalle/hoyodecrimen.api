@@ -51,9 +51,9 @@
 <div id="map" style="height: 400px"></div>
 <div class="row">
   <div class="2u" style="margin-top:10px">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="diegovalle">Tweet</a>
+    <!--<a href="https://twitter.com/share" class="twitter-share-button" data-via="diegovalle">Tweet</a>
     <div id="fb-root"></div>
-    <div class="fb-like" data-href="{{_('https://hoyodecrimen.com/en/')}}" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+    <div class="fb-like" data-href="{{_('https://hoyodecrimen.com/en/')}}" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>-->
   </div>
   <div class="8u">
     <p>{{_('Crime in your Cuadrante')}}</p>
@@ -133,12 +133,12 @@
 {% assets "js_pip" %}
 <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
-<script>(function(d, s, id) {
+<!--<script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=299785550640&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>-->
 {% endblock %}
