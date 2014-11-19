@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/diegovalle/hoyodecrimen.api.png)](https://travis-ci.org/diegovalle/hoyodecrimen.api)
+[![Build Status](https://travis-ci.org/diegovalle/hoyodecrimen.api.svg?branch=master)](https://travis-ci.org/diegovalle/hoyodecrimen.api)
 
 Distrito Federal Crime API and Website
 ===========================
