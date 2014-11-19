@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-11-15 12:14-0600\n"
-"PO-Revision-Date: 2014-11-15 12:09-0600\n"
+"PO-Revision-Date: 2014-11-18 20:48-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: templates/base.html:48
 msgid "/en/"
@@ -83,25 +84,24 @@ msgstr "Preguntas o comentarios... ¡Contáctame!"
 
 #: templates/base.html:87
 msgid "Created by <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
-msgstr "Creado por <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
+msgstr ""
+"Creado por <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
 
 #: templates/base.html:88
 msgid ""
-"Crime data from a <a "
-"href=\"https://github.com/diegovalle/crimeDF/tree/master/sspdf-"
-"data\">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from "
-"<a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de "
-"Cuadrantes</a>. The population figures are based on the <a "
+"Crime data from a <a href=\"https://github.com/diegovalle/crimeDF/tree/"
+"master/sspdf-data\">FOIA request</a> to the SSPDF. Cuadrante coordinates "
+"scraped from <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php"
+"\">Consulta de Cuadrantes</a>. The population figures are based on the <a "
 "href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-"
 "manzanas-etc.html\">2010 Census by Manzana</a>."
 msgstr ""
-"Los datos de información delictiva vienen de una <a "
-"href=\"https://github.com/diegovalle/crimeDF/tree/master/sspdf-"
-"data\">solicitud de información</a> a la SSPDF. El mapa de cuadrantes es "
-"de <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta "
-"de Cuadrantes</a>. La población está basada en información del <a "
-"href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-"
-"manzanas-etc.html\">censo 2010 por Manzana</a>."
+"Los datos de información delictiva vienen de una <a href=\"https://github."
+"com/diegovalle/crimeDF/tree/master/sspdf-data\">solicitud de información</a> "
+"a la SSPDF. El mapa de cuadrantes es de <a href=\"http://201.144.220.174/pid/"
+"gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. La población está basada "
+"en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-"
+"of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
 
 #: templates/base.html:89
 msgid "There's also a"
@@ -121,12 +121,12 @@ msgstr "y un muy cool"
 
 #: templates/base.html:91
 msgid ""
-"Download the data as a <a href=\"/data/cuadrantes.csv\">csv file</a> and "
-"the <a href=\"/data/cuadrantes_shp.zip\">cuadrantes shapefile</a>"
+"Download the data as a <a href=\"/data/cuadrantes.csv\">csv file</a> and the "
+"<a href=\"/data/cuadrantes_shp.zip\">cuadrantes shapefile</a>"
 msgstr ""
-"Descargar los datos de criminalidad <a href=\"/data/cuadrantes.csv\">como"
-" csv</a> o el shapefile de los <a "
-"href=\"/data/cuadrantes_shp.zip\">cuadrantes</a>"
+"Descargar los datos de criminalidad <a href=\"/data/cuadrantes.csv\">como "
+"csv</a> o el shapefile de los <a href=\"/data/cuadrantes_shp.zip"
+"\">cuadrantes</a>"
 
 #: templates/base.html:127
 msgid "Design:"
@@ -161,11 +161,11 @@ msgstr "Cambio en el número de crímenes en los cuadrantes del Distrito Federal
 #: templates/change-cuadrantes.html:42 templates/counts-cuadrantes.html:35
 #: templates/pip.html:102 templates/rates-sectores.html:39
 msgid ""
-"//diegovalle.us6.list-"
-"manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=102491489b"
+"//diegovalle.us6.list-manage.com/subscribe/post?"
+"u=787fae824c502d9f3ad7d0b73&amp;id=102491489b"
 msgstr ""
-"//diegovalle.us6.list-"
-"manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=99835eea14"
+"//diegovalle.us6.list-manage.com/subscribe/post?"
+"u=787fae824c502d9f3ad7d0b73&amp;id=99835eea14"
 
 #: templates/change-cuadrantes.html:45 templates/charts.html:36
 #: templates/counts-cuadrantes.html:38 templates/pip.html:105
@@ -186,8 +186,8 @@ msgstr "Suscribirse"
 
 #: templates/change-cuadrantes.html:60
 msgid ""
-"The last 3 months of crime data compared with the same period last year "
-"(the highlighted gray regions in the line chart)"
+"The last 3 months of crime data compared with the same period last year (the "
+"highlighted gray regions in the line chart)"
 msgstr ""
 "Los últimos tres meses en comparación con el mismo periodo hace 12 meses "
 "(regiones grises en la serie de tiempo)"
@@ -291,8 +291,7 @@ msgstr "Violación - Total DF"
 #: templates/charts.html:2
 msgid "Charts of Crime in Mexico City"
 msgstr ""
-"Gráficas de las tasas de crimen en el Distrito Federal por sector "
-"delictivo"
+"Gráficas de las tasas de crimen en el Distrito Federal por sector delictivo"
 
 #: templates/charts.html:5
 msgid "https://hoyodecrimen.com/charts"
@@ -301,8 +300,7 @@ msgstr "https://hoyodecrimen.com/en/charts"
 #: templates/charts.html:6
 msgid "Small multiple charts of crime in Mexico City"
 msgstr ""
-"Gráficas de las tasas de crimen en el Distrito Federal por sector "
-"delictivo"
+"Gráficas de las tasas de crimen en el Distrito Federal por sector delictivo"
 
 #: templates/charts.html:47 templates/charts.html:51 templates/charts.html:55
 #: templates/charts.html:59 templates/charts.html:63 templates/charts.html:67
@@ -393,16 +391,16 @@ msgid ""
 "Click anywhere on the map to select a cuadrante (or outside the map to "
 "select all DF data)"
 msgstr ""
-"Haz click en el mapa para seleccionar un cuadrante (o afuera del mapa "
-"para seleccionar todos los crímenes en el DF)"
+"Haz click en el mapa para seleccionar un cuadrante (o afuera del mapa para "
+"seleccionar todos los crímenes en el DF)"
 
 #: templates/pip.html:2
 msgid ""
-"Crime in Mexico City - Find out how many crimes there were in your "
-"cuadrante delictivo"
+"Crime in Mexico City - Find out how many crimes there were in your cuadrante "
+"delictivo"
 msgstr ""
-"Crimen en el Distirto Federal - Averigua cuantos delitos se cometieron en"
-" tu cuadrante"
+"Crimen en el Distrito Federal - Averigua cuantos delitos se cometieron en tu "
+"cuadrante"
 
 #: templates/pip.html:5
 msgid "https://hoyodecrimen.com/"
@@ -410,11 +408,11 @@ msgstr "https://hoyodecrimen.com/en/"
 
 #: templates/pip.html:6
 msgid ""
-"Crime in Mexico City. Find out how many crimes there were in your "
-"cuadrante delictivo"
+"Crime in Mexico City. Find out how many crimes there were in your cuadrante "
+"delictivo"
 msgstr ""
-"Crimen en la Ciudad de México. Averigua cuantos crímenes ocurrieron por "
-"tu rumbo"
+"Crimen en la Ciudad de México. Averigua cuantos crímenes ocurrieron por tu "
+"rumbo"
 
 #: templates/pip.html:11 templates/pip.html:18 templates/pip.html:50
 msgid "Crime in Mexico City"
@@ -422,11 +420,11 @@ msgstr "Crimen por tu Rumbo"
 
 #: templates/pip.html:12
 msgid ""
-"Crime on your street revealed. You can also find out whether your area "
-"has higher crime levels than the rest of Mexico City"
+"Crime on your street revealed. You can also find out whether your area has "
+"higher crime levels than the rest of Mexico City"
 msgstr ""
-"Crimen por tu rumbo. Averigua cuantos crímenes ocurrieron en tu cuadrante"
-" delictivo del Distrito Federal"
+"Crimen por tu rumbo. Averigua cuantos crímenes ocurrieron en tu cuadrante "
+"delictivo del Distrito Federal"
 
 #: templates/pip.html:14 templates/pip.html:20 templates/pip.html:56
 msgid "https://hoyodecrimen.com/en/"
@@ -434,11 +432,11 @@ msgstr "https://hoyodecrimen.com/"
 
 #: templates/pip.html:19
 msgid ""
-"Crime in Mexico City. Find out how many crimes there were in your "
-"Cuadrante Delictivo."
+"Crime in Mexico City. Find out how many crimes there were in your Cuadrante "
+"Delictivo."
 msgstr ""
-"Crimen en la Ciudad de Mexico. Averigua cuantos delitos ocurrieron por tu"
-" cuadrante delictivo"
+"Crimen en la Ciudad de Mexico. Averigua cuantos delitos ocurrieron por tu "
+"cuadrante delictivo"
 
 #: templates/pip.html:59
 msgid "Crime in your Cuadrante"
@@ -462,7 +460,8 @@ msgstr "Número de crímenes en tu cuadrante"
 
 #: templates/pip.html:82
 msgid "Crimes rates compared to the rest of the DF during the last 12 months"
-msgstr "Tasas de criminalidad comparadas con el resto del DF (12 últimos meses)"
+msgstr ""
+"Tasas de criminalidad comparadas con el resto del DF (12 últimos meses)"
 
 #: templates/pip.html:120
 msgid "Cuadrante Homicides"
@@ -566,8 +565,8 @@ msgstr "https://hoyodecrimen.com/en/sectores-map"
 
 #: templates/sectores-map.html:173
 msgid ""
-"Click anywhere on the map to select a sector (or outside the map to "
-"select all DF data)"
+"Click anywhere on the map to select a sector (or outside the map to select "
+"all DF data)"
 msgstr ""
 "Haz click en el mapa para seleccionar un sector (o afuera del mapa para "
 "seleccionar todos los crímenes en el DF)"
@@ -586,4 +585,3 @@ msgstr ""
 
 #~ msgid "Find out how many crimes there were in your Cuadrante Delictivo"
 #~ msgstr "Averigua cuantos crímenes ocurrieron en tu cuadrante delictivo"
-
