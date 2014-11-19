@@ -1,6 +1,6 @@
 # API and Data Use Policy
 
-We hate legalese, so we've tried to make this policy readable. If you've got any questions, feel free to [ask us](mailto:diego@diegovalle.net), and we'll do our best to answer.
+We hate legalese, so we've tried to make this policy readable. If you've got any questions, feel free to [ask me](mailto:diego@diegovalle.net), and we'll do our best to answer.
 
 This API and Data Use Policy covers all websites (such as [HoyodeCrimen.com](https://hoyodecrimen.com)) owned and operated by HoyodeCrimen.com and all associated services, collectively referred to as the Service.
 
