@@ -1,4 +1,5 @@
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
 from geoalchemy2 import Geometry
 
 db = SQLAlchemy()
@@ -33,6 +34,19 @@ class Cuadrantes_Poly(db.Model):
         self.sector = sector
         self.geom = geom
 
+class Municipios(db.Model):
+    __tablename__ = 'municipios'
+    cuadrante = db.Column(db.String(15), primary_key=True)
+    sector = db.Column(db.String(60))
+    cvegeo = db.Column(db.String(5))
+    municipio = db.Column(db.String(200))
+
+    def __init__(self, cuadrante, sector, cvegeo, municipio):
+        self.cuadrante = cuadrante
+        self.sector = sector
+        self.cvegeo = cvegeo
+        self.municipio = municipio
+
 
 # psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W
 # CREATE TABLE cuadrantes (
@@ -46,6 +60,17 @@ class Cuadrantes_Poly(db.Model):
 #        PRIMARY KEY(cuadrante, sector, crime, date)
 # );
 # COPY cuadrantes FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+
+
+# CREATE TABLE municipios (
+# 	cuadrante varchar (15),
+# 	sector varchar (60),
+# 	cvegeo  varchar (5),
+# 	municipio varchar(200),
+#     PRIMARY KEY(cuadrante)
+# );
+# COPY cuadrantes FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+
 
 #create index date on cuadrantes (date);
 #create index sector on cuadrantes (sector);
