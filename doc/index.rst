@@ -75,7 +75,7 @@ What's available
 | Point in Polygon       | Given a longitude and latitude return the           | | **/api/v1/cuadrantes/pip/(string: long)/(string: lat)**                         |
 |                        | corresponding cuadrante and sector                  | | **/api/v1/cuadrantes/crimes/(string: crime)/pip/(string: long)/(string: lat)**  |
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
-| Time Series            | Crime counts ordered by month of occurrence for a   | | **/api/v1/sectores/(string: sector)/crimes/(string: crime)/series/**            |
+| Time Series            | Crime counts ordered by month of occurrence for a   | | **/api/v1/sectores/(string: sector)/crimes/(string: crime)/series**            |
 |                        | cuadrante or sector                                 | | **/api/v1/cuadrantes/(string: cuadrante)/crimes/(string: crime)/series**        |
 |                        |                                                     |                                                                                   |
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
