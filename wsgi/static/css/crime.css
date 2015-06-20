@@ -164,3 +164,34 @@ ul.list-inline{
 .c3-line {
     stroke-width:2.7;
 }
+
+.mg-chart-title {
+  cursor: default;
+  font-size: 1rem;
+  padding-top: 8px;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif, Arial;
+  color: #111;
+}
+y-axis text, .mg-histogram .axis text {
+  fill: black;
+  font-size: 0.8rem;
+  opacity: 0.95;
+  font-family: 'Open Sans', sans-serif, Arial;
+}
+
+.mg-x-axis text, .mg-y-axis text, .mg-histogram .axis text {
+  fill: black;
+  font-size: 0.9rem;
+  opacity: 0.95;
+  font-family: 'Open Sans', sans-serif, Arial;
+  font-size: 10.8000001907349px;
+}
+
+.mg-year-marker text {
+  fill: black;
+  font-size: 0.7rem;
+  opacity: 0.95;
+  font-family: 'Open Sans', sans-serif, Arial;
+  font-size: 8.39999961853027px;
+}
