@@ -90,7 +90,7 @@ legend.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info legend', L.DomUtil.get('control'));
     this.update();
     //document.getElementById("seltarget").onmouseover = controlEnter;
-    //document.getElementById("seltarget").onmouseout = controlLeave;  
+    //document.getElementById("seltarget").onmouseout = controlLeave;
     return this._div;
 };
 
@@ -99,41 +99,47 @@ function controlEnter(e) {
 }
 function controlLeave() {
     map.dragging.enable();
-} 
+}
+_.sortedFind = function sortedFind(list, item, key) {
+    return (item, list[_.sortedIndex(list, item, key)]);
+};
+
 setChange = function(){
-    
+
     $("#seltarget").change(function() {
         $(config.selector).attr('style', '');
         changeConfig($("#seltarget").attr('value'))
         mxc.eachLayer(function(layer) {
             if(mapType === 'sectores') {
-                obj = _.findWhere(mapData.rows, 
-                                  {'sector': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
-                                   'crime':config.currentName.toUpperCase()})
+                obj = _.sortedFind(mapData.rows,
+                                  {'sector': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
+                                   'crime':config.currentName.toUpperCase()},
+                                  'sectores');
             } else {
-                obj = _.findWhere(mapData.rows, 
-                                  {'cuadrante': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
-                                   'crime':config.currentName.toUpperCase()})
+                obj = _.sortedFind(mapData.rows,
+                                  {'cuadrante': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
+                                   'crime':config.currentName.toUpperCase()},
+                                  'cuadrante');
             }
             layer.setStyle({
                 fillColor:  mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
                 //properties[config.currentName]),
                 fillOpacity: 0.8,
                 weight: 0.5
-            });    
+            });
         });
         for(i = 0; i < 9; i++) {
             $("#legendnum" + i).html(
                 '<i style="background:' + config.color[i] + '"></i>' +
                     config.round1(config.colorFun.
-                                  invertExtent(config.color[i])[0], 1) +" - " +  
+                                  invertExtent(config.color[i])[0], 1) +" - " +
                     config.round2(config.colorFun.
                                   invertExtent(config.color[i])[1], 1)
             );
         }
         $(config.selector).css('background-color', config.color[2]);
     });
-}   
+}
 
 
 changeConfig = function(seltarget) {
@@ -177,7 +183,7 @@ changeConfig = function(seltarget) {
 }
 
 info.update = function (feature) {
-    
+
     if(feature) {
         props = {};
         if(mapType === 'sectores') {
@@ -227,7 +233,7 @@ info.update = function (feature) {
     var end_date = new Date(mapData.rows[0].end_date + '-15');
     var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-    var date_text = '(' + monthNames[start_date.getMonth()] + ' ' + start_date.getFullYear() + 
+    var date_text = '(' + monthNames[start_date.getMonth()] + ' ' + start_date.getFullYear() +
         ' - ' + monthNames[end_date.getMonth()] + ' ' + end_date.getFullYear() + ')'
     var div;
     config.color = colorbrewer.Reds["9"];
@@ -267,14 +273,14 @@ info.update = function (feature) {
         '<td class="tg-031e' + ('sectores' === "sectores" ? "" : " viol ")  + '">' + (props ? comma(props.viol_count) : comma(violTotal)) +'</td>' +
         '</tr>' +
         '</table><br/><div class="legend">';
-    
-    changeConfig($("#seltarget").attr('value')) 
+
+    changeConfig($("#seltarget").attr('value'))
     for(i = 0; i < 9; i++) {
         div  +=
-            '<span id="legendnum' + 
+            '<span id="legendnum' +
             i +'">' + '<i style="background:' + config.color[i] + '"></i>' +
             config.round1(config.colorFun.
-                          invertExtent(config.color[i])[0], 1) +" - " +  
+                          invertExtent(config.color[i])[0], 1) +" - " +
             config.round2(config.colorFun.
                           invertExtent(config.color[i])[1], 1) +'</span><br>';
     }
@@ -284,10 +290,10 @@ info.update = function (feature) {
     $(config.selector).css('background-color',config.color[2]);
     $("#seltarget").val(config.lastSelect);
     setChange();
-    
+
     if(document.getElementById("seltarget")) {
         document.getElementById("seltarget").onmouseover = controlEnter;
-        document.getElementById("seltarget").onmouseout = controlLeave; 
+        document.getElementById("seltarget").onmouseout = controlLeave;
     }
 
 };
@@ -297,15 +303,15 @@ info.update = function (feature) {
 
 var getStyle = function(feature) {
     if(mapType === 'sectores') {
-        obj = _.findWhere(mapData.rows, 
-                          {'sector': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+        obj = _.findWhere(mapData.rows,
+                          {'sector': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
                            'crime':config.currentName.toUpperCase()})
     } else {
-        obj = _.findWhere(mapData.rows, 
-                          {'cuadrante': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+        obj = _.findWhere(mapData.rows,
+                          {'cuadrante': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
                            'crime':config.currentName.toUpperCase()})
     }
-    
+
     return {
         fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
         weight: .5,
@@ -313,7 +319,7 @@ var getStyle = function(feature) {
         color: '#555',
         fillOpacity: 0.8
     };
-    
+
 };
 var clickedFeature;
 function highlightFeature(e) {
@@ -325,7 +331,7 @@ function highlightFeature(e) {
                 weight: 0.5,
                 color: '#555'
             });
-    } 
+    }
     clickedFeature = e;
     var layer = e.target;
     layer.setStyle({
@@ -333,27 +339,27 @@ function highlightFeature(e) {
         weight: 5,
         fillOpacity: 0.6,
         color: '#333'
-        
+
     });
-    
+
     if (!L.Browser.ie && !L.Browser.opera) {
        layer.bringToFront();
     }
-    
+
     info.update(layer.feature.properties);
 }
 
 function resetHighlight(e) {
     //mxc.resetStyle(e.target);
     if(mapType === 'sectores') {
-        obj = _.findWhere(mapData.rows, 
+        obj = _.findWhere(mapData.rows,
                           {'sector': e.target.feature.
-                           properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+                           properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
                            'crime':config.currentName.toUpperCase()})
     } else {
-        obj = _.findWhere(mapData.rows, 
+        obj = _.findWhere(mapData.rows,
                           {'cuadrante': e.target.feature.
-                           properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(), 
+                           properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
                            'crime':config.currentName.toUpperCase()})
     }
     e.target.setStyle({
@@ -371,21 +377,21 @@ function onEachFeature(feature, layer) {
         click: highlightFeature,
         //mouseout: resetHighlight
     });
-    
+
 }
 
 
 
 
 $.getJSON(mapFile, function (data) {
-    
+
     var mxcGeojson = topojson.feature(data, data.objects[mapType]).features;
-    
+
     var featureCollection = {
         "type": "FeatureCollection",
         "features": []
     };
-    
+
     for (var i = 0; i <  mxcGeojson.length; i++) {
         featureCollection.features.push({
             "type":"Feature",
@@ -393,7 +399,7 @@ $.getJSON(mapFile, function (data) {
             "properties":  mxcGeojson[i].properties
         });
     }
-    
+
     //findRange=function(mxcGeojson, name) {
     //    return(d3.extent(d3.entries(mxcGeojson), function(d){return(+d.value.properties[name])} ));
     //}
@@ -404,8 +410,8 @@ $.getJSON(mapFile, function (data) {
         d3.json('/api/v1/df/crimes/all/series', function(series){
             calcTotal = function(crimeName) {
                 ar=_.where(series.rows, {'crime': crimeName.toUpperCase()})
-                return  _.reduce(ar, function(memo, value){ 
-                    if(value.date >= mapData.rows[0].start_date) 
+                return  _.reduce(ar, function(memo, value){
+                    if(value.date >= mapData.rows[0].start_date)
                         return memo + value.count;
                     else
                         return 0;
@@ -421,7 +427,7 @@ $.getJSON(mapFile, function (data) {
             rvsvTotalRate = Math.round(rvsvTotal / 8785874 * 100000)/10;
             violTotalRate =Math.round( violTotal / 8785874 * 100000)/10;
             //homTotal = 823,rncvTotal = 3867,rvcvTotal = 6208,rvsvTotal = 10583,violTotal = 461,homTotalRate = 9.4,rncvTotalRate = 44,rvcvTotalRate = 70.7,rvsvTotalRate = 120.5,violTotalRate = 5.2
-        
+
         findRange=function(name) {
             name = name.toUpperCase();
             var ext = d3.extent(mapData.rows, function(d) {
@@ -431,27 +437,27 @@ $.getJSON(mapFile, function (data) {
                             return d.count / d.population * 100000;
                         else
                             return 0;
-                    else if (mapType === "cuadrantes") 
+                    else if (mapType === "cuadrantes")
                         if(d.population)
-                            return d.count 
+                            return d.count
                         else
                             return 0;
             })
-            
-            
+
+
             return(ext);
         };
-        
+
         //The scales for the various maps
         scaleHomicide = createScale(colorbrewer.Reds["9"],
                                     findRange('homicidio doloso'), 9),
-        scaleRNCV = createScale(colorbrewer.Blues["9"], 
+        scaleRNCV = createScale(colorbrewer.Blues["9"],
                                 findRange('robo a negocio c.v.'), 9),
-        scaleRVCV = createScale(colorbrewer.Purples["9"], 
+        scaleRVCV = createScale(colorbrewer.Purples["9"],
                                 findRange('robo de vehiculo automotor c.v.'), 9),
-        scaleRVSV = createScale(colorbrewer.Greens["9"], 
+        scaleRVSV = createScale(colorbrewer.Greens["9"],
                                 findRange('robo de vehiculo automotor s.v.'), 9);
-        scaleVIOL = createScale(colorbrewer.Greys["9"], 
+        scaleVIOL = createScale(colorbrewer.Greys["9"],
                             findRange('violacion'), 9);
         getColor = function(value) {
             return scaleFun(value);
@@ -467,7 +473,7 @@ $.getJSON(mapFile, function (data) {
             round1: null,
             round2: null
         }
-        if(mapType != "sectores") { 
+        if(mapType != "sectores") {
             config.round1 = Math.ceil;
             config.round2 = Math.floor;
         }
@@ -475,26 +481,26 @@ $.getJSON(mapFile, function (data) {
             config.round1 = d3.round;
             config.round2 = d3.round;
         }
-    
+
         // mxcLayer.addData(featureCollection);
-        
+
         mxc = L.geoJson(featureCollection, {
             style: getStyle,
             onEachFeature: onEachFeature
         }).addTo(map);
-        
+
         //legend.addTo(map);
         info.addTo(map);
         info.update();
         document.getElementById("seltarget").onmouseover = controlEnter;
-        document.getElementById("seltarget").onmouseout = controlLeave; 
+        document.getElementById("seltarget").onmouseout = controlLeave;
         L.control.layers(null,baseMaps, {position: 'topleft'}).addTo(map);
             L.control.locate({
-                              drawCircle: false, 
+                              drawCircle: false,
                           locateOptions: {enableHighAccuracy: true }}).addTo(map);
         var hash = new L.Hash(map);
         //deselect any selected polygons when the user clicks on the map
-        map.on('click', function(e) { 
+        map.on('click', function(e) {
             if(clickedFeature){
                 clickedFeature.target.setStyle({
 	            fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),

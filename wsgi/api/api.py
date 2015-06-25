@@ -1176,14 +1176,14 @@ def listsectores():
     return lib.results_to_json(results)
 
 
-@API.route('/municipios',
+@API.route('/delegaciones',
            methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def list_municipios():
-    """Enumerate all cuadrantes and sectors with the municipio they belong to
+    """Enumerate all cuadrantes and sectors with the delegacion they belong to
 
-    :status 200: when all the municipios were found
+    :status 200: when all the delegaciones were found
 
     :resheader Content-Type: application/json
 
@@ -1191,7 +1191,7 @@ def list_municipios():
 
     .. sourcecode:: http
 
-       GET /api/v1/municipios HTTP/1.1
+       GET /api/v1/delegaciones HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
 
@@ -1206,13 +1206,13 @@ def list_municipios():
       {
       "cuadrante": "P-1.1.1",
       "cvegeo": "09010",
-      "municipio": "ALVARO OBREGON",
+      "delegacion": "ALVARO OBREGON",
       "sector": "ALPES"
       },
       {
       "cuadrante": "P-1.1.10",
       "cvegeo": "09010",
-      "municipio": "ALVARO OBREGON",
+      "delegacion": "ALVARO OBREGON",
       "sector": "ALPES"
       },
       ...
@@ -1220,7 +1220,7 @@ def list_municipios():
     results = Municipios.query. \
         with_entities(func.upper(Municipios.sector).label('sector'),
                       func.upper(Municipios.cuadrante).label('cuadrante'),
-                      func.upper(Municipios.municipio).label('municipio'),
+                      func.upper(Municipios.municipio).label('delegacion'),
                       func.upper(Municipios.cvegeo).label('cvegeo')). \
         order_by(Municipios.municipio, Municipios.sector, Municipios.cuadrante). \
         distinct(). \
@@ -1310,7 +1310,7 @@ def top5cuadrantes(crime):
     return lib.ResultProxy_to_json(results)
 
 
-@API.route('/municipios/crimes/<string:crime>/top/counts',
+@API.route('/delegaciones/crimes/<string:crime>/top/counts',
            methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
@@ -1371,27 +1371,27 @@ def top5municipios(crime):
         raise InvalidAPIUsage('Rank must be greater than zero')
         #abort(abort(make_response('No negative numbers', 400)))
     sql_query = """with crimes as
-                          (select sum(c.count) as count,c.sector,c.cuadrante,max(c.population)as population, c.crime,m.municipio
-                          from cuadrantes as c
-                          INNER JOIN municipios as m
-                          ON c.cuadrante=m.cuadrante
-                          where date >= :start_date and date <= :max_date"""
+                           (select (sum(c.count) / (sum(c.population::float) / :num_months )* 100000) as rate,sum(c.count) as count,
+                           c.sector,sum(c.population) / :num_months as population, c.crime
+                           from cuadrantes as c
+                           INNER JOIN municipios as m
+                           ON c.cuadrante=m.cuadrante
+                           where date >= :start_date and date <= :max_date and population is not null"""
     sql_query2 = "" if crime == "ALL" else " and upper(crime) = :crime "
-    sql_query3 = """
-                          group by c.cuadrante, c.sector, c.crime, m.municipio
-                          )
-                       SELECT *
-                       from
-                          (SELECT substring(CAST(:start_date AS text) for 7) as start_period,
-                                  substring(CAST(:max_date AS text) for 7) as end_period, count,upper(crime) as crime,
-                                  upper(sector) as sector,upper(cuadrante) as cuadrante,
-                                  rank() over (partition by crime order by count desc) as rank,population
-                          from crimes group by count,crime,sector,cuadrante,population) as temp2
-                          where rank <= :rank
-                          order by crime, rank, cuadrante, sector asc"""
+    sql_query3 = """   group by m.municipio, crime)
+                       SELECT substring(CAST(start_period as text) for 7) as start_date, substring(end_period::text for 7) as end_date,
+                               round(rate::numeric , 1)::float as rate, crime, sector, count, rank, population from
+                           (SELECT :start_date as start_period, :max_date as end_period, count, rate,
+                                   upper(crime) as crime,
+                                   upper(sector) as sector,
+                                   rank() over (partition by crime order by rate desc) as rank,population
+                            from crimes
+                            group by count,crime,sector,population, rate) as temp2
+                           where rank <= :rank """
     results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date': start_date,
                                                                        'max_date': max_date,
                                                                        'crime': crime,
+                                                                       'num_months': lib.month_diff(max_date, start_date),
                                                                        'rank': rank})
     return lib.ResultProxy_to_json(results)
 

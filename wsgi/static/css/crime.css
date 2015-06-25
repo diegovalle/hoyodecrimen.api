@@ -172,6 +172,8 @@ ul.list-inline{
   text-align: center;
   font-family: 'Open Sans', sans-serif, Arial;
   color: #111;
+  margin-bottom: 0;
+  margin-top: 20px;
 }
 y-axis text, .mg-histogram .axis text {
   fill: black;

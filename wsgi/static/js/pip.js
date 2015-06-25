@@ -125,12 +125,13 @@ function get_data(data, dates){
         cuadrante_period = _.filter(cuadrante_period, { 'crime': crime });
         cuadrante_period = cuadrante_period[0]["count"] / cuadrante_period[0]["population"] * 100000
         return ([{'label': all_df_txt, 'value': df_period, 'baseline': 0},
-                {'label':'Cuadrante', 'value': cuadrante_period, 'baseline': 0}]);
+                {'label':your_cuadrante, 'value': cuadrante_period, 'baseline': 0}]);
     };
     var bar_options = {
         title: "Bar Prototype",
         x_label : rate_txt,
         bottom: 50,
+        left: 80,
         baseline_accessor: 'baseline',
         //data: bar_data,
         chart_type: 'bar',

@@ -71,7 +71,7 @@
   <div class="1u">&nbsp;</div>
 
   <div id="linecharts" class="5u">
-    <p style="height:3em;margin-bottom:10px">{{_('Crimes counts by month in your cuadrante')}}</p>
+    <p style="height:3em;margin-bottom:10px">{{_('Crimes counts by month in your cuadrante')}}</p><hr/>
     <!--<div id="chart-homicide" style="height:100px;width:100%"></div>
     <div id="chart-rncv" style="height:100px;width:100%"></div>
     <div id="chart-rvcv" style="height:100px;width:100%"></div>
@@ -79,7 +79,7 @@
     <div id="chart-viol" style="height:100px;width:100%"></div>-->
   </div>
   <div id="barcharts" class="5u">
-    <p style="height:3em;margin-bottom:10px">{{_('Crimes rates compared to the rest of the DF during the last 12 months')}}</p>
+    <p style="height:3em;margin-bottom:10px">{{_('Crimes rates compared to the rest of the DF during the last 12 months')}}</p><hr/>
     <!--<div id="barchart-homicide" style="height:100px;width:100%"></div>
     <div id="barchart-rncv" style="height:100px;width:100%"></div>
     <div id="barchart-rvcv" style="height:100px;width:100%"></div>
@@ -92,26 +92,7 @@
 {% endblock %}
 
 {% block subscribe %}
-<!-- Begin MailChimp Signup Form -->
-<div id="mc_embed_signup">
-  <!--Spanish Version
-      "//diegovalle.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=99835eea14"
-      name="b_787fae824c502d9f3ad7d0b73_99835eea14"
 
-    -->
-  <form action="{{_('//diegovalle.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=102491489b')}}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-    <div class="center">
-      <div>
-        <span style="color:white;font-weight:bold;">{{_('Free email when new information is available')}}</span>
-	<input type="email" value=" " size="30" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email" required>
-
-        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-        <div style="position: absolute; left: -5000px;"><input type="text" name="{{_('b_787fae824c502d9f3ad7d0b73_102491489b')}}" tabindex="-1" value=""></div>
-        <input type="submit" value="{{_('Subscribe')}}" name="subscribe" id="mc-embedded-subscribe" class="button" style="background:green;color:white;padding: .7em 2em;font-size: .9em;padding-bottom: 6px;">
-    </div></div>
-  </form>
-</div>
-<!--End mc_embed_signup-->
 {% endblock %}
 
 
@@ -128,6 +109,7 @@
   count_txt = '{{_("count")}}'
   all_df_txt = '{{_("All DF")}}'
   rate_txt = '{{_("rate")}}'
+  your_cuadrante = '{{_("Your Cuadrante")}}'
 
 </script>
 {% assets "js_pip" %}
