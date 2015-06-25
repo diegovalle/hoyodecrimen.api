@@ -21,8 +21,8 @@
 	<link rel="alternate" hreflang="{% block hreflang %}{% endblock %}" href="{% block alternhref %}{% endblock %}" />
 {% block head %}
 		<title>{% block title %}{% endblock %}</title>
-		
-                
+
+
 {% block css %}
 {% endblock %}
 
@@ -38,8 +38,8 @@
 		<!-- Header -->
 			<div id="header-wrapper">
 				<div id="header" class="container">
-{% block content %}					
-				
+{% block content %}
+
 {% endblock %}
 
 					<!-- Nav -->
@@ -49,15 +49,15 @@
                                                             <li><a class="fa fa-bar-chart-o" href="{{_('/en/rates')}}"><span>{{_('Rates')}}</span></a></li>
                                                             <li><a class="fa fa-bar-chart-o" href="{{_('/en/counts')}}"><span>{{_('Counts')}}</span></a></li>
 							    <li>
-							      
+
 							      <a href="#" class="fa fa-map-marker"><span>{{_('Maps')}}</span></a>
 							      <ul>
 								<li><a href="{{_('/en/sectores-map')}}">{{_('Sectores (rates)')}}</a></li>
-								
+
                                                                 <li><a href="{{_('/en/cuadrantes-map')}}">{{_('Cuadrantes (counts)')}}</a></li>
-								
+
 							      </ul>
-                                                              
+
 							    </li>
                                                             <li><a class="fa fa-signal" href="{{_('/en/charts')}}"><span>{{_('Charts')}}</span></a></li>
                                                             <li><a class="fa fa-bar-chart-o" href="{{_('/en/trends')}}"><span>{{_('Trends')}}</span></a></li>
@@ -70,7 +70,7 @@
 					</div>
 
 			</div>
-			
+
 
 
 {% block footer %}
@@ -92,7 +92,7 @@
 							</div>
 							<div class="6u">
 								<section>
-									
+
 									<div class="row">
 										<ul class="icons 6u">
                                                                                   <li class="fa fa-envelope">
@@ -101,7 +101,7 @@
 											<li class="fa fa-github">
 												<a href="http://github.com/diegovalle">diegovalle</a>
 											</li>
-											
+
 										</ul>
 										<ul class="icons 6u">
 											<li class="fa fa-twitter">
@@ -144,5 +144,10 @@
   ga('send', 'pageview');
 
 </script>
+<script src="//my.hellobar.com/{{_('8acd30bddc88809427bf568b635de1df754c10c9')}}.js" type="text/javascript" charset="utf-8" async="async"></script>
+<!-- English
+1ff9c89c8f9ed13417d494d31ba01faaef45c3cb
+<script src="//my.hellobar.com/8acd30bddc88809427bf568b635de1df754c10c9.js" type="text/javascript" charset="utf-8" async="async"></script>
+ -->
 	</body>
 </html>

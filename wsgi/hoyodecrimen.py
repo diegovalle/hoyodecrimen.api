@@ -64,7 +64,7 @@ def not_found(error):
 
 css_pip_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
                      "css/style-desktop.css",
-                     "css/leaflet.css", "css/crime.css",
+                     "css/leaflet.css", "css/vendor/metricsgraphics/metricsgraphics.css", "css/crime.css",
                      filters="cssmin", output="css/packed-pip-req.css")
 assets.register('css_pip_req', css_pip_req)
 
@@ -74,7 +74,7 @@ js_pip_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
                     "js/init.js", "js/underscore-min.js", "js/leaflet.js",
                     "js/leaflet-pip.js",
                     "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
-                    "js/jquery.1.8.3.min.js", "js/modernizr.js",
+                    "js/jquery.1.8.3.min.js", "js/modernizr.js", "js/vendor/metricsgraphics/metricsgraphics.js",
                     filters='jsmin', output='js/packed-pip-req.js')
 assets.register('js_pip_req', js_pip_req)
 
