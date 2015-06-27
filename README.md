@@ -28,6 +28,14 @@ CREATE TABLE cuadrantes (
        PRIMARY KEY(cuadrante, sector, crime, date)
 );
 COPY cuadrantes FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+
+CREATE TABLE municipios (cuadrante varchar (15),
+sector varchar (60),
+cvegeo  varchar (5),
+municipio varchar(200),
+    PRIMARY KEY(cuadrante)
+);
+COPY municipios FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
 ```
 
 Create database from shapefile
