@@ -40,39 +40,48 @@ anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
 
 </select>
 <script>
+var value = "HOMICIDIO DOLOSO";
+var old_value = "HOMICIDIO DOLOSOS";
 _.sortedFind = function sortedFind(list, item, key) {
-    return (item, list[_.sortedIndex(list, item, key)]);
+  return (item, list[_.sortedIndex(list, item, key)]);
 };
- $.ajax({
-     dataType: 'jsonp',
-     url: 'https://hoyodecrimen.com/api/v1/crimes',
-     success: function(data) {
-         crimes = _.pluck(data.rows, "crime");
-         $.each(crimes, function(key, value) {
-             $('#crimeSelect')
-          .append($('<option>', { value : value })
-          .text(value));
-         });
-     }});
- $('#crimeSelect').on('change', function() {
-     value = this.value;
-     $.ajax({
-         dataType: 'jsonp',
-         url: '/api/v1/sectores/all/crimes/' + value + '/period',
-         success: function(data) {
-             quantizeRed = createQuantized(findRange(value), mapColors.hom);
-             d3.selectAll("#map-homicide path").attr("class",function(d) {
-                 obj = _.sortedFind(data.rows,
-                                    {'sector': d.properties['sector'].toUpperCase(),
-                                     'crime': value.toUpperCase()},
-                                    'sector');
-                  return quantizeRed(obj['count'] / obj['population'] * 100000 )
-             });
-             createLegend('#legend-homicides', quantizeRed)
-         }});
+$.ajax({
+  dataType: 'jsonp',
+  url: '/api/v1/crimes',
+  success: function(data) {
+    crimes = _.pluck(data.rows, "crime");
+    $.each(crimes, function(key, value) {
+      $('#crimeSelect')
+      .append($('<option>', { value : value })
+      .text(value));
+    });
+  }});
+  $('#crimeSelect').on('change', function() {
+    old_value = value;
+    value = this.value;
+    d3.select("#homicide-title").text(value + " / " + {{_('"All DF"')}});
+    $.ajax({
+      dataType: 'jsonp',
+      url: '/api/v1/sectores/all/crimes/' + value + '/period',
+      success: function(data) {
+        cuadrantesMap = data;
+        quantizeRed = createQuantized(findRange(value), mapColors.hom);
+        d3.transition().selectAll("#map-homicide path").attr("class",function(d) {
+          obj = _.sortedFind(data.rows,
+            {'sector': d.properties['sector'].toUpperCase(),
+            'crime': value.toUpperCase()},
+            'sector');
+            return quantizeRed(obj['count'] / obj['population'] * 100000 )
+          });
+          createLegend('#legend-homicides', quantizeRed)
+          chartHomicides.load({
+            columns: [_.flatten([value, _.map(_.groupBy(all_df, 'crime')[value], function(x) {return summer(x)})])],
+            unload: old_value,
+          });
+        }});
 
-     //small_multiples(this.value); // or $(this).val()
- });
+        //small_multiples(this.value); // or $(this).val()
+      });
 </script>
 
                                           <h2 id="homicide-title" style="text-align:right;margin: 0 7em 0 0;">{{_('Homicides - rates')}}</h2>
@@ -93,24 +102,8 @@ _.sortedFind = function sortedFind(list, item, key) {
                                           </div>
 <div>
 
-<p>{{_('Sectors with the highest rates of crime')}}</p><div class="datagrid">
-<div class="table-responsive" style="box-sizing: border-box;">
 
 
-
-     <table ng-table="tableParams1" class="table">
-        <tr ng-repeat="sector in $data | filter:'homicidio doloso'">
-          <td data-title="'{{_('Rank')}}'">{[sector.rank]}</td>
-          <td data-title="'{{_('Crime')}}'">{[sector.crime]}</td>
-          <td data-title="'{{_('Sector')}}'">{[sector.sector]}</td>
-          <td data-title="'{{_('Count')}}'">{[sector.count]}</td>
-          <td data-title="'{{_('Population')}}'">{[sector.population | number:0]}</td>
-          <td data-title="'{{_('Rate')}}'">{[sector.rate]}</td>
-        </tr>
-     </table>
-
-</div>
-</div>
 </div>
 
  {% endblock %}
@@ -122,6 +115,15 @@ _.sortedFind = function sortedFind(list, item, key) {
 <script type="x-jst" id="tooltip-template">
 </script>
 <script>
+var shortMonths = {{_('[ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]')}};
+var longMonths = {{_('[ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]')}};
+
+var toText = {{_('" to "')}};
+
+var changesText={{_("'change in crimes '")}};
+var labelText = {{_('"annualized rate per 100,000"')}};
+var sectorMapTitle = {{_("'crime rate from '")}};
+var cuadMapTitle = {{_("'total crimes from '")}};
 var topoName = 'sectores';
 var mapFile = "/js/sectores.json";
 // var crimeFile = "js/hom-dol-sector.js";
@@ -130,9 +132,10 @@ rvsv:"Greensq", viol:"Graysq"}
 crimePrefix = 'rate of ';
 document.getElementById("HomicideButton").onclick = function (event) {
 event.preventDefault();
-d3.select('#homicide-title').text('Homicides - DF Total');
+d3.select("#homicide-title").text(value + " / " + {{_('"All DF"')}});
 chartHomicides.load({
-                columns: [HomicidesA],
+                columns: [_.flatten([value, _.map(_.groupBy(all_df, 'crime')[value], function(x) {return summer(x)})])],
+                unload: old_value,
             }); };
 
 </script>

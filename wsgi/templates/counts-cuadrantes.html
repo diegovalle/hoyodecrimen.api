@@ -25,32 +25,65 @@ anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts"
 {{super()}}
 {% endblock %}
 
-{% block subscribe %}   
+{% block subscribe %}
 {% endblock %}
 
 {% block content %}
+<hr/>
+<select id="crimeSelect">
 
-<!-- Begin MailChimp Signup Form -->
-<div id="mc_embed_signup">
-<form action="{{_('//diegovalle.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=102491489b')}}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-	<div class="center">
-          <div>
-            <span style="color:white;font-weight:bold;">{{_('Free email when new information is available')}}</span>
-	<input type="email" value=" " size="30" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email" required>
+</select>
+<script>
+var value = "HOMICIDIO DOLOSO";
+var old_value = "HOMICIDIO DOLOSOS";
+_.sortedFind = function sortedFind(list, item, key) {
+  return (item, list[_.sortedIndex(list, item, key)]);
+};
+$.ajax({
+  dataType: 'jsonp',
+  url: '/api/v1/crimes',
+  success: function(data) {
+    crimes = _.pluck(data.rows, "crime");
+    $.each(crimes, function(key, value) {
+      $('#crimeSelect')
+      .append($('<option>', { value : value })
+      .text(value));
+    });
+  }});
+  $('#crimeSelect').on('change', function() {
+    old_value = value;
+    value = this.value;
+    d3.select("#homicide-title").text(value + " / " + {{_('"All DF"')}});
+    $.ajax({
+      dataType: 'jsonp',
+      url: '/api/v1/cuadrantes/all/crimes/' + value + '/period',
+      success: function(data) {
+        cuadrantesMap = data;
+        quantizeRed = createQuantized(findRange(value), mapColors.hom);
+        d3.transition().selectAll("#map-homicide path").attr("class",function(d) {
+          obj = _.sortedFind(data.rows,
+            {'cuadrante': d.properties['cuadrante'].toUpperCase(),
+            'crime': value.toUpperCase()},
+            'cuadrante');
+            return quantizeRed(obj['count'] )
+          });
+          createLegend('#legend-homicides', quantizeRed)
+          chartHomicides.load({
+            columns: [_.flatten([value, _.map(_.groupBy(all_df, 'crime')[value], function(x) {return summer(x)})])],
+            unload: old_value,
+          });
+        }});
 
-    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-    <div style="position: absolute; left: -5000px;"><input type="text" name="{{_('b_787fae824c502d9f3ad7d0b73_102491489b')}}" tabindex="-1" value=""></div>
-   <input type="submit" value="{{_('Subscribe')}}" name="subscribe" id="mc-embedded-subscribe" class="button" style="background:green;color:white;padding: .7em 2em;font-size: .9em;padding-bottom: 6px;">
-</div></div>
-</form>
-</div>
-<!--End mc_embed_signup-->
+        //small_multiples(this.value); // or $(this).val()
+      });
+</script>
 
-                                          <h2 id="homicide-title"style="text-align:left;margin: 0 0 0 4em;">{{_('Homicides - Total')}}</h2>
+
+                                          <h2 id="homicide-title" style="text-align:left;margin: 0 0 0 4em;">{{_('Homicides - Total')}}</h2>
 
 					  <div class="row">
-                                           
-					    
+
+
                                             <div class="7u">
                                               <div class="chart-crime" id="chart-homicide"></div>
                                               <a href="#" class="button" id="HomicideButton">{{_('Reset Chart to show all DF data')}}</a>
@@ -61,198 +94,37 @@ anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts"
                                                 <div id = "legend-homicides"></div>
                                               </div>
                                             </div>
-                                          
+
                                           </div>
 <div>
 
-<p>{{_('Cuadrantes with the highest number of crimes')}}</p><div class="datagrid">
-
- <table ng-table="tableParams1" class="table">
-        <tr ng-repeat="cuadrante in $data | filter:'homicidio doloso'">
-          <td data-title="'{{_('Rank')}}'">{[cuadrante.rank]}</td>
-          <td data-title="'{{_('Crime')}}'">{[cuadrante.crime]}</td>
-          <td data-title="'{{_('Cuadrante')}}'">{[cuadrante.cuadrante]}</td>
-          <td data-title="'{{_('Sector')}}'">{[cuadrante.sector]}</td>
-          <td data-title="'{{_('Population')}}'">{[cuadrante.population | number:0]}</td>
-           <td data-title="'{{_('Count')}}'">{[cuadrante.count]}</td>
-        </tr>
-     </table>
-
-</div>
-
-</div>
-                                          <hr/>
-                                          <h2 id="rncv-title">{{_('VIOLENT ROBBERIES TO A BUSINESS - Total')}}</h2>
-                                          <div class="row">
-					    
-                                            <div class="7u">
-                                              <div class="chart-crime" id="chart-rncv"></div>
-<a href="#" class="button" id="RNCVButton">{{_('Reset Chart to show all DF data')}}</a>
-                                            </div>
-                                            <div class="4u">
-                                              <div id="map-rncv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;" id="rncv-date"></small>
-                                                <div id = "legend-rncv"></div>
-                                              </div>
-                                            </div>
-                                          </div>
-<div>
-
-<p>{{_('Cuadrantes with the highest number of crimes')}}</p><div class="datagrid">
- <table ng-table="tableParams2" class="table">
-        <tr ng-repeat="cuadrante in $data | filter:'robo a negocio c.v.'">
-          <td data-title="'{{_('Rank')}}'">{[cuadrante.rank]}</td>
-          <td data-title="'{{_('Crime')}}'">{[cuadrante.crime]}</td>
-          <td data-title="'{{_('Cuadrante')}}'">{[cuadrante.cuadrante]}</td>
-          <td data-title="'{{_('Sector')}}'">{[cuadrante.sector]}</td>
-          <td data-title="'{{_('Population')}}'">{[cuadrante.population | number:0]}</td>
-           <td data-title="'{{_('Count')}}'">{[cuadrante.count]}</td>
-        </tr>
-     </table>
-
-</div>
-
-</div>
-                                          <hr/>
-                                          <h2 id="rvcv-title">{{_('VIOLENT CAR ROBBERIES- Total')}}</h2>
-                                          <div class="row">
-					    
-                                            <div class="7u">
-                                              <div class="chart-crime" id="chart-rvcv"></div>
-                                              <a href="#" class="button" id="RVCVButton">{{_('Reset Chart to show all DF data')}}</a>
-                                            </div>
-                                            <div class="4u">
-                                              <div id="map-rvcv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;" id="rvcv-date"></small>
-                                                 <div id = "legend-rvcv"></div>
-                                              </div>
-                                            </div>
-                                          </div>
-<div>
-
-<p>{{_('Cuadrantes with the highest number of crimes')}}</p><div class="datagrid">
- <table ng-table="tableParams3" class="table">
-        <tr ng-repeat="cuadrante in $data | filter:'robo de vehiculo automotor c.v.'">
-          <td data-title="'{{_('Rank')}}'">{[cuadrante.rank]}</td>
-          <td data-title="'{{_('Crime')}}'">{[cuadrante.crime]}</td>
-          <td data-title="'{{_('Cuadrante')}}'">{[cuadrante.cuadrante]}</td>
-          <td data-title="'{{_('Sector')}}'">{[cuadrante.sector]}</td>
-          <td data-title="'{{_('Population')}}'">{[cuadrante.population | number:0]}</td>
-           <td data-title="'{{_('Count')}}'">{[cuadrante.count]}</td>
-        </tr>
-     </table>
-
-</div>
-
-</div>
-                                          <hr/>
-                                          <h2 id="rvsv-title">{{_('NON-VIOLENT CAR ROBBERIES - Total')}}</h2>
-                                          <div class="row">
-					    
-                                            <div class="7u">
-                                              <div class="chart-crime" id="chart-rvsv"></div>
-                                              <a href="#" class="button" id="RVSVButton">{{_('Reset Chart to show all DF data')}}</a>
-                                            </div>
-                                            <div class="4u">
-                                              <div id="map-rvsv" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;" id="rvsv-date"></small>
-                                                 <div id = "legend-rvsv"></div>
-                                              </div>
-                                            </div>
-                                          </div>
-<div>
-
-<p>{{_('Cuadrantes with the highest number of crimes')}}</p><div class="datagrid">
- <table ng-table="tableParams4" class="table">
-        <tr ng-repeat="cuadrante in $data | filter:'robo de vehiculo automotor s.v.'">
-          <td data-title="'{{_('Rank')}}'">{[cuadrante.rank]}</td>
-          <td data-title="'{{_('Crime')}}'">{[cuadrante.crime]}</td>
-          <td data-title="'{{_('Cuadrante')}}'">{[cuadrante.cuadrante]}</td>
-          <td data-title="'{{_('Sector')}}'">{[cuadrante.sector]}</td>
-          <td data-title="'{{_('Population')}}'">{[cuadrante.population | number:0]}</td>
-           <td data-title="'{{_('Count')}}'">{[cuadrante.count]}</td>
-        </tr>
-     </table>
-
-</div>
-
-</div>
-                                          <hr/>
-                                          <h2 id="rvsv-title">{{_('Rape - Total')}}</h2>
-                                          <div class="row">
-					    
-                                            <div class="7u">
-                                              <div class="chart-crime" id="chart-viol"></div>
-                                              <a href="#" class="button" id="RapeButton">{{_('Reset Chart to show all DF data')}}</a>
-                                            </div>
-                                            <div class="4u">
-                                              <div id="map-viol" style="height:500px">
-                                                <small style="font-size:12px;text-align:left;"  id="viol-date"></small>
-                                                 <div id = "legend-viol"></div>
-                                              </div>
-                                            </div>
-                                          </div>
-<div>
-
-<p>{{_('Cuadrantes with the highest number of crimes')}}</p><div class="datagrid">
- <table ng-table="tableParams5" class="table">
-        <tr ng-repeat="cuadrante in $data | filter:'violacion'">
-          <td data-title="'{{_('Rank')}}'">{[cuadrante.rank]}</td>
-          <td data-title="'{{_('Crime')}}'">{[cuadrante.crime]}</td>
-          <td data-title="'{{_('Cuadrante')}}'">{[cuadrante.cuadrante]}</td>
-          <td data-title="'{{_('Sector')}}'">{[cuadrante.sector]}</td>
-          <td data-title="'{{_('Population')}}'">{[cuadrante.population | number:0]}</td>
-           <td data-title="'{{_('Count')}}'">{[cuadrante.count]}</td>
-        </tr>
-     </table>
-
-</div>
 
 </div>
                                            {% endblock %}
-              {% block js_bottom %}   
+              {% block js_bottom %}
                         <script>
-var topoName = 'cuadrantes';    
+                        var shortMonths = {{_('[ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]')}};
+                        var longMonths = {{_('[ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]')}};
+                        var toText = {{_('" to "')}};
+                        var changesText={{_("'change in crimes '")}};
+                        var labelText = {{_('"number of crimes"')}};
+                        var sectorMapTitle = {{_("'crime rate from '")}};
+                        var cuadMapTitle = {{_("'total crimes from '")}};
+var topoName = 'cuadrantes';
 var mapFile = "/js/cuadrantes.json";
 //var crimeFile = "js/hom-dol-cuad.js";
 var mapColors = {hom:"Redsq", rncv:"Bluesq", rvcv:"Purplesq",
 rvsv:"Greensq", viol:"Graysq"}
 
  crimePrefix = 'number of ';
-document.getElementById("HomicideButton").onclick = function (event) { 
-event.preventDefault(); 
+document.getElementById("HomicideButton").onclick = function (event) {
+event.preventDefault();
 d3.select('#homicide-title').text('Homicides - DF Total');
 chartHomicides.load({
-                columns: [HomicidesA],
+                columns: [_.flatten([value, _.map(_.groupBy(all_df, 'crime')[value], function(x) {return summer(x)})])],
+                unload: old_value,
             }); };
 
-document.getElementById("RNCVButton").onclick = function (event) { 
-event.preventDefault(); 
-d3.select('#rncv-title').text('Robberies to a business with violence - DF Total');
-chartrncv.load({
-                columns: [rncvA],
-            }); };
-
-document.getElementById("RVCVButton").onclick = function (event) { 
-event.preventDefault(); 
-d3.select('#rvcv-title').text('Violent car robberies - DF Total');
-chartrvcv.load({
-                columns: [rvcvA],
-            }); };
-
-document.getElementById("RVSVButton").onclick = function (event) { 
-event.preventDefault(); 
-d3.select('#rvsv-title').text('Non-violent car robberies - DF Total');
-chartrvsv.load({
-                columns: [rvsvA],
-            }); };
-
-document.getElementById("RapeButton").onclick = function (event) { 
-event.preventDefault(); 
-d3.select('#viol-title').text('Rapes - DF Total');
-chartviol.load({
-                columns: [violA],
-            }); };
 </script>
 {% assets "js_maps"  %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>

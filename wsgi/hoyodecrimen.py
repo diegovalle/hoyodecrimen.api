@@ -71,7 +71,7 @@ assets.register('css_pip_req', css_pip_req)
 js_pip_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
                     "js/skel.min.js",
                     "js/skel-layers.min.js",
-                    "js/init.js", "js/underscore-min.js", "js/leaflet.js",
+                    "js/init.js", "js/vendor/lodash/lodash.min.js", "js/leaflet.js",
                     "js/leaflet-pip.js",
                     "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
                     "js/jquery.1.8.3.min.js", "js/modernizr.js", "js/vendor/metricsgraphics/metricsgraphics.js",
@@ -91,10 +91,7 @@ js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js", "js/confi
                      "js/skel.min.js", "js/skel-layers.min.js", "js/init.js",
                      "js/d3.v3.min.js",
                      "js/topojson.v1.min.js", "js/c3.min.js", "js/d3.tip.v0.6.3.js",
-                     "js/tooltip.js", "js/angular.min.js", "js/underscore-min.js",
-                     "js/angular-translate.js",
-                     "js/ng-table.min.js", "js/angular-resource.js",
-                     "js/angular-tables.js",
+                     "js/tooltip.js", "js/vendor/lodash/lodash.min.js",
                      filters="jsmin", output="js/packed-maps-reqs.js")
 assets.register('js_maps_req', js_maps_req)
 
@@ -113,7 +110,7 @@ js_leaflet_req = Bundle("js/leaflet.js", "js/L.Control.Locate.js",
                         "js/topojson.v1.min.js",
                         "js/topojson.v1.min.js", "js/l.control.geosearch.js",
                         "js/l.geosearch.provider.google.js",
-                        "js/d3.v3.min.js", "js/colorbrewer.js", "js/underscore-min.js",
+                        "js/d3.v3.min.js", "js/colorbrewer.js", "js/underscore-min.js", "js/vendor/metricsgraphics/metricsgraphics.js",
                         filters="jsmin", output="js/packed-leaflet.js", )
 assets.register('js_leaflet_req', js_leaflet_req)
 

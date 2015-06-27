@@ -77,13 +77,13 @@ tip = function(crimeCode) {
     .offset([0, 10])
     .html(function(d) {
         if (topoName === "sectores") {
-            obj = _.findWhere(cuadrantesMap.rows, {'sector': d.properties['sector'].toUpperCase(), 'crime':crimeCode.toUpperCase()});
+            obj = _.findWhere(cuadrantesMap.rows, {'sector': d.properties['sector'].toUpperCase(), 'crime':value.toUpperCase()});
             rate = Math.round(obj['count'] / obj['population'] * 100000 * 10) / 10;
             return "<span>" + d.properties.sector + (topoName === "sectores" ? "" : " - " + d.properties.cuadrante) +
                 " ⇨ " + rate + "</span>";
         }
         else {
-            obj = _.findWhere(cuadrantesMap.rows, {'cuadrante': d.properties['cuadrante'].toUpperCase(), 'crime':crimeCode.toUpperCase()});
+            obj = _.findWhere(cuadrantesMap.rows, {'cuadrante': d.properties['cuadrante'].toUpperCase(), 'crime':value.toUpperCase()});
             rate = obj[topoName === 'cuadrantes' ? 'count' : 'difference'];
             return "<span>" + d.properties.sector + (topoName === "sectores" ? "" : " - " + d.properties.cuadrante) +
                 " ⇨ " + rate + "</span>";
@@ -91,7 +91,7 @@ tip = function(crimeCode) {
 
     }));
 };
-tipHom = tip('homicidio doloso');
+tipHom = tip(value);
 svgHomicide.call(tipHom);
 // tipRNCV = tip('robo a negocio c.v.');
 // svgRNCV.call(tipRNCV);
@@ -112,41 +112,42 @@ createMap=function(df, svg, crime, crimeCode, colorFun, titleId, chart, topoNam,
         .attr("class", function(d) {
 
             if (topoName === "sectores") {
-                console.time("findmap");
                 obj = _.sortedFind(cuadrantesMap.rows,
                                   {'sector': d.properties['sector'].toUpperCase(),
                                    'crime':crimeCode.toUpperCase()},
                                   'sector');
-                console.timeEnd("findmap");
                 return colorFun(obj['count'] / obj['population'] * 100000 )
             }
             else {
-                console.time("findmap");
                 obj = _.sortedFind(cuadrantesMap.rows,
                                   {'cuadrante': d.properties['cuadrante'].toUpperCase(),
                                    'crime':crimeCode.toUpperCase()},
                                   'cuadrante');
-                console.timeEnd("findmap");
-                return colorFun(obj[topoName === 'cuadrantes' ? 'count' : 'difference'] )
+                if(typeof(obj) !== "undefined")
+                  return colorFun(obj[topoName === 'cuadrantes' ? 'count' : 'difference'] )
+                else {
+                  console.log(d.properties['cuadrante'].toUpperCase())
+                }
             }
 
         })
         .attr("d", path)
         //.attr("title", function(d) { return +d.properties.sector; })
-        .on("mouseover", tipFun.show)
-        .on("mouseout", tipFun.hide)
+        .on("mouseover", tipHom.show)
+        .on("mouseout", tipHom.hide)
         .on("mousedown", function(d) {
             if(topoName === "sectores")
                 var url = "/api/v1/sectores/" + encodeURIComponent(d.properties['sector'].toUpperCase()) + '/crimes';
             else
                 var url = "/api/v1/cuadrantes/"+ encodeURIComponent(d.properties['cuadrante'].toUpperCase()) + '/crimes';
-            d3.json(url  + '/' + crimeCode + '/series', function(data) {
+            d3.json(url  + '/' + value + '/series', function(data) {
                 series = _.map(data.rows, function(x) {return summer(x)})
-                series.unshift(seriesName);
+                series.unshift(value);
                 chart.load({
                     columns: [series],
+                    unload: old_value,
                 });
-                d3.select(titleId).text(crime + " / " + d.properties.sector + (topoName === "sectores" ? "" : " / " + d.properties.cuadrante));
+                d3.select(titleId).text(value + " / " + d.properties.sector + (topoName === "sectores" ? "" : " / " + d.properties.cuadrante));
 
             })
             // data = crimeData[crimeCode][d.properties[type]].slice(0);
@@ -251,12 +252,13 @@ createLegend=function(selection, colorFun){
 // var crimeFile = "js/hom-dol-cuad.js";
 d3.json(mapFile, function(error, df) {
     if(topoName == "sectores")
-        var url = "/api/v1/sectores/all/crimes/all/period";
+        var url = "/api/v1/sectores/all/crimes/HOMICIDIO%20DOLOSO/period";
     else if (topoName == "cuadrantes")
-        var url = "/api/v1/cuadrantes/all/crimes/all/period";
+        var url = "/api/v1/cuadrantes/all/crimes/HOMICIDIO%20DOLOSO/period";
     else
-        var url = "/api/v1/cuadrantes/all/crimes/all/period/change";
+        var url = "/api/v1/cuadrantes/all/crimes/HOMICIDIO%20DOLOSO/period/change";
     d3.json('/api/v1/df/crimes/all/series', function(data) {
+        all_df=data.rows;
         d3.json(url, function(cuadrantes){
             cuadrantesMap =cuadrantes;
         if(topoName == "sectores")
@@ -269,8 +271,8 @@ d3.json(mapFile, function(error, df) {
             dates.unshift("x")
 
         byCrime = _.groupBy(data.rows, 'crime')
-        HomicidesA = _.map(byCrime['HOMICIDIO DOLOSO'], function(x) {return summer(x)})
-        HomicidesA.unshift('Homicides')
+        HomicidesA = _.flatten([value, _.pluck(_.groupBy(all_df, 'crime')[value], 'count')])
+        HomicidesA = _.flatten([value, _.map(_.groupBy(all_df, 'crime')[value], function(x) {return summer(x)})])
         // rncvA = _.map(byCrime['ROBO A NEGOCIO C.V.'], function(x) {return summer(x)})
         // rncvA.unshift('Violent robberies to a business')
         // rvcvA = _.map(byCrime['ROBO DE VEHICULO AUTOMOTOR C.V.'], function(x) {return summer(x)})
@@ -282,7 +284,7 @@ d3.json(mapFile, function(error, df) {
 
         chartHomicides = createLineChart('#chart-homicide',
                                          HomicidesA,
-                                         crimePrefix + 'homicides',
+                                        labelText,
                                          'rgb(203,24,29)', dates)
 
         // chartrncv = createLineChart('#chart-rncv',
@@ -335,25 +337,23 @@ d3.json(mapFile, function(error, df) {
         //crimeData=data
 
         if(topoName==="cuadrantes-change"){
-            var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            var monthNames = shortMonths;
             var start_period1 = new Date(cuadrantesMap.rows[0].start_period1 + '-15');
             var start_period2 = new Date(cuadrantesMap.rows[0].start_period2 + '-15');
             var end_period1 = new Date(cuadrantesMap.rows[0].end_period1 + '-15');
             var end_period2 = new Date(cuadrantesMap.rows[0].end_period2 + '-15');
-            var dates = monthNames[start_period1.getMonth()] + ' ' + start_period1.getFullYear() + ' - ' + monthNames[end_period1.getMonth()]  + ' ' + end_period1.getFullYear()+ ' to ' + monthNames[start_period2.getMonth()] + ' ' + start_period2.getFullYear() + ' - ' + monthNames[end_period2.getMonth()]  + ' ' + end_period2.getFullYear()
-            d3.select('#hom-date').text('change in homicides ' + dates);
+            var dates = monthNames[start_period1.getMonth()] + ' ' + start_period1.getFullYear() + ' - ' + monthNames[end_period1.getMonth()]  + ' ' + end_period1.getFullYear()+ toText + monthNames[start_period2.getMonth()] + ' ' + start_period2.getFullYear() + ' - ' + monthNames[end_period2.getMonth()]  + ' ' + end_period2.getFullYear()
+            d3.select('#hom-date').text(changesText + dates);
             // d3.select('#rncv-date').text('change in violent robberies to a business ' + dates);
             // d3.select('#rvcv-date').text('change in violent car robberies ' + dates);
             // d3.select('#rvsv-date').text('change in non-violent car robberies ' + dates);
             // d3.select('#viol-date').text('change in rapes ' + dates);
         } else {
-            var monthNames = [ "January", "February", "March", "April", "May", "June",
-                               "July", "August", "September", "October", "November", "December" ];
+            var monthNames = longMonths;
             var startDate = new Date(cuadrantesMap.rows[0].start_date + '-15');
             var endDate = new Date(cuadrantesMap.rows[0].end_date + '-15');
-            var dates = monthNames[startDate.getMonth()] + ' ' + startDate.getFullYear() + ' to ' + monthNames[endDate.getMonth()] + ' ' +  endDate.getFullYear();
-            d3.select('#hom-date').text((topoName == "sectores" ? 'homicide rate from ' : 'total homicides from ') + dates);
+            var dates = monthNames[startDate.getMonth()] + ' ' + startDate.getFullYear() + toText + monthNames[endDate.getMonth()] + ' ' +  endDate.getFullYear();
+            d3.select('#hom-date').text((topoName == "sectores" ? sectorMapTitle : cuadMapTitle) + dates);
             // d3.select('#rncv-date').text((topoName == "sectores" ?'violent robbery to a business rate from ' : 'total (violent robberies to a business rate from') + dates);
             // d3.select('#rvcv-date').text((topoName == "sectores" ?'violent car robbery rate from ' : 'total violent car robberies from ') + dates);
             // d3.select('#rvsv-date').text((topoName == "sectores" ?'non-violent car robbery rate from ': 'total non-violent car robberies from ') + dates);
@@ -364,7 +364,9 @@ d3.json(mapFile, function(error, df) {
         // quantizePurple = createQuantized(findRange('robo de vehiculo automotor c.v.'), mapColors.rvcv)
         // quantizeGreen = createQuantized(findRange('robo de vehiculo automotor s.v.'), mapColors.rvsv)
         // quantizeGray = createQuantized(findRange('violacion'), mapColors.viol)
+          console.time("findmap");
         createMap(df, svgHomicide, 'Homicides','homicidio doloso', quantizeRed, '#homicide-title', chartHomicides, topoName, tipHom, HomicidesA[0]);
+          console.timeEnd("findmap");
         // createMap(df, svgRNCV, 'Violent robberies to a business', 'robo a negocio c.v.', quantizeBlue, '#rncv-title', chartrncv, topoName, tipRNCV, rncvA[0]);
         // createMap(df, svgRVCV, 'Violent car robberies', 'robo de vehiculo automotor c.v.', quantizePurple, '#rvcv-title', chartrvcv, topoName, tipRVCV, rvcvA[0]);
         // createMap(df, svgRVSV, 'Non-violent car robberies', 'robo de vehiculo automotor s.v.', quantizeGreen, '#rvsv-title', chartrvsv, topoName, tipRVSV, rvsvA[0]);
