@@ -139,6 +139,8 @@ setChange = function(){
                                   invertExtent(config.color[i])[1], 1)
             );
         }
+        homTotal = _.reduce(mapData.rows, function(total, n) {return total + n.count}, 0);
+        homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
         $(config.selector).css('background-color', config.color[2]);
         updateLineChart();
         clickedFeature = null;
@@ -210,7 +212,7 @@ info.update = function (feature) {
         '</tr>' +
         '<tr>' +
         '<td class="crime_name  tg-031e">'+ config.currentName.toUpperCase() +'</td>' +
-        '<td class="crime_rate tg-031e' + ('sectores' === "sectores" ? " homicides " : "")  + '">' + (props ? null + props.hom_rate : homTotalRate) +'</td>' +
+        '<td class="crime_rate tg-031e' + ('sectores' === "sectores" ? " homicides " : "")  + '">' + (props ? props.hom_rate : homTotalRate) +'</td>' +
         '<td class="crime_count tg-031e' + ('sectores' === "sectores" ? "" : " homicides ")  + '">' + (props ? comma(props.hom_count) : comma(homTotal)) +'</td>' +
         '</tr>' +
         '</table><br/><div class="row"><div class="col-md-5">'+map_legend_text+'<div class="legend">';
@@ -406,56 +408,57 @@ calcTotal = function(crimeName, series) {
     }, 0); }
 
 
-$.getJSON(mapFile, function (data) {
+    $.getJSON(mapFile, function (data) {
 
-    var mxcGeojson = topojson.feature(data, data.objects[mapType]).features;
+      var mxcGeojson = topojson.feature(data, data.objects[mapType]).features;
 
-    var featureCollection = {
+      var featureCollection = {
         "type": "FeatureCollection",
         "features": []
-    };
+      };
 
-    for (var i = 0; i <  mxcGeojson.length; i++) {
+      for (var i = 0; i <  mxcGeojson.length; i++) {
         featureCollection.features.push({
-            "type":"Feature",
-            "geometry":  mxcGeojson[i].geometry,
-            "properties":  mxcGeojson[i].properties
+          "type":"Feature",
+          "geometry":  mxcGeojson[i].geometry,
+          "properties":  mxcGeojson[i].properties
         });
-    }
+      }
 
-    //findRange=function(mxcGeojson, name) {
-    //    return(d3.extent(d3.entries(mxcGeojson), function(d){return(+d.value.properties[name])} ));
-    //}
-    var api_url;
-    mapType === 'sectores' ? api_url = '/api/v1/sectores/all/crimes/HOMICIDIO%20DOLOSO/period' : api_url = '/api/v1/cuadrantes/all/crimes/HOMICIDIO%20DOLOSO/period';
-    d3.json(api_url, function (list) {
+      //findRange=function(mxcGeojson, name) {
+      //    return(d3.extent(d3.entries(mxcGeojson), function(d){return(+d.value.properties[name])} ));
+      //}
+      var api_url;
+      mapType === 'sectores' ? api_url = '/api/v1/sectores/all/crimes/HOMICIDIO%20DOLOSO/period' : api_url = '/api/v1/cuadrantes/all/crimes/HOMICIDIO%20DOLOSO/period';
+      d3.json(api_url, function (list) {
         mapData = list
-        d3.json('/api/v1/df/crimes/HOMICIDIO%20DOLOSO/series', function(series){
+        //d3.json('/api/v1/df/crimes/HOMICIDIO%20DOLOSO/series', function(series){
+          homTotal = _.reduce(mapData.rows, function(total, n) {return total + n.count}, 0);
+          homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
+          //homTotal = calcTotal('homicidio doloso', series);
+          //homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
 
-            homTotal = calcTotal('homicidio doloso', series);
-            homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
-
-            //homTotal = 823,rncvTotal = 3867,rvcvTotal = 6208,rvsvTotal = 10583,violTotal = 461,homTotalRate = 9.4,rncvTotalRate = 44,rvcvTotalRate = 70.7,rvsvTotalRate = 120.5,violTotalRate = 5.2
+          //homTotal = 823,rncvTotal = 3867,rvcvTotal = 6208,rvsvTotal = 10583,violTotal = 461,homTotalRate = 9.4,rncvTotalRate = 44,rvcvTotalRate = 70.7,rvsvTotalRate = 120.5,violTotalRate = 5.2
 
 
 
-        //The scales for the various maps
-        scaleHomicide = createScale(colorbrewer.Reds["9"],
-                                    findRange('homicidio doloso'), 9),
-        scaleRNCV = createScale(colorbrewer.Blues["9"],
-                                findRange('robo a negocio c.v.'), 9),
-        scaleRVCV = createScale(colorbrewer.Purples["9"],
-                                findRange('robo de vehiculo automotor c.v.'), 9),
-        scaleRVSV = createScale(colorbrewer.Greens["9"],
-                                findRange('robo de vehiculo automotor s.v.'), 9);
-        scaleVIOL = createScale(colorbrewer.Greys["9"],
-                            findRange('violacion'), 9);
-        getColor = function(value) {
+          //The scales for the various maps
+          scaleHomicide = createScale(colorbrewer.Reds["9"],
+          findRange('homicidio doloso'), 9),
+          scaleRNCV = createScale(colorbrewer.Blues["9"],
+          findRange('robo a negocio c.v.'), 9),
+          scaleRVCV = createScale(colorbrewer.Purples["9"],
+          findRange('robo de vehiculo automotor c.v.'), 9),
+          scaleRVSV = createScale(colorbrewer.Greens["9"],
+          findRange('robo de vehiculo automotor s.v.'), 9);
+          scaleVIOL = createScale(colorbrewer.Greys["9"],
+          findRange('violacion'), 9);
+          getColor = function(value) {
             return scaleFun(value);
-        };
-        scaleFun = scaleHomicide;
-        //colorFun = scaleFun;
-        config = {
+          };
+          scaleFun = scaleHomicide;
+          //colorFun = scaleFun;
+          config = {
             colorFun:  scaleFun,
             color: colorbrewer.Reds["9"],
             currentName: "homicidio doloso",
@@ -463,61 +466,61 @@ $.getJSON(mapFile, function (data) {
             selector: ".homicides",
             round1: null,
             round2: null
-        }
-        if(mapType != "sectores") {
+          }
+          if(mapType != "sectores") {
             config.round1 = Math.ceil;
             config.round2 = Math.floor;
-        }
-        else {
+          }
+          else {
             config.round1 = d3.round;
             config.round2 = d3.round;
-        }
+          }
 
-        // mxcLayer.addData(featureCollection);
+          // mxcLayer.addData(featureCollection);
 
-        mxc = L.geoJson(featureCollection, {
+          mxc = L.geoJson(featureCollection, {
             style: getStyle,
             onEachFeature: onEachFeature
-        }).addTo(map);
-        updateLineChart();
-        //legend.addTo(map);
-        info.addTo(map);
-        info.update();
+          }).addTo(map);
+          updateLineChart();
+          //legend.addTo(map);
+          info.addTo(map);
+          info.update();
 
-        $.ajax({
+          $.ajax({
             dataType: 'jsonp',
             url: '/api/v1/crimes',
             success: function(data) {
-                crimes = _.pluck(data.rows, "crime");
-                $.each(crimes, function(key, value) {
-                    $('#seltarget')
-                 .append($('<option>', { value : value })
-                 .text(value));
-                });
-                select_html = $('#seltarget').html();
+              crimes = _.pluck(data.rows, "crime");
+              $.each(crimes, function(key, value) {
+                $('#seltarget')
+                .append($('<option>', { value : value })
+                .text(value));
+              });
+              select_html = $('#seltarget').html();
             }});
 
-        document.getElementById("seltarget").onmouseover = controlEnter;
-        document.getElementById("seltarget").onmouseout = controlLeave;
-        L.control.layers(null,baseMaps, {position: 'topleft'}).addTo(map);
+            document.getElementById("seltarget").onmouseover = controlEnter;
+            document.getElementById("seltarget").onmouseout = controlLeave;
+            L.control.layers(null,baseMaps, {position: 'topleft'}).addTo(map);
             L.control.locate({
-                              drawCircle: false,
-                          locateOptions: {enableHighAccuracy: true }}).addTo(map);
-        var hash = new L.Hash(map);
-        //deselect any selected polygons when the user clicks on the map
-        map.on('click', function(e) {
-            if(clickedFeature){
-                clickedFeature.target.setStyle({
-	            fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
+              drawCircle: false,
+              locateOptions: {enableHighAccuracy: true }}).addTo(map);
+              var hash = new L.Hash(map);
+              //deselect any selected polygons when the user clicks on the map
+              map.on('click', function(e) {
+                if(clickedFeature){
+                  clickedFeature.target.setStyle({
+                    fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
                     fillOpacity: 0.8,
                     weight: 0.5,
                     color: '#555'
-                });
-            }
-            updateLineChart();
-            clickedFeature = null;
-            info.update();
+                  });
+                }
+                updateLineChart();
+                clickedFeature = null;
+                info.update();
+              });
+            //});
+          });
         });
-    });
-});
-});
