@@ -109,8 +109,11 @@ js_leaflet_req = Bundle("js/leaflet.js", "js/L.Control.Locate.js",
                         "js/leaflet-hash.js", "js/jquery.1.8.3.min.js",
                         "js/topojson.v1.min.js",
                         "js/topojson.v1.min.js", "js/l.control.geosearch.js",
+                        "js/vendor/leaflet/bing.js",
                         "js/l.geosearch.provider.google.js",
-                        "js/d3.v3.min.js", "js/colorbrewer.js", "js/underscore-min.js", "js/vendor/metricsgraphics/metricsgraphics.js",
+                        "js/d3.v3.min.js", "js/colorbrewer.js",
+                        "js/underscore-min.js",
+                        "js/vendor/metricsgraphics/metricsgraphics.js",
                         filters="jsmin", output="js/packed-leaflet.js", )
 assets.register('js_leaflet_req', js_leaflet_req)
 
