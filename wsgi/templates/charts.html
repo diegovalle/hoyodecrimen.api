@@ -71,9 +71,9 @@ small_multiples = function(value) {
             _.forEach(data.rows, function(x) {x['rate'] = x.count / x.population * 100000 * 12});
             //sectors sorted by highest homicide rate
             groups=_.groupBy(data.rows, function(x) {return x.sector});
-            red = _(groups).map(function(g, key) {
+            red = _.map(groups, function(g, key) {
                 return { sector: key,
-                         rate: _(g).reduce(function(m,x) { return (m + x.rate); }, 0) };
+                         rate: _.reduce(g, function(m,x) { return (m + x.rate); }, 0) };
             });
             sectores = _.pluck(_.sortBy(red, "rate"), "sector").reverse();
 

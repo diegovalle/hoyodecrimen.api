@@ -1021,7 +1021,7 @@ def cuadrantes_change_sum_all(cuadrante, crime):
     sql_query2 = "" if crime == "ALL" else " where upper(crime) = :crime "
     sql_query3 = "" if cuadrante == "ALL" else " where upper(cuadrante) = :cuadrante "
     sql_query4 = """group by cuadrante, sector, crime
-                        order by crime asc, difference desc, cuadrante asc"""
+                        order by crime asc, cuadrante asc"""
     results = db.session.execute(sql_query1 + sql_query2 + sql_query3 + sql_query4, {'max_date': max_date,
                                  'max_date_minus3': max_date_minus3,
                                  'max_date_last_year': max_date_last_year,
@@ -1589,5 +1589,3 @@ def top5changecuadrantes(crime):
                                                                         'crime': crime,
                                                                         'rank': rank})
     return lib.ResultProxy_to_json(results)
-
-
