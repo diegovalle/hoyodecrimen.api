@@ -13,7 +13,7 @@ before_script:
     varchar (60), date varchar (10), count int, year int, sector
     varchar(60), population integer, PRIMARY KEY(cuadrante, sector,
     crime, date) ); COPY cuadrantes FROM
-    '$TRAVIS_BUILD_DIR/data/cuadrantes.csv'
+    'cuadrantes.csv'
     DELIMITER ',' NULL AS 'NA' CSV HEADER;CREATE TABLE municipios (cuadrante varchar (15),
     sector varchar (60),
     cvegeo  varchar (5),
