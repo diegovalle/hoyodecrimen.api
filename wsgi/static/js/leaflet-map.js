@@ -505,7 +505,7 @@ calcTotal = function(crimeName, series) {
 
             document.getElementById("seltarget").onmouseover = controlEnter;
             document.getElementById("seltarget").onmouseout = controlLeave;
-            L.control.layers(null,baseMaps, {position: 'topleft'}).addTo(map);
+            L.control.layers(baseMaps,null, {position: 'topleft'}).addTo(map);
             L.control.locate({
               drawCircle: false,
               locateOptions: {enableHighAccuracy: true }}).addTo(map);
