@@ -6,6 +6,7 @@ env:
 addons:
   postgresql: "9.2"
 before_script:
+  - unzip '$TRAVIS_BUILD_DIR/data/cuadrantes.csv.zip'
   - psql -c 'create database apihoyodecrimen;' -U postgres
   - psql apihoyodecrimen -U postgres -c "create extension postgis;"
   - psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (15), crime
@@ -13,7 +14,12 @@ before_script:
     varchar(60), population integer, PRIMARY KEY(cuadrante, sector,
     crime, date) ); COPY cuadrantes FROM
     '$TRAVIS_BUILD_DIR/data/cuadrantes.csv'
-    DELIMITER ',' NULL AS 'NA' CSV HEADER;" -U postgres 
+    DELIMITER ',' NULL AS 'NA' CSV HEADER;CREATE TABLE municipios (cuadrante varchar (15),
+    sector varchar (60),
+    cvegeo  varchar (5),
+    municipio varchar(200),
+    PRIMARY KEY(cuadrante)
+    ); COPY municipios FROM '$TRAVIS_BUILD_DIR/data/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;" -U postgres 
   - psql -d apihoyodecrimen -U postgres < $TRAVIS_BUILD_DIR/data/cuadrantes_poly.sql
   - pybabel extract -F wsgi/babel.cfg -o wsgi/messages.pot .
   - pybabel update -i wsgi/messages.pot -d wsgi/translations
