@@ -6,13 +6,13 @@ import unittest
 
 class FlaskTestCase(unittest.TestCase):
     # Check that the API is generating json and responding, even if it's crap
-    def test_calderas(self):
-        tester = app.test_client(self)
-        response = tester.get('/api/v1/estariamosmejorcon',
-content_type='application/json')
-        self.assertEqual(response.status_code, 200)
-        # Check that the result sent is the hero of all Mexico
-        self.assertEqual(json.loads(response.data), {"rows": ["Calderon"]})
+    # def test_calderas(self):
+#         tester = app.test_client(self)
+#         response = tester.get('/api/v1/estariamosmejorcon',
+# content_type='application/json')
+#         self.assertEqual(response.status_code, 200)
+#         # Check that the result sent is the hero of all Mexico
+#         self.assertEqual(json.loads(response.data), {"rows": ["Calderon"]})
 
     # Check the API endpoint
     def test_api_v1_top_counts_change_cuadrantes(self):
