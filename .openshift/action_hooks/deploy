@@ -1,2 +1,2 @@
-pybabel extract $OPENSHIFT_HOMEDIR/app-root/repo/wsgi -F $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/babel.cfg -o $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/messages.pot; pybabel update -i $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/messages.pot -d $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/translations
+pybabel extract $OPENSHIFT_HOMEDIR/app-root/repo/wsgi -F $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/babel.cfg -o $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/messages.pot; pybabel compile -d $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/translations
 #msgcat $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/translations/es/LC_MESSAGES/messages.po | msgfmt -o $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/translations/es/LC_MESSAGES/messages.mo -
