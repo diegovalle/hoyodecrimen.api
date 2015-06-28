@@ -6,14 +6,14 @@ env:
 addons:
   postgresql: "9.2"
 before_script:
-  - unzip $TRAVIS_BUILD_DIR/data/cuadrantes.csv.zip
+  - unzip $TRAVIS_BUILD_DIR/data/cuadrantes.csv.zip -d $TRAVIS_BUILD_DIR/data
   - psql -c 'create database apihoyodecrimen;' -U postgres
   - psql apihoyodecrimen -U postgres -c "create extension postgis;"
   - psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (15), crime
     varchar (60), date varchar (10), count int, year int, sector
     varchar(60), population integer, PRIMARY KEY(cuadrante, sector,
     crime, date) ); COPY cuadrantes FROM
-    'cuadrantes.csv'
+    '$TRAVIS_BUILD_DIR/data/cuadrantes.csv'
     DELIMITER ',' NULL AS 'NA' CSV HEADER;CREATE TABLE municipios (cuadrante varchar (15),
     sector varchar (60),
     cvegeo  varchar (5),
