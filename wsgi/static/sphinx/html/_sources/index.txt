@@ -11,8 +11,6 @@ Welcome to HoyoDeCrimen API's documentation!
 
 .. contents::
 
-
-
 .. Indices and tables
 .. ==================
 
@@ -50,7 +48,7 @@ This is beta software and paths may break (but not much). If you
 notice an error, have any comments, or stuff you'd like added to the
 API raise an issue on `GitHub
 <https://github.com/diegovalle/hoyodecrimen.api/issues>`_ or email me
-at diegovalle@gmail.com. All data comes from freedom of information
+at diego@diegovalle.net. All data comes from freedom of information
 requests to the Mexico City government, sometimes I get data on crimes
 which happened in non-specified cuadrantes (*NO ESPECIFICADO*) and sometimes
 not, depending on how lucky I get when the FOIA request is answered.
@@ -59,23 +57,23 @@ License
 ========
 
 Data accessed via this API is provided under the
-`Attribution-NonCommercial-ShareAlike 4.0 International
-<http://creativecommons.org/licenses/by-nc-sa/4.0/>`_. If you use this
+`Creative Commons Attribution 4.0 International License
+<http://creativecommons.org/licenses/by/4.0/>`_. If you use this
 data you must link back to https://hoyodecrimen.com/ as the origin of
-the data.
+the data. You may also consult our `privacy policy <https://gist.github.com/diegovalle/83d0c541d784e5e6ccce>`_.
 
 What's available
 ================
 
 
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
-| Service                | Action                                              | URI                                                                               | 
+| Service                | Action                                              | URI                                                                               |
 |                        |                                                     |                                                                                   |
 +========================+=====================================================+===================================================================================+
 | Point in Polygon       | Given a longitude and latitude return the           | | **/api/v1/cuadrantes/pip/(string: long)/(string: lat)**                         |
 |                        | corresponding cuadrante and sector                  | | **/api/v1/cuadrantes/crimes/(string: crime)/pip/(string: long)/(string: lat)**  |
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
-| Time Series            | Crime counts ordered by month of occurrence for a   | | **/api/v1/sectores/(string: sector)/crimes/(string: crime)/series/**            |
+| Time Series            | Crime counts ordered by month of occurrence for a   | | **/api/v1/sectores/(string: sector)/crimes/(string: crime)/series**             |
 |                        | cuadrante or sector                                 | | **/api/v1/cuadrantes/(string: cuadrante)/crimes/(string: crime)/series**        |
 |                        |                                                     |                                                                                   |
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
@@ -85,7 +83,7 @@ What's available
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
 | Top Most Violent       | A list of the cuadrantes and sectors with the       | | **/api/v1/sectores/crimes/(string: crime)/top/rates**                           |
 |                        | highest rates (sectores), crime counts              | | **/api/v1/cuadrantes/crimes/(string: crime)/top/counts**                        |
-|                        | (cuadrantes) or change in crime counts (cuadrantes) | | **/api/v1/cuadrantes/crimes/(string: crime)/top/counts/change**                 | 
+|                        | (cuadrantes) or change in crime counts (cuadrantes) | | **/api/v1/cuadrantes/crimes/(string: crime)/top/counts/change**                 |
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
 | DF data                | A time series of the sum of all crimes              | | **/api/v1/df/crimes/(string: crime)/series**                                    |
 |                        | that occurred in the Federal District               |                                                                                   |
@@ -94,7 +92,10 @@ What's available
 |                        | sectores or crimes                                  | | **/api/v1/sectores**                                                            |
 |                        |                                                     | | **/api/v1/crimes**                                                              |
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
-
+| GeoJSON                | Return maps as GeoJSON                              | | **/api/v1/cuadrantes/geojson**                                                  |
+|                        |                                                     | | **/api/v1/sectores/geojson**                                                    |
+|                        |                                                     | | **/api/v1/municipios/geojson**                                                  |
++------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
 
 Getting Started
 =================
@@ -157,4 +158,4 @@ API Reference
 ==============
 
 .. autoflask:: hoyodecrimen:app
-  :undoc-static:
+  :undoc-static: municipios
