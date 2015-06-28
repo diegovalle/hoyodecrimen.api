@@ -1,23 +1,24 @@
 from hoyodecrimen import app
-
-import os
 import json
 import unittest
 #import tempfile
+
 
 class FlaskTestCase(unittest.TestCase):
     # Check that the API is generating json and responding, even if it's crap
     def test_calderas(self):
         tester = app.test_client(self)
-        response = tester.get('/api/v1/estariamosmejorcon', content_type='application/json')
+        response = tester.get('/api/v1/estariamosmejorcon',
+content_type='application/json')
         self.assertEqual(response.status_code, 200)
         # Check that the result sent is the hero of all Mexico
         self.assertEqual(json.loads(response.data), {"rows": ["Calderon"]})
 
-	# Check the API endpoint
+    # Check the API endpoint
     def test_api_v1_top_counts_change_cuadrantes(self):
         tester = app.test_client(self)
-        response = tester.get('/api/v1/cuadrantes/crimes/homicidio%20doloso/top/counts/change', content_type='application/json')
+        response = tester.get('/api/v1/cuadrantes/crimes/homicidio%20doloso/top/counts/change',
+                              content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
@@ -323,6 +324,44 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get(base_url, content_type="text/html")
         self.assertEqual(response.status_code, 200)
+
+    def test_api_v1_geojson_cuadrantes(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/cuadrantes/geojson', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+
+    def test_api_v1_geojson_sectores(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/sectores/geojson', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+
+    def test_api_v1_geojson_municipios(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/municipios/geojson', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+
+    # def test_api_v1_mun_counts(self):
+    #     tester = app.test_client(self)
+    #     response = tester.get('/api/v1/municipios/crimes/homicidio%20doloso/top/counts', content_type='application/json')
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertNotEqual(json.loads(response.data), {"rows": []})
+
+    def test_api_v1_mun_series(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/municipios/tlalpan/crimes/homicidio%20doloso/series', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+
+    def test_api_v1_mun_series(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/municipios', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+
+
 
 if __name__ == '__main__':
     unittest.main()

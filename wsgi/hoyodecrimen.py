@@ -5,7 +5,7 @@ from flask import Blueprint, Flask, jsonify, request, abort, \
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy import func, and_
-from flask.ext.cache import Cache
+from flask_cache import Cache
 from flask.ext.assets import Environment, Bundle
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
@@ -253,7 +253,7 @@ def static__api(filename):
 
 @app.route('/css/<path:filename>')
 def static_css(filename):
-    return send_from_directory(os.path.join(_basedir, 'static','css'), filename)
+    return send_from_directory(os.path.join(_basedir, 'static', 'css'), filename)
 
 
 @app.route('/font/<path:filename>')

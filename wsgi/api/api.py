@@ -4,7 +4,7 @@ from flask import Blueprint, Flask, jsonify, \
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy import func, and_
-from flask.ext.cache import Cache
+from flask_cache import Cache
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
 from geoalchemy2.elements import WKTElement
@@ -99,44 +99,9 @@ def check_dates(start_period, end_period, default_start=None):
 @API.route('/cuadrantes/geojson')
 @jsonp
 def cuad_geojson():
-    """Return a map of the cuadrantes delictivos encoded as geojson
+    """Returns a map of the cuadrantes delictivos encoded as geojson
 
-    :status 200: return the geojson
-
-    :resheader Content-Type: application/json
-    """
-    return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'cuadrantes.json')
-
-@API.route('/sectores/geojson')
-@jsonp
-def sectores_geojson():
-    """Return a map of the sectores delictivos encoded as geojson
-
-    :status 200: return the geojson
-
-    :resheader Content-Type: application/json
-    """
-    return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'sectores.json')
-
-@API.route('/municipios/geojson')
-@jsonp
-def muns_geojson():
-    """Return a map of the municipios that make up the Federal District encoded as geojson
-
-    :status 200: return the geojson
-
-    :resheader Content-Type: application/json
-    """
-    return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'municipios.json')
-
-@API.route('/estariamosmejorcon', methods=['GET'])
-@jsonp
-@cache.cached(key_prefix=make_cache_key)
-def estariamosmejorcon():
-    """Return the once and future president of Mexico
-
-    :status 200: when the best man for the job is a good ol' regular citizen
-    :status 666: when the best man for the job is president once more
+    :status 200: return a geojson map
 
     :resheader Content-Type: application/json
 
@@ -144,12 +109,71 @@ def estariamosmejorcon():
 
     .. sourcecode:: http
 
-      GET /api/v1/estariamosmejorcon HTTP/1.1
+      GET /api/v1/cuadrantes/geojson HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
-
     """
-    return jsonify(rows=['Calderon'])
+    return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'cuadrantes.json')
+
+@API.route('/sectores/geojson')
+@jsonp
+def sectores_geojson():
+    """Returns a map of the sectores delictivos encoded as geojson
+
+    :status 200: return a geojson map
+
+    :resheader Content-Type: application/json
+
+    **Example request**:
+
+    .. sourcecode:: http
+
+      GET /api/v1/sectores/geojson HTTP/1.1
+      Host: hoyodecrimen.com
+      Accept: application/json
+    """
+    return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'sectores.json')
+
+@API.route('/municipios/geojson')
+@jsonp
+def muns_geojson():
+    """Returns a map of the municipios that make up the Federal District encoded as geojson
+
+    :status 200: return a geojson map
+
+    :resheader Content-Type: application/json
+
+    **Example request**:
+
+    .. sourcecode:: http
+
+      GET /api/v1/municipios/geojson HTTP/1.1
+      Host: hoyodecrimen.com
+      Accept: application/json
+    """
+    return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'municipios.json')
+
+# @API.route('/estariamosmejorcon', methods=['GET'])
+# @jsonp
+# @cache.cached(key_prefix=make_cache_key)
+# def estariamosmejorcon():
+#     """Return the once and future president of Mexico
+
+#     :status 200: when the best man for the job is a good ol' regular citizen
+#     :status 666: when the best man for the job is president once more
+
+#     :resheader Content-Type: application/json
+
+#     **Example request**:
+
+#     .. sourcecode:: http
+
+#       GET /api/v1/estariamosmejorcon HTTP/1.1
+#       Host: hoyodecrimen.com
+#       Accept: application/json
+
+#     """
+#     return jsonify(rows=['Calderon'])
 
 
 @API.route('/cuadrantes/pip/'
@@ -641,13 +665,13 @@ def sectors(crime, sector):
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def municipios_series(crime, municipio):
-    """Return the count of crimes that occurred in a sector, by date
+    """Return the count of crimes that occurred in a municipio, by date
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
-    :param cuadrante: the name of the cuadrante from which to return the time series or the keyword ``all to return all sectores
+    :param cuadrante: the name of the municipio from which to return the time series or the keyword ``all to return all municipios
 
     :status 200: when the sum of all crimes is found
-    :status 404: when the crime or cuadrante is not found in the database
+    :status 404: when the crime or municipio is not found in the database
 
     :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
     :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
@@ -658,7 +682,7 @@ def municipios_series(crime, municipio):
 
     .. sourcecode:: http
 
-      GET /api/v1/sectores/angel%20-%20zona%20rosa/crimes/violacion/series HTTP/1.1
+      GET /api/v1/municipios/tlalpan/crimes/homicidio%20doloso/series
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -672,12 +696,12 @@ def municipios_series(crime, municipio):
       {
       "rows": [
       {
-      "count": 0,
+      "count": 1,
       "crime": "HOMICIDIO DOLOSO",
-      "month": 1,
-      "population": 25606,
-      "sector": "ANGEL - ZONA ROSA",
-      "year": 2013
+      "cvegeo": "09012",
+      "date": "2013-01",
+      "municipio": "TLALPAN",
+      "population": 633181
       },
       ...
 
@@ -1176,14 +1200,14 @@ def listsectores():
     return lib.results_to_json(results)
 
 
-@API.route('/delegaciones',
+@API.route('/municipios',
            methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def list_municipios():
-    """Enumerate all cuadrantes and sectors with the delegacion they belong to
+    """Enumerate all cuadrantes and sectors with the municipios they belong to
 
-    :status 200: when all the delegaciones were found
+    :status 200: when all the municipios were found
 
     :resheader Content-Type: application/json
 
@@ -1191,7 +1215,7 @@ def list_municipios():
 
     .. sourcecode:: http
 
-       GET /api/v1/delegaciones HTTP/1.1
+       GET /api/v1/municipios HTTP/1.1
        Host: hoyodecrimen.com
        Accept: application/json
 
@@ -1206,13 +1230,13 @@ def list_municipios():
       {
       "cuadrante": "P-1.1.1",
       "cvegeo": "09010",
-      "delegacion": "ALVARO OBREGON",
+      "municipio": "ALVARO OBREGON",
       "sector": "ALPES"
       },
       {
       "cuadrante": "P-1.1.10",
       "cvegeo": "09010",
-      "delegacion": "ALVARO OBREGON",
+      "municipio": "ALVARO OBREGON",
       "sector": "ALPES"
       },
       ...
@@ -1220,7 +1244,7 @@ def list_municipios():
     results = Municipios.query. \
         with_entities(func.upper(Municipios.sector).label('sector'),
                       func.upper(Municipios.cuadrante).label('cuadrante'),
-                      func.upper(Municipios.municipio).label('delegacion'),
+                      func.upper(Municipios.municipio).label('municipio'),
                       func.upper(Municipios.cvegeo).label('cvegeo')). \
         order_by(Municipios.municipio, Municipios.sector, Municipios.cuadrante). \
         distinct(). \
@@ -1310,90 +1334,90 @@ def top5cuadrantes(crime):
     return lib.ResultProxy_to_json(results)
 
 
-@API.route('/delegaciones/crimes/<string:crime>/top/counts',
-           methods=['GET'])
-@jsonp
-@cache.cached(key_prefix=make_cache_key)
-def top5municipios(crime):
-    """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
+# @API.route('/municipios/crimes/<string:crime>/top/counts',
+#            methods=['GET'])
+# @jsonp
+# @cache.cached(key_prefix=make_cache_key)
+# def top5municipios(crime):
+#     """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
 
-    When no dates parameters are specified the top 5 cuadrantes for the last 12 months are returned
-    (e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
-    All population data returned by this call is in persons/year and comes from the 2010 census
+#     When no dates parameters are specified the top 5 cuadrantes for the last 12 months are returned
+#     (e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
+#     All population data returned by this call is in persons/year and comes from the 2010 census
 
-    :param crime: the name of a crime or the keyword ``all``
+#     :param crime: the name of a crime or the keyword ``all``
 
-    :status 200: when the top 5 cuadrantes are found
-    :status 400: when the one of the dates was incorrectly specified or the periods overlap
-    :status 404: when the crime is not found in the database
+#     :status 200: when the top 5 cuadrantes are found
+#     :status 400: when the one of the dates was incorrectly specified or the periods overlap
+#     :status 404: when the crime is not found in the database
 
-    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query rank: Return all cuadrantes ranked higher. Defaults to `5`
+#     :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
+#     :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
+#     :query rank: Return all cuadrantes ranked higher. Defaults to `5`
 
-    :resheader Content-Type: application/json
+#     :resheader Content-Type: application/json
 
-    **Example request**:
+#     **Example request**:
 
-    .. sourcecode:: http
+#     .. sourcecode:: http
 
-      GET /api/v1/municipios/crimes/homicidio%20doloso/top/counts HTTP/1.1
-      Host: hoyodecrimen.com
-      Accept: application/json
+#       GET /api/v1/municipios/crimes/homicidio%20doloso/top/counts HTTP/1.1
+#       Host: hoyodecrimen.com
+#       Accept: application/json
 
-    **Example response (truncated)**:
+#     **Example response (truncated)**:
 
-    .. sourcecode:: http
+#     .. sourcecode:: http
 
-      HTTP/1.1 200 OK
-      Content-Type: application/json
-      {
-      "rows": [
-      {
-      "count": 12,
-      "crime": "HOMICIDIO DOLOSO",
-      "cuadrante": "N-2.2.1",
-      "end_date": "2014-07",
-      "population": 1833,
-      "rank": 1,
-      "sector": "CUCHILLA",
-      "start_date": "2013-08"
-      },
-      ...
+#       HTTP/1.1 200 OK
+#       Content-Type: application/json
+#       {
+#       "rows": [
+#       {
+#       "count": 12,
+#       "crime": "HOMICIDIO DOLOSO",
+#       "cuadrante": "N-2.2.1",
+#       "end_date": "2014-07",
+#       "population": 1833,
+#       "rank": 1,
+#       "sector": "CUCHILLA",
+#       "start_date": "2013-08"
+#       },
+#       ...
 
-    """
-    crime = crime.upper()
-    start_date = request.args.get('start_date', '', type=str)
-    end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = check_dates(start_date, end_date)
-    rank = request.args.get('rank', 5, type=int)
-    if rank <= 0:
-        raise InvalidAPIUsage('Rank must be greater than zero')
-        #abort(abort(make_response('No negative numbers', 400)))
-    sql_query = """with crimes as
-                           (select (sum(c.count) / (sum(c.population::float) / :num_months )* 100000) as rate,sum(c.count) as count,
-                           c.sector,sum(c.population) / :num_months as population, c.crime
-                           from cuadrantes as c
-                           INNER JOIN municipios as m
-                           ON c.cuadrante=m.cuadrante
-                           where date >= :start_date and date <= :max_date and population is not null"""
-    sql_query2 = "" if crime == "ALL" else " and upper(crime) = :crime "
-    sql_query3 = """   group by m.municipio, crime)
-                       SELECT substring(CAST(start_period as text) for 7) as start_date, substring(end_period::text for 7) as end_date,
-                               round(rate::numeric , 1)::float as rate, crime, sector, count, rank, population from
-                           (SELECT :start_date as start_period, :max_date as end_period, count, rate,
-                                   upper(crime) as crime,
-                                   upper(sector) as sector,
-                                   rank() over (partition by crime order by rate desc) as rank,population
-                            from crimes
-                            group by count,crime,sector,population, rate) as temp2
-                           where rank <= :rank """
-    results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date': start_date,
-                                                                       'max_date': max_date,
-                                                                       'crime': crime,
-                                                                       'num_months': lib.month_diff(max_date, start_date),
-                                                                       'rank': rank})
-    return lib.ResultProxy_to_json(results)
+#     """
+#     crime = crime.upper()
+#     start_date = request.args.get('start_date', '', type=str)
+#     end_date = request.args.get('end_date', '', type=str)
+#     start_date, max_date = check_dates(start_date, end_date)
+#     rank = request.args.get('rank', 5, type=int)
+#     if rank <= 0:
+#         raise InvalidAPIUsage('Rank must be greater than zero')
+#         #abort(abort(make_response('No negative numbers', 400)))
+#     sql_query = """with crimes as
+#                            (select (sum(c.count) / (sum(c.population::float) / :num_months )* 100000) as rate,sum(c.count) as count,
+#                            c.sector,sum(c.population) / :num_months as population, c.crime
+#                            from cuadrantes as c
+#                            INNER JOIN municipios as m
+#                            ON c.cuadrante=m.cuadrante
+#                            where date >= :start_date and date <= :max_date and population is not null"""
+#     sql_query2 = "" if crime == "ALL" else " and upper(crime) = :crime "
+#     sql_query3 = """   group by m.municipio, crime)
+#                        SELECT substring(CAST(start_period as text) for 7) as start_date, substring(end_period::text for 7) as end_date,
+#                                round(rate::numeric , 1)::float as rate, crime, sector, count, rank, population from
+#                            (SELECT :start_date as start_period, :max_date as end_period, count, rate,
+#                                    upper(crime) as crime,
+#                                    upper(sector) as sector,
+#                                    rank() over (partition by crime order by rate desc) as rank,population
+#                             from crimes
+#                             group by count,crime,sector,population, rate) as temp2
+#                            where rank <= :rank """
+#     results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date': start_date,
+#                                                                        'max_date': max_date,
+#                                                                        'crime': crime,
+#                                                                        'num_months': lib.month_diff(max_date, start_date),
+#                                                                        'rank': rank})
+#     return lib.ResultProxy_to_json(results)
 
 
 @API.route('/sectores/crimes/<string:crime>/top/rates',
