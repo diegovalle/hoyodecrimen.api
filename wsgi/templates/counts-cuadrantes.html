@@ -119,7 +119,7 @@ rvsv:"Greensq", viol:"Graysq"}
  crimePrefix = 'number of ';
 document.getElementById("HomicideButton").onclick = function (event) {
 event.preventDefault();
-d3.select('#homicide-title').text('Homicides - DF Total');
+//d3.select('#homicide-title').text('Homicides - DF Total');
 chartHomicides.load({
                 columns: [_.flatten([value, _.map(_.groupBy(all_df, 'crime')[value], function(x) {return summer(x)})])],
                 unload: old_value,
