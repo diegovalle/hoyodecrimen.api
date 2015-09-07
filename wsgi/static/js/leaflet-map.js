@@ -203,7 +203,7 @@ info.update = function (feature) {
         ' - ' + monthNames[end_date.getMonth()] + ' ' + end_date.getFullYear() + ')'
     var div;
     config.color = colorbrewer.Reds["9"];
-    div = '<div id="variables" class="menu-ui"><select id="seltarget" autofocus>'+select_html+'</select></div><h1>'+
+    div = '<div id="variables" class="menu-ui"><div class="select-style"><select id="seltarget" autofocus>'+select_html+'</select></div></div><h1>'+
         title + '</h1><h3>' +
         (props ? props.sector + (mapType === "sectores" ? "" : " / " + props.cuadrante) : 'DF') +'</h3>' + '<h4>' +date_text + '</h4><div><h4>'+total_population_text+': ' +  (props ? '' + comma(props.population) : '8,785,874') +
         '</h4></div>' +
@@ -333,6 +333,9 @@ updateLineChart = function(){
       area: false,
       buffer: 30,
       top: 30,
+        y_extended_ticks: true,
+        yax_count: 3,
+
       left: 50,
       full_width: true,
       //width: 200,
