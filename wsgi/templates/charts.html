@@ -93,7 +93,7 @@ small_multiples = function(value) {
             });
 
 
-            max_rate = _.max(data.rows, function(x) {return x.population !== null ? x.rate : 0})['rate'];
+            max_rate = _.max(data.rows, function(x) {return (x.population !== null) & (x.population !== 0) ? x.rate : 0})['rate'];
             var line_options = {
                 //title: "Homicides",
                 description: '',
@@ -139,7 +139,7 @@ small_multiples = function(value) {
 
  $.ajax({
      dataType: 'jsonp',
-     url: 'https://hoyodecrimen.com/api/v1/crimes',
+     url: '/api/v1/crimes',
      success: function(data) {
          crimes = _.pluck(data.rows, "crime");
          $.each(crimes, function(key, value) {

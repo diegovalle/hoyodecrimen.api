@@ -292,7 +292,7 @@ function createMarker(lat, lng) {
         var marker = event.target;
         var position = marker.getLatLng();
 
-        $.getJSON('/api/v1/cuadrantes/crimes/all/pip/' +marker.getLatLng().lng +'/' + marker.getLatLng().lat, function(data) {
+        $.getJSON('/api/v1/cuadrantes/crimes/HOMICIDIO DOLOSO,ROBO A CASA HABITACION C.V.,LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO,ROBO DE VEHICULO AUTOMOTOR S.V.,ROBO DE VEHICULO AUTOMOTOR C.V.,ROBO A TRANSEUNTE EN VIA PUBLICA C.V.,ROBO A TRANSEUNTE EN VIA PUBLICA S.V.,ROBO A NEGOCIO C.V.,VIOLACION,ROBO A PASAJERO A BORDO DE MICROBUS C.V./pip/' +marker.getLatLng().lng +'/' + marker.getLatLng().lat, function(data) {
             var dates = _.uniq(_.pluck(data.cuadrante, 'date'));
             dates = _.map(dates, function(x) {return x + '-15'});
             dates.unshift("x")
@@ -320,7 +320,7 @@ function createMarker(lat, lng) {
     //polygonCuads[0].addTo(map);
     //polygonSectors[0].setStyle({fillColor: '#fff',color: '#000', opacity:1})
     //polygonSectors[0].addTo(map);
-    $.getJSON('/api/v1/cuadrantes/crimes/all/pip/' +marker.getLatLng().lng +'/' + marker.getLatLng().lat, function(data) {
+    $.getJSON('/api/v1/cuadrantes/crimes/HOMICIDIO DOLOSO,ROBO A CASA HABITACION C.V.,LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO,ROBO DE VEHICULO AUTOMOTOR S.V.,ROBO DE VEHICULO AUTOMOTOR C.V.,ROBO A TRANSEUNTE EN VIA PUBLICA C.V.,ROBO A TRANSEUNTE EN VIA PUBLICA S.V.,ROBO A NEGOCIO C.V.,VIOLACION,ROBO A PASAJERO A BORDO DE MICROBUS C.V./pip/' +marker.getLatLng().lng +'/' + marker.getLatLng().lat, function(data) {
         var dates = _.uniq(_.pluck(data.cuadrante, 'date'));
         dates = _.map(dates, function(x) {return x + '-15'});
         dates.unshift("x")
