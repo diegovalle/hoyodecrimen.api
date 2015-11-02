@@ -3,7 +3,7 @@ from flask import Blueprint, Flask, jsonify, \
     send_from_directory, send_file, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
-from sqlalchemy import func, and_
+from sqlalchemy import func, and_, or_
 from flask_cache import Cache
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
@@ -39,6 +39,22 @@ else:
 
 API = Blueprint('API', __name__, url_prefix='/api/v1')
 
+def process_crime(crime, start_date, max_date, sector="none", cuadrante="none", municipio="none"):
+    if crime == "ALL":
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+    else:
+        filters = [or_(*[func.upper(Cuadrantes.crime) == x for x in crime.split(',')])]
+        filters.append(and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date))
+    if sector != "none":
+        if sector != "ALL":
+            filters.append(func.upper(Cuadrantes.sector) == sector)
+    if cuadrante != "none":
+        if cuadrante != "ALL":
+            filters.append(func.upper(Cuadrantes.cuadrante) == cuadrante)
+    if municipio != "none":
+        if municipio != "ALL":
+            filters.append(func.upper(Municipios.municipio) == municipio)
+    return filters
 
 def make_cache_key(*args, **kwargs):
     # Make sure the cache distinguishes requests with different parameters
@@ -246,9 +262,14 @@ def pip(long, lat):
 
 
 @cache.memoize()
-def get_df_period(start_date, max_date):
+def get_df_period(start_date, max_date, crime):
+    if crime == "ALL":
+        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+    else:
+        filters = [or_(*[func.upper(Cuadrantes.crime) == x for x in crime.split(',')])]
+        filters.append(and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date))
     return Cuadrantes.query. \
-        filter(and_(Cuadrantes.date <= max_date, Cuadrantes.date >= start_date)). \
+        filter(*filters). \
         with_entities(func.upper(Cuadrantes.crime).label('crime'),
                       func.sum(Cuadrantes.count).label('count'),
                       func.sum(Cuadrantes.population).op("/")(lib.month_diff(max_date, start_date)).label('population')). \
@@ -263,9 +284,12 @@ def get_cuad_period(cuadrante, crime, start_date, max_date):
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
                    func.upper(Cuadrantes.cuadrante) == cuadrante]
     else:
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.crime) == crime,
-                   func.upper(Cuadrantes.cuadrante) == cuadrante]
+        filters = [or_(*[func.upper(Cuadrantes.crime) == x for x in crime.split(',')])]
+        filters.append(func.upper(Cuadrantes.cuadrante) == cuadrante)
+        filters.append(and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date))
+        #filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+        #           func.upper(Cuadrantes.crime) == crime,
+        #           func.upper(Cuadrantes.cuadrante) == cuadrante]
     return Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.upper(Cuadrantes.crime).label('crime'),
@@ -281,8 +305,12 @@ def get_cuad_series(cuadrante, crime):
     if crime == "ALL":
         pip_filter = [func.upper(Cuadrantes.cuadrante) == cuadrante]
     else:
-        pip_filter = [func.upper(Cuadrantes.crime) == crime,
-                      func.upper(Cuadrantes.cuadrante) == cuadrante]
+
+        pip_filter = [or_(*[func.upper(Cuadrantes.crime) == x for x in crime.split(',')])]
+        pip_filter.append(func.upper(Cuadrantes.cuadrante) == cuadrante)
+
+        #pip_filter = [func.upper(Cuadrantes.crime) == crime,
+        #              func.upper(Cuadrantes.cuadrante) == cuadrante]
     results_cuad = Cuadrantes.query. \
         filter(*pip_filter). \
         with_entities(func.upper(Cuadrantes.cuadrante).label('cuadrante'),
@@ -293,6 +321,7 @@ def get_cuad_series(cuadrante, crime):
                       Cuadrantes.population) \
         .order_by(Cuadrantes.crime, Cuadrantes.date) \
         .all()
+    #import pdb; pdb.set_trace()
     return results_cuad
     # compare the cuadrante with the rest of the DF (last 12 months)
     # max_date = Cuadrantes.query. \
@@ -423,7 +452,7 @@ def frontpage(crime, long, lat):
         first()
     if (results_pip is not None):
         results_cuad = get_cuad_series(results_pip[0], crime)
-        results_df_period = get_df_period(start_date, max_date)
+        results_df_period = get_df_period(start_date, max_date, crime)
         results_cuad_period = get_cuad_period(results_pip[0], crime, start_date, max_date)
         json_results = [{'geometry': results_pip[2],
              'cuadrante': results_pip[0],
@@ -487,13 +516,13 @@ def df_all(crime):
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
-
-    if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   ]
-    else:
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.crime) == crime]
+    filters = process_crime(crime, start_date, max_date)
+    # if crime == "ALL":
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                ]
+    # else:
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                func.upper(Cuadrantes.crime) == crime]
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.upper(Cuadrantes.crime).label('crime'),
@@ -504,6 +533,8 @@ def df_all(crime):
         order_by(Cuadrantes.crime, Cuadrantes.date). \
         all()
     return lib.results_to_json(results)
+
+
 
 
 @API.route('/cuadrantes/<string:cuadrante>'
@@ -562,14 +593,14 @@ def cuadrantes(cuadrante, crime):
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
-
-    if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
-    else:
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.crime) == crime]
-    if cuadrante != "ALL":
-        filters.append(func.upper(Cuadrantes.cuadrante) == cuadrante)
+    filters = process_crime(crime, start_date, max_date, cuadrante = cuadrante)
+    # if crime == "ALL":
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+    # else:
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                func.upper(Cuadrantes.crime) == crime]
+    # if cuadrante != "ALL":
+    #     filters.append(func.upper(Cuadrantes.cuadrante) == cuadrante)
 
     results = Cuadrantes.query. \
         filter(*filters). \
@@ -637,13 +668,14 @@ def sectors(crime, sector):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
-    if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
-    else:
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.crime) == crime]
-    if sector != "ALL":
-        filters.append(func.upper(Cuadrantes.sector) == sector)
+    filters = process_crime(crime, start_date, max_date, sector = sector)
+    # if crime == "ALL":
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+    # else:
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                func.upper(Cuadrantes.crime) == crime]
+    # if sector != "ALL":
+    #     filters.append(func.upper(Cuadrantes.sector) == sector)
 
     results = Cuadrantes.query. \
         filter(*filters). \
@@ -711,13 +743,7 @@ def municipios_series(crime, municipio):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
-    if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
-    else:
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.crime) == crime]
-    if municipio != "ALL":
-        filters.append(func.upper(Municipios.municipio) == municipio)
+    filters = process_crime(crime, start_date, max_date, municipio = municipio)
 
     results = Cuadrantes.query.join(Municipios, Cuadrantes.cuadrante == Municipios.cuadrante). \
         filter(*filters). \
@@ -788,13 +814,14 @@ def cuadrantes_sum_all(cuadrante, crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
-    if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
-    else:
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.crime) == crime]
-    if cuadrante != "ALL":
-        filters.append(func.upper(Cuadrantes.cuadrante) == cuadrante)
+    filters = process_crime(crime, start_date, max_date, cuadrante = cuadrante)
+    # if crime == "ALL":
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+    # else:
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                func.upper(Cuadrantes.crime) == crime]
+    # if cuadrante != "ALL":
+    #     filters.append(func.upper(Cuadrantes.cuadrante) == cuadrante)
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
@@ -863,13 +890,14 @@ def sectores_sum_all(sector, crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
-    if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
-    else:
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.crime) == crime]
-    if sector != "ALL":
-        filters.append(func.upper(Cuadrantes.sector) == sector)
+    filters = process_crime(crime, start_date, max_date, sector = sector)
+    # if crime == "ALL":
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+    # else:
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                func.upper(Cuadrantes.crime) == crime]
+    # if sector != "ALL":
+    #     filters.append(func.upper(Cuadrantes.sector) == sector)
     results = Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
@@ -939,13 +967,14 @@ def municipios_sum_all(municipio, crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     start_date, max_date = check_dates(start_date, end_date)
-    if crime == "ALL":
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
-    else:
-        filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
-                   func.upper(Cuadrantes.crime) == crime]
-    if municipio != "ALL":
-        filters.append(func.upper(Municipios.municipio) == municipio)
+    filters = process_crime(crime, start_date, max_date, municipio = municipio)
+    # if crime == "ALL":
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
+    # else:
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                func.upper(Cuadrantes.crime) == crime]
+    # if municipio != "ALL":
+    #     filters.append(func.upper(Municipios.municipio) == municipio)
     results = Cuadrantes.query.join(Municipios, Cuadrantes.cuadrante == Municipios.cuadrante). \
         filter(*filters). \
         with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
@@ -1042,16 +1071,20 @@ def cuadrantes_change_sum_all(cuadrante, crime):
                                                    THEN count ELSE 0 END) as difference
                                             from cuadrantes
                                             """
-    sql_query2 = "" if crime == "ALL" else " where upper(crime) = :crime "
+    sql_query2 = "" if crime == "ALL" else 'WHERE ' + ' OR '.join([ 'upper(crime) = :crime' + str(x) for x in range(len(crime.split(',')))])
     sql_query3 = "" if cuadrante == "ALL" else " where upper(cuadrante) = :cuadrante "
-    sql_query4 = """group by cuadrante, sector, crime
-                        order by crime asc, cuadrante asc"""
-    results = db.session.execute(sql_query1 + sql_query2 + sql_query3 + sql_query4, {'max_date': max_date,
+    sql_query4 = """ group by cuadrante, sector, crime
+                        order by crime asc, cuadrante asc """
+    crime_data = { 'crime'+str(x) : crime.split(',')[x-1] for x in range(len(crime.split(',')))}
+    crime_data.update(
+                                  {'max_date': max_date,
                                  'max_date_minus3': max_date_minus3,
                                  'max_date_last_year': max_date_last_year,
                                  'max_date_last_year_minus3': max_date_last_year_minus3,
-                                 'crime': crime,
                                  'cuadrante': cuadrante})
+    #import pdb; pdb.set_trace()
+    results = db.session.execute(sql_query1 + sql_query2 + sql_query3 + sql_query4,
+                                  crime_data)
     return lib.ResultProxy_to_json(results)
 
 
@@ -1315,7 +1348,7 @@ def top5cuadrantes(crime):
                           (select sum(count) as count,sector,cuadrante,max(population)as population, crime
                           from cuadrantes
                           where date >= :start_date and date <= :max_date"""
-    sql_query2 = "" if crime == "ALL" else " and upper(crime) = :crime "
+    sql_query2 = "" if crime == "ALL" else  ' AND ' + ' OR '.join([ 'upper(crime) = :crime' + str(x) for x in range(len(crime.split(',')))])
     sql_query3 = """
                           group by cuadrante, sector, crime)
                        SELECT *
@@ -1327,10 +1360,12 @@ def top5cuadrantes(crime):
                           from crimes group by count,crime,sector,cuadrante,population) as temp2
                           where rank <= :rank
                           order by crime, rank, cuadrante, sector asc"""
-    results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date': start_date,
+    crime_data = { 'crime'+str(x) : crime.split(',')[x-1] for x in range(len(crime.split(',')))}
+    crime_data.update({'start_date': start_date,
                                                                        'max_date': max_date,
                                                                        'crime': crime,
                                                                        'rank': rank})
+    results = db.session.execute(sql_query + sql_query2 + sql_query3, crime_data)
     return lib.ResultProxy_to_json(results)
 
 
@@ -1481,13 +1516,14 @@ def top5sectores(crime):
     rank = request.args.get('rank', 5, type=int)
     if rank <= 0:
         raise InvalidAPIUsage('Rank must be greater than zero')
-        #abort(abort(make_response('No negative numbers', 400)))
+        # abort(abort(make_response('No negative numbers', 400)))
     sql_query = """with crimes as
-                           (select (sum(count) / (sum(population::float) / :num_months )* 100000) as rate,sum(count) as count,
+                           (select (sum(count) / (nullif(sum(population::float), 0) / :num_months )* 100000) as rate,sum(count) as count,
                            sector,sum(population) / :num_months as population, crime
                            from cuadrantes
                            where date >= :start_date and date <= :max_date and population is not null"""
-    sql_query2 = "" if crime == "ALL" else " and upper(crime) = :crime "
+    sql_query2 = "" if crime == "ALL" else ' AND ' + ' OR '.join(
+        ['upper(crime) = :crime' + str(x) for x in range(len(crime.split(',')))])
     sql_query3 = """   group by sector, crime)
                        SELECT substring(CAST(start_period as text) for 7) as start_date, substring(end_period::text for 7) as end_date,
                                round(rate::numeric , 1)::float as rate, crime, sector, count, rank, population from
@@ -1498,11 +1534,13 @@ def top5sectores(crime):
                            from crimes
                            group by count,crime,sector,population, rate) as temp2
                            where rank <= :rank """
-    results = db.session.execute(sql_query + sql_query2 + sql_query3, {'start_date': start_date,
-                                                                       'max_date': max_date,
-                                                                       'crime': crime,
-                                                                       'num_months': lib.month_diff(max_date, start_date),
-                                                                       'rank': rank})
+    crime_data = {'crime' + str(x): crime.split(',')[x - 1] for x in range(len(crime.split(',')))}
+    crime_data.update({'start_date': start_date,
+                       'max_date': max_date,
+                       'crime': crime,
+                       'num_months': lib.month_diff(max_date, start_date),
+                       'rank': rank})
+    results = db.session.execute(sql_query + sql_query2 + sql_query3, crime_data)
     return lib.ResultProxy_to_json(results)
 
 
@@ -1589,7 +1627,7 @@ def top5changecuadrantes(crime):
                                                    THEN count ELSE 0 END) as difference
                                             from cuadrantes
                                             """
-    sql_query2 = "" if crime == "ALL" else " where upper(crime) = :crime "
+    sql_query2 = "" if crime == "ALL" else  'WHERE ' + ' OR '.join([ 'upper(crime) = :crime' + str(x) for x in range(len(crime.split(',')))])
     sql_query3 = """
                                             group by cuadrante, sector, crime)
                                         SELECT *
@@ -1606,10 +1644,12 @@ def top5changecuadrantes(crime):
                                         as temp
                                         where rank <= :rank
                                         order by crime, rank, cuadrante, sector asc"""
-    results = db.session.execute(sql_query1 + sql_query2 + sql_query3, {'max_date': max_date,
+    crime_data = {'crime' + str(x): crime.split(',')[x - 1] for x in range(len(crime.split(',')))}
+    crime_data.update( {'max_date': max_date,
                                                                         'max_date_minus3': max_date_minus3,
                                                                         'max_date_last_year': max_date_last_year,
                                                                         'max_date_last_year_minus3': max_date_last_year_minus3,
                                                                         'crime': crime,
                                                                         'rank': rank})
+    results = db.session.execute(sql_query1 + sql_query2 + sql_query3, crime_data)
     return lib.ResultProxy_to_json(results)

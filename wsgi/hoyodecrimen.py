@@ -147,6 +147,9 @@ def sitemap():
 def cuadrantes_csv():
     return send_from_directory(os.path.join(_basedir, '..', 'data'), 'cuadrantes.csv.zip')
 
+@app.route('/data/solicitud.zip')
+def solicitud_csv():
+    return send_from_directory(os.path.join(_basedir, '..', 'data'), 'solicitud.zip')
 
 @app.route('/data/cuadrantes_shp.zip')
 def shapefile():
