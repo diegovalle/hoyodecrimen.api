@@ -19,7 +19,7 @@ from urlparse import urlparse
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Use redis if not running in Openshift
-if 'OPENSHIFT_APP_UUID' in os.environ:
+if 'OPENSHIFT_APP_UUID' not in os.environ:
     cache = Cache(config={
         'CACHE_TYPE': 'simple'  # null or simple
     })
