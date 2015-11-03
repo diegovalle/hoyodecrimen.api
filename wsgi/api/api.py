@@ -730,7 +730,7 @@ def municipios_series(crime, municipio):
       {
       "count": 1,
       "crime": "HOMICIDIO DOLOSO",
-      "cvegeo": "09012",
+      "cve_mun": "09012",
       "date": "2013-01",
       "municipio": "TLALPAN",
       "population": 633181
@@ -748,7 +748,7 @@ def municipios_series(crime, municipio):
     results = Cuadrantes.query.join(Municipios, Cuadrantes.cuadrante == Municipios.cuadrante). \
         filter(*filters). \
         with_entities(func.upper(Municipios.municipio).label('municipio'),
-                      func.upper(Municipios.cvegeo).label('cvegeo'),
+                      func.upper(Municipios.cvegeo).label('cve_mun'),
                       func.upper(Cuadrantes.crime).label('crime'),
                       Cuadrantes.date,
                       func.sum(Cuadrantes.count).label('count'),
@@ -917,15 +917,15 @@ def sectores_sum_all(sector, crime):
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def municipios_sum_all(municipio, crime):
-    """Return the sum of crimes that occurred in each cuadrante for a specified period of time
+    """Return the sum of crimes that occurred in each municipio for a specified period of time
 
     By default it returns the sum of crimes during the last 12 months for all the cuadrantes in the database
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
-    :param cuadrante: the name of the cuadrante or the keyword ``all`` to return all cuadrantes
+    :param municipio: the name of the municipio or the keyword ``all`` to return all municipios
 
     :status 200: when the sum of all crimes is found
-    :status 404: when the crime is not found in the database
+    :status 404: when the crime or municipio is not found in the database
 
     :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
     :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
@@ -937,7 +937,7 @@ def municipios_sum_all(municipio, crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/cuadrantes/all/crimes/all/period HTTP/1.1
+      GET /api/v1/municipios/tlalpan/crimes/all/period HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -981,7 +981,7 @@ def municipios_sum_all(municipio, crime):
                       func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
                       func.upper(Cuadrantes.crime).label('crime'),
                       func.upper(Municipios.municipio).label('municipio'),
-                      func.upper(Municipios.cvegeo).label('cvegeo'),
+                      func.upper(Municipios.cvegeo).label('cve_mun'),
                       func.sum(Cuadrantes.count).label("count"),
                       func.sum(Cuadrantes.population).op("/")(lib.month_diff(max_date, start_date)).label("population")) \
         .group_by(Cuadrantes.crime, Municipios.municipio, Municipios.cvegeo) \
@@ -1140,7 +1140,7 @@ def listcrimes():
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def listcuadrantes():
-    """Enumerate all the cuadrantes and the sectors they belong to
+    """Enumerate all the cuadrantes and the sectors and municipios they belong to
 
     :status 200: when all the cuadrantes were found
 
@@ -1164,19 +1164,19 @@ def listcuadrantes():
       {
       "rows": [
       {
-      "cuadrante": "S-1.1.16",
-      "sector": "NARVARTE - ALAMOS"
+      "cuadrante": "P-1.1.1",
+      "cve_mun": "09010",
+      "municipio": "ALVARO OBREGON",
+      "sector": "ALPES"
       },
-      {
-      "cuadrante": "N-2.1.1",
-      "sector": "ARAGON"
-      }
       ...
     """
-    results = Cuadrantes.query. \
-        with_entities(func.upper(Cuadrantes.sector).label('sector'),
-                      func.upper(Cuadrantes.cuadrante).label('cuadrante')). \
-        order_by(Cuadrantes.cuadrante). \
+    results = Municipios.query. \
+        with_entities(func.upper(Municipios.sector).label('sector'),
+                      func.upper(Municipios.cuadrante).label('cuadrante'),
+                      func.upper(Municipios.municipio).label('municipio'),
+                      func.upper(Municipios.cvegeo).label('cve_mun')). \
+        order_by(Municipios.municipio, Municipios.sector, Municipios.cuadrante). \
         distinct(). \
         all()
     return lib.results_to_json(results)
@@ -1211,23 +1211,18 @@ def listsectores():
       {
       "rows": [
       {
-      "sector": "ABASTO-REFORMA"
-      },
-      {
-      "sector": "SAN ANGEL"
-      },
-      {
-      "sector": "COYOACAN"
-      },
-      {
-      "sector": "TEZONCO"
+      "cve_mun": "09010",
+      "municipio": "ALVARO OBREGON",
+      "sector": "ALPES"
       },
       ...
     """
 
-    results = Cuadrantes.query. \
-        with_entities(func.upper(Cuadrantes.sector).label('sector')). \
-        order_by(Cuadrantes.sector). \
+    results = Municipios.query. \
+        with_entities(func.upper(Municipios.sector).label('sector'),
+                      func.upper(Municipios.municipio).label('municipio'),
+                      func.upper(Municipios.cvegeo).label('cve_mun')). \
+        order_by(Municipios.municipio, Municipios.sector). \
         distinct(). \
         all()
     return lib.results_to_json(results)
@@ -1238,7 +1233,7 @@ def listsectores():
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
 def list_municipios():
-    """Enumerate all cuadrantes and sectors with the municipios they belong to
+    """Enumerate all municipios in the Federal District
 
     :status 200: when all the municipios were found
 
@@ -1262,13 +1257,7 @@ def list_municipios():
       "rows": [
       {
       "cuadrante": "P-1.1.1",
-      "cvegeo": "09010",
-      "municipio": "ALVARO OBREGON",
-      "sector": "ALPES"
-      },
-      {
-      "cuadrante": "P-1.1.10",
-      "cvegeo": "09010",
+      "cve_mun": "09010",
       "municipio": "ALVARO OBREGON",
       "sector": "ALPES"
       },
@@ -1278,7 +1267,7 @@ def list_municipios():
         with_entities(func.upper(Municipios.sector).label('sector'),
                       func.upper(Municipios.cuadrante).label('cuadrante'),
                       func.upper(Municipios.municipio).label('municipio'),
-                      func.upper(Municipios.cvegeo).label('cvegeo')). \
+                      func.upper(Municipios.cvegeo).label('cve_mun')). \
         order_by(Municipios.municipio, Municipios.sector, Municipios.cuadrante). \
         distinct(). \
         all()
