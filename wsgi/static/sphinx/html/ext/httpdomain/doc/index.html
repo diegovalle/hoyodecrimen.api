@@ -324,7 +324,7 @@ It can also be referred by <a class="reference internal" href="#role-http:copy" 
 <dt id="directive-http:any">
 <code class="descname">.. http:any::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:any" title="Permalink to this definition">¶</a></dt>
 <dd><p>Describes a HTTP resource&#8217;s which accepts requests with
-<em>ANY</em> method. Useful for cases when requested resource
+<em>any</em> method. Useful for cases when requested resource
 proxying the request to some other location keeping original request
 context. It can also be referred by <a class="reference internal" href="#role-http:any" title="http:any role"><code class="xref rst rst-role docutils literal"><span class="pre">http:any</span></code></a> role.</p>
 <div class="versionadded">
@@ -526,7 +526,7 @@ header of request</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.3">302 Found</a> &#8211; and then redirects to <em>:http:get:`/posts/(int:post_id)`</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.3">302 Found</a> &#8211; and then redirects to <span class="problematic">GET /posts/(int:post_id)</span></li>
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> &#8211; when form parameters are missing</li>
 </ul>
 </td>
@@ -614,7 +614,7 @@ of the specified status code.</p>
 <blockquote>
 <div><ul class="simple">
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 Oll Korrect</a></li>
+<li><span class="problematic">200 Oll Korrect</span></li>
 </ul>
 </div></blockquote>
 <div class="versionchanged">
@@ -691,7 +691,7 @@ like <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.28">If-Unmodified-Since</a></li>
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.29">Last-Modified</a></li>
 <li><a class="reference external" href="http://www.w3.org/TR/eventsource/#last-event-id">Last-Event-ID</a></li>
-<li><a href="#id4"><span class="problematic" id="id5">:http:header:`Link`</span></a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc5988#section-5">Link</a></li>
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3">Location</a></li>
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.31">Max-Forwards</a></li>
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.32">Pragma</a></li>
@@ -713,7 +713,7 @@ like <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.46">Warning</a></li>
 </ul>
 <p>If HTTP header is unknown, the build error will be raised unless header has
-<code class="docutils literal"><span class="pre">X-</span></code> prefix which marks him as custom one like <strong>X-Foo-Bar</strong>.</p>
+<code class="docutils literal"><span class="pre">X-</span></code> prefix which marks him as custom one like <em>X-Foo-Bar</em>.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 1.3.0.</span></p>
 </div>
@@ -1031,29 +1031,29 @@ the repository).</p>
 <li><code class="docutils literal"><span class="pre">jsonparameter</span></code>/<code class="docutils literal"><span class="pre">jsonparam</span></code>/<code class="docutils literal"><span class="pre">json</span></code> became deprecated and split
 into <code class="docutils literal"><span class="pre">reqjsonobj</span></code>/<code class="docutils literal"><span class="pre">reqjson</span></code>/<code class="docutils literal"><span class="pre">&lt;jsonobj</span></code>/<code class="docutils literal"><span class="pre">&lt;json</span></code> and
 <code class="docutils literal"><span class="pre">reqjsonarr</span></code>/<code class="docutils literal"><span class="pre">&lt;jsonarr</span></code>.
-[<a href="#id9"><span class="problematic" id="id10">:issue:`55`</span></a>, <a href="#id11"><span class="problematic" id="id12">:pull:`72`</span></a> by Alexander Shorin]</li>
+[<a href="#id7"><span class="problematic" id="id8">:issue:`55`</span></a>, <a href="#id9"><span class="problematic" id="id10">:pull:`72`</span></a> by Alexander Shorin]</li>
 <li>Support synopsis (short description in HTTP index),
 deprecation and noindex options for resources.
-[<a href="#id13"><span class="problematic" id="id14">:issue:`55`</span></a>, <a href="#id15"><span class="problematic" id="id16">:pull:`72`</span></a> by Alexander Shorin]</li>
+[<a href="#id11"><span class="problematic" id="id12">:issue:`55`</span></a>, <a href="#id13"><span class="problematic" id="id14">:pull:`72`</span></a> by Alexander Shorin]</li>
 <li>Stabilize order of index items.
-[<a href="#id17"><span class="problematic" id="id18">:issue:`55`</span></a>, <a href="#id19"><span class="problematic" id="id20">:pull:`72`</span></a> by Alexander Shorin]</li>
-<li>Added <a href="#id21"><span class="problematic" id="id22">:rst:directive:`http:any`</span></a> directive and <a class="reference internal" href="#role-http:any" title="http:any role"><code class="xref rst rst-role docutils literal"><span class="pre">http:any</span></code></a>
-role for <code class="docutils literal"><span class="pre">ANY</span></code> method.  [<a href="#id23"><span class="problematic" id="id24">:issue:`55`</span></a>, <a href="#id25"><span class="problematic" id="id26">:pull:`72`</span></a> by Alexander Shorin]</li>
-<li>Added <a href="#id27"><span class="problematic" id="id28">:rst:directive:`http:copy`</span></a> directive and <a class="reference internal" href="#role-http:copy" title="http:copy role"><code class="xref rst rst-role docutils literal"><span class="pre">http:copy</span></code></a>
-role for <code class="docutils literal"><span class="pre">COPY</span></code> method.  [<a href="#id29"><span class="problematic" id="id30">:issue:`55`</span></a>, <a href="#id31"><span class="problematic" id="id32">:pull:`72`</span></a> by Alexander Shorin]</li>
+[<a href="#id15"><span class="problematic" id="id16">:issue:`55`</span></a>, <a href="#id17"><span class="problematic" id="id18">:pull:`72`</span></a> by Alexander Shorin]</li>
+<li>Added <a href="#id19"><span class="problematic" id="id20">:rst:directive:`http:any`</span></a> directive and <a class="reference internal" href="#role-http:any" title="http:any role"><code class="xref rst rst-role docutils literal"><span class="pre">http:any</span></code></a>
+role for <code class="docutils literal"><span class="pre">ANY</span></code> method.  [<a href="#id21"><span class="problematic" id="id22">:issue:`55`</span></a>, <a href="#id23"><span class="problematic" id="id24">:pull:`72`</span></a> by Alexander Shorin]</li>
+<li>Added <a href="#id25"><span class="problematic" id="id26">:rst:directive:`http:copy`</span></a> directive and <a class="reference internal" href="#role-http:copy" title="http:copy role"><code class="xref rst rst-role docutils literal"><span class="pre">http:copy</span></code></a>
+role for <code class="docutils literal"><span class="pre">COPY</span></code> method.  [<a href="#id27"><span class="problematic" id="id28">:issue:`55`</span></a>, <a href="#id29"><span class="problematic" id="id30">:pull:`72`</span></a> by Alexander Shorin]</li>
 <li>Added <a class="reference internal" href="#role-http:header" title="http:header role"><code class="xref rst rst-role docutils literal"><span class="pre">http:header</span></code></a> role that also creates reference to the
-related specification.  [<a href="#id33"><span class="problematic" id="id34">:issue:`55`</span></a>, <a href="#id35"><span class="problematic" id="id36">:pull:`72`</span></a> by Alexander Shorin]</li>
+related specification.  [<a href="#id31"><span class="problematic" id="id32">:issue:`55`</span></a>, <a href="#id33"><span class="problematic" id="id34">:pull:`72`</span></a> by Alexander Shorin]</li>
 <li><a class="reference internal" href="#role-http:statuscode" title="http:statuscode role"><code class="xref rst rst-role docutils literal"><span class="pre">http:statuscode</span></code></a> role became to provide references to
-specification sections.  [<a href="#id37"><span class="problematic" id="id38">:issue:`55`</span></a>, <a href="#id39"><span class="problematic" id="id40">:pull:`72`</span></a> by Alexander Shorin]</li>
+specification sections.  [<a href="#id35"><span class="problematic" id="id36">:issue:`55`</span></a>, <a href="#id37"><span class="problematic" id="id38">:pull:`72`</span></a> by Alexander Shorin]</li>
 <li>Fixed Python 3 incompatibility of <code class="xref py py-mod docutils literal"><span class="pre">autohttp.tornado</span></code>.
-[<a href="#id41"><span class="problematic" id="id42">:pull:`61`</span></a> by Dave Shawley]</li>
+[<a href="#id39"><span class="problematic" id="id40">:pull:`61`</span></a> by Dave Shawley]</li>
 </ul>
 </div>
 <div class="section" id="version-1-2-1">
 <h3>Version 1.2.1<a class="headerlink" href="#version-1-2-1" title="Permalink to this headline">¶</a></h3>
 <p>Released on March 31, 2014.</p>
 <ul class="simple">
-<li>Fixed broken Python 2.6 compatibility.  [<a href="#id43"><span class="problematic" id="id44">:pull:`41`</span></a> by Kien Pham]</li>
+<li>Fixed broken Python 2.6 compatibility.  [<a href="#id41"><span class="problematic" id="id42">:pull:`41`</span></a> by Kien Pham]</li>
 <li>Added missing link to <a class="reference external" href="http://pythonhosted.org/six/">six</a> dependency.</li>
 </ul>
 </div>
@@ -1061,9 +1061,9 @@ specification sections.  [<a href="#id37"><span class="problematic" id="id38">:i
 <h3>Version 1.2.0<a class="headerlink" href="#version-1-2-0" title="Permalink to this headline">¶</a></h3>
 <p>Released on October 19, 2013.</p>
 <ul class="simple">
-<li>Python 3 support!  [<a href="#id45"><span class="problematic" id="id46">:pull:`34`</span></a> by murchik, <a href="#id47"><span class="problematic" id="id48">:pull:`39`</span></a> Donald Stufft]</li>
+<li>Python 3 support!  [<a href="#id43"><span class="problematic" id="id44">:pull:`34`</span></a> by murchik, <a href="#id45"><span class="problematic" id="id46">:pull:`39`</span></a> Donald Stufft]</li>
 <li>Added support for Tornado webapps. (<a class="reference internal" href="#module-sphinxcontrib.autohttp.tornado" title="sphinxcontrib.autohttp.tornado"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.tornado</span></code></a>)
-[<a href="#id49"><span class="problematic" id="id50">:pull:`38`</span></a> by Rodrigo Machado]</li>
+[<a href="#id47"><span class="problematic" id="id48">:pull:`38`</span></a> by Rodrigo Machado]</li>
 </ul>
 </div>
 <div class="section" id="version-1-1-9">
@@ -1074,11 +1074,11 @@ specification sections.  [<a href="#id37"><span class="problematic" id="id38">:i
 See <a class="reference internal" href="#module-sphinxcontrib.autohttp.bottle" title="sphinxcontrib.autohttp.bottle"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.bottle</span></code></a> module.
 [<a class="reference external" href="https://github.com/jalaziz/sphinxcontrib-httpdomain">patch</a> by Jameel Al-Aziz]</li>
 <li>Added <code class="docutils literal"><span class="pre">:reqheader:</span></code> and <code class="docutils literal"><span class="pre">:resheader:</span></code> option flags.</li>
-<li><code class="docutils literal"><span class="pre">:jsonparameter:</span></code> can be typed.  [<a href="#id51"><span class="problematic" id="id52">:pull:`31`</span></a> by Chuck Harmston]</li>
-<li><code class="docutils literal"><span class="pre">:queryparameter:</span></code> can be typed.  [<a href="#id53"><span class="problematic" id="id54">:pull:`37`</span></a> by Viktor Haag]</li>
+<li><code class="docutils literal"><span class="pre">:jsonparameter:</span></code> can be typed.  [<a href="#id49"><span class="problematic" id="id50">:pull:`31`</span></a> by Chuck Harmston]</li>
+<li><code class="docutils literal"><span class="pre">:queryparameter:</span></code> can be typed.  [<a href="#id51"><span class="problematic" id="id52">:pull:`37`</span></a> by Viktor Haag]</li>
 <li><a class="reference internal" href="#directive-autoflask" title="autoflask directive"><code class="xref rst rst-dir docutils literal"><span class="pre">autoflask</span></code></a> and <a class="reference internal" href="#directive-autobottle" title="autobottle directive"><code class="xref rst rst-dir docutils literal"><span class="pre">autobottle</span></code></a> directives now allow
 empty <code class="docutils literal"><span class="pre">:endpoints:</span></code>, <code class="docutils literal"><span class="pre">:undoc-endpoints:</span></code>, and <code class="docutils literal"><span class="pre">:blueprints:</span></code>
-arguments.  [<a href="#id55"><span class="problematic" id="id56">:pull:`33`</span></a> by Michael Twomey]</li>
+arguments.  [<a href="#id53"><span class="problematic" id="id54">:pull:`33`</span></a> by Michael Twomey]</li>
 </ul>
 </div>
 <div class="section" id="version-1-1-8">
@@ -1086,19 +1086,19 @@ arguments.  [<a href="#id55"><span class="problematic" id="id56">:pull:`33`</spa
 <p>Released on April 10, 2013.</p>
 <ul class="simple">
 <li>Added better support for docstrings in <code class="xref py py-class docutils literal"><span class="pre">flask.views.MethodView</span></code>.
-[<a href="#id57"><span class="problematic" id="id58">:pull:`26`</span></a> by Simon Metson]</li>
+[<a href="#id55"><span class="problematic" id="id56">:pull:`26`</span></a> by Simon Metson]</li>
 <li>Added <code class="docutils literal"><span class="pre">:jsonparameter:</span></code> along side <code class="docutils literal"><span class="pre">:form:</span></code> and <code class="docutils literal"><span class="pre">:query:</span></code> flag options.
-[<a href="#id59"><span class="problematic" id="id60">:pull:`25`</span></a> by Adam Lowry]</li>
+[<a href="#id57"><span class="problematic" id="id58">:pull:`25`</span></a> by Adam Lowry]</li>
 <li>Fixed issue with undefined <code class="docutils literal"><span class="pre">Value</span></code> and <code class="docutils literal"><span class="pre">umethod</span></code> variables.
-[<a href="#id61"><span class="problematic" id="id62">:pull:`23`</span></a> by Sebastian Kalinowski and <a href="#id63"><span class="problematic" id="id64">:pull:`24`</span></a> by Viktor Haag]</li>
+[<a href="#id59"><span class="problematic" id="id60">:pull:`23`</span></a> by Sebastian Kalinowski and <a href="#id61"><span class="problematic" id="id62">:pull:`24`</span></a> by Viktor Haag]</li>
 <li>Now <code class="docutils literal"><span class="pre">http</span></code> Pygments lexer can Handle continuous header lines well.</li>
 <li>Added <code class="docutils literal"><span class="pre">:undoc-blueprints:</span></code> flag option to <a class="reference internal" href="#directive-autoflask" title="autoflask directive"><code class="xref rst rst-dir docutils literal"><span class="pre">autoflask</span></code></a> directive.
-[<a href="#id65"><span class="problematic" id="id66">:pull:`21`</span></a> by Roman Podolyaka]</li>
-<li>Fixed <a href="#id67"><span class="problematic" id="id68">:issue:`29`</span></a>, a bug that <a class="reference internal" href="#directive-autoflask" title="autoflask directive"><code class="xref rst rst-dir docutils literal"><span class="pre">autoflask</span></code></a> directive raised
+[<a href="#id63"><span class="problematic" id="id64">:pull:`21`</span></a> by Roman Podolyaka]</li>
+<li>Fixed <a href="#id65"><span class="problematic" id="id66">:issue:`29`</span></a>, a bug that <a class="reference internal" href="#directive-autoflask" title="autoflask directive"><code class="xref rst rst-dir docutils literal"><span class="pre">autoflask</span></code></a> directive raised
 <code class="xref py py-exc docutils literal"><span class="pre">UnicodeDecodeError</span></code> when it contains non-ASCII characters.
-[<a href="#id69"><span class="problematic" id="id70">:issue:`29`</span></a> and <a href="#id71"><span class="problematic" id="id72">:pull:`18`</span></a> by Eunchong Yu]</li>
+[<a href="#id67"><span class="problematic" id="id68">:issue:`29`</span></a> and <a href="#id69"><span class="problematic" id="id70">:pull:`18`</span></a> by Eunchong Yu]</li>
 <li>Added <code class="docutils literal"><span class="pre">:endpoints:</span></code> flag option to <a class="reference internal" href="#directive-autoflask" title="autoflask directive"><code class="xref rst rst-dir docutils literal"><span class="pre">autoflask</span></code></a> directive.
-[<a href="#id73"><span class="problematic" id="id74">:pull:`17`</span></a> by Eunchong Yu]</li>
+[<a href="#id71"><span class="problematic" id="id72">:pull:`17`</span></a> by Eunchong Yu]</li>
 </ul>
 </div>
 <div class="section" id="version-1-1-7">
@@ -1107,13 +1107,13 @@ arguments.  [<a href="#id55"><span class="problematic" id="id56">:pull:`33`</spa
 <ul class="simple">
 <li>Added <a class="reference external" href="http://tools.ietf.org/html/rfc5789#section-2">PATCH</a> method support.  See <a class="reference internal" href="#role-http:patch" title="http:patch role"><code class="xref rst rst-role docutils literal"><span class="pre">http:patch</span></code></a> role
 and <a class="reference internal" href="#directive-http:patch" title="http:patch directive"><code class="xref rst rst-dir docutils literal"><span class="pre">http:patch</span></code></a> directive.
-[<a href="#id75"><span class="problematic" id="id76">:pull:`9`</span></a> and <a href="#id77"><span class="problematic" id="id78">:pull:`10`</span></a> by Jeffrey Finkelstein]</li>
+[<a href="#id73"><span class="problematic" id="id74">:pull:`9`</span></a> and <a href="#id75"><span class="problematic" id="id76">:pull:`10`</span></a> by Jeffrey Finkelstein]</li>
 <li>The HTTP routing table can be grouped based on prefix by specifying
 <code class="xref py py-data docutils literal"><span class="pre">http_index_ignore_prefixes</span></code> config in list of common prefixes to
-ignore.  [<a href="#id79"><span class="problematic" id="id80">:pull:`7`</span></a> and <a href="#id81"><span class="problematic" id="id82">:pull:`8`</span></a> by Andrey Popp]</li>
+ignore.  [<a href="#id77"><span class="problematic" id="id78">:pull:`7`</span></a> and <a href="#id79"><span class="problematic" id="id80">:pull:`8`</span></a> by Andrey Popp]</li>
 <li>The order of HTTP routing table now provides sorting by path as key.
 Previously it was sorted by HTTP method and then by path, which is
-non-intuitive.  [<a href="#id83"><span class="problematic" id="id84">:pull:`7`</span></a> and <a href="#id85"><span class="problematic" id="id86">:pull:`8`</span></a> by Andrey Popp]</li>
+non-intuitive.  [<a href="#id81"><span class="problematic" id="id82">:pull:`7`</span></a> and <a href="#id83"><span class="problematic" id="id84">:pull:`8`</span></a> by Andrey Popp]</li>
 </ul>
 </div>
 <div class="section" id="version-1-1-6">
@@ -1132,7 +1132,7 @@ highlighted in <code class="xref rst rst-dir docutils literal"><span class="pre"
 <code class="xref py py-attr docutils literal"><span class="pre">static_path</span></code> attribute to
 <code class="xref py py-attr docutils literal"><span class="pre">static_url_path</span></code>, so <a class="reference internal" href="#directive-autoflask" title="autoflask directive"><code class="xref rst rst-dir docutils literal"><span class="pre">autoflask</span></code></a> also reflect
 the change.
-[<a href="#id87"><span class="problematic" id="id88">:pull:`1`</span></a> by Jeffrey Finkelstein]</li>
+[<a href="#id85"><span class="problematic" id="id86">:pull:`1`</span></a> by Jeffrey Finkelstein]</li>
 </ul>
 </div>
 <div class="section" id="version-1-1-4">
