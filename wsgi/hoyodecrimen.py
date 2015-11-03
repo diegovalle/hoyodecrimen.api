@@ -338,11 +338,11 @@ if __name__ == '__main__':
 
     debug = False
     # Running locally
-    if 'OPENSHIFT_APP_UUID' not in os.environ:
-        app.config['PROFILE'] = True
-        app.config['ASSETS_DEBUG'] = True
+    if 'OPENSHIFT_APP_UUID' in os.environ:
+        #app.config['PROFILE'] = True
+        #app.config['ASSETS_DEBUG'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
-        debug = True
+        # debug = True
     else:
         Compress(app)
     app.run(debug=debug)
