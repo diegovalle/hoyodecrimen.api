@@ -167,11 +167,12 @@ that occurred in the Federal District</td>
 </tr>
 <tr class="row-odd"><td>Enumerate</td>
 <td>Get a list of the names of all cuadrantes,
-sectores or crimes</td>
+sectores, crimes or municipios</td>
 <td><div class="first last line-block">
 <div class="line"><strong>/api/v1/cuadrantes</strong></div>
 <div class="line"><strong>/api/v1/sectores</strong></div>
 <div class="line"><strong>/api/v1/crimes</strong></div>
+<div class="line"><strong>/api/v1/municipios</strong></div>
 </div>
 </td>
 </tr>
@@ -321,7 +322,7 @@ which contains a short description of what went wrong.</p>
 <dl class="get">
 <dt id="get--api-v1-cuadrantes">
 <code class="descname">GET </code><code class="descname">/api/v1/cuadrantes</code><a class="headerlink" href="#get--api-v1-cuadrantes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enumerate all the cuadrantes and the sectors they belong to</p>
+<dd><p>Enumerate all the cuadrantes and the sectors and municipios they belong to</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -352,13 +353,11 @@ Content-Type: application/json
 {
 &quot;rows&quot;: [
 {
-&quot;cuadrante&quot;: &quot;S-1.1.16&quot;,
-&quot;sector&quot;: &quot;NARVARTE - ALAMOS&quot;
+&quot;cuadrante&quot;: &quot;P-1.1.1&quot;,
+&quot;cve_mun&quot;: &quot;09010&quot;,
+&quot;municipio&quot;: &quot;ALVARO OBREGON&quot;,
+&quot;sector&quot;: &quot;ALPES&quot;
 },
-{
-&quot;cuadrante&quot;: &quot;N-2.1.1&quot;,
-&quot;sector&quot;: &quot;ARAGON&quot;
-}
 ...
 </pre></div>
 </div>
@@ -367,7 +366,7 @@ Content-Type: application/json
 <dl class="get">
 <dt id="get--api-v1-municipios">
 <code class="descname">GET </code><code class="descname">/api/v1/municipios</code><a class="headerlink" href="#get--api-v1-municipios" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enumerate all cuadrantes and sectors with the municipios they belong to</p>
+<dd><p>Enumerate all municipios in the Federal District</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -398,13 +397,7 @@ Content-Type: application/json
 &quot;rows&quot;: [
 {
 &quot;cuadrante&quot;: &quot;P-1.1.1&quot;,
-&quot;cvegeo&quot;: &quot;09010&quot;,
-&quot;municipio&quot;: &quot;ALVARO OBREGON&quot;,
-&quot;sector&quot;: &quot;ALPES&quot;
-},
-{
-&quot;cuadrante&quot;: &quot;P-1.1.10&quot;,
-&quot;cvegeo&quot;: &quot;09010&quot;,
+&quot;cve_mun&quot;: &quot;09010&quot;,
 &quot;municipio&quot;: &quot;ALVARO OBREGON&quot;,
 &quot;sector&quot;: &quot;ALPES&quot;
 },
@@ -447,16 +440,9 @@ Content-Type: application/json
 {
 &quot;rows&quot;: [
 {
-&quot;sector&quot;: &quot;ABASTO-REFORMA&quot;
-},
-{
-&quot;sector&quot;: &quot;SAN ANGEL&quot;
-},
-{
-&quot;sector&quot;: &quot;COYOACAN&quot;
-},
-{
-&quot;sector&quot;: &quot;TEZONCO&quot;
+&quot;cve_mun&quot;: &quot;09010&quot;,
+&quot;municipio&quot;: &quot;ALVARO OBREGON&quot;,
+&quot;sector&quot;: &quot;ALPES&quot;
 },
 ...
 </pre></div>
@@ -905,7 +891,7 @@ Content-Type: application/json
 {
 &quot;count&quot;: 1,
 &quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
-&quot;cvegeo&quot;: &quot;09012&quot;,
+&quot;cve_mun&quot;: &quot;09012&quot;,
 &quot;date&quot;: &quot;2013-01&quot;,
 &quot;municipio&quot;: &quot;TLALPAN&quot;,
 &quot;population&quot;: 633181
@@ -980,7 +966,7 @@ Content-Type: application/json
 <dl class="get">
 <dt id="get--api-v1-municipios-(string-municipio)-crimes-(string-crime)-period">
 <code class="descname">GET </code><code class="descname">/api/v1/municipios/</code><span class="sig-paren">(</span><em class="property">string: </em><em>municipio</em><span class="sig-paren">)</span><code class="descname">/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/period</code><a class="headerlink" href="#get--api-v1-municipios-(string-municipio)-crimes-(string-crime)-period" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the sum of crimes that occurred in each cuadrante for a specified period of time</p>
+<dd><p>Return the sum of crimes that occurred in each municipio for a specified period of time</p>
 <p>By default it returns the sum of crimes during the last 12 months for all the cuadrantes in the database</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -988,13 +974,13 @@ Content-Type: application/json
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>crime</strong> &#8211; the name of crime or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all crimes</li>
-<li><strong>cuadrante</strong> &#8211; the name of the cuadrante or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all cuadrantes</li>
+<li><strong>municipio</strong> &#8211; the name of the municipio or the keyword <code class="docutils literal"><span class="pre">all</span></code> to return all municipios</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first simple">
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when the sum of all crimes is found</li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime is not found in the database</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when the crime or municipio is not found in the database</li>
 </ul>
 </td>
 </tr>
@@ -1014,7 +1000,7 @@ Content-Type: application/json
 </tbody>
 </table>
 <p><strong>Example request</strong>:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes/all/crimes/all/period</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/api/v1/municipios/tlalpan/crimes/all/period</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
 <span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
 </pre></div>

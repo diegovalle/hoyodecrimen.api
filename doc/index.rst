@@ -89,8 +89,9 @@ What's available
 |                        | that occurred in the Federal District               |                                                                                   |
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
 | Enumerate              | Get a list of the names of all cuadrantes,          | | **/api/v1/cuadrantes**                                                          |
-|                        | sectores or crimes                                  | | **/api/v1/sectores**                                                            |
+|                        | sectores, crimes or municipios                      | | **/api/v1/sectores**                                                            |
 |                        |                                                     | | **/api/v1/crimes**                                                              |
+|                        |                                                     | | **/api/v1/municipios**                                                          |
 +------------------------+-----------------------------------------------------+-----------------------------------------------------------------------------------+
 | GeoJSON                | Return maps as GeoJSON                              | | **/api/v1/cuadrantes/geojson**                                                  |
 |                        |                                                     | | **/api/v1/sectores/geojson**                                                    |
