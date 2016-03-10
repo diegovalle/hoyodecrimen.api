@@ -7,18 +7,11 @@ Usar un nombre prdista (o de quien gobierne) de http://blog.diegovalle.net/2015/
 
 ###Texto Solicitud
 
-Con fundamento en la Ley Federal de Acceso a la Información les escribo para solicitar información delictiva desagregada por mes y cuadrante de seguridad pública de los delitos de
+Con fundamento en la Ley Federal de Acceso a la Información les escribo para solicitar información delictiva desagregada por mes y cuadrante de seguridad pública
 
-- HOMICIDIO DOLOSO
-- LESIONES DOLOSAS POR DISPARO DE ARMA DE FUEGO
-- ROBO A CASA HABITACION CON VIOLENCIA
-- ROBO A NEGOCIO CON VIOLENCIA
-- ROBO A TRANSEUNTE CON VIOLENCIA
-- ROBO A TRANSEUNTE SIN VIOLENCIA
-- ROBO DE VEHICULO AUTOMOTOR CON VIOLENCIA
-- ROBO DE VEHICULO AUTOMOTOR SIN VIOLENCIA
+TODOS LOS DELITOS DE ALTO IMPACTO
 
-en el Distrito Federal para los años 2013, 2014 y 2015 en formato EXCEL (.xlsx). Es importante que la información de crímenes con y sin violencia esté disponible por separado. La información debe ser completa y sin limitaciones de todos los registros de los crímenes solicitados. Si deciden redactar información, por favor proporcionen un explicación escrita del motivo y referencia a los motivos para dicha excepción.
+en el Distrito Federal para los años 2013, 2014, 2015 y 2016 en formato EXCEL (.xlsx). Es importante que la información de crímenes con y sin violencia esté disponible por separado. La información debe ser completa y sin limitaciones de todos los registros de los crímenes solicitados. Si deciden redactar información, por favor proporcionen un explicación escrita del motivo y referencia a los motivos para dicha excepción.
 
 En base a los artículos transitorios de la Ley Federal a la Información estos registros deben de estar disponibles antes de la fecha límite del tramite.
 
@@ -29,4 +22,4 @@ De no entregar los datos solicitados dentro del tiempo límite marcado , con fun
 ###Datos para facilitar su localización
 
 Los cuadrantes a los que me refiero son los que la SSPDF hace disponibles en su página:
-http://www.ssp.df.gob.mx/OrgPolicial/Pages/Cuadrantes.aspx
+http://www.ssp.df.gob.mx/ubica_cuadrantes.html
