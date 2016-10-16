@@ -37,7 +37,7 @@ def ResultProxy_to_json(results):
     return jsonify(rows=json_results)
 
 
-def results_to_array(results):
+def results_to_array(results, truncate_date=True):
     json_results = []
     if len(results) > 0:
         keys = results[0].keys()
@@ -45,7 +45,10 @@ def results_to_array(results):
             d = {}
             for i, key in enumerate(keys):
                 if key == "date":
-                    d["date"] = result[i][0:7]
+                    if truncate_date == True:
+                        d["date"] = result[i][0:7]
+                    else:
+                        d["date"] = result[i]
                     #d["month"] = int(result[i][5:7])
                 else:
                     d[key] = result[i]

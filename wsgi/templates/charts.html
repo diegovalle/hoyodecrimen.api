@@ -30,7 +30,7 @@
 
 <hr/>
 <div>
-<h2>{{_('Small multiple charts of crime in Mexico City')}}</h2>
+<h2>{{_('Small multiple charts of crime in Mexico City (ordered by the last available value)')}}</h2>
 {{_('Crime: ')}}
 <div class="select-style">
 <select id="crimeSelect">
@@ -84,7 +84,7 @@ small_multiples = function(value) {
                 if (document.getElementById('line' + x.replace(/ /g, '-')
                                                       .replace(/\./g, '-')) === null) {
                     $('<div id="'+ 'line' + x.replace(/ /g, '-')
-                                             .replace(/\./g, '-') +'" class="3u"></div>').appendTo('#small-multiples');
+                                             .replace(/\./g, '-') +'" class="4u"></div>').appendTo('#small-multiples');
                 }
             });
             $('.3u').each(function(index, obj){
@@ -103,13 +103,18 @@ small_multiples = function(value) {
                 area: false,
                 buffer: 0,
                 top: 15,
-                //full_width: true,
-                width: 200,
+                buffer: 0,
+                left: 45,
+                right: 25,
+                top: 25,
+                full_width: true,
+                //width: 200,
                 interpolate: "linear",
                 target: '#homicidios',
                 x_accessor: 'date',
                 y_accessor: 'rate',
                 xax_count: 4,
+                yax_count: 3,
             };
             console.time("concatenation");
 

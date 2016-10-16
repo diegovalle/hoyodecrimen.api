@@ -1041,7 +1041,7 @@ body.loading .modal {
 }
 
 .select-style select {
-    padding: 5px 8px;
+    padding: 1px 8px;
     border: none;
     width: 100%;
     box-shadow: none;
