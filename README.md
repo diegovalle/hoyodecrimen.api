@@ -36,6 +36,30 @@ municipio varchar(200),
     PRIMARY KEY(cuadrante)
 );
 COPY municipios FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+
+CREATE TABLE crime_latlong (
+        cuadrante varchar (20),
+	crime varchar (60),
+	date  varchar (10),
+	hour  varchar (10),
+	year  varchar (10),
+	month  varchar (10),
+        latitude double precision,
+        longitude double precision,
+        id integer,
+        geom geometry,
+        PRIMARY KEY(id)
+);
+COPY crime_latlong(cuadrante,crime,date,hour,year,month,latitude,longitude,id) FROM 'crime-lat-long.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);
+CREATE INDEX crime_latlongi
+  ON crime_latlong
+  USING gist
+  (geom );
+CREATE INDEX cuadrantes_polygeom
+  ON cuadrantes_poly
+  USING gist
+  (geom );
 ```
 
 Create database from shapefile
@@ -57,4 +81,5 @@ To create the Spanish translation
 ```
 pybabel extract -F babel.cfg -o messages.pot .
 pybabel update -i messages.pot -d translations
+pybabel compile -d translations
 ```
