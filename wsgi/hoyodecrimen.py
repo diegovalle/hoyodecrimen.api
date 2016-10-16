@@ -213,6 +213,17 @@ def charts_es():
     setattr(g, 'lang', 'es')
     return render_template('charts.html')
 
+@app.route('/en/hours')
+def hours():
+    setattr(g, 'lang', 'en')
+    return render_template('hours.html')
+
+
+@app.route('/hours')
+def hours_es():
+    setattr(g, 'lang', 'es')
+    return render_template('hours.html')
+
 
 @app.route('/en/sectores-map')
 def sectores_map():

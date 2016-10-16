@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 class Cuadrantes(db.Model):
     __tablename__ = 'cuadrantes'
-    cuadrante = db.Column(db.String(15), primary_key=True)
+    cuadrante = db.Column(db.String(20), primary_key=True)
     crime = db.Column(db.String(60))
     date = db.Column(db.String(10))
     count = db.Column(db.Integer)
@@ -32,6 +32,31 @@ class Cuadrantes_Poly(db.Model):
     def __init__(self, id, sector, geom):
         self.id = id
         self.sector = sector
+        self.geom = geom
+
+
+class Crime_latlong(db.Model):
+    __tablename__ = 'crime_latlong'
+    id = db.Column(db.Integer, primary_key=True)
+    cuadrante = db.Column(db.String(60))
+    crime = db.Column(db.String(60))
+    date = db.Column(db.String(10))
+    hour = db.Column(db.String(10))
+    year = db.Column(db.String(10))
+    month = db.Column(db.String(10))
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
+
+    def __init__(self, cuadrante, crime, date, hour, year, month, latitude, longitude, geom):
+        self.cuadrante = cuadrante
+        self.crime = crime
+        self.date = date
+        self.hour = hour
+        self.year = year
+        self.month = month
+        self.latitude = latitude
+        self.longitude = longitude
         self.geom = geom
 
 class Municipios(db.Model):
