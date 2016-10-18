@@ -3,7 +3,7 @@ from flask import Blueprint, Flask, jsonify, \
     send_from_directory, send_file, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, literal_column, literal
-from sqlalchemy.dialects.mssql import INTEGER, TEXT
+from sqlalchemy.dialects.mssql import INTEGER, DATE
 from sqlalchemy.orm import join
 from sqlalchemy import func, and_, or_
 from flask_cache import Cache
@@ -594,17 +594,136 @@ def frontpage_extra(crime, long, lat):
                    latlong=lib.results_to_array(results_sphere, truncate_date=False))
 
 
+@API.route('/latlong/crimes/<string:crime>/coords/'
+           '<string:long>/'
+           '<string:lat>/distance/<int:distance>',
+           methods=['GET'])
+@jsonp
+@cache.cached(key_prefix=make_cache_key)
+def latlong(crime, long, lat, distance):
+    """Given a latitude and longitude return all crimes within a certain distance
+
+    Returns a list containg the cuadrante polygon as GeoJSON, all the crimes that occurred in the cuadrante
+    by date, the sum of crime counts that occurred in the whole DF during the last 12 months, and the sum of crimes in
+    the cuadrante containing the longitude and latitude during the last 12 months
+
+    :param long: long
+    :param lat: lat
+    :param crime: the name of a crime or the keyword ``all``
+
+    :status 200: when the cuadrante corresponding to the latitude and longitude is found
+    :status 400: when the latitude or longitude where incorrectly specified
+    :status 404: when the latitude or longitude are outside of the Federal District cuadrante area or the crime requested doesn't exist
+
+    :resheader Content-Type: application/json
+
+    **Example request**:
+
+    .. sourcecode:: http
+
+      GET /api/v1/cuadrantes/crimes/all/coords/-99.13333/19.43/distance/500 HTTP/1.1
+      Host: hoyodecrimen.com
+      Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+      "cuadrante": [
+      {
+      "count": 0,
+      "crime": "HOMICIDIO DOLOSO",
+      "cuadrante": "C-1.4.4",
+      "month": 1,
+      "population": 1405,
+      "sector": "CORREDOR - CENTRO",l
+      "year": 2013
+      },
+      ...
+      "cuadrante_period": [
+      {
+      "count": 0,
+      "crime": "HOMICIDIO DOLOSO",
+      "population": 16860
+      },
+      ...
+      "df_period": [
+      {
+      "count": 823,
+      "crime": "HOMICIDIO DOLOSO",
+      "population": 8785874
+      },
+      ...
+      "latlong": [
+      {
+      "crime": "VIOLACION",
+      "date": "2016-08-15",
+      "hour": "12:00",
+      "lat": 19.428935,
+      "long": -99.136566
+      },
+       ...
+      "pip": [
+      {
+      "cuadrante": "C-1.4.4",
+      "geomery": "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-99.129543,19.436234],[-99.12966,19.435347],[-99.129766,19.43449],[-99.12994,19.433287],[-99.130025,19.432576],[-99.130206,19.431322],[-99.130576,19.428702],[-99.132613,19.428972],[-99.136883,19.429561],[-99.136343,19.433343],[-99.136008,19.435295],[-99.135754,19.437014],[-99.13479,19.436886],[-99.133691,19.436745],[-99.131628,19.436484],[-99.129543,19.436234]]]]}",
+      "sector": "CORREDOR - CENTRO"
+      }
+    """
+    # sql_query = """SELECT ST_AsGeoJSON(geom) as geom,id,sector
+    #                 FROM cuadrantes_poly
+    #                 where ST_Contains(geom,ST_GeometryFromText('POINT(-99.13 19.43)',4326))=True;"""
+    crime = crime.upper()
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    start_date, max_date = check_dates(start_date, end_date)
+    if crime == "ALL":
+        filters = [and_(Crime_latlong.date >= start_date, Crime_latlong.date <= max_date)]
+    else:
+        filters = [or_(*[func.upper(Crime_latlong.crime) == x for x in crime.split(',')])]
+        filters.append(and_(Crime_latlong.date >= start_date, Crime_latlong.date <= max_date))
+
+    if distance <= 0:
+        raise InvalidAPIUsage('distance has to be greater than zero')
+
+    if not lib.check_float(long):
+        raise InvalidAPIUsage('something is wrong with the longitude you provided')
+        #abort(abort(make_response('something is wrong with the longitude you provided', 400)))
+    if not lib.check_float(lat):
+        raise InvalidAPIUsage('something is wrong with the latitude you provided')
+        #abort(abort(make_response('something is wrong with the latitude you provided', 400)))
+
+    point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
+
+    filters.append(func.ST_Distance_Sphere(point, Crime_latlong.geom) <= distance)
+
+    results_sphere = Crime_latlong.query. \
+        filter(*filters). \
+        with_entities(func.upper(Crime_latlong.crime).label("crime"),
+                      func.upper(Crime_latlong.date).label("date"),
+                      func.upper(Crime_latlong.hour).label("hour"),
+                      Crime_latlong.latitude.label("lat"),
+                      Crime_latlong.longitude.label("long")). \
+        order_by(Crime_latlong.crime.desc(), Crime_latlong.date.desc()). \
+        all()
+
+
+    return jsonify(latlong=lib.results_to_array(results_sphere, truncate_date=False))
+
+
+
 @API.route('/df/crimes/<string:crime>/hours',
            methods=['GET'])
 @jsonp
 @cache.cached(key_prefix=make_cache_key)
-def hours_sector(crime):
-    """Return the sum of crimes that occurred in a particular or in all sectores for a specified period of time
-
-    By default it returns the sum of crimes during the last 12 months for all the sectores in the database
+def hours_df(crime):
+    """Return the number of crimes by hour
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
-    :param sector: the name of the sector or the keyword ``all`` to return all sectores
 
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
@@ -618,7 +737,7 @@ def hours_sector(crime):
 
     .. sourcecode:: http
 
-      GET /api/v1/sectores/ALL/crimes/ALL/hours HTTP/1.1
+      GET /api/v1/df/crimes/ALL/hours HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -629,22 +748,22 @@ def hours_sector(crime):
       HTTP/1.1 200 OK
       Content-Type: application/json
 
-    {
-    "rows": [
-    {
+      {
+      "rows": [
+      {
       "count": 206,
       "crime": "HOMICIDIO DOLOSO",
       "end_date": "2016-09",
       "hour": "00",
       "start_date": "2015-10"
-    },
-    {
+      },
+      {
       "count": 231,
       "crime": "HOMICIDIO DOLOSO",
       "end_date": "2016-09",
       "hour": "01",
       "start_date": "2015-10"
-    },
+      },
     ...
 
     """
@@ -679,6 +798,7 @@ def hours_sector(crime):
         filters = [or_(*[func.upper(Crime_latlong.crime) == x for x in crime.split(',')])]
         filters.append(and_(Crime_latlong.date >= start_date, Crime_latlong.date <= max_date))
     subq = Crime_latlong.query \
+        .filter(*filters) \
         .with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
                       func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
                       func.substr(Crime_latlong.hour, 0, 3).label('max_hour'),
@@ -690,17 +810,34 @@ def hours_sector(crime):
     partition = Crime_latlong.query \
         .with_entities(subq.c.max_hour,
                        subq.c.crime,
-                       func.row_number().over(partition_by=subq.c.crime, order_by=subq.c.count).label('rn')
+                       subq.c.count,
+                       func.row_number().over(partition_by=subq.c.crime, order_by=subq.c.count.desc()).label('rn')
                        ) \
         .subquery()
     max = Crime_latlong.query \
         .with_entities(partition.c.max_hour,
                        partition.c.crime
                        ) \
-        .filter(partition.c.rn == 24) \
+        .filter(partition.c.rn == 1) \
         .subquery()
+    # all_crimes = Crime_latlong.query \
+    #     .with_entities(func.upper(Crime_latlong.crime).label('crime')) \
+    #     .distinct() \
+    #     .subquery()
+    #
+    # cross_join = Crime_latlong.query \
+    #     .join(all_crimes, literal(True)) \
+    #     .with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
+    #                    func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
+    #                    func.substr(Crime_latlong.hour, 0, 3).label('hour'),
+    #                    literal("0", type_=db.String).label('count'),
+    #                    all_crimes.c.crime) \
+    #     .distinct() \
+    #     .subquery()
+
     results = Crime_latlong.query \
         .join(max, Crime_latlong.crime == max.c.crime) \
+        .filter(*filters) \
         .with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
                       func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
                       func.substr(Crime_latlong.hour, 0, 3).label('hour'),
@@ -709,6 +846,137 @@ def hours_sector(crime):
         .group_by(func.substr(Crime_latlong.hour, 0, 3), Crime_latlong.crime, max.c.max_hour) \
         .order_by(func.mod(func.cast(max.c.max_hour, INTEGER) + 5, 24), Crime_latlong.crime, func.substr(Crime_latlong.hour, 0, 3)) \
         .all()
+
+    # r = Crime_latlong.query \
+    #     .join(cross_join, and_(results.c.crime == cross_join.c.crime, results.c.hour == cross_join.c.hour, results.c.count == None)) \
+    #     .with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
+    #                   func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
+    #                   func.substr(Crime_latlong.hour, 0, 3).label('hour'),
+    #                   func.upper(Crime_latlong.crime).label('crime'),
+    #                   func.count(Crime_latlong.crime).label('count')) \
+    #     .filter() \
+    #     .all()
+    return lib.results_to_json(results)
+
+
+@API.route('/df/crimes/<string:crime>/days',
+           methods=['GET'])
+@jsonp
+@cache.cached(key_prefix=make_cache_key)
+def days_df(crime):
+    """Return the number of crimes by day
+
+    :param crime: the name of crime or the keyword ``all`` to return all crimes
+
+    :status 200: when the sum of all crimes is found
+    :status 404: when the crime is not found in the database
+
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+
+    :resheader Content-Type: application/json
+
+    **Example request**:
+
+    .. sourcecode:: http
+
+      GET /api/v1/df/crimes/ALL/hours HTTP/1.1
+      Host: hoyodecrimen.com
+      Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "count": 201,
+      "crime": "HOMICIDIO DOLOSO",
+      "dow": 0,
+      "end_date": "2016-09",
+      "start_date": "2015-10"
+      },
+      {
+      "count": 148,
+      "crime": "HOMICIDIO DOLOSO",
+      "dow": 1,
+      "end_date": "2016-09",
+      "start_date": "2015-10"
+      },
+    ...
+
+    """
+    """SELECT EXTRACT(DOW FROM to_date(date, 'YYYY-MM-DD')) as dow, count(c.crime) as count, c.crime
+    FROM crime_latlong as c
+    LEFT JOIN
+    (SELECT dow, crime
+    FROM
+    (
+       SELECT
+         dow, crime,
+         ROW_NUMBER() OVER (PARTITION BY crime ORDER BY count desc) as rn
+       FROM
+         (SELECT EXTRACT(DOW FROM to_date(date, 'YYYY-MM-DD')) as dow, count(crime) as count, crime
+         from crime_latlong
+          GROUP BY EXTRACT(DOW FROM to_date(date, 'YYYY-MM-DD')), crime
+         ORDER BY crime ASC, EXTRACT(DOW FROM to_date(date, 'YYYY-MM-DD'))) as counts
+       ) t
+    WHERE
+       t.rn = 1) as p
+    ON c.crime::text = p.crime::text
+    GROUP BY EXTRACT(DOW FROM to_date(date, 'YYYY-MM-DD')), c.crime, p.dow
+    ORDER BY ((dow::integer + 1) % 7) ASC, c.crime, dow;
+    """
+    crime = crime.upper()
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    start_date, max_date = check_dates(start_date, end_date)
+    if crime == "ALL":
+        filters = [and_(Crime_latlong.date >= start_date, Crime_latlong.date <= max_date)]
+    else:
+        filters = [or_(*[func.upper(Crime_latlong.crime) == x for x in crime.split(',')])]
+        filters.append(and_(Crime_latlong.date >= start_date, Crime_latlong.date <= max_date))
+    subq = Crime_latlong.query \
+        .filter(*filters) \
+        .with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
+                      func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
+                      func.extract('dow', func.cast(Crime_latlong.date, DATE)).label('dow'),
+                      func.upper(Crime_latlong.crime).label('crime'),
+                      func.count(Crime_latlong.crime).label('count')) \
+        .group_by(func.extract('dow', func.cast(Crime_latlong.date, DATE)), Crime_latlong.crime) \
+        .order_by(Crime_latlong.crime, func.extract('dow', func.cast(Crime_latlong.date, DATE))) \
+        .subquery()
+    partition = Crime_latlong.query \
+        .with_entities(subq.c.dow,
+                       subq.c.crime,
+                       subq.c.count,
+                       func.row_number().over(partition_by=subq.c.crime, order_by=subq.c.count.desc()).label('rn')
+                       ) \
+        .subquery()
+    max = Crime_latlong.query \
+        .with_entities(partition.c.dow,
+                       partition.c.crime
+                       ) \
+        .filter(partition.c.rn == 1) \
+        .subquery()
+
+    results = Crime_latlong.query \
+        .join(max, Crime_latlong.crime == max.c.crime) \
+        .filter(*filters) \
+        .with_entities(func.substr(literal(start_date, type_=db.String), 0, 8).label('start_date'),
+                      func.substr(literal(max_date, type_=db.String), 0, 8).label('end_date'),
+                      func.cast(func.extract('dow', func.cast(Crime_latlong.date, DATE)), INTEGER).label('dow'),
+                      func.upper(Crime_latlong.crime).label('crime'),
+                      func.count(Crime_latlong.crime).label('count')) \
+        .group_by(func.extract('dow', func.cast(Crime_latlong.date, DATE)), Crime_latlong.crime, max.c.dow) \
+        .order_by(func.mod(func.cast(max.c.dow, INTEGER) + 1, 7), Crime_latlong.crime,
+                  func.extract('dow', func.cast(Crime_latlong.date, DATE))) \
+        .all()
+
     return lib.results_to_json(results)
 
 

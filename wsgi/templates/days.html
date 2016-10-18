@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}{{_('Charts of Crime in Mexico City by Hour')}}{% endblock %}
+{% block title %}{{_('Charts of Crime in Mexico City by Day of Week')}}{% endblock %}
 {% block lang %}{{_('en')}}{% endblock %}
 {% block hreflang %}{{_('es')}}{% endblock %}
-{% block alternhref %}{{_('https://hoyodecrimen.com/charts')}}{% endblock %}
-{% block description %}{{_('Small multiple charts of crime in Mexico City by hour')}}{% endblock %}
+{% block alternhref %}{{_('https://hoyodecrimen.com/days')}}{% endblock %}
+{% block description %}{{_('Small multiple charts of crime in Mexico City by day of week')}}{% endblock %}
 
 {% block css %}
 {% assets  'css_pip_req'   %}
@@ -30,7 +30,7 @@
 
 <hr/>
 <div>
-<h2>{{_('Crime in Mexico City by hour of day for the last 12 months')}}</h2>
+<h2>{{_('Crime in Mexico City by day of week for the last 12 months')}}</h2>
 
 
 </div>
@@ -140,17 +140,17 @@ small_multiples = function(value) {
     var filterCrime = function(data, crime) {
         data = _.filter(data, { 'crime': crime[0].crime });
         _.forEach(data, function(x) {
-          if (x.hour <= "06")
-            x.hour='2016-01-02T' + x.hour + ':00:00';
+          if (x.dow >= 1)
+            x.date='2016-10-' + (16 + x.dow) +'T12:00:00';
           else
-            x.hour='2016-01-01T' + x.hour + ':00:00';
+            x.date='2016-10-23T12:00:00';
           return x;
         })
-        data = MG.convert.date(data, 'hour', '%Y-%m-%dT%H:%M:%S');
+        data = MG.convert.date(data, 'date', '%Y-%m-%dT%H:%M:%S');
         return(data)
     }
 
-    url = '/api/v1/df/crimes/ALL/hours'
+    url = '/api/v1/df/crimes/ALL/days'
     $.ajax({
         dataType: 'jsonp',
         url: url,
@@ -170,12 +170,9 @@ small_multiples = function(value) {
 
             console.time("concatenation");
 
-            var complete_dates = [];
-            for(var i=0; i < 24; i++) {
-              if (i <= 6)
-                complete_dates[i] = {'hour': new Date(2016, 0, 2, i, 0, 0, 0), 'count': 0};
-              else
-                complete_dates[i] = {'hour': new Date(2016, 0, 1, i, 0, 0, 0), 'count': 0};
+            complete_dates = [];
+            for(var i=17; i < 25; i++) {
+                complete_dates[i-17] = {'date': new Date(2016, 9, i, 12, 0, 0, 0), 'count': 0};
             }
 
             var round = d3.format(".1f");
@@ -186,32 +183,33 @@ small_multiples = function(value) {
                 description: '',
                 height: 150,
                 y_label: '',
-                area: true,
+               // area: true,
     binned: true,
     chart_type: 'histogram',
                 buffer: 0,
-                left: 45,
+                left: 95,
                 right: 25,
                 top: 25,
                 full_width: true,
                 //width: 200,
                 interpolate: "linear",
-                x_accessor: 'hour',
+                x_accessor: 'date',
                 y_accessor: 'count',
                 xax_count: 4,
                 yax_count: 3,
-                xax_format: d3.time.format('%H:%M %p')
+                xax_format: d3.time.format('%A'),
+        x_axis: false
             };
 
                 line_values = filterCrime(data.rows, x);
 
                 _.forEach(complete_dates, function(y, i) {
-                  idx = _.findIndex(line_values, function(z) {return  z.hour.getTime() == y.hour.getTime()})
+                  idx = _.findIndex(line_values, function(z) {return  z.date.getTime() == complete_dates[i].date.getTime()})
                   if (idx < 0)
                     line_values.splice(i, 0, y)
                 })
 
-                line_options.data = _.sortBy(line_values, 'hour');
+                line_options.data = _.sortBy(line_values, 'date');
                 line_options.title = x[0].crime; //.substr(0,10) + '...';
                 //line_options.description = x[0].crime;
                 line_options.target = "#line" + x[0].crime.replace(/ /g, '-').replace(/\./g, '-');
@@ -219,7 +217,7 @@ small_multiples = function(value) {
                   var target =   line_options.target;
                   d3
                   .select(target + ' text.mg-active-datapoint')
-                  .text({{_('\"Hour\"')}} +  ' ' + d.x.getHours() + ':00'  + ' - ' + d.y);
+                  .text( d3.time.format("%a")(d.x) + ' - ' + {{_('\"Count\"')}} + ' ' + d.y );
                  };
                 MG.data_graphic(line_options);
                 return
