@@ -27,7 +27,7 @@ CREATE TABLE cuadrantes (
        population integer,
        PRIMARY KEY(cuadrante, sector, crime, date)
 );
-COPY cuadrantes FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+COPY cuadrantes FROM '/tmp/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
 
 CREATE TABLE municipios (cuadrante varchar (15),
 sector varchar (60),
@@ -35,7 +35,7 @@ cvegeo  varchar (5),
 municipio varchar(200),
     PRIMARY KEY(cuadrante)
 );
-COPY municipios FROM '/var/lib/openshift/543fe7165973cae5d30000c1/app-root/repo/data/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+COPY municipios FROM '/tmp/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
 
 CREATE TABLE crime_latlong (
         cuadrante varchar (20),
@@ -50,7 +50,7 @@ CREATE TABLE crime_latlong (
         geom geometry,
         PRIMARY KEY(id)
 );
-COPY crime_latlong(cuadrante,crime,date,hour,year,month,latitude,longitude,id) FROM 'crime-lat-long.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+COPY crime_latlong(cuadrante,crime,date,hour,year,month,latitude,longitude,id) FROM '/tmp/crime-lat-long.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
 UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);
 CREATE INDEX crime_latlongi
   ON crime_latlong
