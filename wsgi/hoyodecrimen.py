@@ -68,13 +68,13 @@ css_pip_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
                      filters="cssmin", output="css/packed-pip-req.css")
 assets.register('css_pip_req', css_pip_req)
 
-js_pip_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
+js_pip_req = Bundle("js/jquery.1.8.3.min.js", "js/jquery.dropotron.min.js",
                     "js/skel.min.js",
                     "js/skel-layers.min.js",
                     "js/init.js", "js/vendor/lodash/lodash.min.js", "js/leaflet.js",
                     "js/leaflet-pip.js",
                     "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
-                    "js/jquery.1.8.3.min.js", "js/modernizr.js", "js/vendor/metricsgraphics/metricsgraphics.js",
+                    "js/modernizr.js", "js/vendor/metricsgraphics/metricsgraphics.js",
                     filters='jsmin', output='js/packed-pip-req.js')
 assets.register('js_pip_req', js_pip_req)
 
@@ -87,7 +87,7 @@ css_maps_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
                       filters="cssmin", output="css/packed-maps-reqs.css", )
 assets.register('css_maps_req', css_maps_req)
 
-js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js", "js/config.js",
+js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
                      "js/skel.min.js", "js/skel-layers.min.js", "js/init.js",
                      "js/d3.v3.min.js",
                      "js/topojson.v1.min.js", "js/c3.min.js", "js/d3.tip.v0.6.3.js",
@@ -223,6 +223,30 @@ def hours():
 def hours_es():
     setattr(g, 'lang', 'es')
     return render_template('hours.html')
+
+
+@app.route('/en/days')
+def days():
+    setattr(g, 'lang', 'en')
+    return render_template('days.html')
+
+
+@app.route('/days')
+def days_es():
+    setattr(g, 'lang', 'es')
+    return render_template('days.html')
+
+
+@app.route('/en/about')
+def about():
+    setattr(g, 'lang', 'en')
+    return render_template('about.html')
+
+
+@app.route('/about')
+def about_es():
+    setattr(g, 'lang', 'es')
+    return render_template('about.html')
 
 
 @app.route('/en/sectores-map')
