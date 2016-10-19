@@ -59,10 +59,10 @@ var nokiaSat = new L.BingLayer(BING_APIKEY, {type: 'AerialWithLabels'});
 // nokiaSat = L.tileLayer('http://{s}.maptile.maps.svc.ovi.com/maptiler/v2/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8', {
 //     attribution: '©2012 Nokia <a href="http://here.net/services/terms" target="_blank">Terms of use</a>'
 // })
-var map = L.map('map', {center: new L.LatLng(19.38, -99.1),
+var map = L.map('map', {
                         zoom: 11,
                         layers: [nokiaStreets]});
-
+map.fitBounds([[19.593571, -99.123324],[19.141173, -99.130924],[19.299933, -99.350858],[19.321587, -98.944222]]);
 var baseMaps = {
     "Satellite": nokiaSat,
     "Streets": nokiaStreets
@@ -336,7 +336,9 @@ updateLineChart = function(){
         y_extended_ticks: true,
         yax_count: 3,
 
+                full_width: true,
       left: 50,
+      right: 50,
       full_width: true,
       //width: 200,
       interpolate: "linear",
@@ -349,6 +351,18 @@ updateLineChart = function(){
     data = MG.convert.date(data.rows, 'date', '%Y-%m');
     if(mapType === "cuadrantes") line_options.y_accessor = 'count';
     line_options.data = data;
+    line_options.mouseover = function(d, i) {
+                   var round = d3.format(".1f");
+            var comma = d3.format(",");
+                   var target = line_options.target;
+                   console.log(target)
+                   var date = new Date(d.date);
+                   var day = d.date.getDate();
+                   var monthIndex = d.date.getMonth();
+                   var year = d.date.getFullYear();
+                   d3.select(target + ' text.mg-active-datapoint')
+                   .text( d3.time.format("%b %Y")(date) + rates_txt + round(d.rate) + count_txt + comma(d.count));
+                   };
     MG.data_graphic(line_options);
   });
 }

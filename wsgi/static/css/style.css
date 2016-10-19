@@ -1067,3 +1067,8 @@ body.loading .modal {
     display: block;
     margin: 0 auto;
 }
+
+#small-multiples.row>* {
+    padding-left: 20px;
+}
+

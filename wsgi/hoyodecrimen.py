@@ -68,13 +68,13 @@ css_pip_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
                      filters="cssmin", output="css/packed-pip-req.css")
 assets.register('css_pip_req', css_pip_req)
 
-js_pip_req = Bundle("js/jquery.1.8.3.min.js", "js/jquery.dropotron.min.js",
+js_pip_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
                     "js/skel.min.js",
                     "js/skel-layers.min.js",
                     "js/init.js", "js/vendor/lodash/lodash.min.js", "js/leaflet.js",
                     "js/leaflet-pip.js",
                     "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
-                    "js/modernizr.js", "js/vendor/metricsgraphics/metricsgraphics.js",
+                    "js/jquery.1.8.3.min.js", "js/modernizr.js", "js/vendor/metricsgraphics/metricsgraphics.js",
                     filters='jsmin', output='js/packed-pip-req.js')
 assets.register('js_pip_req', js_pip_req)
 
@@ -116,6 +116,14 @@ js_leaflet_req = Bundle("js/leaflet.js", "js/L.Control.Locate.js",
                         "js/vendor/metricsgraphics/metricsgraphics.js",
                         filters="jsmin", output="js/packed-leaflet.js", )
 assets.register('js_leaflet_req', js_leaflet_req)
+
+latlong_css = Bundle("css/l.geosearch.css", "css/L.Control.Locate.css",
+                         filters="cssmin", output="css/packed-latlong.css")
+assets.register('css_latlong_css', latlong_css)
+
+latlong_js = Bundle("js/L.Control.Locate.js", "js/vendor/googlemutant/Leaflet.GoogleMutant.js",
+                        "js/leaflet-hash.js")
+assets.register('js_latlong_js', latlong_js)
 
 @babel.localeselector
 def get_locale():
@@ -202,6 +210,18 @@ def numero():
     return render_template('counts-cuadrantes.html')
 
 
+@app.route('/en/mapa')
+def mapa():
+    setattr(g, 'lang', 'en')
+    return render_template('latlong_map.html')
+
+
+@app.route('/mapa')
+def mapa_es():
+    setattr(g, 'lang', 'es')
+    return render_template('latlong_map.html')
+
+
 @app.route('/en/charts')
 def charts():
     setattr(g, 'lang', 'en')
@@ -213,25 +233,25 @@ def charts_es():
     setattr(g, 'lang', 'es')
     return render_template('charts.html')
 
-@app.route('/en/hours')
+@app.route('/en/hora')
 def hours():
     setattr(g, 'lang', 'en')
     return render_template('hours.html')
 
 
-@app.route('/hours')
+@app.route('/hora')
 def hours_es():
     setattr(g, 'lang', 'es')
     return render_template('hours.html')
 
 
-@app.route('/en/days')
+@app.route('/en/dia')
 def days():
     setattr(g, 'lang', 'en')
     return render_template('days.html')
 
 
-@app.route('/days')
+@app.route('/dia')
 def days_es():
     setattr(g, 'lang', 'es')
     return render_template('days.html')

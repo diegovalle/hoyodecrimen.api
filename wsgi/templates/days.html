@@ -187,7 +187,7 @@ small_multiples = function(value) {
     binned: true,
     chart_type: 'histogram',
                 buffer: 0,
-                left: 95,
+                left: 45,
                 right: 25,
                 top: 25,
                 full_width: true,
@@ -215,9 +215,14 @@ small_multiples = function(value) {
                 line_options.target = "#line" + x[0].crime.replace(/ /g, '-').replace(/\./g, '-');
                 line_options.mouseover = function(d, i) {
                   var target =   line_options.target;
-                  d3
-                  .select(target + ' text.mg-active-datapoint')
-                  .text( d3.time.format("%a")(d.x) + ' - ' + {{_('\"Count\"')}} + ' ' + d.y );
+                  if(d.x.getDate() !== new Date(2016, 9, 24, 12, 0, 0, 0).getDate())
+                    d3
+                    .select(target + ' text.mg-active-datapoint')
+                    .text( d3.time.format("%a")(d.x) + ' - ' + {{_('\"Count\"')}} + ' ' + d.y );
+                  else
+                    d3
+                    .select(target + ' text.mg-active-datapoint')
+                    .text( '');
                  };
                 MG.data_graphic(line_options);
                 return
