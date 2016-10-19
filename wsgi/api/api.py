@@ -591,7 +591,7 @@ def frontpage_extra(crime, long, lat):
                    cuadrante=lib.results_to_array(results_cuad),
                    df_period=lib.results_to_array(results_df_period),
                    cuadrante_period=lib.results_to_array(results_cuad_period),
-                   latlong=lib.results_to_array(results_sphere, truncate_date=False))
+                   latlong=results_sphere)
 
 
 @API.route('/latlong/crimes/<string:crime>/coords/'
