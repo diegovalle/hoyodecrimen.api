@@ -94,6 +94,12 @@ small_multiples = function(value) {
 
 
             max_rate = _.max(data.rows, function(x) {return (x.population !== null) & (x.population !== 0) ? x.rate : 0})['rate'];
+
+            console.time("concatenation");
+
+            var round = d3.format(".1f");
+            var comma = d3.format(",");
+            _.forEach(sectores, function(x) {
             var line_options = {
                 //title: "Homicides",
                 description: '',
@@ -110,30 +116,25 @@ small_multiples = function(value) {
                 full_width: true,
                 //width: 200,
                 interpolate: "linear",
-                target: '#homicidios',
                 x_accessor: 'date',
                 y_accessor: 'rate',
                 xax_count: 4,
                 yax_count: 3,
             };
-            console.time("concatenation");
-
-            var round = d3.format(".1f");
-            var comma = d3.format(",");
-            _.forEach(sectores, function(x) {
                 line_values = filterCrime(data.rows, x);
                 line_options.data = line_values;
                 line_options.title = x;
                 line_options.target = "#line" + x.replace(/ /g, '-').replace(/\./g, '-');
-                /* line_options.mouseover = function(d, i) {
-                   var target = $.extend( {}, line_options.target );
+                line_options.mouseover = function(d, i) {
+                   var target = line_options.target;
+                   console.log(target)
                    var date = new Date(d.date);
                    var day = d.date.getDate();
                    var monthIndex = d.date.getMonth();
                    var year = d.date.getFullYear();
-                   d3.select(target +' svg .mg-active-datapoint')
-                   .text(year + ' - ' + round(d.rate) + ' - ' + comma(d.count));
-                   }; */
+                   d3.select(target + ' text.mg-active-datapoint')
+                   .text( d3.time.format("%b %Y")(date) + ' - {{_('rate:')}} ' + round(d.rate) + ' - {{_('count:')}} ' + comma(d.count));
+                   };
                 MG.data_graphic(line_options);
                 return
             });

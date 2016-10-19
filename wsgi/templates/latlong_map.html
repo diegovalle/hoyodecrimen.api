@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
+        <style>
+         html, body {width:100%; height:100%; padding: 0; margin: 0;}
+         #map { width: 100%; height:100%; background: black;}
+         #wrapper { position: relative; }
+         p {margin:0}
+         #infobox {
+             position: absolute;
+             right: 20px;
+             top: 45px;
+             background: rgba(255,255,255, 1);
+             z-index: 99;
+             font-size: 0.85em;
+             font-weight: 300;
+             margin: 0.1em 0 1em 0;
+             font-family: 'Source Sans Pro';
+             font-size:15px;
+             letter-spacing: 2px;
+             padding: 10px;
+             text-transform: uppercase;
+             background: white; //#EADBC4;
+         }
+
+         .select-style select {
+             padding: 1px 8px;
+             border: none;
+             width: 100%;
+             box-shadow: none;
+             background: transparent;
+             background-image: none;
+             -webkit-appearance: none;
+             font-size: .8em;
+             font-family: 'Source Sans Pro';
+             font-weight: 300;
+             color: #555;
+             -webkit-appearance: none;
+             -moz-appearance: none;
+             text-indent: 1px;
+             text-overflow: '';
+         }
+
+         .select-style {
+             border: 0px solid #ccc;
+             width: 250px;
+             border-radius: 3px;
+             overflow: hidden;
+             background: #ffffff url("data:image/png;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==") no-repeat 101% 50%;
+             display: block;
+             margin: 0 auto;
+         }
+        </style>
+        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIWARe1FvYw_lgl_5wrauHSaYYG64N2Vg">
+        </script>
+        <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+
+    </head>
+    <body>
+
+	<div id='map'></div>
+
+        <script>
+
+        </script>
+
+
+        <script>
+
+	 var map;
+         var sublayers = [];
+
+         function makeLink() {
+             location.hash = "#/"+map.getCenter().lat().toFixed(3)+"/"+map.getCenter().lng().toFixed(3)+"/"+map.getZoom();
+         }
+
+	 function init(){
+
+             var subLayerOptions = {
+                 sql: "SELECT * FROM crime_lat_long where crime = 'HOMICIDIO DOLOSO'",
+                 cartocss: "#example_cartojs_1{marker-fill: #e41a1c; marker-width: 10; marker-line-color: white; marker-line-width: 0.3;}"
+
+             }
+	     var mapCanvas = document.getElementById('map');
+
+
+             var hash = window.location.hash
+             var params = hash.split("/")
+             var firsttime = false;
+             lat = 19.427420161083823;
+             lng = -99.14422988891602;
+             zoom = 12
+             if (params.length > 1) {
+                 lat = parseFloat(params[1])
+                 lng = parseFloat(params[2])
+                 zoom = parseInt(params[3])
+             } else {
+                 firsttime = true;
+             }
+             var mapOptions = {
+                 zoom: zoom,
+                 center: new google.maps.LatLng(lat, lng),
+                 mapTypeControl: true,
+                 mapTypeControlOptions: {
+                     mapTypeIds: [google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.HYBRID, 'map_style'],
+                     position: google.maps.ControlPosition.TOP_RIGHT
+                 }
+             };
+	     map = new google.maps.Map(mapCanvas, mapOptions);
+
+             if (firsttime) {
+                 var bounds = new google.maps.LatLngBounds();
+                 bounds.extend(new google.maps.LatLng('19.593571', '-99.350858'));
+                 bounds.extend(new google.maps.LatLng('19.141173', '-98.944222'));
+                 map.fitBounds(bounds);
+             }
+
+             google.maps.event.addListener(map, 'center_changed', function() {
+                 makeLink()
+             });
+
+	     cartodb.createLayer(map,  'https://diegovalle.carto.com/api/v2/viz/63dd5a58-9570-11e6-bd47-0e233c30368f/viz.json',{
+	     }).addTo(map)
+
+
+		    .on('done', function(layer){
+
+			var sublayer = layer.getSubLayer(0);
+
+                        sublayer.set(subLayerOptions);
+			sublayers.push(sublayer);
+		    });
+             // Create the DIV to hold the control and call the CenterControl()
+             // constructor passing in this DIV.
+             var centerControlDiv = document.createElement('div');
+             var centerControl = new CenterControl(centerControlDiv, map);
+
+             centerControlDiv.index = 1;
+             $.ajax({
+                 dataType: 'jsonp',
+                 url: 'https://hoyodecrimen.com/api/v1/crimes',
+                 success: function(data) {
+
+                     map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+                     $("#seltarget").change(function() {
+                         updateQuery($("#seltarget").attr('value'))
+                     });
+                     crimes = _.pluck(data.rows, "crime");
+                     $.each(crimes, function(key, value) {
+                         $('#seltarget')
+                             .append($('<option>', { value : value })
+                                 .text(value));
+                     });
+                     select_html = $('#seltarget').html();
+                 }});
+
+	 }
+
+	 window.onload = init;
+         function updateQuery(crime) {
+             var color;
+             switch(crime) {
+                 case "HOMICIDIO DOLOSO":
+                     color = "#e41a1c";
+                     break;
+                 case "ROBO DE VEHICULO AUTOMOTOR C.V.":
+                     color = "#238b45";
+                     break;
+                 case "ROBO DE VEHICULO AUTOMOTOR S.V.":
+                     color = "#41ab5d";
+                     break;
+                 case "ROBO A TRANSEUNTE C.V.":
+                     color = "#377eb8";
+                     break;
+                 default:
+                     color = "black";
+                     break;
+             }
+             sublayers[0].set({
+                 sql: "SELECT * FROM crime_lat_long where crime = '" + crime + "'",
+                 cartocss: "#example_cartojs_1{marker-fill:" + color + " ; marker-width: 5; marker-line-color: white; marker-line-width: 0;}"
+             });
+         }
+
+         function CenterControl(controlDiv, map) {
+
+             // Set CSS for the control border.
+             var controlUI = document.createElement('div');
+             controlUI.style.backgroundColor = '#fff';
+             controlUI.style.border = '2px solid #fff';
+             controlUI.style.borderRadius = '3px';
+             controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+             controlUI.style.cursor = 'pointer';
+             controlUI.style.marginBottom = '22px';
+             controlUI.style.textAlign = 'center';
+             controlUI.title = 'Click to recenter the map';
+             controlDiv.appendChild(controlUI);
+
+             // Set CSS for the control interior.
+             var controlText = document.createElement('div');
+             controlText.style.color = 'rgb(25,25,25)';
+             controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+             controlText.style.fontSize = '16px';
+             controlText.style.lineHeight = '38px';
+             controlText.style.paddingLeft = '5px';
+             controlText.style.paddingRight = '5px';
+             controlText.innerHTML = '<div class="select-style"><select id="seltarget" autofocus></select></div>';
+             controlUI.appendChild(controlText);
+
+
+
+         }
+        </script>
+    </body>
+</html>

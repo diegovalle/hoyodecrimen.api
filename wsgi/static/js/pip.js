@@ -103,10 +103,6 @@ var circles = [];
             L.geoJson(singleGeojson, {
                 style: myStyle
             }).addTo(map);
-            //sectorsGeojson = topojson.feature(secs, secs.objects.sectores).features;
-            //cuadsGeojson = topojson.feature(cuads, cuads.objects.cuadrantes).features;
-            //map.on('locationfound', onLocationFound);
-            //map.locate({setView: true});
         });
 
 
@@ -287,6 +283,9 @@ function createMarker(lat, lng) {
 				circles.push(circle)
 		    }
     });
+
+            // There's a weird bug where the map has a red border
+            $('.leaflet-clickable').first().attr('style', 'stroke: transparent');
 }
 
 function createBarChart(selection, DFRate, color, cuad_txt){

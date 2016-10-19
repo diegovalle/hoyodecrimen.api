@@ -234,7 +234,7 @@
   <body>
     <div class="container-fluid">
       <div class="row" id="mapRow">
-        <div class="col-md-8">
+        <div class="col-md-8" style="height:95%">
           <div id="map"></div>
 
         </div>
@@ -264,6 +264,8 @@
       var count_text = "{{_('Count')}}";
       var map_legend_text = "{{_('Map Legend')}}";
       var monthNames = {{_('[ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]')}};
+      var rates_txt = "{{_(' - rate: ')}}";
+      var count_txt = "{{_(' - count: ')}}";
     </script>
 
     {% assets output="js/packed-leaflet-map.js", "js/leaflet-map.js"  %}

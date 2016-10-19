@@ -48,23 +48,22 @@
 {% block content %}
 
 <h1 id="logo" style="margin-bottom:50px">{{_('Crime in Mexico City')}}</h1>
-<div id="map" style="height: 400px;></div>
+<div id="map" style="height: 400px;"></div>
 <div class="row">
   <div class="2u" style="margin-top:10px">
-    <!--<a href="https://twitter.com/share" class="twitter-share-button" data-via="diegovalle">Tweet</a>
-    <div id="fb-root"></div>
-    <div class="fb-like" data-href="{{_('https://hoyodecrimen.com/en/')}}" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>-->
-  </div>
+    </div>
   <div class="8u">
-    <p>{{_('Crime in your Cuadrante')}}</p>
+   <!-- <p>{{_('Crime in your Cuadrante')}}</p>-->
   </div>
   <div class="2u">
   </div>
 </div>
-<p>
+<p style="margin: 0.1em 0 2em 0;">
     <span style="color:#e41a1c">&#x25CF;</span> {{_('Homicide')}} <span style="color:#00441b">&#x25CF;</span> {{_('Violent Car Robbery')}}
     <span style="color:#41ab5d">&#x25CF;</span> {{_('Non-Violent Car Robbery')}} <span style="color:#377eb8">&#x25CF;</span> {{_('Street Robbery')}}
     <span style="color:darkgray">&#x25CF;</span> {{_('Other')}}
+    <br>
+    {{_('Cuadrante highlighted in black. Points represent all crimes within 500 meters of your location.')}}
 </p>
 <p>
   <span>{{_('Cuadrante: ')}}</span><span id="cuadrante"></span><br/>
@@ -77,19 +76,9 @@
 
   <div id="linecharts" class="5u">
     <p style="height:3em;margin-bottom:10px">{{_('Crimes counts by month in your cuadrante')}}</p><hr/>
-    <!--<div id="chart-homicide" style="height:100px;width:100%"></div>
-    <div id="chart-rncv" style="height:100px;width:100%"></div>
-    <div id="chart-rvcv" style="height:100px;width:100%"></div>
-    <div id="chart-rvsv" style="height:100px;width:100%"></div>
-    <div id="chart-viol" style="height:100px;width:100%"></div>-->
   </div>
   <div id="barcharts" class="5u">
     <p style="height:3em;margin-bottom:10px">{{_('Crimes rates compared to the rest of the DF during the last 12 months')}}</p><hr/>
-    <!--<div id="barchart-homicide" style="height:100px;width:100%"></div>
-    <div id="barchart-rncv" style="height:100px;width:100%"></div>
-    <div id="barchart-rvcv" style="height:100px;width:100%"></div>
-    <div id="barchart-rvsv" style="height:100px;width:100%"></div>
-    <div id="barchart-viol" style="height:100px;width:100%"></div>-->
   </div>
 </div>
 
