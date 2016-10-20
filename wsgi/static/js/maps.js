@@ -1,11 +1,11 @@
-var margin = {top: 10, left: 10, bottom: 10, right: 10}
+var margin = {top: 10, left: 0, bottom: 10, right: 0}
 , width = parseInt(d3.select('#map-homicide').style('width'))
 , width = width - margin.left - margin.right
 , mapRatio = 1.5
 , height = width * mapRatio;
 var data, crimeData;
 //Extra width for the tooltips
-var width = 400,
+var width =  400,
     height = 500;
 comma = d3.format("0,000");
 
@@ -47,7 +47,7 @@ function matrix(a, b, c, d, tx, ty) {
     });
 }
 
-var svgHomicide = d3.select("#map-homicide").append("svg")
+var svgHomicide = d3.select("#map-homicide").append('div').attr('style', 'margin-left:-60px').append("svg")
     .attr("width", width)
     .attr("height", height);
 
@@ -313,16 +313,24 @@ d3.json(mapFile, function(error, df) {
                             return d.count / d.population * 100000;
                         else
                             return 0;
-                    else if (topoName === "cuadrantes")
+                    else if (topoName === "cuadrantes") {
+                        //exclude certain cuadrantes because they contain hospitals and bias the stats
+                        if ((d.crime == 'HOMICIDIO DOLOSO' | d.crime == 'LESIONES POR ARMA DE FUEGO') & (d.cuadrante == 'N-4.4.4' | d.cuadrante == 'C-2.1.16' | d.cuadrante == 'N-2.2.1'))
+                            return 0;
                         if(d.population)
                             return d.count
                         else
                             return 0;
-                    else
+                    }
+                    else {
+                        //exclude certain cuadrantes because they contain hospitals and bias the stats
+                        if ((d.crime == 'HOMICIDIO DOLOSO' | d.crime == 'LESIONES POR ARMA DE FUEGO') & (d.cuadrante == 'N-4.4.4' | d.cuadrante == 'C-2.1.16' | d.cuadrante == 'N-2.2.1'))
+                            return 0;
                         if(d.population)
                             return d.difference;
                         else
                             return 0;
+                    }
                 }
             });
             if(ext[0] < 0)

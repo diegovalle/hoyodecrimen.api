@@ -137,9 +137,9 @@ def check_periods(start_period1, start_period2, end_period1, end_period2):
             filter(). \
             with_entities(func.max(Cuadrantes.date).label('date')). \
             scalar()
-        max_date_minus3 = month_sub(max_date, -2)
+        max_date_minus3 = month_sub(max_date, -11)
         max_date_last_year = month_sub(max_date, -12)
-        max_date_last_year_minus3 = month_sub(max_date, -14)
+        max_date_last_year_minus3 = month_sub(max_date, -23)
     return max_date, max_date_minus3, \
            max_date_last_year, \
            max_date_last_year_minus3

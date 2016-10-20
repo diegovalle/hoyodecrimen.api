@@ -114,15 +114,15 @@ js_leaflet_req = Bundle("js/leaflet.js", "js/L.Control.Locate.js",
                         "js/d3.v3.min.js", "js/colorbrewer.js",
                         "js/underscore-min.js",
                         "js/vendor/metricsgraphics/metricsgraphics.js",
-                        filters="jsmin", output="js/packed-leaflet.js", )
+                        filters="jsmin", output="js/packed-leaflet.js")
 assets.register('js_leaflet_req', js_leaflet_req)
 
-latlong_css = Bundle("css/l.geosearch.css", "css/L.Control.Locate.css",
+latlong_css = Bundle("css/vendor/carto/cartodb.css",
                          filters="cssmin", output="css/packed-latlong.css")
 assets.register('css_latlong_css', latlong_css)
 
-latlong_js = Bundle("js/L.Control.Locate.js", "js/vendor/googlemutant/Leaflet.GoogleMutant.js",
-                        "js/leaflet-hash.js")
+latlong_js = Bundle("js/vendor/carto/cartodb.js",
+                    filters="jsmin", output="js/packed-latlong.js", )
 assets.register('js_latlong_js', latlong_js)
 
 @babel.localeselector
@@ -210,7 +210,7 @@ def numero():
     return render_template('counts-cuadrantes.html')
 
 
-@app.route('/en/mapa')
+@app.route('/en/map')
 def mapa():
     setattr(g, 'lang', 'en')
     return render_template('latlong_map.html')
@@ -233,7 +233,7 @@ def charts_es():
     setattr(g, 'lang', 'es')
     return render_template('charts.html')
 
-@app.route('/en/hora')
+@app.route('/en/hours')
 def hours():
     setattr(g, 'lang', 'en')
     return render_template('hours.html')
@@ -245,7 +245,7 @@ def hours_es():
     return render_template('hours.html')
 
 
-@app.route('/en/dia')
+@app.route('/en/days')
 def days():
     setattr(g, 'lang', 'en')
     return render_template('days.html')

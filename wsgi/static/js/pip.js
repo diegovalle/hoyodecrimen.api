@@ -207,7 +207,7 @@ function createMarker(lat, lng) {
             pipCuad = L.geoJson(JSON.parse(data.pip[0].geometry), {
     "fillColor": "yellow",
     "color": "black",
-    "weight": 2,
+    "weight": 4,
     "opacity": .7,
     "fillOpacity": 0.1
 })
@@ -254,7 +254,7 @@ function createMarker(lat, lng) {
         pipCuad = L.geoJson(JSON.parse(data.pip[0].geometry), {
     "fillColor": "yellow",
     "color": "black",
-    "weight": 2,
+    "weight": 4,
     "opacity": .7,
     "fillOpacity": 0.1
 })
@@ -285,7 +285,7 @@ function createMarker(lat, lng) {
     });
 
             // There's a weird bug where the map has a red border
-            $('.leaflet-clickable').first().attr('style', 'stroke: transparent');
+            $('.leaflet-clickable').first().attr({'stroke': '#7f0000'});
 }
 
 function createBarChart(selection, DFRate, color, cuad_txt){

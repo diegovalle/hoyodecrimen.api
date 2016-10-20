@@ -408,6 +408,9 @@ findRange = function(name) {
                 else
                     return 0;
             else if (mapType === "cuadrantes")
+                //exclude certain cuadrantes because they contain hospitals and bias the stats
+                if ((d.crime == 'HOMICIDIO DOLOSO' | d.crime == 'LESIONES POR ARMA DE FUEGO') & (d.cuadrante == 'N-4.4.4' | d.cuadrante == 'C-2.1.16' | d.cuadrante == 'N-2.2.1'))
+                   return 0
                 if(d.population)
                     return d.count
                 else
