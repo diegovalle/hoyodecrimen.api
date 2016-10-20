@@ -1,15 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html  lang="{{_('en')}}">
     <head>
 
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta name="description" content="{{_('Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance.')}}">
+        <title>{{_('Interactive Map of Crime in Mexico City')}}</title
+        <link rel="alternate" hreflang="es" href="{{_('https://hoyodecrimen.com/mapa')}}" />>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@diegovalle" />
+        <meta name="twitter:title" content="{{_('Crime Map of Mexico City')}}" />
+        <meta name="twitter:description" content="{{_('Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance.')}}" />
+        <meta name="twitter:image" content="https://hoyodecrimen.com/images/latlongmap.png" />
+        <meta name="twitter:url" content="{{_('https://hoyodecrimen.com/en/mapa')}}" />
+
+        <meta name="blitz" content="mu-01188fe9-0b813050-b0f51076-c96f41fb">
+
+        <meta name="og:title" content="{{_('Crime Map of Mexico City')}}" />
+        <meta property="og:description" content="{{_('Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance.')}}"/>
+        <meta property="og:url" content="{{_('https://hoyodecrimen.com/en/mapa')}}"/>
+        <meta property="og:image" content="https://hoyodecrimen.com/images/latlongmap.png"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:site_name" content="Hoyo de Crimen"/>
+
+
+        <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIWARe1FvYw_lgl_5wrauHSaYYG64N2Vg"></script>
+
+        {% assets
+        "js_latlong_js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
 
         <style>
          html, body {width:100%; height:100%; padding: 0; margin: 0;}
          #map { width: 100%; height:100%; background: black;}
          #wrapper { position: relative; }
          p {margin:0}
+         div.cartodb-popup h4 {
+             color: #111111;
+             font-weight: 100;
+         }
          #infobox {
              position: absolute;
              right: 20px;
@@ -55,48 +88,50 @@
              margin: 0 auto;
          }
         </style>
-        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
-
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIWARe1FvYw_lgl_5wrauHSaYYG64N2Vg">
-        </script>
-        <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
-
 
     </head>
     <body>
 
-	<div id='map'></div>
+        <div id="map"></div>
+        <!-- define custom infowindow -->
+        <script type = "infowindow/html" id="infowindow_template">
 
-        <script>
+            <div class="cartodb-popup">
+                <a href= "#close" class="cartodb-popup-close-button close">x</a>
+                <div class="cartodb-popup-content-wrapper">
+                    <div class="cartodb-popup-content">
+                        <h4><b>{{_('crime:')}}</b> {% raw %}{{content.data.crime}}{% endraw %}</h4>
+             <h4><b>{{_('cuadrante:')}}<b> {% raw %}{{content.data.cuadrante}}{% endraw %}</h4>
+             <h4><b>{{_('date:')}}</b> {% raw %}{{content.data.date}}{% endraw %}</h4>
+             <h4><b>{{_('hour:')}}</b> {% raw %}{{content.data.hour}}{% endraw %}</h4>
+             <h4><b>{{_('lat:')}}</b> {% raw %}{{content.data.lat}}{% endraw %}</h4>
+             <h4><b>{{_('long:')}}</b> {% raw %}{{content.data.long}}{% endraw %}</h4>
+         </div>
+         </div>
+         <div class="cartodb-popup-tip-container"></div>
+         </div>
 
         </script>
 
-
         <script>
-
-	 var map;
+         var map;
          var sublayers = [];
+         var infoFields = ['crime', 'cuadrante', 'date', 'hour', 'lat', 'long']
 
          function makeLink() {
-             location.hash = "#/"+map.getCenter().lat().toFixed(3)+"/"+map.getCenter().lng().toFixed(3)+"/"+map.getZoom();
+             var baseUrl = window.location.href.split('#')[0];
+             window.location.replace(baseUrl + "#/"+map.getCenter().lat().toFixed(5)+"/"+map.getCenter().lng().toFixed(5)+"/"+map.getZoom());
          }
 
-	 function init(){
-
-             var subLayerOptions = {
-                 sql: "SELECT * FROM crime_lat_long where crime = 'HOMICIDIO DOLOSO'",
-                 cartocss: "#example_cartojs_1{marker-fill: #e41a1c; marker-width: 10; marker-line-color: white; marker-line-width: 0.3;}"
-
-             }
-	     var mapCanvas = document.getElementById('map');
-
+         function init(){
+             var mapCanvas = document.getElementById('map');
 
              var hash = window.location.hash
              var params = hash.split("/")
              var firsttime = false;
-             lat = 19.427420161083823;
-             lng = -99.14422988891602;
-             zoom = 12
+             var lat = 19.427420161083823;
+             var lng = -99.14422988891602;
+             var zoom = 12;
              if (params.length > 1) {
                  lat = parseFloat(params[1])
                  lng = parseFloat(params[2])
@@ -113,7 +148,7 @@
                      position: google.maps.ControlPosition.TOP_RIGHT
                  }
              };
-	     map = new google.maps.Map(mapCanvas, mapOptions);
+             map = new google.maps.Map(mapCanvas, mapOptions);
 
              if (firsttime) {
                  var bounds = new google.maps.LatLngBounds();
@@ -122,30 +157,45 @@
                  map.fitBounds(bounds);
              }
 
-             google.maps.event.addListener(map, 'center_changed', function() {
+             google.maps.event.addListener(map, 'bounds_changed', function() {
                  makeLink()
              });
 
-	     cartodb.createLayer(map,  'https://diegovalle.carto.com/api/v2/viz/63dd5a58-9570-11e6-bd47-0e233c30368f/viz.json',{
-	     }).addTo(map)
+             var layerUrl = 'https://diegovalle.carto.com/api/v2/viz/2f761d32-9619-11e6-af70-0ecd1babdde5/viz.json';
 
+             cartodb.createLayer(map, layerUrl, function(layer)
+                 // add sublayer
+                 {
 
-		    .on('done', function(layer){
+                     layer.createSubLayer({
+                         sql: "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where crime = 'HOMICIDIO DOLOSO'",
+                         cartocss: "#crime_lat_long{marker-fill: #e41a1c; marker-width: 10; marker-line-color: white; marker-line-width: 0.3;}",
+                         interactivity: infoFields
+                     });
+                     //layer.hide();
+                 }).addTo(map)
 
-			var sublayer = layer.getSubLayer(0);
+                    .on('done', function(layer){
 
-                        sublayer.set(subLayerOptions);
-			sublayers.push(sublayer);
-		    });
+                        // add interactivity only to the sublayer
+
+                        layer.setInteraction(true);
+                        layer.getSubLayer(1).setInteraction(true);
+                        layer.getSubLayer(0).hide()
+
+                        // apply the custom infowindow
+                        var infowindow = cdb.vis.Vis.addInfowindow(map, layer.getSubLayer(1), infoFields);
+                        infowindow.model.set('template', $('#infowindow_template').html());
+                        sublayers.push(layer.getSubLayer(1));
+                    });
              // Create the DIV to hold the control and call the CenterControl()
              // constructor passing in this DIV.
              var centerControlDiv = document.createElement('div');
              var centerControl = new CenterControl(centerControlDiv, map);
-
              centerControlDiv.index = 1;
              $.ajax({
                  dataType: 'jsonp',
-                 url: 'https://hoyodecrimen.com/api/v1/crimes',
+                 url: '/api/v1/crimes',
                  success: function(data) {
 
                      map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
@@ -160,10 +210,10 @@
                      });
                      select_html = $('#seltarget').html();
                  }});
+         }
 
-	 }
+         window.onload = init;
 
-	 window.onload = init;
          function updateQuery(crime) {
              var color;
              switch(crime) {
@@ -184,8 +234,9 @@
                      break;
              }
              sublayers[0].set({
-                 sql: "SELECT * FROM crime_lat_long where crime = '" + crime + "'",
-                 cartocss: "#example_cartojs_1{marker-fill:" + color + " ; marker-width: 5; marker-line-color: white; marker-line-width: 0;}"
+                 sql: "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where crime = '" + crime + "'",
+                 cartocss: "#crime_lat_long{marker-fill: " + color + "; marker-width: 10; marker-line-color: white; marker-line-width: 0.3;}",
+                 interactivity: infoFields
              });
          }
 

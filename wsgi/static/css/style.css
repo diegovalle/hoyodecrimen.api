@@ -1071,4 +1071,7 @@ body.loading .modal {
 #small-multiples.row>* {
     padding-left: 20px;
 }
+*:focus {
+    outline: none;
+}
 

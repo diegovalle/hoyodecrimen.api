@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-10-18 22:42-0500\n"
-"PO-Revision-Date: 2016-10-18 22:45-0600\n"
+"POT-Creation-Date: 2016-10-19 22:43-0500\n"
+"PO-Revision-Date: 2016-10-19 22:43-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -25,8 +25,8 @@ msgstr "Acerca de Crimen por tu Rumbo"
 #: templates/about.html:3 templates/change-cuadrantes.html:3
 #: templates/charts.html:3 templates/counts-cuadrantes.html:3
 #: templates/cuadrantes-map.html:2 templates/days.html:3 templates/hours.html:3
-#: templates/pip.html:3 templates/rates-sectores.html:4
-#: templates/sectores-map.html:2
+#: templates/latlong_map.html:2 templates/pip.html:3
+#: templates/rates-sectores.html:4 templates/sectores-map.html:2
 msgid "en"
 msgstr "es"
 
@@ -163,7 +163,7 @@ msgid "Maps"
 msgstr "Mapas"
 
 #: templates/base.html:55
-msgid "/en/mapa"
+msgid "/en/map"
 msgstr "/mapa"
 
 #: templates/base.html:55
@@ -199,7 +199,7 @@ msgid "Time Series by Sector"
 msgstr "Series de Tiempo por Sector"
 
 #: templates/base.html:67
-msgid "/en/hora"
+msgid "/en/hours"
 msgstr "/hora"
 
 #: templates/base.html:67
@@ -207,7 +207,7 @@ msgid "Crime by Hour"
 msgstr "Crimen por Hora"
 
 #: templates/base.html:68
-msgid "/en/dia"
+msgid "/en/days"
 msgstr "/dia"
 
 #: templates/base.html:68
@@ -255,7 +255,7 @@ msgid "The last 3 months of crime data compared with the same period last year (
 msgstr "Los últimos tres meses en comparación con el mismo periodo hace 12 meses (regiones grises en la serie de tiempo)"
 
 #: templates/change-cuadrantes.html:71 templates/counts-cuadrantes.html:58
-#: templates/rates-sectores.html:64 templates/rates-sectores.html:137
+#: templates/rates-sectores.html:64 templates/rates-sectores.html:138
 msgid "\"All DF\""
 msgstr "\"Todo CDMX\""
 
@@ -264,42 +264,47 @@ msgid "Homicides - Total"
 msgstr "Homicidios - Total CDMX"
 
 #: templates/change-cuadrantes.html:106 templates/counts-cuadrantes.html:91
-#: templates/rates-sectores.html:102
+#: templates/rates-sectores.html:103
 msgid "Reset Chart to show all DF data"
 msgstr "Reinicializar con valores de CDMX"
 
-#: templates/change-cuadrantes.html:121 templates/counts-cuadrantes.html:108
-#: templates/cuadrantes-map.html:246 templates/rates-sectores.html:120
+#: templates/change-cuadrantes.html:114 templates/counts-cuadrantes.html:103
+#: templates/cuadrantes-map.html:229
+msgid "Cuadrantes N-4.4.4, C-2.1.16, N-2.2.1 were excluded from computing the homicide and firearm lesions scales because they contain hospitals and therefore bias them."
+msgstr "Los cuadrantes N-4.4.4, C-2.1.16, N-2.2.1 fueron excluidos del cálculo de la escala de colores de homicidios dolosos y lesiones por arma de fuego debido a que contienen hospitales."
+
+#: templates/change-cuadrantes.html:122 templates/counts-cuadrantes.html:110
+#: templates/cuadrantes-map.html:248 templates/rates-sectores.html:121
 #: templates/sectores-map.html:266
 msgid "[ \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\", \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\" ]"
 msgstr "[ \"Ene\", \"Feb\", \"Mar\", \"Abr\", \"May\", \"Jun\", \"Jul\", \"Ago\", \"Sep\", \"Oct\", \"Nov\", \"Dec\" ]"
 
-#: templates/change-cuadrantes.html:122 templates/counts-cuadrantes.html:109
-#: templates/rates-sectores.html:121
+#: templates/change-cuadrantes.html:123 templates/counts-cuadrantes.html:111
+#: templates/rates-sectores.html:122
 msgid "[ \"January\", \"February\", \"March\", \"April\", \"May\", \"June\", \"July\", \"August\", \"September\", \"October\", \"November\", \"December\" ]"
 msgstr "[\"Enero\", \"Febrero\", \"Marzo\", \"Abril\", \"Mayo\", \"Junio\", \"Julio\", \"Agosto\", \"Septiembre\", \"Octubre\", \"Noviembre\", \"Diciembre\"]"
 
-#: templates/change-cuadrantes.html:123 templates/counts-cuadrantes.html:110
-#: templates/rates-sectores.html:123
+#: templates/change-cuadrantes.html:124 templates/counts-cuadrantes.html:112
+#: templates/rates-sectores.html:124
 msgid "\" to \""
 msgstr "\" a \""
 
-#: templates/change-cuadrantes.html:124 templates/counts-cuadrantes.html:112
+#: templates/change-cuadrantes.html:125 templates/counts-cuadrantes.html:114
 msgid "\"number of crimes\""
 msgstr "\"número de crímenes\""
 
-#: templates/change-cuadrantes.html:126 templates/counts-cuadrantes.html:111
-#: templates/rates-sectores.html:125
+#: templates/change-cuadrantes.html:127 templates/counts-cuadrantes.html:113
+#: templates/rates-sectores.html:126
 msgid "'change in crimes '"
 msgstr "'cambio en crímenes '"
 
-#: templates/change-cuadrantes.html:127 templates/counts-cuadrantes.html:113
-#: templates/rates-sectores.html:127
+#: templates/change-cuadrantes.html:128 templates/counts-cuadrantes.html:115
+#: templates/rates-sectores.html:128
 msgid "'crime rate from '"
 msgstr "'tasa de crímenes de '"
 
-#: templates/change-cuadrantes.html:128 templates/counts-cuadrantes.html:114
-#: templates/rates-sectores.html:128
+#: templates/change-cuadrantes.html:129 templates/counts-cuadrantes.html:116
+#: templates/rates-sectores.html:129
 msgid "'total crimes from '"
 msgstr "'total de crímenes de '"
 
@@ -359,31 +364,31 @@ msgstr "https://hoyodecrimen.com/en/cuadrantes-map"
 msgid "Click anywhere on the map to select a cuadrante (or outside the map to select all DF data)"
 msgstr "Haz click en el mapa para seleccionar un cuadrante (o afuera del mapa para seleccionar todos los crímenes en CDMX)"
 
-#: templates/cuadrantes-map.html:241 templates/sectores-map.html:261
+#: templates/cuadrantes-map.html:243 templates/sectores-map.html:261
 msgid "Total Population"
 msgstr "Población Total"
 
-#: templates/cuadrantes-map.html:242
+#: templates/cuadrantes-map.html:244
 msgid "Counts by Cuadrante"
 msgstr "Número por cuadrante"
 
-#: templates/cuadrantes-map.html:243 templates/sectores-map.html:263
+#: templates/cuadrantes-map.html:245 templates/sectores-map.html:263
 msgid "Rate"
 msgstr "Tasa"
 
-#: templates/cuadrantes-map.html:244 templates/sectores-map.html:264
+#: templates/cuadrantes-map.html:246 templates/sectores-map.html:264
 msgid "Count"
 msgstr "Número"
 
-#: templates/cuadrantes-map.html:245 templates/sectores-map.html:265
+#: templates/cuadrantes-map.html:247 templates/sectores-map.html:265
 msgid "Map Legend"
 msgstr "Leyenda"
 
-#: templates/cuadrantes-map.html:247 templates/sectores-map.html:267
+#: templates/cuadrantes-map.html:249 templates/sectores-map.html:267
 msgid " - rate: "
 msgstr "- tasa: "
 
-#: templates/cuadrantes-map.html:248 templates/sectores-map.html:268
+#: templates/cuadrantes-map.html:250 templates/sectores-map.html:268
 msgid " - count: "
 msgstr "- número: "
 
@@ -392,7 +397,7 @@ msgid "Charts of Crime in Mexico City by Day of Week"
 msgstr "Gráficas de las tasas de crimen en la Ciudad de México por día de la semana"
 
 #: templates/days.html:5
-msgid "https://hoyodecrimen.com/days"
+msgid "https://hoyodecrimen.com/dia"
 msgstr "https://hoyodecrimen.com/en/days"
 
 #: templates/days.html:6
@@ -412,7 +417,7 @@ msgid "Charts of Crime in Mexico City by Hour"
 msgstr "Gráficas de las tasas de crimen en la Ciudad de México por hora"
 
 #: templates/hours.html:5
-msgid "https://hoyodecrimen.com/hours"
+msgid "https://hoyodecrimen.com/hora"
 msgstr "https://hoyodecrimen.com/en/hours"
 
 #: templates/hours.html:6
@@ -426,6 +431,51 @@ msgstr "Crimen en la Ciudad de México por hora durante los últimos 12 meses"
 #: templates/hours.html:222
 msgid "\"Hour\""
 msgstr "\"Hora\""
+
+#: templates/latlong_map.html:5 templates/latlong_map.html:14
+#: templates/latlong_map.html:21
+msgid "Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance."
+msgstr "Mapa de incidentes criminales de la Ciudad de México con latitud, longitud, fecha y hora de ocurrencia"
+
+#: templates/latlong_map.html:6
+msgid "Interactive Map of Crime in Mexico City"
+msgstr "Mapa interactivo del crimen en la Ciudad de México"
+
+#: templates/latlong_map.html:7
+msgid "https://hoyodecrimen.com/mapa"
+msgstr "https://hoyodecrimen.com/en/map"
+
+#: templates/latlong_map.html:13 templates/latlong_map.html:20
+msgid "Crime Map of Mexico City"
+msgstr "Mapa del Crimen por tu Rumbo"
+
+#: templates/latlong_map.html:16 templates/latlong_map.html:22
+msgid "https://hoyodecrimen.com/en/mapa"
+msgstr "https://hoyodecrimen.com/mapa"
+
+#: templates/latlong_map.html:103
+msgid "crime:"
+msgstr "crimen: "
+
+#: templates/latlong_map.html:104
+msgid "cuadrante:"
+msgstr "cuadrante: "
+
+#: templates/latlong_map.html:105
+msgid "date:"
+msgstr "fecha:"
+
+#: templates/latlong_map.html:106
+msgid "hour:"
+msgstr "hora:"
+
+#: templates/latlong_map.html:107
+msgid "lat:"
+msgstr "latitud:"
+
+#: templates/latlong_map.html:108
+msgid "long:"
+msgstr "longitud:"
 
 #: templates/latlong_map_leaflet.html:144
 msgid "All geocoded crimes since 2013"
@@ -456,8 +506,8 @@ msgid "https://hoyodecrimen.com/en/"
 msgstr "https://hoyodecrimen.com/"
 
 #: templates/pip.html:19
-msgid "Crime in Mexico City. Find out how many crimes there were in your Cuadrante Delictivo."
-msgstr "Crimen en la Ciudad de Mexico. Averigua cuantos delitos ocurrieron por tu cuadrante delictivo"
+msgid "Detailed crime rates and statistics from Mexico City. Crime incidents are tagged with latitude/longitude, date and time of occurance."
+msgstr "Crimen por tu rumbo de la Ciudad de México. Los incidentes están geolocalizados y cuentan con la fecha y hora de ocurrencia."
 
 #: templates/pip.html:56
 msgid "Crime in your Cuadrante"
@@ -484,8 +534,8 @@ msgid "Other"
 msgstr "Otros"
 
 #: templates/pip.html:66
-msgid "Cuadrante highlighted in black. Points represent all crimes within 500 meters of your location."
-msgstr "Los cuadrantes en negro. Los puntos representan todos los crímenes a 500 metros de tu ubicación"
+msgid "Cuadrantes highlighted in black. Points represent all crimes within 500 meters of your location."
+msgstr "El cuadrante es el polígono negro. Los puntos representan crímenes desde el 2013 a 500 metros de tu ubicación."
 
 #: templates/pip.html:69
 msgid "Cuadrante: "
@@ -590,7 +640,7 @@ msgstr "Crimen por sector en la Ciudad de México"
 msgid "Homicides - rates"
 msgstr "Homicidios - Total CDMX"
 
-#: templates/rates-sectores.html:126
+#: templates/rates-sectores.html:127
 msgid "\"annualized rate per 100,000\""
 msgstr "\"tasa anualizada por 100,000\""
 

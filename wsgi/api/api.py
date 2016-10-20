@@ -1512,7 +1512,7 @@ def municipios_sum_all(municipio, crime):
 def cuadrantes_change_sum_all(cuadrante, crime):
     """Return the change in crime counts for a specified period of time at the cuadrante level
 
-    By default it returns the sum of crimes during the last 12 months
+    By default it returns the change during the last 12 months
 
     :param crime: the name of crime or the keyword ``all`` to return all crimes
     :param cuadrante: the name of the cuadrante or the keyword ``all`` to return all cuadrantes
@@ -1597,6 +1597,103 @@ def cuadrantes_change_sum_all(cuadrante, crime):
                                  'max_date_last_year': max_date_last_year,
                                  'max_date_last_year_minus3': max_date_last_year_minus3,
                                  'cuadrante': cuadrante})
+    #import pdb; pdb.set_trace()
+    results = db.session.execute(sql_query1 + sql_query2 + sql_query3 + sql_query4,
+                                  crime_data)
+    return lib.ResultProxy_to_json(results)
+
+
+@API.route('/sectores/<string:sector>/crimes/<string:crime>/period/change',
+           methods=['GET'])
+@jsonp
+@cache.cached(key_prefix=make_cache_key)
+def sectores_change_sum_all(sector, crime):
+    """Return the change in crime counts for a specified period of time at the sector level
+
+    By default it returns the change during the last 12 months
+
+    :param crime: the name of crime or the keyword ``all`` to return all crimes
+    :param sector: the name of the sector or the keyword ``all`` to return all sectores
+
+    :status 200: when the  change in crime counts is found
+    :status 404: when the crime is not found in the database
+
+    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+
+    :resheader Content-Type: application/json
+
+    **Example request**:
+
+    .. sourcecode:: http
+
+      GET /api/v1/sectores/all/crimes/all/period/change HTTP/1.1
+      Host: hoyodecrimen.com
+      Accept: application/json
+
+    **Example response (truncated)**:
+
+    .. sourcecode:: http
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+      "rows": [
+      {
+      "crime": "HOMICIDIO DOLOSO",
+      "difference": 5,
+      "end_period1": "2013-07",
+      "end_period2": "2014-07",
+      "period1_count": 0,
+      "period2_count": 5,
+      "population": 43116,
+      "sector": "QUETZAL",
+      "start_period1": "2013-05",
+      "start_period2": "2014-05"
+      },
+      ...
+
+    """
+    crime = crime.upper()
+    sector = sector.upper()
+    start_period1 = request.args.get('start_period1', '', type=str)
+    start_period2 = request.args.get('start_period2', '', type=str)
+    end_period1 = request.args.get('end_period1', '', type=str)
+    end_period2 = request.args.get('end_period2', '', type=str)
+    max_date, max_date_minus3, max_date_last_year, max_date_last_year_minus3 = lib.check_periods(start_period1,
+                                                                                             start_period2,
+                                                                                             end_period1,
+                                                                                             end_period2)
+    sql_query1 = """select upper(crime) as crime,
+                               upper(sector) as sector, max(population) as population,
+                               substring(CAST(:max_date_minus3 AS text) for 7) as start_period2,
+                               substring(CAST(:max_date AS text) for 7) as end_period2,
+                               substring(CAST(:max_date_last_year AS text) for 7) as end_period1,
+                               substring(CAST(:max_date_last_year_minus3 AS text) for 7) as start_period1,
+                                                   sum(case when date <= :max_date and date >= :max_date_minus3
+                                                   THEN count ELSE 0 END) as period2_count,
+                                                   sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
+                                                   THEN count ELSE 0 END) as period1_count,
+                                                   sum(case when date <= :max_date and date >= :max_date_minus3
+                                                   THEN count ELSE 0 END) -
+                                                   sum(case when date <= :max_date_last_year and date >= :max_date_last_year_minus3
+                                                   THEN count ELSE 0 END) as difference
+                                            from cuadrantes
+                                            """
+    sql_query2 = "" if crime == "ALL" else 'WHERE ' + ' OR '.join([ 'upper(crime) = :crime' + str(x) for x in range(len(crime.split(',')))])
+    sql_query3 = "" if sector == "ALL" else " where upper(sector) = :sector "
+    sql_query4 = """ group by sector, crime
+                        order by crime asc, sector asc """
+    crime_data = { 'crime'+str(x) : crime.split(',')[x-1] for x in range(len(crime.split(',')))}
+    crime_data.update(
+                                  {'max_date': max_date,
+                                 'max_date_minus3': max_date_minus3,
+                                 'max_date_last_year': max_date_last_year,
+                                 'max_date_last_year_minus3': max_date_last_year_minus3,
+                                 'sector': sector})
     #import pdb; pdb.set_trace()
     results = db.session.execute(sql_query1 + sql_query2 + sql_query3 + sql_query4,
                                   crime_data)
