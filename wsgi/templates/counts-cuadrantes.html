@@ -35,6 +35,48 @@ anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts"
 
 </select>
 </div>
+<style>
+.mg-x-axis text, .mg-y-axis text {
+    fill: black;
+    font-size: 0.7rem;
+    opacity: .8;
+    color: #111;
+    font-family: 'Open Sans', sans-serif, Arial;
+}
+.mg-line1-color {
+    stroke: #a50f15;
+}
+.mg-x-axis line, .mg-y-axis line {
+    opacity: 1;
+    shape-rendering: auto;
+    stroke: #333;
+    stroke-width: 1px;
+}
+.mg-baselines line {
+  stroke-dasharray: 3;
+  shape-rendering: crispEdges;
+  stroke: #b5b5b5;
+    stroke-width: 1.7px;
+}
+.mg-markers line {
+  opacity: 1;
+  shape-rendering: auto;
+  stroke: #b3b2b2;
+    stroke-width: 1.7px;
+  stroke-dasharray: 2;
+  z-index:1000;
+}
+.mg-year-marker text {
+    fill: black;
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+path.mg-main-line {
+    fill: none;
+    opacity: 0.8;
+    stroke-width: 1.7px;
+}
+</style>
 <script>
 var value = "HOMICIDIO DOLOSO";
 var old_value = "HOMICIDIO DOLOSOS";
@@ -70,10 +112,16 @@ $.ajax({
             return quantizeRed(obj['count'] )
           });
           createLegend('#legend-homicides', quantizeRed)
-          chartHomicides.load({
-            columns: [_.flatten([value, _.map(_.groupBy(all_df, 'crime')[value], function(x) {return summer(x)})])],
-            unload: old_value,
-          });
+          byCrime = _.groupBy(all_df, 'crime')
+          _.forEach(byCrime[value], function(d, i) {
+          d['rate'] = (d.count / daysInMonth(d.date.substr(0,4), d.date.substr(5,6)) * 30)/  d.population * 100000 * 12
+          })
+          if(typeof(byCrime[value][0].date) !== 'object')
+            line_options.data = MG.convert.date(byCrime[value], 'date', '%Y-%m');
+          else
+            line_options.data = byCrime[value]
+          line_options.target = '#chart-homicide';
+          MG.data_graphic(line_options);
         }});
 
         //small_multiples(this.value); // or $(this).val()
@@ -120,14 +168,26 @@ var mapFile = "/js/cuadrantes.json";
 var mapColors = {hom:"Redsq", rncv:"Bluesq", rvcv:"Purplesq",
 rvsv:"Greensq", viol:"Graysq"}
 
+                        var date_txt = "{{_('date: ')}}";
+                        var count_txt = "{{_(' , count: ')}}";
+                        var rate_txt = "{{_(' , rate: ')}}";
+
  crimePrefix = 'number of ';
 document.getElementById("HomicideButton").onclick = function (event) {
 event.preventDefault();
 //d3.select('#homicide-title').text('Homicides - DF Total');
-chartHomicides.load({
-                columns: [_.flatten([value, _.map(_.groupBy(all_df, 'crime')[value], function(x) {return summer(x)})])],
-                unload: old_value,
-            }); };
+ byCrime = _.groupBy(all_df, 'crime')
+          _.forEach(byCrime[value], function(d, i) {
+          d['rate'] = (d.count / daysInMonth(d.date.substr(0,4), d.date.substr(5,6)) * 30)/  d.population * 100000 * 12
+          })
+          if(typeof(byCrime[value][0].date) !== 'object')
+            line_options.data = MG.convert.date(byCrime[value], 'date', '%Y-%m');
+          else
+            line_options.data = byCrime[value]
+          line_options.target = '#chart-homicide';
+          MG.data_graphic(line_options);
+
+            };
 
 </script>
 {% assets "js_maps"  %}

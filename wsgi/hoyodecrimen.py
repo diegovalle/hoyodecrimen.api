@@ -62,7 +62,7 @@ def not_found(error):
     return render_template('404.html'), 404
 
 
-css_pip_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
+css_pip_req = Bundle("css/skel.css", "css/style.css",
                      "css/style-desktop.css",
                      "css/leaflet.css", "css/vendor/metricsgraphics/metricsgraphics.css", "css/crime.css",
                      filters="cssmin", output="css/packed-pip-req.css")
@@ -81,17 +81,17 @@ assets.register('js_pip_req', js_pip_req)
 js_pip = Bundle("js/pip.js", filters='jsmin', output="js/packed-pip.js")
 assets.register("js_pip", js_pip)
 
-css_maps_req = Bundle("css/c3.css", "css/skel.css", "css/style.css",
+css_maps_req = Bundle("css/skel.css", "css/style.css",
                       "css/style-desktop.css",
-                      "css/leaflet.css", "css/crime.css", "css/ng-table.css",
+                      "css/leaflet.css", "css/crime.css",  "css/vendor/metricsgraphics/metricsgraphics.css",
                       filters="cssmin", output="css/packed-maps-reqs.css", )
 assets.register('css_maps_req', css_maps_req)
 
 js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
                      "js/skel.min.js", "js/skel-layers.min.js", "js/init.js",
                      "js/d3.v3.min.js",
-                     "js/topojson.v1.min.js", "js/c3.min.js", "js/d3.tip.v0.6.3.js",
-                     "js/tooltip.js", "js/vendor/lodash/lodash.min.js",
+                     "js/topojson.v1.min.js", "js/d3.tip.v0.6.3.js",
+                     "js/tooltip.js", "js/vendor/lodash/lodash.min.js", "js/vendor/metricsgraphics/metricsgraphics.js",
                      filters="jsmin", output="js/packed-maps-reqs.js")
 assets.register('js_maps_req', js_maps_req)
 
@@ -222,6 +222,19 @@ def mapa_es():
     return render_template('latlong_map.html')
 
 
+@app.route('/en/crime')
+def crime():
+    setattr(g, 'lang', 'en')
+    return render_template('crime.html')
+
+
+@app.route('/crimen')
+def crime_es():
+    setattr(g, 'lang', 'es')
+    return render_template('crime.html')
+
+
+
 @app.route('/en/charts')
 def charts():
     setattr(g, 'lang', 'en')
@@ -263,7 +276,7 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/about')
+@app.route('/acerca')
 def about_es():
     setattr(g, 'lang', 'es')
     return render_template('about.html')

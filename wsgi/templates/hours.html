@@ -134,99 +134,99 @@
 }
 </style>
 <script>
-var url;
-small_multiples = function(value) {
-    $('#crimeSelect').attr('disabled', 'disabled');
-    var filterCrime = function(data, crime) {
-        data = _.filter(data, { 'crime': crime[0].crime });
-        _.forEach(data, function(x) {
-          if (x.hour <= "06")
-            x.hour='2016-01-02T' + x.hour + ':00:00';
-          else
-            x.hour='2016-01-01T' + x.hour + ':00:00';
-          return x;
-        })
-        data = MG.convert.date(data, 'hour', '%Y-%m-%dT%H:%M:%S');
-        return(data)
-    }
+ var url;
+ small_multiples = function(value) {
+     $('#crimeSelect').attr('disabled', 'disabled');
+     var filterCrime = function(data, crime) {
+         data = _.filter(data, { 'crime': crime[0].crime });
+         _.forEach(data, function(x) {
+             if (x.hour <= "06")
+                 x.hour='2016-01-02T' + x.hour + ':00:00';
+             else
+                 x.hour='2016-01-01T' + x.hour + ':00:00';
+             return x;
+         })
+         data = MG.convert.date(data, 'hour', '%Y-%m-%dT%H:%M:%S');
+         return(data)
+     }
 
-    url = '/api/v1/df/crimes/ALL/hours'
-    $.ajax({
-        dataType: 'jsonp',
-        url: url,
-        success: function(data) {
+     url = '/api/v1/df/crimes/ALL/hours'
+     $.ajax({
+         dataType: 'jsonp',
+         url: url,
+         success: function(data) {
 
-            //sectores = _.uniq(_.pluck(data.rows, 'sector'));
-            //_.forEach(data.rows, function(x) {x['rate'] = x.count / x.population * 100000 * 12});
-            //sectors sorted by highest homicide rate
-            groups=_.groupBy(data.rows, function(x) {return x.crime});
-            _.map(groups, function(x) {
-                if (document.getElementById('line' + x[0].crime.replace(/ /g, '-')
-                                                      .replace(/\./g, '-')) === null) {
-                    $('<div id="'+ 'line' + x[0].crime.replace(/ /g, '-')
-                                             .replace(/\./g, '-') +'" class="4u"></div>').appendTo('#small-multiples');
-                }
-            });
+             //sectores = _.uniq(_.pluck(data.rows, 'sector'));
+             //_.forEach(data.rows, function(x) {x['rate'] = x.count / x.population * 100000 * 12});
+             //sectors sorted by highest homicide rate
+             groups=_.groupBy(data.rows, function(x) {return x.crime});
+             _.map(groups, function(x) {
+                 if (document.getElementById('line' + x[0].crime.replace(/ /g, '-')
+                                                          .replace(/\./g, '-')) === null) {
+                     $('<div id="'+ 'line' + x[0].crime.replace(/ /g, '-')
+                                                 .replace(/\./g, '-') +'" class="4u"></div>').appendTo('#small-multiples');
+                 }
+             });
 
-            console.time("concatenation");
+             console.time("concatenation");
 
-            var complete_dates = [];
-            for(var i=0; i < 24; i++) {
-              if (i <= 6)
-                complete_dates[i] = {'hour': new Date(2016, 0, 2, i, 0, 0, 0), 'count': 0};
-              else
-                complete_dates[i] = {'hour': new Date(2016, 0, 1, i, 0, 0, 0), 'count': 0};
-            }
+             var complete_dates = [];
+             for(var i=0; i < 24; i++) {
+                 if (i <= 6)
+                     complete_dates[i] = {'hour': new Date(2016, 0, 2, i, 0, 0, 0), 'count': 0};
+                 else
+                     complete_dates[i] = {'hour': new Date(2016, 0, 1, i, 0, 0, 0), 'count': 0};
+             }
 
-            var round = d3.format(".1f");
-            var comma = d3.format(",");
-            _.forEach(groups, function(x) {
-                var line_options = {
-                //title: "Homicides",
-                description: '',
-                height: 150,
-                y_label: '',
-                area: true,
-    binned: true,
-    chart_type: 'histogram',
-                buffer: 0,
-                left: 45,
-                right: 25,
-                top: 25,
-                full_width: true,
-                //width: 200,
-                interpolate: "linear",
-                x_accessor: 'hour',
-                y_accessor: 'count',
-                xax_count: 4,
-                yax_count: 3,
-                xax_format: d3.time.format('%H:%M %p')
-            };
-
-                line_values = filterCrime(data.rows, x);
-
-                _.forEach(complete_dates, function(y, i) {
-                  idx = _.findIndex(line_values, function(z) {return  z.hour.getTime() == y.hour.getTime()})
-                  if (idx < 0)
-                    line_values.splice(i, 0, y)
-                })
-
-                line_options.data = _.sortBy(line_values, 'hour');
-                line_options.title = x[0].crime; //.substr(0,10) + '...';
-                //line_options.description = x[0].crime;
-                line_options.target = "#line" + x[0].crime.replace(/ /g, '-').replace(/\./g, '-');
-                line_options.mouseover = function(d, i) {
-                  var target =   line_options.target;
-                  d3
-                  .select(target + ' text.mg-active-datapoint')
-                  .text({{_('\"Hour\"')}} +  ' ' + d.x.getHours() + ':00'  + ' - ' + d.y);
+             var round = d3.format(".1f");
+             var comma = d3.format(",");
+             _.forEach(groups, function(x) {
+                 var line_options = {
+                     //title: "Homicides",
+                     description: '',
+                     height: 150,
+                     y_label: '',
+                     area: true,
+                     binned: true,
+                     chart_type: 'histogram',
+                     buffer: 0,
+                     left: 45,
+                     right: 25,
+                     top: 25,
+                     full_width: true,
+                     //width: 200,
+                     interpolate: "linear",
+                     x_accessor: 'hour',
+                     y_accessor: 'count',
+                     xax_count: 4,
+                     yax_count: 3,
+                     xax_format: d3.time.format('%H:%M %p')
                  };
-                MG.data_graphic(line_options);
-                return
-            });
-            $('#crimeSelect').removeAttr('disabled');
-            console.timeEnd("concatenation");
-        }});
+
+                 line_values = filterCrime(data.rows, x);
+
+                 _.forEach(complete_dates, function(y, i) {
+                     idx = _.findIndex(line_values, function(z) {return  z.hour.getTime() == y.hour.getTime()})
+                     if (idx < 0)
+                         line_values.splice(i, 0, y)
+                 })
+
+                 line_options.data = _.sortBy(line_values, 'hour');
+                 line_options.title = x[0].crime; //.substr(0,10) + '...';
+                 //line_options.description = x[0].crime;
+                 line_options.target = "#line" + x[0].crime.replace(/ /g, '-').replace(/\./g, '-');
+                 line_options.mouseover = function(d, i) {
+                     var target =   line_options.target;
+                     d3
+                         .select(target + ' text.mg-active-datapoint')
+                         .text({{_('\"Hour\"')}} +  ' ' + d.x.getHours() + ':00'  + ' - ' + d.y);
+                 };
+                 MG.data_graphic(line_options);
+                 return
+             });
+             $('#crimeSelect').removeAttr('disabled');
+             console.timeEnd("concatenation");
+         }});
  }
 
  $.ajax({
@@ -236,20 +236,20 @@ small_multiples = function(value) {
          crimes = _.pluck(data.rows, "crime");
          $.each(crimes, function(key, value) {
              $('#crimeSelect')
-          .append($('<option>', { value : value })
-          .text(value));
+                 .append($('<option>', { value : value })
+                     .text(value));
          });
      }});
  $('#crimeSelect').on('change', function() {
      small_multiples(this.value); // or $(this).val()
  });
  small_multiples();
-$body = $("body");
+ $body = $("body");
 
-$(document).on({
-    ajaxStart: function() { $body.addClass("loading");    },
+ $(document).on({
+     ajaxStart: function() { $body.addClass("loading");    },
      ajaxStop: function() { $body.removeClass("loading"); }
-});
+ });
 
 </script>
 

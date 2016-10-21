@@ -5,10 +5,13 @@ var margin = {top: 10, left: 0, bottom: 10, right: 0}
 , height = width * mapRatio;
 var data, crimeData;
 //Extra width for the tooltips
-var width =  400,
-    height = 500;
+var width =  parseInt(d3.select('#map-homicide').style('width')),
+    height = 400;
 comma = d3.format("0,000");
 
+function daysInMonth(month, year) {
+              return new Date(year, month, 0).getDate();
+             }
 
 createQuantized=function(domain, name) {
     return(d3.scale.quantize()
@@ -39,7 +42,7 @@ var projection = d3.geo.projection(function(x, y) { return [x, y];})
     .precision(0).scale(1).translate([0, 0]);
 
 var path = d3.geo.path()
-    .projection(matrix(.4, 0, 0, .4, 0, 25));
+    .projection(matrix(.41, 0, 0, .41, -45, 25));
 
 function matrix(a, b, c, d, tx, ty) {
     return d3.geo.transform({
@@ -47,7 +50,7 @@ function matrix(a, b, c, d, tx, ty) {
     });
 }
 
-var svgHomicide = d3.select("#map-homicide").append('div').attr('style', 'margin-left:-60px').append("svg")
+var svgHomicide = d3.select("#map-homicide").append('div').attr('style', 'margin-left:0px;border: 1px dashed #d0c0a8;').append("svg")
     .attr("width", width)
     .attr("height", height);
 
@@ -74,7 +77,7 @@ _.sortedFind = function sortedFind(list, item, key) {
 tip = function(crimeCode) {
     return(d3.tip()
     .attr('class', 'd3-tip')
-    .offset([0, 10])
+      .offset([-10, 0])
     .html(function(d) {
         if (topoName === "sectores") {
             obj = _.findWhere(cuadrantesMap.rows, {'sector': d.properties['sector'].toUpperCase(), 'crime':value.toUpperCase()});
@@ -102,9 +105,12 @@ svgHomicide.call(tipHom);
 // tipVIOL = tip('violacion');
 // svgVIOL.call(tipVIOL);
 
-createMap=function(df, svg, crime, crimeCode, colorFun, titleId, chart, topoNam, tipFun, seriesName) {
+createMap=function(df, svg, crime, crimeCode, colorFun, titleId, topoNam, tipFun, seriesName) {
     type = topoName === "sectores" ? "sectores" : "cuadrantes";
-    svg.append("g")
+    var features = svg.append("g")
+                                       .attr("class","features");
+
+    features
         .attr("class", "subdivisions")
         .selectAll("path")
         .data(topojson.feature(df, df.objects[type]).features)
@@ -143,10 +149,14 @@ createMap=function(df, svg, crime, crimeCode, colorFun, titleId, chart, topoNam,
             d3.json(url  + '/' + value + '/series', function(data) {
                 series = _.map(data.rows, function(x) {return summer(x)})
                 series.unshift(value);
-                chart.load({
-                    columns: [series],
-                    unload: old_value,
-                });
+
+                _.forEach(data.rows, function(d, i) {
+          d['rate'] = (d.count / daysInMonth(d.date.substr(0,4), d.date.substr(5,6)) * 30)/  d.population * 100000 * 12
+          })
+                line_options.data = MG.convert.date(data.rows, 'date', '%Y-%m');
+                line_options.target = '#chart-homicide';
+                MG.data_graphic(line_options);
+
                 d3.select(titleId).text(value + " / " + d.properties.sector + (topoName === "sectores" ? "" : " / " + d.properties.cuadrante));
 
             })
@@ -156,6 +166,19 @@ createMap=function(df, svg, crime, crimeCode, colorFun, titleId, chart, topoNam,
             //    columns: [data],
             //});
             });
+
+
+
+     var zoom = d3.behavior.zoom()
+                                  .scaleExtent([1, Infinity])
+                                  .on("zoom",zoomed);
+
+                     svg.call(zoom);
+                     //Update map on zoom/pan
+                     function zoomed() {
+                         features.attr("transform", "translate(" + zoom.translate() + ")scale(" + zoom.scale() + ")")
+                                 .selectAll("path").style("stroke-width", 0.5 / zoom.scale() + "px" );
+                     }
 }
 
 
@@ -247,6 +270,37 @@ createLegend=function(selection, colorFun){
         });
 }
 
+var line_options = {
+                     //title: "Homicides",
+                     description: '',
+                     height: 350,
+                     y_label: labelText,
+                     area: false,
+                     buffer: 0,
+                     left: 85,
+                     right: 25,
+                     top: 25,
+                     full_width: true,
+                     //width: 200,
+                     interpolate: "linear",
+                     x_accessor: 'date',
+                     xax_count: 4,
+                     yax_count: 3,
+                     xax_format: d3.time.format('%b')
+                 };
+line_options.mouseover = function(d, i) {
+                     var target =   line_options.target;
+                     d3
+                         .select(target + ' text.mg-active-datapoint')
+                         .text(date_txt + d3.time.format('%b-%Y')(d.date) + count_txt + d.count + rate_txt + d3.round(d.rate, 1));
+                 };
+if (topoName === "sectores") {
+line_options.y_accessor = 'rate'
+}
+else {
+line_options.y_accessor = 'count'
+}
+
 // var topoName = 'cuadrantes';
 // var mapFile = "js/cuadrantes.json";
 // var crimeFile = "js/hom-dol-cuad.js";
@@ -281,11 +335,40 @@ d3.json(mapFile, function(error, df) {
         // rvsvA.unshift('Non-violent car robberies')
         // violA = _.map(byCrime['VIOLACION'], function(x) {return summer(x)})
         // violA.unshift('Rape')
+        _.forEach(byCrime['HOMICIDIO DOLOSO'], function(d, i) {
+          d['rate'] = (d.count / daysInMonth(d.date.substr(0,4), d.date.substr(5,6)) * 30) / d.population * 100000 * 12
+          })
 
-        chartHomicides = createLineChart('#chart-homicide',
-                                         HomicidesA,
-                                        labelText,
-                                         'rgb(203,24,29)', dates)
+        line_options.data = MG.convert.date(byCrime['HOMICIDIO DOLOSO'], 'date', '%Y-%m');
+        line_options.target = '#chart-homicide';
+        if (topoName === "cuadrantes-change") {
+             var markers = [{
+        'date': new Date(new Date(cuadrantesMap.rows[0]['end_period1']+ '-01T00:00:00.000Z')),
+        'label': ''
+    }, {
+        'date': new Date(new Date(cuadrantesMap.rows[0]['end_period2']+ '-01T00:00:00.000Z')),
+        'label': ''
+    },{
+        'date': new Date(new Date(cuadrantesMap.rows[0]['start_period1']+ '-01T00:00:00.000Z')),
+        'label': ''
+    },{
+        'date': new Date(new Date(cuadrantesMap.rows[0]['start_period2']+ '-01T00:00:00.000Z')),
+        'label': ''
+    }];
+
+
+    line_options.markers = markers;
+        }
+        MG.data_graphic(line_options);
+
+
+
+
+
+        //chartHomicides = createLineChart('#chart-homicide',
+        //                                 HomicidesA,
+        //                                labelText,
+        //                                 'rgb(203,24,29)', dates)
 
         // chartrncv = createLineChart('#chart-rncv',
         //                             rncvA,
@@ -373,7 +456,7 @@ d3.json(mapFile, function(error, df) {
         // quantizeGreen = createQuantized(findRange('robo de vehiculo automotor s.v.'), mapColors.rvsv)
         // quantizeGray = createQuantized(findRange('violacion'), mapColors.viol)
           console.time("findmap");
-        createMap(df, svgHomicide, 'Homicides','homicidio doloso', quantizeRed, '#homicide-title', chartHomicides, topoName, tipHom, HomicidesA[0]);
+        createMap(df, svgHomicide, 'Homicides','homicidio doloso', quantizeRed, '#homicide-title', topoName, tipHom, HomicidesA[0]);
           console.timeEnd("findmap");
         // createMap(df, svgRNCV, 'Violent robberies to a business', 'robo a negocio c.v.', quantizeBlue, '#rncv-title', chartrncv, topoName, tipRNCV, rncvA[0]);
         // createMap(df, svgRVCV, 'Violent car robberies', 'robo de vehiculo automotor c.v.', quantizePurple, '#rvcv-title', chartrvcv, topoName, tipRVCV, rvcvA[0]);
