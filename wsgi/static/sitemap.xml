@@ -4,96 +4,96 @@
   <url>
     <loc>https://hoyodecrimen.com/en/</loc>
     <priority>1.0</priority>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/en/rates</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/tasas"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/rates"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/en/counts</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/numero"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/counts"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/en/sectores-map</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/sectores-mapa"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/sectores-map"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/en/cuadrantes-map</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/cuadrantes-mapa"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/cuadrantes-map"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/en/charts</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/charts"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/charts"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/en/trends</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/tendencias"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/trends"
@@ -101,104 +101,244 @@
   </url>
 
   <url>
+    <loc>https://hoyodecrimen.com/en/days</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/dia"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/days"
+                 />
+  </url>
+
+  <url>
+    <loc>https://hoyodecrimen.com/en/hour</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/hora"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/hour"
+                 />
+  </url>
+
+    <url>
+    <loc>https://hoyodecrimen.com/en/about</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/acerca"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/about"
+                 />
+  </url>
+
+    <url>
+    <loc>https://hoyodecrimen.com/crime</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/crimen"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/crime"
+                 />
+  </url>
+
+  <url>
+    <loc>https://hoyodecrimen.com/en/map</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/mapa"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/map"
+                 />
+  </url>
+
+  <url>
     <loc>https://hoyodecrimen.com/</loc>
     <priority>1.0</priority>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/tasas</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/tasas"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/rates"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/numero</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/numero"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/counts"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/sectores-mapa</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/sectores-mapa"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/sectores-map"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/cuadrantes-mapa</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/cuadrantes-mapa"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/cuadrantes-map"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/charts</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/charts"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/charts"
                  />
   </url>
-  
+
   <url>
     <loc>https://hoyodecrimen.com/tendencias</loc>
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="es"
                  href="https://hoyodecrimen.com/tendencias"
                  />
-    <xhtml:link 
+    <xhtml:link
                  rel="alternate"
                  hreflang="en"
                  href="https://hoyodecrimen.com/en/trends"
                  />
   </url>
- 
+
+  <url>
+    <loc>https://hoyodecrimen.com/dia</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/dia"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/days"
+                 />
+  </url>
+
+  <url>
+    <loc>https://hoyodecrimen.com/hora</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/hora"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/hour"
+                 />
+  </url>
+
+  <url>
+    <loc>https://hoyodecrimen.com/mapa</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/mapa"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/map"
+                 />
+  </url>
+
+  <url>
+    <loc>https://hoyodecrimen.com/acerca</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/acerca"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/about"
+                 />
+  </url>
+
+    <url>
+    <loc>https://hoyodecrimen.com/crimen</loc>
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="es"
+                 href="https://hoyodecrimen.com/crimen"
+                 />
+    <xhtml:link
+                 rel="alternate"
+                 hreflang="en"
+                 href="https://hoyodecrimen.com/en/crime"
+                 />
+  </url>
+
   <url>
     <loc>https://hoyodecrimen.com/api/</loc>
     <priority>0.8</priority>

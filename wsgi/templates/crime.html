@@ -30,14 +30,13 @@
 
 <hr/>
 <div>
-<h2>{{_('Small multiple charts of crime in Mexico City (ordered by the last available value)')}}</h2>
-{{_('Crime: ')}}
-<div class="select-style">
-<select id="crimeSelect">
+<h2>{{_('Small multiple charts of crime in all of Mexico City')}}</h2>
 
-</select>
+
+<hr/>
 </div>
-
+    <div id="small-multiples" class="row">
+    </div>
 <style>
 .mg-chart-title {
   cursor: default;
@@ -68,26 +67,12 @@ path.mg-main-line {
   letter-spacing: 0em;
 }
 </style>
-<hr/>
-</div>
-    <div id="small-multiples" class="row">
-    </div>
-<style>
-.mg-chart-title {
-  cursor: default;
-  font-size: .7rem;
-  padding-top: 0px;
-  text-align: center;
-  font-family: 'Open Sans', sans-serif, Arial;
-  color: #111;
-}
-</style>
 <script>
 var url;
 small_multiples = function(value) {
-    $('#crimeSelect').attr('disabled', 'disabled');
-    var filterCrime = function(data, sector) {
-        data = _.filter(data, { 'sector': sector });
+
+    var filterCrime = function(data, crime) {
+        data = _.filter(data, { 'crime': crime });
         data = MG.convert.date(data, 'date', '%Y-%m');
         return(data)
     }
@@ -97,7 +82,7 @@ small_multiples = function(value) {
         url = '/api/v1/sectores/all/crimes/' + value + '/series'
     $.ajax({
         dataType: 'jsonp',
-        url: url,
+        url: '/api/v1/df/crimes/all/series',
         success: function(data) {
 
             function daysInMonth(month, year) {
@@ -106,20 +91,26 @@ small_multiples = function(value) {
 
             _.forEach(data.rows, function(x) {x['rate'] = (x.count / daysInMonth(x.date.substr(0,4), x.date.substr(5,6)) * 30)/ x.population * 100000 * 12});
 
-            //sectors sorted by highest homicide rate
-            groups=_.groupBy(data.rows, function(x) {return x.sector});
-            byrate = _.map(groups, function(g, key) {
-                return { sector: key,
-                         rate: _.reduce(g, function(m,x) { return (x.rate === null ? m : x.rate); }, 0) };
-            });
-            sectores = _.pluck(_.sortBy(byrate, "rate"), "sector").reverse();
-            sectores = _.filter(sectores, function(x) {return x !== 'NO ESPECIFICADO'})
+            groups=_.groupBy(data.rows, function(x) {return x.crime});
 
-            _.map(sectores, function(x) {
+           sorted_crime = _.sortBy(_.unique(_.pluck(data.rows, 'crime')),
+           function(x) {
+           if (x === "HOMICIDIO DOLOSO")
+             return -5;
+           if (x === "ROBO DE VEHICULO AUTOMOTOR C.V.")
+             return -3;
+           if (x === "ROBO DE VEHICULO AUTOMOTOR S.V.")
+             return -1;
+           if (x === "LESIONES POR ARMA DE FUEGO")
+             return 3;
+           return 9999;
+           })
+
+            _.map(sorted_crime, function(x) {
                 if (document.getElementById('line' + x.replace(/ /g, '-')
                                                       .replace(/\./g, '-')) === null) {
                     $('<div id="'+ 'line' + x.replace(/ /g, '-')
-                                             .replace(/\./g, '-') +'" class="4u"></div>').appendTo('#small-multiples');
+                                             .replace(/\./g, '-') +'" class="6u"></div>').appendTo('#small-multiples');
                 }
             });
             $('.3u').each(function(index, obj){
@@ -127,25 +118,21 @@ small_multiples = function(value) {
                                             .replace(/\./g, '-'));
             });
 
-
-            max_rate = _.max(data.rows, function(x) {return (x.population !== null) & (x.population !== 0) ? x.rate : 0})['rate'];
-
             console.time("concatenation");
 
             var round = d3.format(".1f");
             var comma = d3.format(",");
-            _.forEach(sectores, function(x) {
-            var line_options = {
+            _.forEach(_.unique(_.pluck(data.rows, 'crime')), function(x) {
+                var line_options = {
                 //title: "Homicides",
                 description: '',
-                height: 150,
-                y_label: '',
-                max_y: max_rate,
+                height: 250,
+                y_label: {{_('"annualized rate per 100,000"')}},
                 area: false,
                 buffer: 0,
                 top: 15,
                 buffer: 0,
-                left: 45,
+                left: 95,
                 right: 25,
                 top: 25,
                 full_width: true,
@@ -155,14 +142,13 @@ small_multiples = function(value) {
                 y_accessor: 'rate',
                 xax_count: 4,
                 yax_count: 3,
-            };
+                };
                 line_values = filterCrime(data.rows, x);
                 line_options.data = line_values;
                 line_options.title = x;
                 line_options.target = "#line" + x.replace(/ /g, '-').replace(/\./g, '-');
                 line_options.mouseover = function(d, i) {
                    var target = line_options.target;
-                   console.log(target)
                    var date = new Date(d.date);
                    var day = d.date.getDate();
                    var monthIndex = d.date.getMonth();
@@ -201,33 +187,6 @@ $(document).on({
 });
 
 </script>
-
-<!--<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-hom.png')}}" >
-<hr/>
-
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rncv.png')}}" >
-<hr/>
-
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rvcv.png')}}" >
-<hr/>
-
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rvsv.png')}}" >
-<hr/>
-
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rtcv.png')}}" >
-<hr/>
-
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rtsv.png')}}" >
-<hr/>
-
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rccv.png')}}" >-->
 <div class="modal"></div>
 {% endblock %}
 
