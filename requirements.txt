@@ -17,3 +17,5 @@ redis==2.9.1
 wsgiref==0.1.2
 jsmin==2.0.11
 cssmin==0.2.0
+simplejson==3.8.2
+
