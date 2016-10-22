@@ -6,30 +6,30 @@
 {% block description %}{{_('Change in crime counts at the cuadrante delictivo level in Mexico City')}}{% endblock %}
 
 {% block css %}
-{% assets  'css_maps_req'   %}
-    <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
-{% endassets %}
-<style>
-.c3-region {
-  fill: steelblue;
-  fill-opacity: .1;
-}
+    {% assets  'css_maps_req'   %}
+        <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
+    {% endassets %}
+    <style>
+     .c3-region {
+         fill: steelblue;
+         fill-opacity: .1;
+     }
 
-</style>
+    </style>
 {% endblock %}
 
 {% block js %}
-<script>
-// URL for the angular table
-anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts/change"
-</script>
-{% assets  'js_maps_req'  %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
+    <script>
+     // URL for the angular table
+     anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts/change"
+    </script>
+    {% assets  'js_maps_req'  %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 {% endblock %}
 
 {% block head %}
-{{super()}}
+    {{super()}}
 {% endblock %}
 
 {% block subscribe %}
@@ -37,218 +37,218 @@ anuglar_table_url = "/api/v1/cuadrantes/crimes/all/top/counts/change"
 
 {% block content %}
 
-<hr/>
-<p>{{_('The last 12 months of crime data compared with the same period last year (the dashed vertical gray lines)')}}</p>
-<div class="select-style">
-<select id="crimeSelect">
+    <hr/>
+    <p>{{_('The last 12 months of crime data compared with the same period last year (the dashed vertical gray lines)')}}</p>
+    <div class="select-style">
+        <select id="crimeSelect">
 
-</select>
-</div>
-<style>
-.mg-x-axis text, .mg-y-axis text {
-    fill: black;
-    font-size: 0.7rem;
-    opacity: .8;
-    color: #111;
-    font-family: 'Open Sans', sans-serif, Arial;
-}
-.mg-line1-color {
-    stroke: #a50f15;
-}
-.mg-x-axis line, .mg-y-axis line {
-    opacity: 1;
-    shape-rendering: auto;
-    stroke: #333;
-    stroke-width: 1px;
-}
-.mg-baselines line {
-  stroke-dasharray: 3;
-  shape-rendering: crispEdges;
-  stroke: #b5b5b5;
-  stroke-width: .5px;
-}
-.mg-markers line {
-  opacity: 1;
-  shape-rendering: auto;
-  stroke: #b3b2b2;
-    stroke-width: 1.7px;
-  stroke-dasharray: 2;
-  z-index:1000;
-}
-.mg-year-marker text {
-    fill: black;
-    font-size: 0.7rem;
-    opacity: 0.8;
-}
-path.mg-main-line {
-    fill: none;
-    opacity: 0.8;
-    stroke-width: 1.7px;
-}
-</style>
-
-
-
-<script>
-var value = "HOMICIDIO DOLOSO";
-var old_value = "HOMICIDIO DOLOSOS";
-_.sortedFind = function sortedFind(list, item, key) {
-  return (item, list[_.sortedIndex(list, item, key)]);
-};
-$.ajax({
-  dataType: 'jsonp',
-  url: '/api/v1/crimes',
-  success: function(data) {
-    crimes = _.pluck(data.rows, "crime");
-    $.each(crimes, function(key, value) {
-      $('#crimeSelect')
-      .append($('<option>', { value : value })
-      .text(value));
-    });
-  }});
-  $('#crimeSelect').on('change', function() {
-    old_value = value;
-    value = this.value;
-    d3.select("#homicide-title").text(value + " / " + {{_('"All DF"')}});
-    $.ajax({
-      dataType: 'jsonp',
-      url: '/api/v1/cuadrantes/all/crimes/' + value + '/period/change',
-      success: function(data) {
-        cuadrantesMap = data;
-        quantizeRed = createQuantized(findRange(value), mapColors.hom);
-        d3.transition().selectAll("#map-homicide path").attr("class",function(d) {
-          obj = _.sortedFind(cuadrantesMap.rows,
-            {'cuadrante': d.properties['cuadrante'].toUpperCase(),
-            'crime': value.toUpperCase()},
-            'cuadrante');
-            if(typeof(obj) !== "undefined") {
-              return quantizeRed(obj['difference'] )
-            } else {
-              console.log(d.properties['cuadrante'].toUpperCase());
-            }
-          });
-          createLegend('#legend-homicides', quantizeRed)
-
-              var markers = [{
-        'date': new Date(new Date(data.rows[0]['end_period1']+ '-01T00:00:00.000Z')),
-        'label': ''
-    }, {
-        'date': new Date(new Date(data.rows[0]['end_period2']+ '-01T00:00:00.000Z')),
-        'label': ''
-    },{
-        'date': new Date(new Date(data.rows[0]['start_period1']+ '-01T00:00:00.000Z')),
-        'label': ''
-    },{
-        'date': new Date(new Date(data.rows[0]['start_period2']+ '-01T00:00:00.000Z')),
-        'label': ''
-    }];
+        </select>
+    </div>
+    <style>
+     .mg-x-axis text, .mg-y-axis text {
+         fill: black;
+         font-size: 0.7rem;
+         opacity: .8;
+         color: #111;
+         font-family: 'Open Sans', sans-serif, Arial;
+     }
+     .mg-line1-color {
+         stroke: #a50f15;
+     }
+     .mg-x-axis line, .mg-y-axis line {
+         opacity: 1;
+         shape-rendering: auto;
+         stroke: #333;
+         stroke-width: 1px;
+     }
+     .mg-baselines line {
+         stroke-dasharray: 3;
+         shape-rendering: crispEdges;
+         stroke: #b5b5b5;
+         stroke-width: .5px;
+     }
+     .mg-markers line {
+         opacity: 1;
+         shape-rendering: auto;
+         stroke: #b3b2b2;
+         stroke-width: 1.7px;
+         stroke-dasharray: 2;
+         z-index:1000;
+     }
+     .mg-year-marker text {
+         fill: black;
+         font-size: 0.7rem;
+         opacity: 0.8;
+     }
+     path.mg-main-line {
+         fill: none;
+         opacity: 0.8;
+         stroke-width: 1.7px;
+     }
+    </style>
 
 
-    line_options.markers = markers;
-          byCrime = _.groupBy(all_df, 'crime')
-          _.forEach(byCrime[value], function(d, i) {d['rate'] = d.count / d.population * 100000 * 12})
-          if(typeof(byCrime[value][0].date) !== 'object')
-            line_options.data = MG.convert.date(byCrime[value], 'date', '%Y-%m');
-          else
-            line_options.data = byCrime[value]
-          line_options.target = '#chart-homicide';
-          MG.data_graphic(line_options);
-         // for( var i = $('.mg-rollover-rect rect').length - 1; i >= $('.mg-rollover-rect rect').length - 24; i--) {
-     // $('.mg-rollover-rect rect')[i].setAttribute('opacity', '.1')
-   //   $('.mg-rollover-rect rect')[i].setAttribute('stroke-width', '0')
-   // }
-        }});
 
-        //small_multiples(this.value); // or $(this).val()
-      });
-</script>
-                                          <h2 id="homicide-title" style="text-align:left;margin: 0 0 0 4em;">{{_('Homicides - Total')}}</h2>
+    <script>
+     var value = "HOMICIDIO DOLOSO";
+     var old_value = "HOMICIDIO DOLOSOS";
+     _.sortedFind = function sortedFind(list, item, key) {
+         return (item, list[_.sortedIndex(list, item, key)]);
+     };
+     $.ajax({
+         dataType: 'jsonp',
+         url: '/api/v1/crimes',
+         success: function(data) {
+             crimes = _.pluck(data.rows, "crime");
+             $.each(crimes, function(key, value) {
+                 $('#crimeSelect')
+                     .append($('<option>', { value : value })
+                         .text(value));
+             });
+         }});
+     $('#crimeSelect').on('change', function() {
+         old_value = value;
+         value = this.value;
+         d3.select("#homicide-title").text(value + " / " + {{_('"All DF"')}});
+         $.ajax({
+             dataType: 'jsonp',
+             url: '/api/v1/cuadrantes/all/crimes/' + value + '/period/change',
+             success: function(data) {
+                 cuadrantesMap = data;
+                 quantizeRed = createQuantized(findRange(value), mapColors.hom);
+                 d3.transition().selectAll("#map-homicide path").attr("class",function(d) {
+                     obj = _.sortedFind(cuadrantesMap.rows,
+                                        {'cuadrante': d.properties['cuadrante'].toUpperCase(),
+                                         'crime': value.toUpperCase()},
+                                        'cuadrante');
+                     if(typeof(obj) !== "undefined") {
+                         return quantizeRed(obj['difference'] )
+                     } else {
+                         console.log(d.properties['cuadrante'].toUpperCase());
+                     }
+                 });
+                 createLegend('#legend-homicides', quantizeRed)
 
-					  <div class="row">
-
-
-                                            <div class="7u">
-                                              <div class="chart-crime" id="chart-homicide"></div>
-                                              <a href="#" class="button" id="HomicideButton">{{_('Reset Chart to show all DF data')}}</a>
-                                            </div>
-                                            <div class="4u">
-                                              <div id="map-homicide" style="height:500px;">
-                                                <small style="font-size:12px;text-align:left;" id="hom-date">change s May-Jul 2013 to May-Jul 2014</small>
-                                                <div id = "legend-homicides"></div>
-                                              </div>
-                                            </div>
-    <p>{{_('Cuadrantes N-4.4.4, C-2.1.16, N-2.2.1 were excluded from computing the homicide and firearm lesions scales because they contain hospitals and therefore bias them.')}}</p>
-
-                                          </div>
-
-                                          {% endblock %}
-              {% block js_bottom %}
-
-                        <script>
-                        var shortMonths = {{_('[ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]')}};
-                        var longMonths = {{_('[ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]')}};
-                        var toText = {{_('" to "')}};
-                        var labelText = {{_('"number of crimes"')}};
-
-                        var changesText={{_("'change in crimes '")}};
-                        var sectorMapTitle = {{_("'crime rate from '")}};
-                        var cuadMapTitle = {{_("'total crimes from '")}};
-
-                        var date_txt = "{{_('date: ')}}";
-                        var count_txt = "{{_(' , count: ')}}";
-                        var rate_txt = "{{_(' , rate: ')}}";
-
-var topoName = 'cuadrantes-change';
-var mapFile = "/js/cuadrantes.json";
-//var crimeFile = "js/hom-dol-cuad.js";
-var mapColors = {hom:"BrBGq", rncv:"PiYGq", rvcv:"PRGnq",
-rvsv:"PuOrq", viol:"RdGyq"};
+                 var markers = [{
+                     'date': new Date(new Date(data.rows[0]['end_period1']+ '-01T00:00:00.000Z')),
+                     'label': ''
+                 }, {
+                     'date': new Date(new Date(data.rows[0]['end_period2']+ '-01T00:00:00.000Z')),
+                     'label': ''
+                 },{
+                     'date': new Date(new Date(data.rows[0]['start_period1']+ '-01T00:00:00.000Z')),
+                     'label': ''
+                 },{
+                     'date': new Date(new Date(data.rows[0]['start_period2']+ '-01T00:00:00.000Z')),
+                     'label': ''
+                 }];
 
 
-crimePrefix = 'number of ';
-document.getElementById("HomicideButton").onclick = function (event) {
-event.preventDefault();
-d3.select('#homicide-title').text('Homicides - DF Total');
-byCrime = _.groupBy(all_df, 'crime')
-          _.forEach(byCrime[value], function(d, i) {d['rate'] = d.count / d.population * 100000 * 12})
-          if(typeof(byCrime[value][0].date) !== 'object')
-            line_options.data = MG.convert.date(byCrime[value], 'date', '%Y-%m');
-          else
-            line_options.data = byCrime[value]
-               var markers = [{
-        'date': new Date(new Date(cuadrantesMap.rows[0]['end_period1']+ '-01T00:00:00.000Z')),
-        'label': ''
-    }, {
-        'date': new Date(new Date(cuadrantesMap.rows[0]['end_period2']+ '-01T00:00:00.000Z')),
-        'label': ''
-    },{
-        'date': new Date(new Date(cuadrantesMap.rows[0]['start_period1']+ '-01T00:00:00.000Z')),
-        'label': ''
-    },{
-        'date': new Date(new Date(cuadrantesMap.rows[0]['start_period2']+ '-01T00:00:00.000Z')),
-        'label': ''
-    }];
+                 line_options.markers = markers;
+                 byCrime = _.groupBy(all_df, 'crime')
+                 _.forEach(byCrime[value], function(d, i) {d['rate'] = d.count / d.population * 100000 * 12})
+                 if(typeof(byCrime[value][0].date) !== 'object')
+                     line_options.data = MG.convert.date(byCrime[value], 'date', '%Y-%m');
+                 else
+                     line_options.data = byCrime[value]
+                 line_options.target = '#chart-homicide';
+                 MG.data_graphic(line_options);
+                 // for( var i = $('.mg-rollover-rect rect').length - 1; i >= $('.mg-rollover-rect rect').length - 24; i--) {
+                 // $('.mg-rollover-rect rect')[i].setAttribute('opacity', '.1')
+                 //   $('.mg-rollover-rect rect')[i].setAttribute('stroke-width', '0')
+                 // }
+             }});
+
+         //small_multiples(this.value); // or $(this).val()
+     });
+    </script>
+    <h2 id="homicide-title" style="text-align:left;margin: 0 0 0 4em;">{{_('Homicides - Total')}}</h2>
+
+    <div class="row">
 
 
-    line_options.markers = markers;
-          line_options.target = '#chart-homicide';
-          MG.data_graphic(line_options);
+        <div class="7u">
+            <div class="chart-crime" id="chart-homicide"></div>
+            <a href="#" class="button" id="HomicideButton">{{_('Reset Chart to show all DF data')}}</a>
+        </div>
+        <div class="4u">
+            <div id="map-homicide" style="height:500px;">
+                <small style="font-size:12px;text-align:left;" id="hom-date">change s May-Jul 2013 to May-Jul 2014</small>
+                <div id = "legend-homicides"></div>
+            </div>
+        </div>
+        <p>{{_('Cuadrantes N-4.4.4, C-2.1.16, N-2.2.1 were excluded from computing the homicide and firearm lesions scales because they contain hospitals and therefore bias them.')}}</p>
 
-            };
+    </div>
+
+{% endblock %}
+{% block js_bottom %}
+
+    <script>
+     var shortMonths = {{_('[ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]')}};
+     var longMonths = {{_('[ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]')}};
+     var toText = {{_('" to "')}};
+     var labelText = {{_('"number of crimes"')}};
+
+     var changesText={{_("'change in crimes '")}};
+     var sectorMapTitle = {{_("'crime rate from '")}};
+     var cuadMapTitle = {{_("'total crimes from '")}};
+
+     var date_txt = "{{_('date: ')}}";
+     var count_txt = "{{_(' , count: ')}}";
+     var rate_txt = "{{_(' , rate: ')}}";
+
+     var topoName = 'cuadrantes-change';
+     var mapFile = "/js/cuadrantes.json";
+     //var crimeFile = "js/hom-dol-cuad.js";
+     var mapColors = {hom:"BrBGq", rncv:"PiYGq", rvcv:"PRGnq",
+                      rvsv:"PuOrq", viol:"RdGyq"};
 
 
-</script>
-{% assets "js_maps"  %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+     crimePrefix = 'number of ';
+     document.getElementById("HomicideButton").onclick = function (event) {
+         event.preventDefault();
+         d3.select('#homicide-title').text('Homicides - DF Total');
+         byCrime = _.groupBy(all_df, 'crime')
+         _.forEach(byCrime[value], function(d, i) {d['rate'] = d.count / d.population * 100000 * 12})
+         if(typeof(byCrime[value][0].date) !== 'object')
+             line_options.data = MG.convert.date(byCrime[value], 'date', '%Y-%m');
+         else
+             line_options.data = byCrime[value]
+         var markers = [{
+             'date': new Date(new Date(cuadrantesMap.rows[0]['end_period1']+ '-01T00:00:00.000Z')),
+             'label': ''
+         }, {
+             'date': new Date(new Date(cuadrantesMap.rows[0]['end_period2']+ '-01T00:00:00.000Z')),
+             'label': ''
+         },{
+             'date': new Date(new Date(cuadrantesMap.rows[0]['start_period1']+ '-01T00:00:00.000Z')),
+             'label': ''
+         },{
+             'date': new Date(new Date(cuadrantesMap.rows[0]['start_period2']+ '-01T00:00:00.000Z')),
+             'label': ''
+         }];
 
-  ga('create', 'UA-100264-9', 'auto');
-  ga('send', 'pageview');
 
-</script>
- {% endblock %}
+         line_options.markers = markers;
+         line_options.target = '#chart-homicide';
+         MG.data_graphic(line_options);
+
+     };
+
+
+    </script>
+    {% assets "js_maps"  %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    <script>
+     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+     ga('create', 'UA-100264-9', 'auto');
+     ga('send', 'pageview');
+
+    </script>
+{% endblock %}

@@ -206,3 +206,6 @@ h2 {
     line-height: 1.75em;
     color: #383737;
 }
+#copyright ul.links li {
+border-left: solid 0px #d0d0d0; 
+}
