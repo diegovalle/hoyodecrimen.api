@@ -83,3 +83,16 @@ pybabel extract -F babel.cfg -o messages.pot .
 pybabel update -i messages.pot -d translations
 pybabel compile -d translations
 ```
+
+To update the carto table you first have to delete all rows in the existing table
+
+```sql
+TRUNCATE TABLE crime_lat_long
+```
+and then upload the new table to a tempory one and copy all rows to crime_lat_long
+
+```sql
+INSERT INTO crime_lat_long SELECT * FROM crime_lat_long_1
+```
+
+and then delete the temporary table
