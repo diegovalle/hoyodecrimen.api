@@ -6,283 +6,283 @@
 {% block description %}{{_('Small multiple charts of crime in Mexico City by day of week')}}{% endblock %}
 
 {% block css %}
-{% assets  'css_pip_req'   %}
-<link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
-{% endassets %}
+    {% assets  'css_pip_req'   %}
+        <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
+    {% endassets %}
 {% endblock %}
 
 {% block js %}
-<script>
-  // URL for the angular table
-  anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
-</script>
-{% assets  'js_pip_req'  %}
-<script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
+    <script>
+     // URL for the angular table
+     anuglar_table_url = "/api/v1/sectores/crimes/all/top/rates"
+    </script>
+    {% assets  'js_pip_req'  %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 {% endblock %}
 
 {% block head %}
-{{super()}}
+    {{super()}}
 {% endblock %}
 {% block subscribe %}
 {% endblock %}
 {% block content %}
 
-<hr/>
-<div>
-<h2>{{_('Crime in Mexico City by day of week for the last 12 months')}}</h2>
+    <hr/>
+    <div>
+        <h2>{{_('Crime in Mexico City by day of week for the last 12 months')}}</h2>
 
 
-</div>
+    </div>
     <div id="small-multiples" class="row">
     </div>
-<style>
-.mg-chart-title {
-  cursor: default;
-  font-size: .7rem;
-  padding-top: 0px;
-  text-align: center;
-  font-family: 'Open Sans', sans-serif, Arial;
-  color: #111;
-  letter-spacing: 0em;
-}
-.mg-year-marker text {
-  visibility: hidden;
-}
+    <style>
+     .mg-chart-title {
+         cursor: default;
+         font-size: .7rem;
+         padding-top: 0px;
+         text-align: center;
+         font-family: 'Open Sans', sans-serif, Arial;
+         color: #111;
+         letter-spacing: 0em;
+     }
+     .mg-year-marker text {
+         visibility: hidden;
+     }
 
-.popover-content {
-    padding: 9px 14px;
-}
-.popover.top {
-    margin-top: -10px;
-}
-.mg-popover {
-    font-size: .95rem;
-}
-.popover.top>.arrow {
-    bottom: -11px;
-    left: 50%;
-    margin-left: -11px;
-    border-top-color: #999;
-    border-top-color: rgba(0,0,0,.25);
-    border-bottom-width: 0;
-}
+     .popover-content {
+         padding: 9px 14px;
+     }
+     .popover.top {
+         margin-top: -10px;
+     }
+     .mg-popover {
+         font-size: .95rem;
+     }
+     .popover.top>.arrow {
+         bottom: -11px;
+         left: 50%;
+         margin-left: -11px;
+         border-top-color: #999;
+         border-top-color: rgba(0,0,0,.25);
+         border-bottom-width: 0;
+     }
 
-.popover>.arrow {
-    border-width: 11px;
-}
-.popover>.arrow, .popover>.arrow:after {
-    position: absolute;
-    display: block;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-}
-.popover.top>.arrow:after {
-    bottom: 1px;
-    margin-left: -10px;
-    content: " ";
-    border-top-color: #fff;
-    border-bottom-width: 0;
-}
-.popover>.arrow:after {
-    content: "";
-    border-width: 10px;
-}
-.popover>.arrow, .popover>.arrow:after {
-    position: absolute;
-    display: block;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-}
-:before, :after {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-.popover-content {
-    padding: 9px 14px;
-    font-family:'Open Sans', sans-serif, Arial;
-    font-size:11.4px;
-    color: #111;
-}
-.popover {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1060;
-    display: none;
-    max-width: 276px;
-    padding: 1px;
-    text-align: left;
-    white-space: normal;
-    background-color: #fff;
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0,0,0,.2);
-    border-radius: 6px;
-    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-    box-shadow: 0 5px 10px rgba(0,0,0,.2);
-}
-.mg-histogram .mg-bar rect {
-    fill: #9F794C;
-    shape-rendering: auto;
-}
-</style>
-<script>
-var url;
-small_multiples = function(value) {
-    $('#crimeSelect').attr('disabled', 'disabled');
-    var filterCrime = function(data, crime) {
-        data = _.filter(data, { 'crime': crime[0].crime });
-        _.forEach(data, function(x) {
-          if (x.dow >= 1)
-            x.date='2016-10-' + (16 + x.dow) +'T12:00:00';
-          else
-            x.date='2016-10-23T12:00:00';
-          return x;
-        })
-        data = MG.convert.date(data, 'date', '%Y-%m-%dT%H:%M:%S');
-        return(data)
-    }
+     .popover>.arrow {
+         border-width: 11px;
+     }
+     .popover>.arrow, .popover>.arrow:after {
+         position: absolute;
+         display: block;
+         width: 0;
+         height: 0;
+         border-color: transparent;
+         border-style: solid;
+     }
+     .popover.top>.arrow:after {
+         bottom: 1px;
+         margin-left: -10px;
+         content: " ";
+         border-top-color: #fff;
+         border-bottom-width: 0;
+     }
+     .popover>.arrow:after {
+         content: "";
+         border-width: 10px;
+     }
+     .popover>.arrow, .popover>.arrow:after {
+         position: absolute;
+         display: block;
+         width: 0;
+         height: 0;
+         border-color: transparent;
+         border-style: solid;
+     }
+     :before, :after {
+         -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+         box-sizing: border-box;
+     }
+     .popover-content {
+         padding: 9px 14px;
+         font-family:'Open Sans', sans-serif, Arial;
+         font-size:11.4px;
+         color: #111;
+     }
+     .popover {
+         position: absolute;
+         top: 0;
+         left: 0;
+         z-index: 1060;
+         display: none;
+         max-width: 276px;
+         padding: 1px;
+         text-align: left;
+         white-space: normal;
+         background-color: #fff;
+         -webkit-background-clip: padding-box;
+         background-clip: padding-box;
+         border: 1px solid #ccc;
+         border: 1px solid rgba(0,0,0,.2);
+         border-radius: 6px;
+         -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+         box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     }
+     .mg-histogram .mg-bar rect {
+         fill: #9F794C;
+         shape-rendering: auto;
+     }
+    </style>
+    <script>
+     var url;
+     small_multiples = function(value) {
+         $('#crimeSelect').attr('disabled', 'disabled');
+         var filterCrime = function(data, crime) {
+             data = _.filter(data, { 'crime': crime[0].crime });
+             _.forEach(data, function(x) {
+                 if (x.dow >= 1)
+                     x.date='2016-10-' + (16 + x.dow) +'T12:00:00';
+                 else
+                     x.date='2016-10-23T12:00:00';
+                 return x;
+             })
+             data = MG.convert.date(data, 'date', '%Y-%m-%dT%H:%M:%S');
+             return(data)
+         }
 
-    url = '/api/v1/df/crimes/ALL/days'
-    $.ajax({
-        dataType: 'jsonp',
-        url: url,
-        success: function(data) {
+         url = '/api/v1/df/crimes/ALL/days'
+         $.ajax({
+             dataType: 'jsonp',
+             url: url,
+             success: function(data) {
 
-            //sectores = _.uniq(_.pluck(data.rows, 'sector'));
-            //_.forEach(data.rows, function(x) {x['rate'] = x.count / x.population * 100000 * 12});
-            //sectors sorted by highest homicide rate
-            groups=_.groupBy(data.rows, function(x) {return x.crime});
-            _.map(groups, function(x) {
-                if (document.getElementById('line' + x[0].crime.replace(/ /g, '-')
-                                                      .replace(/\./g, '-')) === null) {
-                    $('<div id="'+ 'line' + x[0].crime.replace(/ /g, '-')
-                                             .replace(/\./g, '-') +'" class="4u"></div>').appendTo('#small-multiples');
-                }
-            });
+                 //sectores = _.uniq(_.pluck(data.rows, 'sector'));
+                 //_.forEach(data.rows, function(x) {x['rate'] = x.count / x.population * 100000 * 12});
+                 //sectors sorted by highest homicide rate
+                 groups=_.groupBy(data.rows, function(x) {return x.crime});
+                 _.map(groups, function(x) {
+                     if (document.getElementById('line' + x[0].crime.replace(/ /g, '-')
+                                                              .replace(/\./g, '-')) === null) {
+                         $('<div id="'+ 'line' + x[0].crime.replace(/ /g, '-')
+                                                     .replace(/\./g, '-') +'" class="4u"></div>').appendTo('#small-multiples');
+                     }
+                 });
 
-            console.time("concatenation");
+                 console.time("concatenation");
 
-            complete_dates = [];
-            for(var i=17; i < 25; i++) {
-                complete_dates[i-17] = {'date': new Date(2016, 9, i, 12, 0, 0, 0), 'count': 0};
-            }
+                 complete_dates = [];
+                 for(var i=17; i < 25; i++) {
+                     complete_dates[i-17] = {'date': new Date(2016, 9, i, 12, 0, 0, 0), 'count': 0};
+                 }
 
-            var round = d3.format(".1f");
-            var comma = d3.format(",");
-            _.forEach(groups, function(x) {
-                var line_options = {
-                //title: "Homicides",
-                description: '',
-                height: 150,
-                y_label: '',
-               // area: true,
-    binned: true,
-    chart_type: 'histogram',
-                buffer: 0,
-                left: 45,
-                right: 25,
-                top: 25,
-                full_width: true,
-                //width: 200,
-                interpolate: "linear",
-                x_accessor: 'date',
-                y_accessor: 'count',
-                xax_count: 4,
-                yax_count: 3,
-                xax_format: d3.time.format('%A'),
-        x_axis: false
-            };
+                 var round = d3.format(".1f");
+                 var comma = d3.format(",");
+                 _.forEach(groups, function(x) {
+                     var line_options = {
+                         //title: "Homicides",
+                         description: '',
+                         height: 150,
+                         y_label: '',
+                         // area: true,
+                         binned: true,
+                         chart_type: 'histogram',
+                         buffer: 0,
+                         left: 45,
+                         right: 25,
+                         top: 25,
+                         full_width: true,
+                         //width: 200,
+                         interpolate: "linear",
+                         x_accessor: 'date',
+                         y_accessor: 'count',
+                         xax_count: 4,
+                         yax_count: 3,
+                         xax_format: d3.time.format('%A'),
+                         x_axis: false
+                     };
 
-                line_values = filterCrime(data.rows, x);
+                     line_values = filterCrime(data.rows, x);
 
-                _.forEach(complete_dates, function(y, i) {
-                  idx = _.findIndex(line_values, function(z) {return  z.date.getTime() == complete_dates[i].date.getTime()})
-                  if (idx < 0)
-                    line_values.splice(i, 0, y)
-                })
+                     _.forEach(complete_dates, function(y, i) {
+                         idx = _.findIndex(line_values, function(z) {return  z.date.getTime() == complete_dates[i].date.getTime()})
+                         if (idx < 0)
+                             line_values.splice(i, 0, y)
+                     })
 
-                line_options.data = _.sortBy(line_values, 'date');
-                line_options.title = x[0].crime; //.substr(0,10) + '...';
-                //line_options.description = x[0].crime;
-                line_options.target = "#line" + x[0].crime.replace(/ /g, '-').replace(/\./g, '-');
-                line_options.mouseover = function(d, i) {
-                  var target =   line_options.target;
-                  if(d.x.getDate() !== new Date(2016, 9, 24, 12, 0, 0, 0).getDate())
-                    d3
-                    .select(target + ' text.mg-active-datapoint')
-                    .text( d3.time.format("%a")(d.x) + ' - ' + {{_('\"Count\"')}} + ' ' + d.y );
-                  else
-                    d3
-                    .select(target + ' text.mg-active-datapoint')
-                    .text( '');
-                 };
-                MG.data_graphic(line_options);
-                return
-            });
-            $('#crimeSelect').removeAttr('disabled');
-            console.timeEnd("concatenation");
-        }});
- }
+                     line_options.data = _.sortBy(line_values, 'date');
+                     line_options.title = x[0].crime; //.substr(0,10) + '...';
+                     //line_options.description = x[0].crime;
+                     line_options.target = "#line" + x[0].crime.replace(/ /g, '-').replace(/\./g, '-');
+                     line_options.mouseover = function(d, i) {
+                         var target =   line_options.target;
+                         if(d.x.getDate() !== new Date(2016, 9, 24, 12, 0, 0, 0).getDate())
+                             d3
+                             .select(target + ' text.mg-active-datapoint')
+                             .text( d3.time.format("%a")(d.x) + ' - ' + {{_('\"Count\"')}} + ' ' + d.y );
+                         else
+                             d3
+                                 .select(target + ' text.mg-active-datapoint')
+                                 .text( '');
+                     };
+                     MG.data_graphic(line_options);
+                     return
+                 });
+                 $('#crimeSelect').removeAttr('disabled');
+                 console.timeEnd("concatenation");
+             }});
+     }
 
- $.ajax({
-     dataType: 'jsonp',
-     url: '/api/v1/crimes',
-     success: function(data) {
-         crimes = _.pluck(data.rows, "crime");
-         $.each(crimes, function(key, value) {
-             $('#crimeSelect')
-          .append($('<option>', { value : value })
-          .text(value));
-         });
-     }});
- $('#crimeSelect').on('change', function() {
-     small_multiples(this.value); // or $(this).val()
- });
- small_multiples();
-$body = $("body");
+     $.ajax({
+         dataType: 'jsonp',
+         url: '/api/v1/crimes',
+         success: function(data) {
+             crimes = _.pluck(data.rows, "crime");
+             $.each(crimes, function(key, value) {
+                 $('#crimeSelect')
+                     .append($('<option>', { value : value })
+                         .text(value));
+             });
+         }});
+     $('#crimeSelect').on('change', function() {
+         small_multiples(this.value); // or $(this).val()
+     });
+     small_multiples();
+     $body = $("body");
 
-$(document).on({
-    ajaxStart: function() { $body.addClass("loading");    },
-     ajaxStop: function() { $body.removeClass("loading"); }
-});
+     $(document).on({
+         ajaxStart: function() { $body.addClass("loading");    },
+         ajaxStop: function() { $body.removeClass("loading"); }
+     });
 
-</script>
+    </script>
 
-<!--<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-hom.png')}}" >
-<hr/>
+    <!--<h2>{{_('Crime by Sector')}}</h2>
+         <img src="{{_('/images/total-sector-hom.png')}}" >
+         <hr/>
 
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rncv.png')}}" >
-<hr/>
+         <h2>{{_('Crime by Sector')}}</h2>
+         <img src="{{_('/images/total-sector-rncv.png')}}" >
+         <hr/>
 
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rvcv.png')}}" >
-<hr/>
+         <h2>{{_('Crime by Sector')}}</h2>
+         <img src="{{_('/images/total-sector-rvcv.png')}}" >
+         <hr/>
 
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rvsv.png')}}" >
-<hr/>
+         <h2>{{_('Crime by Sector')}}</h2>
+         <img src="{{_('/images/total-sector-rvsv.png')}}" >
+         <hr/>
 
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rtcv.png')}}" >
-<hr/>
+         <h2>{{_('Crime by Sector')}}</h2>
+         <img src="{{_('/images/total-sector-rtcv.png')}}" >
+         <hr/>
 
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rtsv.png')}}" >
-<hr/>
+         <h2>{{_('Crime by Sector')}}</h2>
+         <img src="{{_('/images/total-sector-rtsv.png')}}" >
+         <hr/>
 
-<h2>{{_('Crime by Sector')}}</h2>
-<img src="{{_('/images/total-sector-rccv.png')}}" >-->
-<div class="modal"></div>
+         <h2>{{_('Crime by Sector')}}</h2>
+         <img src="{{_('/images/total-sector-rccv.png')}}" >-->
+    <div class="modal"></div>
 {% endblock %}
 
 {% block js_bottom %}

@@ -1,163 +1,163 @@
 <!DOCTYPE HTML>
 <!--
-	Strongly Typed by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+     Strongly Typed by HTML5 UP
+     html5up.net | @n33co
+     Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+   -->
 <html lang="{% block lang %}{% endblock %}">
-	<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="description" content="{% block description %}{% endblock %}">
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
-  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
-  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
-  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
-<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Arvo:700" rel="stylesheet" type="text/css" />
-	<link rel="alternate" hreflang="{% block hreflang %}{% endblock %}" href="{% block alternhref %}{% endblock %}" />
-{% block head %}
-		<title>{% block title %}{% endblock %}</title>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="description" content="{% block description %}{% endblock %}">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+        <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Arvo:700" rel="stylesheet" type="text/css" />
+        <link rel="alternate" hreflang="{% block hreflang %}{% endblock %}" href="{% block alternhref %}{% endblock %}" />
+        {% block head %}
+            <title>{% block title %}{% endblock %}</title>
 
 
-{% block css %}
-{% endblock %}
+            {% block css %}
+            {% endblock %}
 
-{% block js %}
-{% endblock %}
+            {% block js %}
+            {% endblock %}
 
-{% endblock %}
-
-
-	</head>
-	<body class="homepage"  ng-app="myApp"  ng-controller="DemoCtrl">
-
-		<!-- Header -->
-			<div id="header-wrapper">
-				<div id="header" class="container">
-{% block content %}
-
-{% endblock %}
-
-					<!-- Nav -->
-							<nav id="nav">
-							  <ul>
-							    <li><a class="fa fa-home" href="{{_('/en/')}}"><span>{{_('Home')}}</span></a></li>
-                                                            <li><a class="fa fa-line-chart" href="{{_('/en/rates')}}"><span>{{_('Rates')}}</span></a></li>
-                                                            <li><a class="fa fa-line-chart" href="{{_('/en/counts')}}"><span>{{_('Counts')}}</span></a></li>
-							    <li>
-
-							      <a href="#" class="fa fa-map-marker"><span>{{_('Maps')}}</span></a>
-							      <ul>
-									  <li><a href="{{_('/en/map')}}">{{_('Latitude and Longitude')}}</a></li>
-								<li><a href="{{_('/en/sectores-map')}}">{{_('Sectores (rates)')}}</a></li>
-
-                                                                <li><a href="{{_('/en/cuadrantes-map')}}">{{_('Cuadrantes (counts)')}}</a></li>
-
-							      </ul>
-
-							    </li>
-								  <li>
-									  <a href="#" class="fa fa-signal"><span>{{_('Stats')}}</span></a>
-								  <ul>
-                                      <li><a href="{{_('/en/crime')}}">{{_('Time Series by Crime')}}</a></li>
-                                                            <li><a  href="{{_('/en/charts')}}">{{_('Time Series by Sector')}}</a></li>
-									  <li><a href="{{_('/en/hours')}}">{{_('Crime by Hour')}}</a></li>
-									  <li><a href="{{_('/en/days')}}">{{_('Crime by Day')}}</a></li>
-									  <li><a href="{{_('/en/trends')}}">{{_('Change in Crime by Cuadrante')}}</a></li>
-								  </ul>
-								  </li>
-
-                                                            <li><a class="fa fa-question-circle" href="{{_('/en/about')}}"><span>{{_('About')}}</span></a></li>
-							  </ul>
-							</nav>
-<hr/>
-{% block subscribe %}
-
-{% endblock %}
-					</div>
-
-			</div>
+        {% endblock %}
 
 
+    </head>
+    <body class="homepage"  ng-app="myApp"  ng-controller="DemoCtrl">
 
-{% block footer %}
-		<!-- Footer Wrapper -->
-			<div id="footer-wrapper">
+        <!-- Header -->
+        <div id="header-wrapper">
+            <div id="header" class="container">
+                {% block content %}
 
-				<!-- Footer -->
-					<div id="footer" class="container">
-						<header>
-							<h2>{{_('Questions or comments? <strong>Get in touch:</strong>')}}</h2>
-						</header>
-						<div class="row">
-							<div class="6u">
-<p>{{_('Created by <a href="https://www.diegovalle.net">Diego Valle-Jones</a>')}}</p>
-<p>{{_('Crime data from a <a href="https://data.diegovalle.net/hoyodecrimen/solicitud.zip">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://data.ssp.cdmx.gob.mx/ubica_cuadrantes.html">Ubica tu cuadrante</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>.')}}</p>
-<p>{{_("There's also a")}} <a href="{{_('/')}}">{{_("Spanish version")}}</a> {{_("and a really cool")}} <a href="/api">API</a></p>
+                {% endblock %}
 
-<p>{{_('Download the complete dataset as a <a href="https://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip">csv file</a>')}}</p>
-							</div>
-							<div class="6u">
-								<section>
+                <!-- Nav -->
+                <nav id="nav">
+                    <ul>
+                        <li><a class="fa fa-home" href="{{_('/en/')}}"><span>{{_('Home')}}</span></a></li>
+                        <li><a class="fa fa-line-chart" href="{{_('/en/rates')}}"><span>{{_('Rates')}}</span></a></li>
+                        <li><a class="fa fa-line-chart" href="{{_('/en/counts')}}"><span>{{_('Counts')}}</span></a></li>
+                        <li>
 
-									<div class="row">
-										<ul class="icons 6u">
-                                                                                  <li class="fa fa-envelope">
-												<a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#100;&#105;&#101;&#103;&#111;&#64;&#100;&#105;&#101;&#103;&#111;&#118;&#97;&#108;&#108;&#101;&#46;&#110;&#101;&#116;'>&#100;&#105;&#101;&#103;&#111;&#64;&#100;&#105;&#101;&#103;&#111;&#118;&#97;&#108;&#108;&#101;&#46;&#110;&#101;&#116;</a>
-											</li>
-											<li class="fa fa-github">
-												<a href="http://github.com/diegovalle">diegovalle</a>
-											</li>
+                            <a href="#" class="fa fa-map-marker"><span>{{_('Maps')}}</span></a>
+                            <ul>
+                                <li><a href="{{_('/en/map')}}">{{_('Latitude and Longitude')}}</a></li>
+                                <li><a href="{{_('/en/sectores-map')}}">{{_('Sectores (rates)')}}</a></li>
 
-										</ul>
-										<ul class="icons 6u">
-											<li class="fa fa-twitter">
-												<a href="https://twitter.com/diegovalle">@diegovalle</a>
-											</li>
-											<li class="fa fa-facebook">
-												<a href="https://www.facebook.com/diegovalle">/diegovalle</a>
-											</li>
-											<li class="fa fa-google-plus">
-												<a href="https://plus.google.com/112417668983107842349?rel=author">+DiegoValleJones</a>
-											</li>
-										</ul>
-									</div>
-								</section>
-							</div>
-						</div>
-					</div>
+                                <li><a href="{{_('/en/cuadrantes-map')}}">{{_('Cuadrantes (counts)')}}</a></li>
 
-				<!-- Copyright -->
-					<div id="copyright" class="container">
-						<ul class="links">
-							<li> &copy; Diego Valle-Jones. All rights reserved</li>
-							
-						</ul>
-					</div>
+                            </ul>
 
-			</div>
+                        </li>
+                        <li>
+                            <a href="#" class="fa fa-signal"><span>{{_('Stats')}}</span></a>
+                            <ul>
+                                <li><a href="{{_('/en/crime')}}">{{_('Time Series by Crime')}}</a></li>
+                                <li><a  href="{{_('/en/charts')}}">{{_('Time Series by Sector')}}</a></li>
+                                <li><a href="{{_('/en/hours')}}">{{_('Crime by Hour')}}</a></li>
+                                <li><a href="{{_('/en/days')}}">{{_('Crime by Day')}}</a></li>
+                                <li><a href="{{_('/en/trends')}}">{{_('Change in Crime by Cuadrante')}}</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a class="fa fa-question-circle" href="{{_('/en/about')}}"><span>{{_('About')}}</span></a></li>
+                    </ul>
+                </nav>
+                <hr/>
+                {% block subscribe %}
+
+                {% endblock %}
+            </div>
+
+        </div>
 
 
-{% endblock %}
-{% block js_bottom %}
-{% endblock %}
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-100264-9', 'auto');
-  ga('send', 'pageview');
-</script>
-<script src="//my.hellobar.com/{{_('8acd30bddc88809427bf568b635de1df754c10c9')}}.js" type="text/javascript" charset="utf-8" async="async"></script>
-<!-- English
-1ff9c89c8f9ed13417d494d31ba01faaef45c3cb
-<script src="//my.hellobar.com/8acd30bddc88809427bf568b635de1df754c10c9.js" type="text/javascript" charset="utf-8" async="async"></script>
- -->
-	</body>
+        {% block footer %}
+            <!-- Footer Wrapper -->
+            <div id="footer-wrapper">
+
+                <!-- Footer -->
+                <div id="footer" class="container">
+                    <header>
+                        <h2>{{_('Questions or comments? <strong>Get in touch:</strong>')}}</h2>
+                    </header>
+                    <div class="row">
+                        <div class="6u">
+                            <p>{{_('Created by <a href="https://www.diegovalle.net">Diego Valle-Jones</a>')}}</p>
+                            <p>{{_('Crime data from a <a href="https://data.diegovalle.net/hoyodecrimen/solicitud.zip">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://data.ssp.cdmx.gob.mx/ubica_cuadrantes.html">Ubica tu cuadrante</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>.')}}</p>
+                            <p>{{_("There's also a")}} <a href="{{_('/')}}">{{_("Spanish version")}}</a> {{_("and a really cool")}} <a href="/api">API</a></p>
+
+                            <p>{{_('Download the complete dataset as a <a href="https://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip">csv file</a>')}}</p>
+                        </div>
+                        <div class="6u">
+                            <section>
+
+                                <div class="row">
+                                    <ul class="icons 6u">
+                                        <li class="fa fa-envelope">
+                                            <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#100;&#105;&#101;&#103;&#111;&#64;&#100;&#105;&#101;&#103;&#111;&#118;&#97;&#108;&#108;&#101;&#46;&#110;&#101;&#116;'>&#100;&#105;&#101;&#103;&#111;&#64;&#100;&#105;&#101;&#103;&#111;&#118;&#97;&#108;&#108;&#101;&#46;&#110;&#101;&#116;</a>
+                                        </li>
+                                        <li class="fa fa-github">
+                                            <a href="http://github.com/diegovalle">diegovalle</a>
+                                        </li>
+
+                                    </ul>
+                                    <ul class="icons 6u">
+                                        <li class="fa fa-twitter">
+                                            <a href="https://twitter.com/diegovalle">@diegovalle</a>
+                                        </li>
+                                        <li class="fa fa-facebook">
+                                            <a href="https://www.facebook.com/diegovalle">/diegovalle</a>
+                                        </li>
+                                        <li class="fa fa-google-plus">
+                                            <a href="https://plus.google.com/112417668983107842349?rel=author">+DiegoValleJones</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copyright -->
+                <div id="copyright" class="container">
+                    <ul class="links">
+                        <li> &copy; Diego Valle-Jones. All rights reserved</li>
+
+                    </ul>
+                </div>
+
+            </div>
+
+
+        {% endblock %}
+        {% block js_bottom %}
+        {% endblock %}
+        <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+         ga('create', 'UA-100264-9', 'auto');
+         ga('send', 'pageview');
+        </script>
+        <script src="//my.hellobar.com/{{_('8acd30bddc88809427bf568b635de1df754c10c9')}}.js" type="text/javascript" charset="utf-8" async="async"></script>
+        <!-- English
+             1ff9c89c8f9ed13417d494d31ba01faaef45c3cb
+             <script src="//my.hellobar.com/8acd30bddc88809427bf568b635de1df754c10c9.js" type="text/javascript" charset="utf-8" async="async"></script>
+           -->
+    </body>
 </html>

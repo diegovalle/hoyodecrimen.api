@@ -6,112 +6,112 @@
 {% block description %}{{_('Crime in Mexico City. Find out how many crimes there were in your cuadrante delictivo')}}{% endblock %}
 {% block head %}
 
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="@diegovalle" />
-<meta name="twitter:title" content="{{_('Crime in Mexico City')}}" />
-<meta name="twitter:description" content="{{_('Crime on your street revealed. Find out whether your location has higher crime levels than the rest of Mexico City')}}" />
-<meta name="twitter:image" content="https://hoyodecrimen.com/images/choropleth.png" />
-<meta name="twitter:url" content="{{_('https://hoyodecrimen.com/en/')}}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@diegovalle" />
+    <meta name="twitter:title" content="{{_('Crime in Mexico City')}}" />
+    <meta name="twitter:description" content="{{_('Crime on your street revealed. Find out whether your location has higher crime levels than the rest of Mexico City')}}" />
+    <meta name="twitter:image" content="https://hoyodecrimen.com/images/choropleth.png" />
+    <meta name="twitter:url" content="{{_('https://hoyodecrimen.com/en/')}}" />
 
-<meta name="blitz" content="mu-01188fe9-0b813050-b0f51076-c96f41fb">
+    <meta name="blitz" content="mu-01188fe9-0b813050-b0f51076-c96f41fb">
 
-<meta name="og:title" content="{{_('Crime in Mexico City')}}" />
-<meta property="og:description" content="{{_('Detailed crime rates and statistics from Mexico City. Crime incidents are tagged with latitude/longitude, date and time of occurance.')}}"/>
-<meta property="og:url" content="{{_('https://hoyodecrimen.com/en/')}}"/>
-<meta property="og:image" content="https://hoyodecrimen.com/images/choropleth.png"/>
-<meta property="og:type" content="website"/>
-<meta property="og:site_name" content="Hoyo de Crimen"/>
-{{ super() }}
+    <meta name="og:title" content="{{_('Crime in Mexico City')}}" />
+    <meta property="og:description" content="{{_('Detailed crime rates and statistics from Mexico City. Crime incidents are tagged with latitude/longitude, date and time of occurance.')}}"/>
+    <meta property="og:url" content="{{_('https://hoyodecrimen.com/en/')}}"/>
+    <meta property="og:image" content="https://hoyodecrimen.com/images/choropleth.png"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Hoyo de Crimen"/>
+    {{ super() }}
 {% endblock %}
 
 {% block css %}
-{% assets  'css_pip_req' %}
-<link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
-{% endassets %}
-<!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
-<style>
-  .tick line{
-  opacity:0;
-  visibility:hidden;
-  }
-</style>
+    {% assets  'css_pip_req' %}
+        <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
+    {% endassets %}
+    <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie/v8.css" /><![endif]-->
+    <style>
+     .tick line{
+         opacity:0;
+         visibility:hidden;
+     }
+    </style>
 {% endblock %}
 
 {% block js %}
-<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
-<!--[if lte IE 8]><script src="/css/ie/html5shiv.js"></script><![endif]-->
-{% assets "js_pip_req" %}
-<script  type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
+    <!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+    <!--[if lte IE 8]><script src="/css/ie/html5shiv.js"></script><![endif]-->
+    {% assets "js_pip_req" %}
+        <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 {% endblock %}
 
 {% block content %}
 
-<h1 id="logo" style="margin-bottom:50px">{{_('Crime in Mexico City')}}</h1>
-<div id="map" style="height: 400px;"></div>
-<div class="row">
-  <div class="2u" style="margin-top:10px">
+    <h1 id="logo" style="margin-bottom:50px">{{_('Crime in Mexico City')}}</h1>
+    <div id="map" style="height: 400px;"></div>
+    <div class="row">
+        <div class="2u" style="margin-top:10px">
+        </div>
+        <div class="8u">
+            <!-- <p>{{_('Crime in your Cuadrante')}}</p>-->
+        </div>
+        <div class="2u">
+        </div>
     </div>
-  <div class="8u">
-   <!-- <p>{{_('Crime in your Cuadrante')}}</p>-->
-  </div>
-  <div class="2u">
-  </div>
-</div>
-<p style="margin: 0.1em 0 2em 0;">
-    <span style="color:#e41a1c">&#x25CF;</span>&nbsp;{{_('Homicide')}} <span style="color:#00441b">&#x25CF;</span>&nbsp;{{_('Violent Car Robbery')}}
-    <span style="color:#41ab5d">&#x25CF;</span>&nbsp;{{_('Non-Violent Car Robbery')}} <span style="color:#377eb8">&#x25CF;</span>&nbsp;{{_('Street Robbery')}}
-    <span style="color:darkgray">&#x25CF;</span>&nbsp;{{_('Other')}}
-    <br>
-    {{_('Cuadrantes highlighted in black. Points represent all crimes within 500 meters of your location.')}}
-</p>
-<p>
-  <span><b>{{_('Cuadrante: ')}}</b></span><span id="cuadrante"></span><br/>
-  <span><b>{{_('Sector: ')}}</b></span><span id="sector"></span><br/>
-  <span><b>{{_('Population: ')}}</b></span><span id="poblacion"></span>
-</p>
+    <p style="margin: 0.1em 0 2em 0;">
+        <span style="color:#e41a1c">&#x25CF;</span>&nbsp;{{_('Homicide')}} <span style="color:#00441b">&#x25CF;</span>&nbsp;{{_('Violent Car Robbery')}}
+        <span style="color:#41ab5d">&#x25CF;</span>&nbsp;{{_('Non-Violent Car Robbery')}} <span style="color:#377eb8">&#x25CF;</span>&nbsp;{{_('Street Robbery')}}
+        <span style="color:darkgray">&#x25CF;</span>&nbsp;{{_('Other')}}
+        <br>
+        {{_('Cuadrantes highlighted in black. Points represent all crimes within 500 meters of your location.')}}
+    </p>
+    <p>
+        <span><b>{{_('Cuadrante: ')}}</b></span><span id="cuadrante"></span><br/>
+        <span><b>{{_('Sector: ')}}</b></span><span id="sector"></span><br/>
+        <span><b>{{_('Population: ')}}</b></span><span id="poblacion"></span>
+    </p>
 
-<div class="row">
-  <div class="1u">&nbsp;</div>
+    <div class="row">
+        <div class="1u">&nbsp;</div>
 
-  <div id="linecharts" class="5u">
-    <p style="height:3em;margin-bottom:10px">{{_('Crimes counts by month in your cuadrante')}}</p><hr/>
-  </div>
-  <div id="barcharts" class="5u">
-    <p style="height:3em;margin-bottom:10px">{{_('Crimes rates compared to the rest of the DF during the last 12 months')}}</p><hr/>
-  </div>
-</div>
+        <div id="linecharts" class="5u">
+            <p style="height:3em;margin-bottom:10px">{{_('Crimes counts by month in your cuadrante')}}</p><hr/>
+        </div>
+        <div id="barcharts" class="5u">
+            <p style="height:3em;margin-bottom:10px">{{_('Crimes rates compared to the rest of the DF during the last 12 months')}}</p><hr/>
+        </div>
+    </div>
 
 
-<h1 style="margin-top:50px;color:black">{{_('Official Crime Data')}}</h1>
-<div class="row">
-    <div class="2u">&nbsp;</div>
-    <div class="8u">
-        <p style="text-transform:none;font-family:Georgia;font-size:19px;color:#333;text-align:justify">
-            {{_('The Mexico City Police Department
+    <h1 style="margin-top:50px;color:black">{{_('Official Crime Data')}}</h1>
+    <div class="row">
+        <div class="2u">&nbsp;</div>
+        <div class="8u">
+            <p style="text-transform:none;font-family:Georgia;font-size:19px;color:#333;text-align:justify">
+                {{_('The Mexico City Police Department
             divided the city into 847 quadrants. Thanks to a freedom of information request this website was able to
             obtain crime information for each and every quadrant.<br/><br/> With this data citizens and the authorities can
             visualize
-            the most violent parts of the city, businessmen can decide where to locate or expand, drivers can find in
+            the most violent parts of the city; businessmen can decide where to locate or expand; drivers can find in
             which parking
-            lots their cars are more likely to be stolen... With interactive maps the Federal District government can
+            lots their cars are least likely to be stolen... With interactive maps the Mexico City government can
             be brought to account for its incompetence in managing the city&#39;s crime problem. It&#39;s even possible for the
             Chief of Police
-            to assess and compare his police force. Don&#39;t hesitate to <a href="https://www.diegovalle.net/contact.html">contact me</a>
-        if you have any questions')}}
-        </p>
+            to assess and compare his personnel. Don&#39;t hesitate to <a href="https://www.diegovalle.net/contact.html">contact me</a>
+        if you have any questions.')}}
+            </p>
 
-        <!--La SSPDF dividió al Distrito Federal en 847 cuadrantes. Gracias a una solicitud de información obtuve los datos
-        de todos los crímenes cometidos en los cuadrantes. Con estos datos y su visualización los ciudadanos y las
-        autoridades podrían saber donde se encuentran las
-        áreas más violentas, los empresarios podrían planear donde situar sus negocios, los conductores en que
-        estacionamientos es más probable que les roben el auto... Con mapas interactivos se le pueden pedir cuentas a
-        los policías y comandantes encargados de cada cuadrante o sector. Incluso el Secretario de Seguridad Pública
-        podría usarlos para comparar y evaluar a sus comandantes y policías, una de las claves de éxito en el sistema de
-        mapeo de crimes COMPSTAT que se aplicó en Nueva York. No dudes en <a href="https://www.diegovalle.net">contactarme</a>.-->
+            <!--La SSPDF dividió al Distrito Federal en 847 cuadrantes. Gracias a una solicitud de información obtuve los datos
+                 de todos los crímenes cometidos en los cuadrantes. Con estos datos y su visualización los ciudadanos y las
+                 autoridades podrían saber donde se encuentran las
+                 áreas más violentas, los empresarios podrían planear donde situar sus negocios, los conductores en que
+                 estacionamientos es más probable que les roben el auto... Con mapas interactivos se le pueden pedir cuentas a
+                 los policías y comandantes encargados de cada cuadrante o sector. Incluso el Secretario de Seguridad Pública
+                 podría usarlos para comparar y evaluar a sus comandantes y policías, una de las claves de éxito en el sistema de
+                 mapeo de crimes COMPSTAT que se aplicó en Nueva York. No dudes en <a href="https://www.diegovalle.net">contactarme</a>.-->
 
+        </div>
     </div>
-</div>
 
 {% endblock %}
 
@@ -121,30 +121,30 @@
 
 
 {% block js_bottom %}
-<script>
-  hom_txt="{{_('Cuadrante Homicides')}}"
-  rncv_txt="{{_('Cuadrante Violent robberies to a business')}}"
-  rvcv_txt='{{_('Cuadrante Vehicle robberies with violence')}}'
-  rvsv_txt='{{_('Cuadrante Vehicle robberies without violence')}}'
-  viol_txt='{{_('Cuadrante Rape')}}'
-  rccv_txt='{{_('Cuadrante House robberies with violence')}}'
-  rtcv_txt='{{_('Cuadrante Robberies to pedestrians with violence')}}'
-  rtsv_txt='{{_('Cuadrante Robberies to pedestrians without violence')}}'
-  count_txt = '{{_("count")}}'
-  all_df_txt = '{{_("All DF")}}'
-  rate_txt = '{{_("rate")}}'
-  your_cuadrante = '{{_("Your Cuadrante")}}'
+    <script>
+     hom_txt="{{_('Cuadrante Homicides')}}"
+     rncv_txt="{{_('Cuadrante Violent robberies to a business')}}"
+     rvcv_txt='{{_('Cuadrante Vehicle robberies with violence')}}'
+     rvsv_txt='{{_('Cuadrante Vehicle robberies without violence')}}'
+     viol_txt='{{_('Cuadrante Rape')}}'
+     rccv_txt='{{_('Cuadrante House robberies with violence')}}'
+     rtcv_txt='{{_('Cuadrante Robberies to pedestrians with violence')}}'
+     rtsv_txt='{{_('Cuadrante Robberies to pedestrians without violence')}}'
+     count_txt = '{{_("count")}}'
+     all_df_txt = '{{_("All DF")}}'
+     rate_txt = '{{_("rate")}}'
+     your_cuadrante = '{{_("Your Cuadrante")}}'
 
-</script>
-{% assets "js_pip" %}
-<script  type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
-<!--<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=299785550640&version=v2.0";
-  fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>-->
+    </script>
+    {% assets "js_pip" %}
+        <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    <!--<script>(function(d, s, id) {
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) return;
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=299785550640&version=v2.0";
+         fjs.parentNode.insertBefore(js, fjs);
+         }(document, 'script', 'facebook-jssdk'));</script>
+         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>-->
 {% endblock %}
