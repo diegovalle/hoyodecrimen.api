@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2016-10-21 22:07-0500\n"
-"PO-Revision-Date: 2016-10-21 22:08-0600\n"
+"PO-Revision-Date: 2016-10-22 08:47-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -433,7 +433,7 @@ msgstr "- número: "
 
 #: templates/days.html:2
 msgid "Charts of Crime in Mexico City by Day of Week"
-msgstr "Gráficas de las tasas de crimen en la Ciudad de México por día de la semana"
+msgstr "Gráficas del crimen en la Ciudad de México por día de la semana"
 
 #: templates/days.html:5
 msgid "https://hoyodecrimen.com/dia"
@@ -441,7 +441,7 @@ msgstr "https://hoyodecrimen.com/en/days"
 
 #: templates/days.html:6
 msgid "Small multiple charts of crime in Mexico City by day of week"
-msgstr "Gráficas de las tasas de crimen en la Ciudad de México por día de la semana"
+msgstr "Gráficas del crimen en la Ciudad de México por día de la semana"
 
 #: templates/days.html:33
 msgid "Crime in Mexico City by day of week for the last 12 months"
