@@ -35,7 +35,7 @@
 	{
 		font-family: 'Source Sans Pro';
 		font-weight: 300;
-		color: #777;
+		color: #333;
 	}
 
 	h1,h2,h3,h4,h5,h6
@@ -55,7 +55,7 @@
 
 	a
 	{
-		color: #666;
+		color: #333;
 		text-decoration: none;
 		border-bottom: solid 1px #ddd;
 		-moz-transition: color 0.25s ease-in-out, border-bottom-color 0.25s ease-in-out;
@@ -1075,4 +1075,3 @@ body.loading .modal {
 *:focus {
     outline: none;
 }
-

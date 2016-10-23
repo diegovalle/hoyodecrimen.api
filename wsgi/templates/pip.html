@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{_('Crime in Mexico City - Find out how many crimes there were in your cuadrante delictivo')}}{% endblock %}
+{% block title %}{{_('Crime in Mexico City - See how your neighborhood rated for violent and property crimes')}}{% endblock %}
 {% block lang %}{{_('en')}}{% endblock %}
 {% block hreflang %}{{_('es')}}{% endblock %}
 {% block alternhref %}{{_('https://hoyodecrimen.com/')}}{% endblock %}
@@ -34,6 +34,76 @@
          opacity:0;
          visibility:hidden;
      }
+     #lineHOMICIDIO-DOLOSO .mg-line1-color {
+         stroke: #e41a1c;
+     }
+     #lineHOMICIDIO-DOLOSO .mg-area1-color {
+             fill: #e41a1c;
+     }
+     #barHOMICIDIO-DOLOSO .mg-barplot rect.mg-bar {
+         shape-rendering: auto;
+         fill: #e41a1c;
+     }
+     #barHOMICIDIO-DOLOSO .mg-barplot rect.mg-bar.active {
+         shape-rendering: auto;
+         fill: #bf1517;
+     }
+     #lineROBO-DE-VEHICULO-AUTOMOTOR-C-V- .mg-line1-color {
+         stroke: #00441b;
+     }
+     #lineROBO-DE-VEHICULO-AUTOMOTOR-C-V- .mg-area1-color {
+         fill: #00441b;
+     }
+     #barROBO-DE-VEHICULO-AUTOMOTOR-C-V- .mg-barplot rect.mg-bar {
+         shape-rendering: auto;
+         fill: #00441b;
+     }
+     #barROBO-DE-VEHICULO-AUTOMOTOR-C-V- .mg-barplot rect.mg-bar.active {
+         shape-rendering: auto;
+         fill: #002710;
+     }
+     #lineROBO-DE-VEHICULO-AUTOMOTOR-S-V- .mg-line1-color {
+         stroke: #41ab5d;
+     }
+     #lineROBO-DE-VEHICULO-AUTOMOTOR-S-V- .mg-area1-color {
+         fill: #41ab5d;
+     }
+     #barROBO-DE-VEHICULO-AUTOMOTOR-S-V- .mg-barplot rect.mg-bar {
+         shape-rendering: auto;
+         fill: #41ab5d;
+     }
+     #barROBO-DE-VEHICULO-AUTOMOTOR-S-V- .mg-barplot rect.mg-bar.active {
+         shape-rendering: auto;
+         fill: #2f7b43;
+     }
+     #lineROBO-A-TRANSEUNTE-C-V- .mg-line1-color {
+         stroke: #377eb8;
+     }
+     #lineROBO-A-TRANSEUNTE-C-V- .mg-area1-color {
+         fill: #377eb8;
+     }
+     #barROBO-A-TRANSEUNTE-C-V- .mg-barplot rect.mg-bar {
+         shape-rendering: auto;
+         fill: #377eb8;
+     }
+     #barROBO-A-TRANSEUNTE-C-V- .mg-barplot rect.mg-bar.active{
+         shape-rendering: auto;
+         fill: #214d71;
+     }
+     .mg-line1-color {
+         stroke: darkgray;
+     }
+     .mg-area1-color {
+         fill: darkgray;
+     }
+     .mg-barplot rect.mg-bar {
+         shape-rendering: auto;
+         fill: darkgray;
+     }
+     .mg-barplot rect.mg-bar.active {
+         shape-rendering: auto;
+         fill: #6b6b6b;
+     }
     </style>
 {% endblock %}
 
@@ -59,8 +129,10 @@
         </div>
     </div>
     <p style="margin: 0.1em 0 2em 0;">
-        <span style="color:#e41a1c">&#x25CF;</span>&nbsp;{{_('Homicide')}} <span style="color:#00441b">&#x25CF;</span>&nbsp;{{_('Violent Car Robbery')}}
-        <span style="color:#41ab5d">&#x25CF;</span>&nbsp;{{_('Non-Violent Car Robbery')}} <span style="color:#377eb8">&#x25CF;</span>&nbsp;{{_('Street Robbery')}}
+        <span style="color:#e41a1c">&#x25CF;</span>&nbsp;{{_('Homicide')}}
+        <span style="color:#00441b">&#x25CF;</span>&nbsp;{{_('Violent Car Robbery')}}
+        <span style="color:#41ab5d">&#x25CF;</span>&nbsp;{{_('Non-Violent Car Robbery')}}
+        <span style="color:#377eb8">&#x25CF;</span>&nbsp;{{_('Street Robbery')}}
         <span style="color:darkgray">&#x25CF;</span>&nbsp;{{_('Other')}}
         <br>
         {{_('Cuadrantes highlighted in black. Points represent all crimes within 500 meters of your location.')}}

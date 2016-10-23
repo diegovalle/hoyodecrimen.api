@@ -23,7 +23,7 @@ var last3Months_sql = "SELECT sum(count) as count,sum(population)/3 as populatio
 L.Icon.Default.imagePath = '/js/images';
 var comma = d3.format("0,000")
 var circles = [];
-charts_url = '/api/v1/cuadrantes/crimes/HOMICIDIO DOLOSO,ROBO A CASA HABITACION C.V.,LESIONES POR ARMA DE FUEGO,ROBO DE VEHICULO AUTOMOTOR S.V.,ROBO DE VEHICULO AUTOMOTOR C.V.,ROBO A TRANSEUNTE C.V.,ROBO A NEGOCIO C.V./pip_extra/';
+charts_url = '/api/v1/cuadrantes/crimes/HOMICIDIO DOLOSO,LESIONES POR ARMA DE FUEGO,ROBO DE VEHICULO AUTOMOTOR S.V.,ROBO DE VEHICULO AUTOMOTOR C.V.,ROBO A TRANSEUNTE C.V./pip_extra/';
 
 $.getJSON('/js/df-outline.json', function (single) {
     var southWest = L.latLng(19.152952023808638, -99.55192565917969),
@@ -126,12 +126,25 @@ function get_data(data, dates){
     };
 
     crimes = _.uniq(_.pluck(data.cuadrante, 'crime'));
+    crimes = _.sortBy(crimes,
+                      function(x) {
+                          if (x === "HOMICIDIO DOLOSO")
+                              return -5;
+                          if (x === "ROBO DE VEHICULO AUTOMOTOR C.V.")
+                              return -3;
+                          if (x === "ROBO DE VEHICULO AUTOMOTOR S.V.")
+                              return -1;
+                          if (x === "ROBO A TRANSEUNTE C.V.")
+                              return 3;
+                          return 9999;
+                      });
     _.map(crimes, function(x) {
         if (document.getElementById('line' + x.replace(/ /g, '-').replace(/\./g, '-')) === null) {
             $('<div id="'+ 'line' + x.replace(/ /g, '-').replace(/\./g, '-') +'"></div>').appendTo('#linecharts');
             $('<div id="'+ 'bar' + x.replace(/ /g, '-').replace(/\./g, '-') +'"></div>').appendTo('#barcharts');
         }
     });
+
     _.map(crimes, function(x) {
         var bar_options = {
             title: "Bar Prototype",

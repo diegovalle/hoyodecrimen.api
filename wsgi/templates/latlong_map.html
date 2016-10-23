@@ -197,12 +197,13 @@
              var centerControlDiv = document.createElement('div');
              var centerControl = new CenterControl(centerControlDiv, map);
              centerControlDiv.index = 1;
+             map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
              $.ajax({
                  dataType: 'jsonp',
                  url: '/api/v1/crimes',
                  success: function(data) {
 
-                     map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+
                      $("#seltarget").change(function() {
                          updateQuery($("#seltarget").attr('value'))
                      });
@@ -212,7 +213,6 @@
                              .append($('<option>', { value : value })
                                  .text(value));
                      });
-                     select_html = $('#seltarget').html();
                  }});
          }
 
