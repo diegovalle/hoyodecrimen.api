@@ -178,7 +178,7 @@ class FlaskTestCase(unittest.TestCase):
 
     # Check the API endpoint
     def test_api_v1_series_sectores_a(self):
-        base_url = '/api/v1/sectores/angel-zona%20rosa/crimes/violacion/series'
+        base_url = '/api/v1/sectores/lindavista/crimes/violacion/series'
         tester = app.test_client(self)
         response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -239,6 +239,20 @@ class FlaskTestCase(unittest.TestCase):
     def test_api_v1_pip(self):
         tester = app.test_client(self)
         response = tester.get('/api/v1/cuadrantes/pip/-99.13333/19.43', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+
+    # Check the API endpoint
+    def test_api_v1_pip(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/latlong/crimes/ROBO%20A%20TRANSEUNTE%20C.V.,ROBO%20A%20TRANSEUNTE%20S.V.,ROBO%20A%20BORDO%20DE%20TAXI%20C.V.,ROBO%20A%20BORDO%20DE%20MICROBUS%20S.V.,ROBO%20A%20BORDO%20DE%20MICROBUS%20C.V.,ROBO%20A%20BORDO%20DE%20METRO%20S.V.,ROBO%20A%20BORDO%20DE%20METRO%20C.V./coords/-99.122815/19.506460/distance/50000000000?start_date=2016-01&end_date=2016-04', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+
+    # Check the API endpoint
+    def test_api_v1_pip(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/cuadrantes/crimes/HOMICIDIO%20DOLOSO,LESIONES%20POR%20ARMA%20DE%20FUEGO,ROBO%20DE%20VEHICULO%20AUTOMOTOR%20S.V.,ROBO%20DE%20VEHICULO%20AUTOMOTOR%20C.V.,ROBO%20A%20TRANSEUNTE%20C.V./pip_extra/-99.133208/19.432605540309215', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 

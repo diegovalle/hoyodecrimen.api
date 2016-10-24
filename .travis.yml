@@ -7,9 +7,10 @@ addons:
   postgresql: "9.2"
 before_script:
   - unzip $TRAVIS_BUILD_DIR/data/cuadrantes.csv.zip -d $TRAVIS_BUILD_DIR/data
+  - unzip $TRAVIS_BUILD_DIR/data/crime-lat-long.csv.zip -d $TRAVIS_BUILD_DIR/data
   - psql -c 'create database apihoyodecrimen;' -U postgres
   - psql apihoyodecrimen -U postgres -c "create extension postgis;"
-  - psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (15), crime
+  - psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (20), crime
     varchar (60), date varchar (10), count int, year int, sector
     varchar(60), population integer, PRIMARY KEY(cuadrante, sector,
     crime, date) ); COPY cuadrantes FROM
@@ -19,7 +20,42 @@ before_script:
     cvegeo  varchar (5),
     municipio varchar(200),
     PRIMARY KEY(cuadrante)
-    ); COPY municipios FROM '$TRAVIS_BUILD_DIR/data/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;" -U postgres 
+    ); COPY municipios FROM '$TRAVIS_BUILD_DIR/data/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+    CREATE TABLE crime_latlong (
+        cuadrante varchar (20),
+	crime varchar (60),
+	date  varchar (10),
+	hour  varchar (10),
+	year  varchar (10),
+	month  varchar (10),
+        latitude double precision,
+        longitude double precision,
+        id integer,
+        geom geometry,
+        PRIMARY KEY(id)
+    );
+    COPY crime_latlong(cuadrante,crime,date,hour,year,month,latitude,longitude,id) FROM '$TRAVIS_BUILD_DIR/data/crime-lat-long.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+    UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);
+    CREATE INDEX crime_latlongi
+      ON crime_latlong
+      USING gist
+      (geom );
+    CREATE INDEX crime_crime
+      ON crime_latlong
+      (crime);
+    CREATE INDEX crime_crime_date2
+      ON crime_latlong
+      (crime, date);
+    CREATE INDEX cuadrantes_polygeom
+      ON cuadrantes_poly
+      USING gist
+      (geom );
+    CREATE INDEX cuadrantes_polygeom_cuadrante
+      ON cuadrantes_poly
+      (id,sector);
+    CREATE INDEX cuadrantes_cuadrante_crime_date
+      ON cuadrantes
+     (cuadrante, crime, date);" -U postgres 
   - psql -d apihoyodecrimen -U postgres < $TRAVIS_BUILD_DIR/data/cuadrantes_poly.sql
   - pybabel extract -F wsgi/babel.cfg -o wsgi/messages.pot .
   - pybabel update -i wsgi/messages.pot -d wsgi/translations
