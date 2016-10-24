@@ -14,10 +14,10 @@ var createScale = function(colors, domain, numcol){
 comma = d3.format("0,000");
 
 var scaleHomicide,
-scaleRNCV,
-scaleRVCV,
-scaleRVSV,
-scaleVIOL;
+    scaleRNCV,
+    scaleRVCV,
+    scaleRVSV,
+    scaleVIOL;
 
 var mapData;
 
@@ -60,8 +60,8 @@ var nokiaSat = new L.BingLayer(BING_APIKEY, {type: 'AerialWithLabels'});
 //     attribution: '©2012 Nokia <a href="http://here.net/services/terms" target="_blank">Terms of use</a>'
 // })
 var map = L.map('map', {
-                        zoom: 11,
-                        layers: [nokiaStreets]});
+    zoom: 11,
+    layers: [nokiaStreets]});
 map.fitBounds([[19.593571, -99.123324],[19.141173, -99.130924],[19.299933, -99.350858],[19.321587, -98.944222]]);
 var baseMaps = {
     "Satellite": nokiaSat,
@@ -110,72 +110,72 @@ _.sortedFind = function sortedFind(list, item, key) {
 setChange = function(){
 
     $("#seltarget").change(function() {
-      d3.json(mapType === 'sectores' ? '/api/v1/sectores/all/crimes/'+ this.value +'/period' : '/api/v1/cuadrantes/all/crimes/'+ this.value +'/period', function(data){
-        mapData = data;
-        $(config.selector).attr('style', '');
-        changeConfig($("#seltarget").attr('value'))
-        mxc.eachLayer(function(layer) {
-            if(mapType === 'sectores') {
-                obj = _.sortedFind(mapData.rows,
-                                  {'sector': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
-                                   'crime':config.currentName.toUpperCase()},
-                                  'sector');
-            } else {
-                obj = _.sortedFind(mapData.rows,
-                                  {'cuadrante': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
-                                   'crime':config.currentName.toUpperCase()},
-                                  'cuadrante');
-            }
-            layer.setStyle({
-                fillColor:  mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
-                //properties[config.currentName]),
-                fillOpacity: 0.8,
-                weight: 0.5
+        d3.json(mapType === 'sectores' ? '/api/v1/sectores/all/crimes/'+ this.value +'/period' : '/api/v1/cuadrantes/all/crimes/'+ this.value +'/period', function(data){
+            mapData = data;
+            $(config.selector).attr('style', '');
+            changeConfig($("#seltarget").attr('value'))
+            mxc.eachLayer(function(layer) {
+                if(mapType === 'sectores') {
+                    obj = _.sortedFind(mapData.rows,
+                                       {'sector': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
+                                        'crime':config.currentName.toUpperCase()},
+                                       'sector');
+                } else {
+                    obj = _.sortedFind(mapData.rows,
+                                       {'cuadrante': layer.feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
+                                        'crime':config.currentName.toUpperCase()},
+                                       'cuadrante');
+                }
+                layer.setStyle({
+                    fillColor:  mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
+                    //properties[config.currentName]),
+                    fillOpacity: 0.8,
+                    weight: 0.5
+                });
             });
+            for(i = 0; i < 9; i++) {
+                $("#legendnum" + i).html(
+                    '<i style="background:' + config.color[i] + '"></i>' +
+                        config.round1(config.colorFun.
+                                      invertExtent(config.color[i])[0], 1) +" - " +
+                        config.round2(config.colorFun.
+                                      invertExtent(config.color[i])[1], 1)
+                );
+            }
+            homTotal = _.reduce(mapData.rows, function(total, n) {return total + n.count}, 0);
+            homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
+            $(config.selector).css('background-color', config.color[2]);
+            updateLineChart();
+            clickedFeature = null;
+            info.update();
         });
-        for(i = 0; i < 9; i++) {
-            $("#legendnum" + i).html(
-                '<i style="background:' + config.color[i] + '"></i>' +
-                    config.round1(config.colorFun.
-                                  invertExtent(config.color[i])[0], 1) +" - " +
-                    config.round2(config.colorFun.
-                                  invertExtent(config.color[i])[1], 1)
-            );
-        }
-        homTotal = _.reduce(mapData.rows, function(total, n) {return total + n.count}, 0);
-        homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
-        $(config.selector).css('background-color', config.color[2]);
-        updateLineChart();
-        clickedFeature = null;
-        info.update();
     });
-  });
 }
 
 
 changeConfig = function(seltarget) {
     switch(seltarget) {
-        case "Homicide":
-            config.colorFun =  scaleHomicide;
-            config.color = colorbrewer.Reds["9"];
-            config.currentName ='HOMICIDIO DOLOSO';
-            config.lastSelect = "Homicide";
-            config.selector = mapType === 'sectores'  ? ".crime_rate" : ".crime_count";
-            break;
+    case "Homicide":
+        config.colorFun =  scaleHomicide;
+        config.color = colorbrewer.Reds["9"];
+        config.currentName ='HOMICIDIO DOLOSO';
+        config.lastSelect = "Homicide";
+        config.selector = mapType === 'sectores'  ? ".crime_rate" : ".crime_count";
+        break;
 
-        default:
-            if (typeof(seltarget) === 'undefined' | seltarget === "")  seltarget = "HOMICIDIO DOLOSO";
-            config.colorFun =   createScale(colorbrewer.Reds["9"],
+    default:
+        if (typeof(seltarget) === 'undefined' | seltarget === "")  seltarget = "HOMICIDIO DOLOSO";
+        config.colorFun =   createScale(colorbrewer.Reds["9"],
                                         findRange(seltarget), 9);
-            config.color = colorbrewer.Reds["9"];
-            config.currentName = seltarget;
-            config.lastSelect = seltarget;
-            config.selector = mapType === 'sectores'  ? ".crime_rate" : ".crime_count";;
-            //homTotal = calcTotal(seltarget);
-            //homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
-            break;
+        config.color = colorbrewer.Reds["9"];
+        config.currentName = seltarget;
+        config.lastSelect = seltarget;
+        config.selector = mapType === 'sectores'  ? ".crime_rate" : ".crime_count";;
+        //homTotal = calcTotal(seltarget);
+        //homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
+        break;
 
-        }
+    }
 }
 
 info.update = function (feature) {
@@ -200,7 +200,7 @@ info.update = function (feature) {
     var start_date = new Date(mapData.rows[0].start_date + '-15');
     var end_date = new Date(mapData.rows[0].end_date + '-15');
     var date_text = '(' + monthNames[start_date.getMonth()] + ' ' + start_date.getFullYear() +
-        ' - ' + monthNames[end_date.getMonth()] + ' ' + end_date.getFullYear() + ')'
+            ' - ' + monthNames[end_date.getMonth()] + ' ' + end_date.getFullYear() + ')'
     var div;
     config.color = colorbrewer.Reds["9"];
     div = '<div id="variables" class="menu-ui"><div class="select-style"><select id="seltarget" autofocus>'+select_html+'</select></div></div><h1>'+
@@ -249,17 +249,17 @@ info.update = function (feature) {
 
 
 var getStyle = function(feature) {
-  if(mapType === 'sectores') {
-      obj = _.sortedFind(mapData.rows,
-                        {'sector': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
-                         'crime':config.currentName.toUpperCase()},
-                        'sector');
-  } else {
-      obj = _.sortedFind(mapData.rows,
-                        {'cuadrante': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
-                         'crime':config.currentName.toUpperCase()},
-                        'cuadrante');
-  }
+    if(mapType === 'sectores') {
+        obj = _.sortedFind(mapData.rows,
+                           {'sector': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
+                            'crime':config.currentName.toUpperCase()},
+                           'sector');
+    } else {
+        obj = _.sortedFind(mapData.rows,
+                           {'cuadrante': feature.properties[mapType === "sectores" ? "sector" : "cuadrante"].toUpperCase(),
+                            'crime':config.currentName.toUpperCase()},
+                           'cuadrante');
+    }
 
 
     return {
@@ -276,7 +276,7 @@ function highlightFeature(e) {
     if(clickedFeature){
         resetHighlight(clickedFeature)
         //clickedFeature.target.setStyle({
-	      //  fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
+	//  fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
         //        fillOpacity: 0.8,
         //        weight: 0.5,
         //        color: '#555'
@@ -293,78 +293,82 @@ function highlightFeature(e) {
     });
 
     if (!L.Browser.ie && !L.Browser.opera) {
-       layer.bringToFront();
+        layer.bringToFront();
     }
 
     info.update(layer.feature.properties);
     d3.json(mapType === "sectores" ? '/api/v1/sectores/'+obj.sector+'/crimes/'+config.currentName+'/series' : '/api/v1/cuadrantes/'+obj.cuadrante+'/crimes/'+config.currentName+'/series', function(data){
-      var line_options = {
-        //title: "Homicides",
-        description: '',
-        height: 150,
-        y_label: '',
-        area: false,
-        buffer: 30,
-        top: 30,
-        left: 50,
-        full_width: true,
-        //width: 200,
-        interpolate: "linear",
-        target: '#line-chart',
-        x_accessor: 'date',
-        y_accessor: 'rate',
-        xax_count: 3
-      };
-        _.forEach(data.rows, function(x) {x['rate'] = x.count / x.population * 100000 * 12});
-      if(mapType === "cuadrantes") line_options.y_accessor = 'count';
-      data = MG.convert.date(data.rows, 'date', '%Y-%m');
-      line_options.data = data;
-      MG.data_graphic(line_options);
+        var line_options = {
+            //title: "Homicides",
+            description: '',
+            height: 150,
+            y_label: '',
+            area: false,
+            buffer: 30,
+            top: 30,
+            left: 50,
+            full_width: true,
+            //width: 200,
+            interpolate: "linear",
+            target: '#line-chart',
+            x_accessor: 'date',
+            y_accessor: 'rate',
+            xax_count: 3
+        };
+        function daysInMonth(month, year) {
+            return new Date(year, month, 0).getDate();
+        }
+
+        _.forEach(data.rows, function(x) {x['rate'] = (x.count / daysInMonth(x.date.substr(0,4), x.date.substr(5,6)) * 30)/ x.population * 100000 * 12});
+        if(mapType === "cuadrantes") line_options.y_accessor = 'count';
+        data = MG.convert.date(data.rows, 'date', '%Y-%m');
+        line_options.data = data;
+        MG.data_graphic(line_options);
     });
 }
 
 updateLineChart = function(){
-  d3.json('/api/v1/df/crimes/'+config.currentName+'/series', function(data){
-    var line_options = {
-      //title: "Homicides",
-      description: '',
-      height: 150,
-      y_label: '',
-      area: false,
-      buffer: 30,
-      top: 30,
-        y_extended_ticks: true,
-        yax_count: 3,
+    d3.json('/api/v1/df/crimes/'+config.currentName+'/series', function(data){
+        var line_options = {
+            //title: "Homicides",
+            description: '',
+            height: 150,
+            y_label: '',
+            area: false,
+            buffer: 30,
+            top: 30,
+            y_extended_ticks: true,
+            yax_count: 3,
 
-                full_width: true,
-      left: 50,
-      right: 50,
-      full_width: true,
-      //width: 200,
-      interpolate: "linear",
-      target: '#line-chart',
-      x_accessor: 'date',
-      y_accessor: 'rate',
-      xax_count: 3
-    };
-      _.forEach(data.rows, function(x) {x['rate'] = x.count / x.population * 100000 * 12});
-    data = MG.convert.date(data.rows, 'date', '%Y-%m');
-    if(mapType === "cuadrantes") line_options.y_accessor = 'count';
-    line_options.data = data;
-    line_options.mouseover = function(d, i) {
-                   var round = d3.format(".1f");
+            full_width: true,
+            left: 50,
+            right: 50,
+            full_width: true,
+            //width: 200,
+            interpolate: "linear",
+            target: '#line-chart',
+            x_accessor: 'date',
+            y_accessor: 'rate',
+            xax_count: 3
+        };
+        _.forEach(data.rows, function(x) {x['rate'] = x.count / x.population * 100000 * 12});
+        data = MG.convert.date(data.rows, 'date', '%Y-%m');
+        if(mapType === "cuadrantes") line_options.y_accessor = 'count';
+        line_options.data = data;
+        line_options.mouseover = function(d, i) {
+            var round = d3.format(".1f");
             var comma = d3.format(",");
-                   var target = line_options.target;
-                   console.log(target)
-                   var date = new Date(d.date);
-                   var day = d.date.getDate();
-                   var monthIndex = d.date.getMonth();
-                   var year = d.date.getFullYear();
-                   d3.select(target + ' text.mg-active-datapoint')
-                   .text( d3.time.format("%b %Y")(date) + rates_txt + round(d.rate) + count_txt + comma(d.count));
-                   };
-    MG.data_graphic(line_options);
-  });
+            var target = line_options.target;
+            console.log(target)
+            var date = new Date(d.date);
+            var day = d.date.getDate();
+            var monthIndex = d.date.getMonth();
+            var year = d.date.getFullYear();
+            d3.select(target + ' text.mg-active-datapoint')
+                .text( d3.time.format("%b %Y")(date) + rates_txt + round(d.rate) + count_txt + comma(d.count));
+        };
+        MG.data_graphic(line_options);
+    });
 }
 
 function resetHighlight(e) {
@@ -381,7 +385,7 @@ function resetHighlight(e) {
                            'crime':config.currentName.toUpperCase()})
     }
     e.target.setStyle({
-	      fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
+	fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
         fillOpacity: 0.8,
         weight: 0.5,
         color: '#555'
@@ -405,16 +409,20 @@ findRange = function(name) {
             if(mapType === "sectores")
                 if(d.population)
                     return d.count / d.population * 100000;
-                else
-                    return 0;
-            else if (mapType === "cuadrantes")
-                //exclude certain cuadrantes because they contain hospitals and bias the stats
-                if ((d.crime == 'HOMICIDIO DOLOSO' | d.crime == 'LESIONES POR ARMA DE FUEGO') & (d.cuadrante == 'N-4.4.4' | d.cuadrante == 'C-2.1.16' | d.cuadrante == 'N-2.2.1'))
-                   return 0
-                if(d.population)
-                    return d.count
-                else
-                    return 0;
+        else
+            return 0;
+        else if (mapType === "cuadrantes")
+            //exclude certain cuadrantes because they contain hospitals and bias the stats
+            if ((d.crime == 'HOMICIDIO DOLOSO' | d.crime == 'LESIONES POR ARMA DE FUEGO') &
+                (d.cuadrante == 'N-4.4.4' | d.cuadrante == 'C-2.1.16' |
+                 d.cuadrante == 'N-2.2.1' | d.cuadrante == 'O-2.5.7' |
+                 d.cuadrante == 'O-2.2.4' | d.cuadrante == 'N-1.3.10' |
+                 d.cuadrante == 'P-1.5.7' | d.cudrante == 'P-3.1.1'))
+                return 0
+        if(d.population)
+            return d.count
+        else
+            return 0;
     })
 
 
@@ -431,57 +439,70 @@ calcTotal = function(crimeName, series) {
     }, 0); }
 
 
-    $.getJSON(mapFile, function (data) {
+$.getJSON(mapFile, function (data) {
 
-      var mxcGeojson = topojson.feature(data, data.objects[mapType]).features;
+    var mxcGeojson = topojson.feature(data, data.objects[mapType]).features;
 
-      var featureCollection = {
+    var featureCollection = {
         "type": "FeatureCollection",
         "features": []
-      };
+    };
 
-      for (var i = 0; i <  mxcGeojson.length; i++) {
+    for (var i = 0; i <  mxcGeojson.length; i++) {
         featureCollection.features.push({
-          "type":"Feature",
-          "geometry":  mxcGeojson[i].geometry,
-          "properties":  mxcGeojson[i].properties
+            "type":"Feature",
+            "geometry":  mxcGeojson[i].geometry,
+            "properties":  mxcGeojson[i].properties
         });
-      }
+    }
 
-      //findRange=function(mxcGeojson, name) {
-      //    return(d3.extent(d3.entries(mxcGeojson), function(d){return(+d.value.properties[name])} ));
-      //}
-      var api_url;
-      mapType === 'sectores' ? api_url = '/api/v1/sectores/all/crimes/HOMICIDIO%20DOLOSO/period' : api_url = '/api/v1/cuadrantes/all/crimes/HOMICIDIO%20DOLOSO/period';
-      d3.json(api_url, function (list) {
+    //findRange=function(mxcGeojson, name) {
+    //    return(d3.extent(d3.entries(mxcGeojson), function(d){return(+d.value.properties[name])} ));
+    //}
+    var api_url;
+    mapType === 'sectores' ? api_url = '/api/v1/sectores/all/crimes/HOMICIDIO%20DOLOSO/period' : api_url = '/api/v1/cuadrantes/all/crimes/HOMICIDIO%20DOLOSO/period';
+    d3.json(api_url, function (list) {
+        // mapData.rows = _.forEach(mapData.rows, function(x) {
+        //     x.count_nb = _.reduce(neighbors[x.cuadrante],
+        //                           function(sum, object) {
+        //                               return sum + cuads[object][0].count;
+        //                           },0);
+        //     x.population_nb = _.reduce(neighbors[x.cuadrante],
+        //                                function(sum, object) {
+        //                                    return sum + cuads[object][0].population;
+        //                                },0);
+        //     x.rate_nb = Math.round(x.count_nb / x.population_nb *
+        //                            100000 * 10) / 10;
+        //     return x;
+        // });
         mapData = list
         //d3.json('/api/v1/df/crimes/HOMICIDIO%20DOLOSO/series', function(series){
-          homTotal = _.reduce(mapData.rows, function(total, n) {return total + n.count}, 0);
-          homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
-          //homTotal = calcTotal('homicidio doloso', series);
-          //homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
+        homTotal = _.reduce(mapData.rows, function(total, n) {return total + n.count}, 0);
+        homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
+        //homTotal = calcTotal('homicidio doloso', series);
+        //homTotalRate = Math.round(homTotal / 8785874 * 100000 * 10)/10;
 
-          //homTotal = 823,rncvTotal = 3867,rvcvTotal = 6208,rvsvTotal = 10583,violTotal = 461,homTotalRate = 9.4,rncvTotalRate = 44,rvcvTotalRate = 70.7,rvsvTotalRate = 120.5,violTotalRate = 5.2
+        //homTotal = 823,rncvTotal = 3867,rvcvTotal = 6208,rvsvTotal = 10583,violTotal = 461,homTotalRate = 9.4,rncvTotalRate = 44,rvcvTotalRate = 70.7,rvsvTotalRate = 120.5,violTotalRate = 5.2
 
 
 
-          //The scales for the various maps
-          scaleHomicide = createScale(colorbrewer.Reds["9"],
-          findRange('homicidio doloso'), 9),
-          scaleRNCV = createScale(colorbrewer.Blues["9"],
-          findRange('robo a negocio c.v.'), 9),
-          scaleRVCV = createScale(colorbrewer.Purples["9"],
-          findRange('robo de vehiculo automotor c.v.'), 9),
-          scaleRVSV = createScale(colorbrewer.Greens["9"],
-          findRange('robo de vehiculo automotor s.v.'), 9);
-          scaleVIOL = createScale(colorbrewer.Greys["9"],
-          findRange('violacion'), 9);
-          getColor = function(value) {
+        //The scales for the various maps
+        scaleHomicide = createScale(colorbrewer.Reds["9"],
+                                    findRange('homicidio doloso'), 9),
+        scaleRNCV = createScale(colorbrewer.Blues["9"],
+                                findRange('robo a negocio c.v.'), 9),
+        scaleRVCV = createScale(colorbrewer.Purples["9"],
+                                findRange('robo de vehiculo automotor c.v.'), 9),
+        scaleRVSV = createScale(colorbrewer.Greens["9"],
+                                findRange('robo de vehiculo automotor s.v.'), 9);
+        scaleVIOL = createScale(colorbrewer.Greys["9"],
+                                findRange('violacion'), 9);
+        getColor = function(value) {
             return scaleFun(value);
-          };
-          scaleFun = scaleHomicide;
-          //colorFun = scaleFun;
-          config = {
+        };
+        scaleFun = scaleHomicide;
+        //colorFun = scaleFun;
+        config = {
             colorFun:  scaleFun,
             color: colorbrewer.Reds["9"],
             currentName: "homicidio doloso",
@@ -489,61 +510,61 @@ calcTotal = function(crimeName, series) {
             selector: ".homicides",
             round1: null,
             round2: null
-          }
-          if(mapType != "sectores") {
+        }
+        if(mapType != "sectores") {
             config.round1 = Math.ceil;
             config.round2 = Math.floor;
-          }
-          else {
+        }
+        else {
             config.round1 = d3.round;
             config.round2 = d3.round;
-          }
+        }
 
-          // mxcLayer.addData(featureCollection);
+        // mxcLayer.addData(featureCollection);
 
-          mxc = L.geoJson(featureCollection, {
+        mxc = L.geoJson(featureCollection, {
             style: getStyle,
             onEachFeature: onEachFeature
-          }).addTo(map);
-          updateLineChart();
-          //legend.addTo(map);
-          info.addTo(map);
-          info.update();
+        }).addTo(map);
+        updateLineChart();
+        //legend.addTo(map);
+        info.addTo(map);
+        info.update();
 
-          $.ajax({
+        $.ajax({
             dataType: 'jsonp',
             url: '/api/v1/crimes',
             success: function(data) {
-              crimes = _.pluck(data.rows, "crime");
-              $.each(crimes, function(key, value) {
-                $('#seltarget')
-                .append($('<option>', { value : value })
-                .text(value));
-              });
-              select_html = $('#seltarget').html();
+                crimes = _.pluck(data.rows, "crime");
+                $.each(crimes, function(key, value) {
+                    $('#seltarget')
+                        .append($('<option>', { value : value })
+                                .text(value));
+                });
+                select_html = $('#seltarget').html();
             }});
 
-            document.getElementById("seltarget").onmouseover = controlEnter;
-            document.getElementById("seltarget").onmouseout = controlLeave;
-            L.control.layers(baseMaps,null, {position: 'topleft'}).addTo(map);
-            L.control.locate({
-              drawCircle: false,
-              locateOptions: {enableHighAccuracy: true }}).addTo(map);
-              var hash = new L.Hash(map);
-              //deselect any selected polygons when the user clicks on the map
-              map.on('click', function(e) {
-                if(clickedFeature){
-                  clickedFeature.target.setStyle({
+        document.getElementById("seltarget").onmouseover = controlEnter;
+        document.getElementById("seltarget").onmouseout = controlLeave;
+        L.control.layers(baseMaps,null, {position: 'topleft'}).addTo(map);
+        L.control.locate({
+            drawCircle: false,
+            locateOptions: {enableHighAccuracy: true }}).addTo(map);
+        var hash = new L.Hash(map);
+        //deselect any selected polygons when the user clicks on the map
+        map.on('click', function(e) {
+            if(clickedFeature){
+                clickedFeature.target.setStyle({
                     fillColor: mapType === "sectores" ? config.colorFun(obj['count'] / obj['population'] * 100000 ) : config.colorFun(obj['count']),
                     fillOpacity: 0.8,
                     weight: 0.5,
                     color: '#555'
-                  });
-                }
-                updateLineChart();
-                clickedFeature = null;
-                info.update();
-              });
-            //});
-          });
+                });
+            }
+            updateLineChart();
+            clickedFeature = null;
+            info.update();
         });
+        //});
+    });
+});
