@@ -56,10 +56,22 @@ CREATE INDEX crime_latlongi
   ON crime_latlong
   USING gist
   (geom );
+CREATE INDEX crime_crime
+  ON crime_latlong
+  (crime);
+CREATE INDEX crime_crime_date2
+  ON crime_latlong
+  (crime, date);
 CREATE INDEX cuadrantes_polygeom
   ON cuadrantes_poly
   USING gist
   (geom );
+CREATE INDEX cuadrantes_polygeom_cuadrante
+  ON cuadrantes_poly
+  (id,sector);
+CREATE INDEX cuadrantes_cuadrante_crime_date
+  ON cuadrantes
+  (cuadrante, crime, date);
 ```
 
 Create database from shapefile
