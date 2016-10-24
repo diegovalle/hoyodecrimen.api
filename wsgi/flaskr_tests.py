@@ -178,7 +178,7 @@ class FlaskTestCase(unittest.TestCase):
 
     # Check the API endpoint
     def test_api_v1_series_sectores_a(self):
-        base_url = '/api/v1/sectores/angel%20-%20zona%20rosa/crimes/violacion/series'
+        base_url = '/api/v1/sectores/angel-zona%20rosa/crimes/violacion/series'
         tester = app.test_client(self)
         response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
