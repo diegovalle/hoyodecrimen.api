@@ -198,6 +198,11 @@
              var centerControl = new CenterControl(centerControlDiv, map);
              centerControlDiv.index = 1;
              map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+
+         }
+
+         window.onload = init;
+         $().ready(function() {
              $.ajax({
                  dataType: 'jsonp',
                  url: '/api/v1/crimes',
@@ -214,9 +219,7 @@
                                  .text(value));
                      });
                  }});
-         }
-
-         window.onload = init;
+         })
 
          function updateQuery(crime) {
              var color;
