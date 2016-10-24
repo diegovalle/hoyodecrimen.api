@@ -68,7 +68,7 @@ css_pip_req = Bundle("css/skel.css", "css/style.css",
                      filters="cssmin", output="css/packed-pip-req.css")
 assets.register('css_pip_req', css_pip_req)
 
-js_pip_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
+js_pip_req = Bundle( "js/jquery.min.js", "js/jquery.dropotron.min.js",
                     "js/skel.min.js",
                     "js/skel-layers.min.js",
                     "js/init.js", "js/vendor/lodash/lodash.min.js", "js/leaflet.js",
@@ -105,7 +105,7 @@ css_leaflet_req = Bundle("css/l.geosearch.css", "css/leaflet.css", "css/L.Contro
                          filters="cssmin", output="css/packed-leaflet-req.css")
 assets.register('css_leaflet_req', css_leaflet_req)
 
-js_leaflet_req = Bundle("js/leaflet.js", "js/L.Control.Locate.js",
+js_leaflet_req = Bundle("js/cuadrantes_neighbors.json","js/leaflet.js", "js/L.Control.Locate.js",
                         "js/leaflet-hash.js", "js/jquery.1.8.3.min.js",
                         "js/topojson.v1.min.js",
                         "js/topojson.v1.min.js", "js/l.control.geosearch.js",

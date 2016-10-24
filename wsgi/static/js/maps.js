@@ -397,7 +397,11 @@ d3.json(mapFile, function(error, df) {
                             return 0;
                         else if (topoName === "cuadrantes") {
                             //exclude certain cuadrantes because they contain hospitals and bias the stats
-                            if ((d.crime == 'HOMICIDIO DOLOSO' | d.crime == 'LESIONES POR ARMA DE FUEGO') & (d.cuadrante == 'N-4.4.4' | d.cuadrante == 'C-2.1.16' | d.cuadrante == 'N-2.2.1'))
+                            if ((d.crime == 'HOMICIDIO DOLOSO' | d.crime == 'LESIONES POR ARMA DE FUEGO') &
+                                (d.cuadrante == 'N-4.4.4' | d.cuadrante == 'C-2.1.16' |
+                                 d.cuadrante == 'N-2.2.1' | d.cuadrante == 'O-2.5.7' |
+                                 d.cuadrante == 'O-2.2.4' | d.cuadrante == 'N-1.3.10' |
+                                 d.cuadrante == 'P-1.5.7' | d.cudrante == 'P-3.1.1'))
                                 return 0;
                             if(d.population)
                                 return d.count
@@ -406,7 +410,11 @@ d3.json(mapFile, function(error, df) {
                         }
                         else {
                             //exclude certain cuadrantes because they contain hospitals and bias the stats
-                            if ((d.crime == 'HOMICIDIO DOLOSO' | d.crime == 'LESIONES POR ARMA DE FUEGO') & (d.cuadrante == 'N-4.4.4' | d.cuadrante == 'C-2.1.16' | d.cuadrante == 'N-2.2.1'))
+                            if ((d.crime == 'HOMICIDIO DOLOSO' | d.crime == 'LESIONES POR ARMA DE FUEGO')&
+                                (d.cuadrante == 'N-4.4.4' | d.cuadrante == 'C-2.1.16' |
+                                 d.cuadrante == 'N-2.2.1' | d.cuadrante == 'O-2.5.7' |
+                                 d.cuadrante == 'O-2.2.4' | d.cuadrante == 'N-1.3.10' |
+                                 d.cuadrante == 'P-1.5.7' | d.cudrante == 'P-3.1.1'))
                                 return 0;
                             if(d.population)
                                 return d.difference;

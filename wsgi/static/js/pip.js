@@ -199,10 +199,10 @@ function get_data(data, dates){
         return
     });
 
-    var cuad_last = _.indexBy(data.cuadrante_period, 'crime')
+    //var cuad_last = _.indexBy(data.cuadrante_period, 'crime')
 
 
-    $("#poblacion").text(comma(cuad_last['HOMICIDIO DOLOSO'].population))
+    $("#poblacion").text(comma(data.cuadrante[0].population))
     $("#cuadrante").text(data.pip[0].cuadrante)
     $("#sector").text(data.pip[0].sector)
 
