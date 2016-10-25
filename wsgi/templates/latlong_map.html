@@ -204,22 +204,6 @@
          //window.onload = init;
          google.maps.event.addDomListener(window, 'load', init);
          $().ready(function() {
-             $.ajax({
-                 dataType: 'jsonp',
-                 url: '/api/v1/crimes',
-                 success: function(data) {
-
-
-                     $("#seltarget").change(function() {
-                         updateQuery($("#seltarget").attr('value'))
-                     });
-                     crimes = _.pluck(data.rows, "crime");
-                     $.each(crimes, function(key, value) {
-                         $('#seltarget')
-                             .append($('<option>', { value : value })
-                                 .text(value));
-                     });
-                 }});
          })
 
          function updateQuery(crime) {
@@ -270,10 +254,26 @@
              controlText.style.lineHeight = '38px';
              controlText.style.paddingLeft = '5px';
              controlText.style.paddingRight = '5px';
-             controlText.innerHTML = '<div class="select-style"><select id="seltarget" autofocus></select></div>';
+             controlText.innerHTML = '<div class="select-style"><select id="seltarget" autofocus><option value="HOMICIDIO DOLOSO">HOMICIDIO DOLOSO</option></select></div>';
              controlUI.appendChild(controlText);
 
+             $.ajax({
+                 dataType: 'jsonp',
+                 url: '/api/v1/crimes',
+                 success: function(data) {
 
+
+                     $("#seltarget").change(function() {
+                         updateQuery($("#seltarget").attr('value'))
+                     });
+                     crimes = _.pluck(data.rows, "crime");
+                     console.log(crimes);
+                     $.each(crimes, function(key, value) {
+                         $('#seltarget')
+                             .append($('<option>', { value : value })
+                                 .text(value));
+                     });
+                 }});
 
          }
         </script>
