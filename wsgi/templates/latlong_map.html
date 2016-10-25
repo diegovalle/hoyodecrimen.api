@@ -201,7 +201,8 @@
 
          }
 
-         window.onload = init;
+         //window.onload = init;
+         google.maps.event.addDomListener(window, 'load', init);
          $().ready(function() {
              $.ajax({
                  dataType: 'jsonp',
