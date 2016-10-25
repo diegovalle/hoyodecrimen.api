@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-10-23 14:49-0500\n"
-"PO-Revision-Date: 2016-10-23 17:44-0600\n"
+"POT-Creation-Date: 2016-10-24 08:48-0500\n"
+"PO-Revision-Date: 2016-10-24 14:34-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -168,7 +168,7 @@ msgstr "/mapa"
 
 #: templates/base.html:55
 msgid "Latitude and Longitude"
-msgstr "Latitud y Longitud"
+msgstr "Localización Puntual"
 
 #: templates/base.html:56
 msgid "/en/sectores-map"
@@ -227,8 +227,8 @@ msgid "/en/trends"
 msgstr "/tendencias"
 
 #: templates/base.html:70
-msgid "Change in Crime by Cuadrante"
-msgstr "Cambios en Crímenes"
+msgid "Change (Cuadrantes)"
+msgstr "Cambios (Cuadrantes)"
 
 #: templates/base.html:74
 msgid "/en/about"
@@ -804,15 +804,5 @@ msgstr "Tasa por Sector"
 #~ msgid " ,rate: "
 #~ msgstr "tasa:"
 
-#~ msgid ""
-#~ "Cuadrantes N-4.4.4, C-2.1.16, N-2.2.1 were "
-#~ "excluded from computing the homicide and"
-#~ " firearm lesions scales because they "
-#~ "contain hospitals and therefore bias "
-#~ "them."
-#~ msgstr ""
-#~ "Los cuadrantes N-4.4.4, C-2.1.16, N-2.2.1 "
-#~ "fueron excluidos del cálculo de la "
-#~ "escala de colores de homicidios dolosos"
-#~ " y lesiones por arma de fuego "
-#~ "debido a que contienen hospitales."
+#~ msgid "Change in Crime by Cuadrante"
+#~ msgstr "Cambios en Crímenes"
