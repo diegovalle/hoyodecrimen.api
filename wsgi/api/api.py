@@ -2,14 +2,16 @@ from flask import Blueprint, Flask, jsonify, \
     request, abort, make_response, url_for, \
     send_from_directory, send_file, current_app
 from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import get_debug_queries
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy.dialects.mssql import INTEGER, DATE
 from sqlalchemy.orm import join
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_, or_, cast
 from flask_cache import Cache
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
 from geoalchemy2.elements import WKTElement
+from geoalchemy2.types import Geography
 import time
 import os
 from models import db, Cuadrantes, Cuadrantes_Poly, Municipios, Crime_latlong
@@ -17,6 +19,7 @@ import lib
 from lib import InvalidAPIUsage
 from urlparse import urlparse
 from neighbors import neighbors
+from flask_sqlalchemy import get_debug_queries
 
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
@@ -24,7 +27,10 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 # Use redis if not running in Openshift
 if 'OPENSHIFT_APP_UUID' not in os.environ:
     cache = Cache(config={
-        'CACHE_TYPE': 'simple'  # null or simple
+        'CACHE_TYPE': 'filesystem',  # null or simple
+        'CACHE_DIR': '/tmp',
+        'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
+        'CACHE_THRESHOLD': 922337203685477580,
     })
 else:
     cache = Cache(config={
@@ -32,11 +38,12 @@ else:
         # 'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD']
         # +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'
         # + os.environ['OPENSHIFT_REDIS_PORT'],
-        'CACHE_DEFAULT_TIMEOUT': 2592000,  # One month
+        'CACHE_DEFAULT_TIMEOUT': 2592000,
         'CACHE_REDIS_PASSWORD': os.environ['REDIS_PASSWORD'],
         'CACHE_REDIS_HOST': os.environ['OPENSHIFT_REDIS_HOST'],
         'CACHE_REDIS_PORT': os.environ['OPENSHIFT_REDIS_PORT'],
         'CACHE_KEY_PREFIX': 'hoyodecrimen'
+        #'CACHE_REDIS_URL': 'redis://127.0.0.1:6379'
     })
 
 
@@ -114,6 +121,13 @@ def check_dates(start_period, end_period, default_start=None):
         else:
             start_date = default_start
     return start_date, max_date
+
+@API.route('/test-cache')
+@cache.cached(key_prefix=make_cache_key)
+def test_cache4454545():
+  import random
+  return str(random.random())
+
 
 @API.route('/cuadrantes/geojson')
 @jsonp
@@ -492,7 +506,6 @@ def frontpage(crime, long, lat):
            '<string:lat>',
            methods=['GET'])
 @jsonp
-@cache.cached(key_prefix=make_cache_key)
 def frontpage_extra(crime, long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
@@ -594,7 +607,7 @@ def frontpage_extra(crime, long, lat):
         results_cuad_period = get_cuad_period_neighbors(results_pip[0], crime, start_date, max_date)
 
         results_sphere = Crime_latlong.query. \
-                         filter(func.ST_Distance_Sphere(point, Crime_latlong.geom) <= 500). \
+                         filter(func.ST_DWithin(cast(Crime_latlong.geom, Geography), point, 500 )). \
             with_entities(func.upper(Crime_latlong.crime).label("crime"),
                           func.upper(Crime_latlong.date).label("date"),
                           func.upper(Crime_latlong.hour).label("hour"),
@@ -607,6 +620,7 @@ def frontpage_extra(crime, long, lat):
              'sector': results_pip[1]}]
     else:
         raise InvalidAPIUsage("You're not inside the Federal District provinciano", 404)
+    #import pdb;pdb.set_trace();get_debug_queries()[5]
     return jsonify(pip=json_results,
                    cuadrante=lib.results_to_array(results_cuad),
                    df_period=lib.results_to_array(results_df_period),
@@ -619,7 +633,6 @@ def frontpage_extra(crime, long, lat):
            '<string:lat>/distance/<int:distance>',
            methods=['GET'])
 @jsonp
-@cache.cached(key_prefix=make_cache_key)
 def latlong(crime, long, lat, distance):
     """Given a latitude and longitude return all crimes within a certain distance
 
@@ -999,7 +1012,6 @@ def days_df(crime):
         .order_by(func.mod(func.cast(max.c.dow, INTEGER) + 1, 7), Crime_latlong.crime,
                   func.extract('dow', func.cast(Crime_latlong.date, DATE))) \
         .all()
-
     return lib.results_to_json(results)
 
 
