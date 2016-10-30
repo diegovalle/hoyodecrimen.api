@@ -18,6 +18,7 @@ from api.api import API, cache
 from flask.ext.compress import Compress
 from flask.ext.babel import Babel
 from flask.ext.babel import gettext, ngettext
+from flask_frozen import Freezer
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -31,6 +32,9 @@ cache.init_app(app)
 assets = Environment(app)
 assets.versions = 'timestamp'    # use the last modified timestamp
 babel = Babel(app)
+
+app.config['FREEZER_STATIC_IGNORE'] = ['/api/v1/*']
+freezer = Freezer(app)
 
 
 def add_response_headers(headers={}):
@@ -155,18 +159,6 @@ def api_home_html_es():
 @app.route('/sitemap.xml')
 def sitemap():
     return send_from_directory(os.path.join(_basedir, 'static'), 'sitemap.xml')
-
-@app.route('/data/cuadrantes.csv.zip')
-def cuadrantes_csv():
-    return send_from_directory(os.path.join(_basedir, '..', 'data'), 'cuadrantes.csv.zip')
-
-@app.route('/data/solicitud.zip')
-def solicitud_csv():
-    return send_from_directory(os.path.join(_basedir, '..', 'data'), 'solicitud.zip')
-
-@app.route('/data/cuadrantes_shp.zip')
-def shapefile():
-    return send_from_directory(os.path.join(_basedir, '..', 'data'), 'cuadrantes_shp.zip')
 
 
 @app.route('/api/')
@@ -440,4 +432,6 @@ if __name__ == '__main__':
         debug = True
     else:
         app
+
+    #freezer.freeze()
     app.run(debug=debug)
