@@ -11,12 +11,21 @@ OPENSHIFT_POSTGRESQL_DB_URL="postgresql://x:x@localhost/apihoyodecrimen"
 REDIS_PASSWORD=""
 OPENSHIFT_REDIS_HOST='127.0.0.1'
 OPENSHIFT_REDIS_PORT='6379'
+OPENSHIFT_APP_UUID=true (when running in production)
 ```
 
 Create database with crime data csv file
 
-```
+```sh
+#sudo -u postgres psql postgres
+#CREATE DATABASE apihoyodecrimen OWNER deploy; 
+#GRANT ALL PRIVILEGES ON DATABASE apihoyodecrimen TO deploy;
+#scp cuadrantes.csv 543fe7165973cae5d30000c1@apihoyodecrimen-valle.rhcloud.com:/tmp 
 psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W
+```
+
+```sql
+CREATE EXTENSION postgis;
 CREATE TABLE cuadrantes (
 	cuadrante varchar (20),
 	crime varchar (60),
@@ -27,7 +36,7 @@ CREATE TABLE cuadrantes (
        population integer,
        PRIMARY KEY(cuadrante, sector, crime, date)
 );
-COPY cuadrantes FROM '/tmp/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+--COPY cuadrantes FROM '/tmp/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
 
 CREATE TABLE municipios (cuadrante varchar (15),
 sector varchar (60),
@@ -35,7 +44,7 @@ cvegeo  varchar (5),
 municipio varchar(200),
     PRIMARY KEY(cuadrante)
 );
-COPY municipios FROM '/tmp/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+--COPY municipios FROM '/tmp/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
 
 CREATE TABLE crime_latlong (
         cuadrante varchar (20),
@@ -50,8 +59,19 @@ CREATE TABLE crime_latlong (
         geom geometry,
         PRIMARY KEY(id)
 );
-COPY crime_latlong(cuadrante,crime,date,hour,year,month,latitude,longitude,id) FROM '/tmp/crime-lat-long.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+--COPY crime_latlong(cuadrante,crime,date,hour,year,month,latitude,longitude,id) FROM '/tmp/crime-lat-long.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+```
+
+```sh
+psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy cuadrantes (cuadrante,crime,date,count,year,sector,population) from '/tmp/cuadrantes.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy municipios (cuadrante,sector,cvegeo,municipio) from '/tmp/municipios.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy crime_latlong  (cuadrante,crime,date,hour,year,month,latitude,longitude,id) from '/tmp/crime-lat-long.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+```
+
+```sql
 UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);
+--CREATE INDEX crime_latlongi_geography ON crime_latlong USING gist( (geom::geography) );
+CREATE INDEX crime_latlongi_castgeography ON crime_latlong USING gist( CAST(geom AS geography(GEOMETRY,-1) ));
 CREATE INDEX crime_latlongi
   ON crime_latlong
   USING gist
@@ -72,6 +92,19 @@ CREATE INDEX cuadrantes_polygeom_cuadrante
 CREATE INDEX cuadrantes_cuadrante_crime_date
   ON cuadrantes
   (cuadrante, crime, date);
+CREATE INDEX cuadrantes_date_null_desc
+ON cuadrantes (date DESC NULLS LAST);
+CREATE INDEX cuadrantes_cuadrante
+ON cuadrantes (cuadrante);
+CREATE INDEX cuadrantes_crime_null
+  ON cuadrantes
+  (crime ASC NULLS LAST);
+
+CREATE INDEX cuadrantes_crime_partial
+  ON cuadrantes
+  ( crime)
+WHERE (upper(cuadrantes.crime) = 'HOMICIDIO DOLOSO' OR upper(cuadrantes.crime) = 'LESIONES POR ARMA DE FUEGO' OR upper(cuadrantes.crime) = 'ROBO DE VEHICULO AUTOMOTOR S.V.' OR upper(cuadrantes.crime) = 'ROBO DE VEHICULO AUTOMOTOR C.V.' OR upper(cuadrantes.crime) = 'ROBO A TRANSEUNTE C.V.');
+--psql -d scalehoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -f create_db.sql
 ```
 
 Create database from shapefile
@@ -108,3 +141,7 @@ INSERT INTO crime_lat_long SELECT * FROM crime_lat_long_1
 ```
 
 and then delete the temporary table
+
+```
+psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W  -c ""
+```
