@@ -41,7 +41,7 @@ $.getJSON('/js/df-outline.json', function (single) {
                 getCurrentPosition(geoSuccess, geoError,
                                    {enableHighAccuracy:true,
                                     maximumAge: 18000,
-                                    timeout: 5000});
+                                    timeout: 15000});
         } else {
             map.setView([lat, lng], 15)
             createMarker(lat, lng)
@@ -81,7 +81,7 @@ $.getJSON('/js/df-outline.json', function (single) {
         }else{
             window.console.log("Location was set");
         }
-    }, 5000+ 1000);
+    }, 7000+ 1000);
 
     L.tileLayer('https://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/normal.day/{z}/{x}/{y}/256/png8?app_id=2xIqG1pjt7OdQnzqAHmm&app_code=t0G_EMNWEWEpFEIoJYEncg', {
         attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
