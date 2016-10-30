@@ -134,6 +134,11 @@ def get_locale():
 def robots():
     return send_from_directory(os.path.join(_basedir, 'static'), 'robots.txt')
 
+@app.route('/test-cache')
+@cache.cached()
+def test_cache():
+    import random
+    return str(random.random())
 
 @cache.cached()
 @app.route('/en/')
@@ -177,58 +182,68 @@ def api_html(filename):
 
 
 @app.route('/en/rates')
+@cache.cached()
 def rates():
     setattr(g, 'lang', 'en')
     return render_template('rates-sectores.html')
 
 @app.route('/tasas')
+@cache.cached()
 def tasas():
     setattr(g, 'lang', 'es')
     return render_template('rates-sectores.html')
 
 
 @app.route('/en/trends')
+@cache.cached()
 def change():
     setattr(g, 'lang', 'en')
     return render_template('change-cuadrantes.html')
 
 
 @app.route('/tendencias')
+@cache.cached()
 def tendencias():
     setattr(g, 'lang', 'es')
     return render_template('change-cuadrantes.html')
 
 @app.route('/en/counts')
+@cache.cached()
 def counts():
     setattr(g, 'lang', 'en')
     return render_template('counts-cuadrantes.html')
 
 
 @app.route('/numero')
+@cache.cached()
 def numero():
     setattr(g, 'lang', 'es')
     return render_template('counts-cuadrantes.html')
 
 
 @app.route('/en/map')
+@cache.cached()
 def mapa():
     setattr(g, 'lang', 'en')
     return render_template('latlong_map.html')
 
 
 @app.route('/mapa')
+@cache.cached()
 def mapa_es():
     setattr(g, 'lang', 'es')
     return render_template('latlong_map.html')
 
 
 @app.route('/en/crime')
+@cache.cached()
 def crime():
     setattr(g, 'lang', 'en')
     return render_template('crime.html')
 
 
 @app.route('/crimen')
+@cache.cached()
 def crime_es():
     setattr(g, 'lang', 'es')
     return render_template('crime.html')
@@ -236,69 +251,81 @@ def crime_es():
 
 
 @app.route('/en/charts')
+@cache.cached()
 def charts():
     setattr(g, 'lang', 'en')
     return render_template('charts.html')
 
 
 @app.route('/charts')
+@cache.cached()
 def charts_es():
     setattr(g, 'lang', 'es')
     return render_template('charts.html')
 
 @app.route('/en/hours')
+@cache.cached()
 def hours():
     setattr(g, 'lang', 'en')
     return render_template('hours.html')
 
 
 @app.route('/hora')
+@cache.cached()
 def hours_es():
     setattr(g, 'lang', 'es')
     return render_template('hours.html')
 
 
 @app.route('/en/days')
+@cache.cached()
 def days():
     setattr(g, 'lang', 'en')
     return render_template('days.html')
 
 
 @app.route('/dia')
+@cache.cached()
 def days_es():
     setattr(g, 'lang', 'es')
     return render_template('days.html')
 
 
 @app.route('/en/about')
+@cache.cached()
 def about():
     setattr(g, 'lang', 'en')
     return render_template('about.html')
 
 
 @app.route('/acerca')
+@cache.cached()
 def about_es():
     setattr(g, 'lang', 'es')
     return render_template('about.html')
 
 
 @app.route('/en/sectores-map')
+@cache.cached()
 def sectores_map():
     setattr(g, 'lang', 'en')
     return render_template('sectores-map.html')
 
 
 @app.route('/sectores-mapa')
+@cache.cached()
 def sectores_map_es():
     setattr(g, 'lang', 'es')
     return render_template('sectores-map.html')
 
 @app.route('/en/cuadrantes-map')
+@cache.cached()
 def cuadrantes_map():
     setattr(g, 'lang', 'en')
     return render_template('cuadrantes-map.html')
 
 @app.route('/cuadrantes-mapa')
+@cache.cached()
 def cuadrantes_mapa():
     setattr(g, 'lang', 'es')
     return render_template('cuadrantes-map.html')
@@ -412,5 +439,5 @@ if __name__ == '__main__':
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
         debug = True
     else:
-        Compress(app)
+        app
     app.run(debug=debug)
