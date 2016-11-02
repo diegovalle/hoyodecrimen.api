@@ -130,7 +130,6 @@ def test_cache4454545():
 
 
 @API.route('/cuadrantes/geojson')
-@cache.cached(key_prefix=make_cache_key)
 @jsonp
 def cuad_geojson():
     """Returns a map of the cuadrantes delictivos encoded as geojson
@@ -150,7 +149,6 @@ def cuad_geojson():
     return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'cuadrantes.json')
 
 @API.route('/sectores/geojson')
-@cache.cached(key_prefix=make_cache_key)
 @jsonp
 def sectores_geojson():
     """Returns a map of the sectores delictivos encoded as geojson
@@ -170,7 +168,6 @@ def sectores_geojson():
     return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'sectores.json')
 
 @API.route('/municipios/geojson')
-@cache.cached(key_prefix=make_cache_key)
 @jsonp
 def muns_geojson():
     """Returns a map of the municipios that make up the Federal District encoded as geojson
