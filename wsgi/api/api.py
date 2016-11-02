@@ -27,7 +27,7 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 # Use redis if not running in Openshift
 if 'OPENSHIFT_APP_UUID' not in os.environ:
     cache = Cache(config={
-        'CACHE_TYPE': 'filesystem',  # null or simple
+        'CACHE_TYPE': 'null',  # null or simple
         'CACHE_DIR': '/tmp',
         'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
         'CACHE_THRESHOLD': 922337203685477580,
@@ -69,8 +69,8 @@ def process_crime(crime, start_date, max_date, sector="none", cuadrante="none", 
 def make_cache_key(*args, **kwargs):
     # Make sure the cache distinguishes requests with different parameters
     o = urlparse(request.url)
-    # remove the scheme and netloc to make caching more portable
-    return o.path + o.query
+    # remove the scheme and jquery callback to make caching more portable
+    return o.path + o.query.split('callback=jQuery', 1)[0]
 
 
 @API.errorhandler(InvalidAPIUsage)
@@ -130,6 +130,7 @@ def test_cache4454545():
 
 
 @API.route('/cuadrantes/geojson')
+@cache.cached(key_prefix=make_cache_key)
 @jsonp
 def cuad_geojson():
     """Returns a map of the cuadrantes delictivos encoded as geojson
@@ -149,6 +150,7 @@ def cuad_geojson():
     return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'cuadrantes.json')
 
 @API.route('/sectores/geojson')
+@cache.cached(key_prefix=make_cache_key)
 @jsonp
 def sectores_geojson():
     """Returns a map of the sectores delictivos encoded as geojson
@@ -168,6 +170,7 @@ def sectores_geojson():
     return send_from_directory(os.path.join(_basedir, '..', 'static', 'geojson'), 'sectores.json')
 
 @API.route('/municipios/geojson')
+@cache.cached(key_prefix=make_cache_key)
 @jsonp
 def muns_geojson():
     """Returns a map of the municipios that make up the Federal District encoded as geojson
@@ -399,7 +402,6 @@ def get_cuad_series(cuadrante, crime):
            '<string:lat>',
            methods=['GET'])
 @jsonp
-@cache.cached(key_prefix=make_cache_key)
 def frontpage(crime, long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
