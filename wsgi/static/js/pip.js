@@ -37,7 +37,7 @@ $.getJSON('/js/df-outline.json', function (single) {
           pseudoFullscreen: true // if true, fullscreen to page width and height
         }
     });
-    
+
 
     function get_location() {
         if (Modernizr.geolocation) {
@@ -87,16 +87,7 @@ $.getJSON('/js/df-outline.json', function (single) {
         }
     }, 15000);
 
-    L.tileLayer('https://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/normal.day/{z}/{x}/{y}/256/png8?app_id=2xIqG1pjt7OdQnzqAHmm&app_code=t0G_EMNWEWEpFEIoJYEncg', {
-        attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
-        subdomains: '1234',
-        mapID: 'newest',
-        app_id: '2xIqG1pjt7OdQnzqAHmm',
-        app_code: 't0G_EMNWEWEpFEIoJYEncg',
-        base: 'base',
-        minZoom: 0,
-        maxZoom: 23
-    }).addTo(map);
+    L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
 
     var myStyle = {
         "color": "red",
