@@ -254,27 +254,28 @@
              controlText.style.lineHeight = '38px';
              controlText.style.paddingLeft = '5px';
              controlText.style.paddingRight = '5px';
-             controlText.innerHTML = '<div class="select-style"><select id="seltarget" autofocus><option value="HOMICIDIO DOLOSO">HOMICIDIO DOLOSO</option></select></div>';
+             controlText.innerHTML = '<div class="select-style"><select id="seltarget" autofocus="" onchange="updateQuery(this.value)"><option value="HOMICIDIO DOLOSO">HOMICIDIO DOLOSO</option><option value="LESIONES POR ARMA DE FUEGO">LESIONES POR ARMA DE FUEGO</option><option value="ROBO A BORDO DE METRO C.V.">ROBO A BORDO DE METRO C.V.</option><option value="ROBO A BORDO DE METRO S.V.">ROBO A BORDO DE METRO S.V.</option><option value="ROBO A BORDO DE MICROBUS C.V.">ROBO A BORDO DE MICROBUS C.V.</option><option value="ROBO A BORDO DE MICROBUS S.V.">ROBO A BORDO DE MICROBUS S.V.</option><option value="ROBO A BORDO DE TAXI C.V.">ROBO A BORDO DE TAXI C.V.</option><option value="ROBO A CASA HABITACION C.V.">ROBO A CASA HABITACION C.V.</option><option value="ROBO A CUENTAHABIENTE C.V.">ROBO A CUENTAHABIENTE C.V.</option><option value="ROBO A NEGOCIO C.V.">ROBO A NEGOCIO C.V.</option><option value="ROBO A REPARTIDOR C.V.">ROBO A REPARTIDOR C.V.</option><option value="ROBO A REPARTIDOR S.V.">ROBO A REPARTIDOR S.V.</option><option value="ROBO A TRANSEUNTE C.V.">ROBO A TRANSEUNTE C.V.</option><option value="ROBO A TRANSEUNTE S.V.">ROBO A TRANSEUNTE S.V.</option><option value="ROBO A TRANSPORTISTA C.V.">ROBO A TRANSPORTISTA C.V.</option><option value="ROBO A TRANSPORTISTA S.V.">ROBO A TRANSPORTISTA S.V.</option><option value="ROBO DE VEHICULO AUTOMOTOR C.V.">ROBO DE VEHICULO AUTOMOTOR C.V.</option><option value="ROBO DE VEHICULO AUTOMOTOR S.V.">ROBO DE VEHICULO AUTOMOTOR S.V.</option><option value="VIOLACION">VIOLACION</option></select></div>';
              controlUI.appendChild(controlText);
+             var crimes_json = {"rows": [{"crime": "HOMICIDIO DOLOSO"}, {"crime": "LESIONES POR ARMA DE FUEGO"}, {"crime": "ROBO A BORDO DE METRO C.V."}, {"crime": "ROBO A BORDO DE METRO S.V."}, {"crime": "ROBO A BORDO DE MICROBUS C.V."}, {"crime": "ROBO A BORDO DE MICROBUS S.V."}, {"crime": "ROBO A BORDO DE TAXI C.V."}, {"crime": "ROBO A CASA HABITACION C.V."}, {"crime": "ROBO A CUENTAHABIENTE C.V."}, {"crime": "ROBO A NEGOCIO C.V."}, {"crime": "ROBO A REPARTIDOR C.V."}, {"crime": "ROBO A REPARTIDOR S.V."}, {"crime": "ROBO A TRANSEUNTE C.V."}, {"crime": "ROBO A TRANSEUNTE S.V."}, {"crime": "ROBO A TRANSPORTISTA C.V."}, {"crime": "ROBO A TRANSPORTISTA S.V."}, {"crime": "ROBO DE VEHICULO AUTOMOTOR C.V."}, {"crime": "ROBO DE VEHICULO AUTOMOTOR S.V."}, {"crime": "VIOLACION"}]};
 
-             $.ajax({
-                 dataType: 'jsonp',
-                 url: '/api/v1/crimes',
-                 success: function(data) {
+             //$.ajax({
+              //   dataType: 'jsonp',
+             //    url: '/api/v1/crimes',
+              //   success: function(data) {
 
 
-                     $("#seltarget").change(function() {
+                    $("#seltarget").change(function() {
                          updateQuery($("#seltarget").attr('value'))
                      });
-                     crimes = _.pluck(data.rows, "crime");
-                     console.log(crimes);
-                     $.each(crimes, function(key, value) {
-                         if (value !== 'HOMICIDIO DOLOSO')
-                             $('#seltarget')
-                             .append($('<option>', { value : value })
-                                 .text(value));
-                     });
-                 }});
+                     //crimes = _.pluck(crimes_json.rows, "crime");
+                     //console.log(crimes);
+                    // $.each(crimes, function(key, value) {
+                    //     if (value !== 'HOMICIDIO DOLOSO')
+                   //          $('#seltarget')
+                   //          .append($('<option>', { value : value })
+                   //              .text(value));
+                   //  });
+                 //}});
 
          }
         </script>
