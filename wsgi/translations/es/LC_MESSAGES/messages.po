@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-10-30 13:24-0600\n"
-"PO-Revision-Date: 2016-10-30 13:34-0600\n"
+"POT-Creation-Date: 2016-11-01 13:33-0600\n"
+"PO-Revision-Date: 2016-11-01 13:33-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -230,7 +230,7 @@ msgstr "/tendencias"
 msgid "Change (Cuadrantes)"
 msgstr "Cambios (Cuadrantes)"
 
-#: templates/base.html:79
+#: templates/base.html:79 templates/latlong_map_leaflet.html:765
 msgid "/en/about"
 msgstr "/acerca"
 
@@ -487,52 +487,55 @@ msgid "\"Hour\""
 msgstr "\"Hora\""
 
 #: templates/latlong_map.html:5 templates/latlong_map.html:14
-#: templates/latlong_map.html:21
+#: templates/latlong_map.html:21 templates/latlong_map_leaflet.html:13
+#: templates/latlong_map_leaflet.html:20
 msgid "Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance."
 msgstr "Mapa de incidentes criminales de la Ciudad de México con latitud, longitud, fecha y hora de ocurrencia"
 
-#: templates/latlong_map.html:6
+#: templates/latlong_map.html:6 templates/latlong_map_leaflet.html:5
 msgid "Interactive Map of Crime in Mexico City"
 msgstr "Mapa interactivo del crimen en la Ciudad de México"
 
-#: templates/latlong_map.html:7
+#: templates/latlong_map.html:7 templates/latlong_map_leaflet.html:6
 msgid "https://hoyodecrimen.com/mapa"
 msgstr "https://hoyodecrimen.com/en/map"
 
 #: templates/latlong_map.html:13 templates/latlong_map.html:20
+#: templates/latlong_map_leaflet.html:12 templates/latlong_map_leaflet.html:19
 msgid "Crime Map of Mexico City"
 msgstr "Mapa del Crimen por tu Rumbo"
 
 #: templates/latlong_map.html:16 templates/latlong_map.html:22
+#: templates/latlong_map_leaflet.html:15 templates/latlong_map_leaflet.html:21
 msgid "https://hoyodecrimen.com/en/mapa"
 msgstr "https://hoyodecrimen.com/mapa"
 
-#: templates/latlong_map.html:107
+#: templates/latlong_map.html:107 templates/latlong_map_leaflet.html:740
 msgid "crime:"
 msgstr "crimen: "
 
-#: templates/latlong_map.html:108
+#: templates/latlong_map.html:108 templates/latlong_map_leaflet.html:741
 msgid "cuadrante:"
 msgstr "cuadrante: "
 
-#: templates/latlong_map.html:109
+#: templates/latlong_map.html:109 templates/latlong_map_leaflet.html:742
 msgid "date:"
 msgstr "fecha:"
 
-#: templates/latlong_map.html:110
+#: templates/latlong_map.html:110 templates/latlong_map_leaflet.html:743
 msgid "hour:"
 msgstr "hora:"
 
-#: templates/latlong_map.html:111
+#: templates/latlong_map.html:111 templates/latlong_map_leaflet.html:744
 msgid "lat:"
 msgstr "latitud:"
 
-#: templates/latlong_map.html:112
+#: templates/latlong_map.html:112 templates/latlong_map_leaflet.html:745
 msgid "long:"
 msgstr "longitud:"
 
-#: templates/latlong_map_leaflet.html:144
-msgid "All geocoded crimes since 2013"
+#: templates/latlong_map_leaflet.html:764
+msgid "Crimes since January 2013"
 msgstr "Todos los crímenes geolocalizados desde el 2013"
 
 #: templates/pip.html:2
@@ -632,7 +635,7 @@ msgid ""
 "            Chief of Police\n"
 "            to assess and compare his personnel. Don&#39;t hesitate to <a href=\"https://www.diegovalle.net/contact.html\">contact me</a>\n"
 "        if you have any questions."
-msgstr "La SSP-CDMX dividió al Distrito Federal en 847 cuadrantes. Gracias a una solicitud de información obtuve los datos        de todos los crímenes cometidos en los cuadrantes.<br><br> Con estos datos y su visualización los ciudadanos y las        autoridades podrían saber donde se encuentran las        áreas más violentas, los empresarios podrían planear donde situar sus negocios, los conductores en que        estacionamientos es más probable que les roben el auto...<br><br> Con mapas interactivos se le pueden pedir cuentas a        los policías y comandantes encargados de cada cuadrante o sector. Incluso el Secretario de Seguridad Pública        podría usarlos para comparar y evaluar a sus comandantes y policías. No dudes en <a href=\"https://www.diegovalle.net/contact.html\">contactarme</a>."
+msgstr "La SSP-CDMX dividió al Distrito Federal en 847 cuadrantes. Gracias a una solicitud de información obtuve los datos        de todos los crímenes cometidos en los cuadrantes.<br><br> Con estos datos y su visualización, los ciudadanos y las autoridades podrían saber dónde se encuentran las áreas más violentas; los empresarios escogerían mejor dónde situar sus negocios, y los conductores sabrían en cuáles estacionamientos es más probable que les roben el auto... <br><br> Con estos mapas interactivos en la mano se les pueden pedir cuentas a los policías y comandantes responsables de cada cuadrante o sector. Incluso el Secretario de Seguridad Pública        podría usarlos para comparar y evaluar a sus comandantes y policías. No dudes en <a href=\"https://www.diegovalle.net/contact.html\">contactarme</a>."
 
 #: templates/pip.html:198
 msgid "Cuadrante Homicides"
