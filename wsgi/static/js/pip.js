@@ -26,14 +26,18 @@ var circles = [];
 charts_url = '/api/v1/cuadrantes/crimes/HOMICIDIO DOLOSO,LESIONES POR ARMA DE FUEGO,ROBO DE VEHICULO AUTOMOTOR S.V.,ROBO DE VEHICULO AUTOMOTOR C.V.,ROBO A TRANSEUNTE C.V./pip_extra/';
 
 $.getJSON('/js/df-outline.json', function (single) {
-    var southWest = L.latLng(19.152952023808638, -99.55192565917969),
-        northEast = L.latLng(19.597959855171077, -98.67919921875),
+    var southWest = L.latLng(19.081966, -99.569838),
+        northEast = L.latLng(19.779954, -98.690870),
         bounds = L.latLngBounds(southWest, northEast);
     map = L.map('map', {
         maxBounds: bounds,
         maxZoom: 19,
-        minZoom: 10
+        minZoom: 10,
+        fullscreenControl: {
+          pseudoFullscreen: true // if true, fullscreen to page width and height
+        }
     });
+    
 
     function get_location() {
         if (Modernizr.geolocation) {
@@ -81,7 +85,7 @@ $.getJSON('/js/df-outline.json', function (single) {
         }else{
             window.console.log("Location was set");
         }
-    }, 8000);
+    }, 15000);
 
     L.tileLayer('https://{s}.{base}.maps.cit.api.here.com/maptile/2.1/maptile/{mapID}/normal.day/{z}/{x}/{y}/256/png8?app_id=2xIqG1pjt7OdQnzqAHmm&app_code=t0G_EMNWEWEpFEIoJYEncg', {
         attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
