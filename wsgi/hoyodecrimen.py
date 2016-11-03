@@ -83,7 +83,7 @@ css_pip_req = Bundle("css/skel.css", "css/style.css",
                      filters="cssmin", output="css/packed-pip-req.css")
 assets.register('css_pip_req', css_pip_req)
 
-js_pip_req = Bundle( "js/jquery.1.9.0.min.js",  "js/jquery.dropotron.min.js",
+js_pip_req = Bundle( "js/jquery.1.9.1.min.js",  "js/jquery.dropotron.min.js",
                     "js/skel.min.js",
                     "js/skel-layers.min.js",
                     "js/init.js", "js/vendor/lodash/lodash.min.js", "js/leaflet.js",
@@ -380,51 +380,35 @@ def static_images_favicon():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'favicon.ico')
 
-@app.route('/apple-touch-icon-57x57.png')
-def static_images_57():
+@app.route('/favicon-<string:size>')
+def static_favicon_slash(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'apple-touch-icon-57x57.png')
+                               'favicon-' + size)
 
-
-@app.route('/apple-touch-icon.png')
-def static_images_apple():
+@app.route('/apple-touch-icon-<string:size>')
+def static_apple(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'apple-touch-icon.png')
+                               'apple-touch-icon-' + size)
 
-@app.route('/apple-touch-icon-72x72.png')
-def static_images_72():
+@app.route('/android-icon-<string:size>')
+def static_android(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'apple-touch-icon-72x72.png')
+                               'android-icon-' + size)
 
-
-@app.route('/apple-touch-icon-76x76.png')
-def static_images_76():
+@app.route('/ms-icon-<string:size>')
+def static_msicon(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'apple-touch-icon-76x76.png')
+                               'ms-icon-' + size)
 
-
-@app.route('/apple-touch-icon-114x114.png')
-def static_images_114():
+@app.route('/manifest.json')
+def static_manifest():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'apple-touch-icon-114x114.png')
+                               'manifest.json')
 
-
-@app.route('/apple-touch-icon-120x120.png')
-def static_images_120():
+@app.route('/browserconfig.xml')
+def static_browserconfig():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'apple-touch-icon-120x120.png')
-
-
-@app.route('/apple-touch-icon-144x144.png')
-def static_images_144():
-    return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'apple-touch-icon-144x144.png')
-
-
-@app.route('/apple-touch-icon-152x152.png')
-def static_images_152():
-    return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'apple-touch-icon-152x152.png')
+                               'browserconfig.xml')
 
 
 if __name__ == '__main__':
@@ -443,7 +427,6 @@ if __name__ == '__main__':
         render_template = uglify(render_template)
     else:
         render_template = uglify(render_template)
-        app
 
     #freezer.freeze()
     app.run(debug=debug)
