@@ -19,6 +19,8 @@ from flask.ext.compress import Compress
 from flask.ext.babel import Babel
 from flask.ext.babel import gettext, ngettext
 from flask_frozen import Freezer
+from htmlmin.main import minify
+import functools
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -36,6 +38,15 @@ babel = Babel(app)
 app.config['FREEZER_STATIC_IGNORE'] = ['/api/v1/*']
 freezer = Freezer(app)
 
+
+def uglify(route_function):
+    @functools.wraps(route_function)
+    def wrapped(*args, **kwargs):
+        yielded_html = route_function(*args, **kwargs)
+        minified_html = minify(yielded_html)
+        return minified_html
+
+    return wrapped
 
 def add_response_headers(headers={}):
     """This decorator adds the headers passed in to the response"""
@@ -429,7 +440,9 @@ if __name__ == '__main__':
         app.config['ASSETS_DEBUG'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
         debug = True
+        render_template = uglify(render_template)
     else:
+        render_template = uglify(render_template)
         app
 
     #freezer.freeze()
