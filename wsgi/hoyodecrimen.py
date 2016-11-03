@@ -67,19 +67,18 @@ def not_found(error):
 
 
 css_pip_req = Bundle("css/skel.css", "css/style.css",
-                     "css/style-desktop.css",
                      "css/leaflet.css", "css/vendor/metricsgraphics/metricsgraphics.css", "css/crime.css",
                      "css/vendor/leaflet/fullscreen.css",
                      filters="cssmin", output="css/packed-pip-req.css")
 assets.register('css_pip_req', css_pip_req)
 
-js_pip_req = Bundle( "js/jquery.min.js", "js/jquery.dropotron.min.js",
+js_pip_req = Bundle( "js/jquery.1.9.0.min.js",  "js/jquery.dropotron.min.js",
                     "js/skel.min.js",
                     "js/skel-layers.min.js",
                     "js/init.js", "js/vendor/lodash/lodash.min.js", "js/leaflet.js",
                     "js/vendor/leaflet/fullscreen.js", "js/leaflet-pip.js", 
                     "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
-                    "js/jquery.1.8.3.min.js", "js/modernizr.js", "js/vendor/metricsgraphics/metricsgraphics.js",
+                    "js/vendor/metricsgraphics/metricsgraphics.js",
                     filters='jsmin', output='js/packed-pip-req.js')
 assets.register('js_pip_req', js_pip_req)
 
@@ -87,7 +86,6 @@ js_pip = Bundle("js/pip.js", filters='jsmin', output="js/packed-pip.js")
 assets.register("js_pip", js_pip)
 
 css_maps_req = Bundle("css/skel.css", "css/style.css",
-                      "css/style-desktop.css",
                       "css/leaflet.css", "css/crime.css",  "css/vendor/metricsgraphics/metricsgraphics.css",
                       filters="cssmin", output="css/packed-maps-reqs.css", )
 assets.register('css_maps_req', css_maps_req)
