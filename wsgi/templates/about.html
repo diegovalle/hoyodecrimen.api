@@ -2,7 +2,7 @@
 {% block title %}{{_('About Crime in Mexico City')}}{% endblock %}
 {% block lang %}{{_('en')}}{% endblock %}
 {% block hreflang %}{{_('es')}}{% endblock %}
-{% block alternhref %}{{_('https://hoyodecrimen.com/about')}}{% endblock %}
+{% block alternhref %}{{_('https://hoyodecrimen.com/acerca')}}{% endblock %}
 {% block description %}{{_('About crime in Mexico City')}}{% endblock %}
 
 {% block css %}
@@ -17,7 +17,22 @@
     {% endassets %}
 {% endblock %}
 
-{% block head %}
+        {% block head %}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@diegovalle" />
+        <meta name="twitter:title" content="{{_('About Crime in Mexico City')}}" />
+        <meta name="twitter:description" content="{{_('Data sources and information for hoyodecrimen.com')}}" />
+        <meta name="twitter:image" content="https://hoyodecrimen.com/images/choropleth.png" />
+        <meta name="twitter:url" content="{{_('https://hoyodecrimen.com/en/about')}}" />
+
+        <meta name="blitz" content="mu-01188fe9-0b813050-b0f51076-c96f41fb">
+
+        <meta name="og:title" content="{{_('About Crime in Mexico City')}}" />
+        <meta property="og:description" content="{{_('Data sources and information for hoyodecrimen.com')}}"/>
+        <meta property="og:url" content="{{_('https://hoyodecrimen.com/en/about')}}"/>
+        <meta property="og:image" content="https://hoyodecrimen.com/images/choropleth.png"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:site_name" content="Hoyo de Crimen"/>
     {{super()}}
 {% endblock %}
 {% block subscribe %}
