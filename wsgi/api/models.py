@@ -23,6 +23,17 @@ class Cuadrantes(db.Model):
         self.sector = sector
         self.population = population
 
+class pgj(db.Model):
+    __tablename__ = 'pgj'
+    crime = db.Column(db.String(60), primary_key=True)
+    date = db.Column(db.String(10))
+    count = db.Column(db.Integer)
+
+    def __init__(self, crime, date, count):
+        self.crime = crime
+        self.date = date
+        self.count = count
+
 class Cuadrantes_Poly(db.Model):
     __tablename__ = 'cuadrantes_poly'
     id = db.Column(db.String(60), primary_key=True)

@@ -38,6 +38,14 @@ CREATE TABLE cuadrantes (
 );
 --COPY cuadrantes FROM '/tmp/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
 
+CREATE TABLE pgj (
+	crime varchar (60),
+	date  varchar (10),
+	count int,
+       PRIMARY KEY(crime, date)
+);
+--COPY pgj FROM '/tmp/pgj.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+
 CREATE TABLE municipios (cuadrante varchar (15),
 sector varchar (60),
 cvegeo  varchar (5),
