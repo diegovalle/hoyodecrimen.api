@@ -14,7 +14,7 @@ from geoalchemy2.elements import WKTElement
 from geoalchemy2.types import Geography
 import time
 import os
-from models import db, Cuadrantes, Cuadrantes_Poly, Municipios, Crime_latlong
+from models import db, Cuadrantes, Cuadrantes_Poly, Municipios, Crime_latlong, pgj
 import lib
 from lib import InvalidAPIUsage
 from urlparse import urlparse
@@ -1083,6 +1083,40 @@ def df_all(crime):
         all()
     return lib.results_to_json(results)
 
+@API.route('/df/crimes/<string:crime>/series_extra',
+           methods=['GET'])
+@jsonp
+@cache.cached(key_prefix=make_cache_key)
+def df_crime_extra_all(crime):
+    crime = crime.upper()
+
+    start_date = request.args.get('start_date', '', type=str)
+    end_date = request.args.get('end_date', '', type=str)
+    # Needs to default to 2013-01 when the series starts instead of a year ago
+    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+    filters = process_crime(crime, start_date, max_date)
+    # if crime == "ALL":
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                ]
+    # else:
+    #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
+    #                func.upper(Cuadrantes.crime) == crime]
+    pgj_result = pgj.query.  \
+        with_entities(func.upper(pgj.crime).label('crime'),
+                      pgj.date,
+                      pgj.count.label('count')). \
+        order_by(pgj.crime, pgj.date). \
+        all()
+    results = Cuadrantes.query. \
+        filter(*filters). \
+        with_entities(func.upper(Cuadrantes.crime).label('crime'),
+                      Cuadrantes.date,
+                      func.sum(Cuadrantes.count).label('count'),
+                      func.sum(Cuadrantes.population).label('population')). \
+        group_by(Cuadrantes.date, Cuadrantes.crime). \
+        order_by(Cuadrantes.crime, Cuadrantes.date). \
+        all()
+    return jsonify(ssp=lib.results_to_array(results), pgj=lib.results_to_array(pgj_result))
 
 
 
@@ -1779,6 +1813,27 @@ def listcrimes():
         distinct(). \
         all()
     return lib.results_to_json(results)
+
+@API.route('/crimes_extra',
+           methods=['GET'])
+@jsonp
+@cache.cached(key_prefix=make_cache_key)
+def listcrimes_extra():
+    results = Cuadrantes.query. \
+        with_entities(func.upper(Cuadrantes.crime).label('crime')). \
+        order_by(Cuadrantes.crime). \
+        distinct(). \
+        all()
+    max_date = Cuadrantes.query. \
+        filter(). \
+        with_entities(func.max(Cuadrantes.date).label('date')). \
+        scalar()
+    min_date = Cuadrantes.query. \
+        filter(). \
+        with_entities(func.min(Cuadrantes.date).label('date')). \
+        scalar()
+    return jsonify(crimes = results,
+                   date_range = [min_date[0:7], max_date[0:7]])
 
 
 @API.route('/cuadrantes',
