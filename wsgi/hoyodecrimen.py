@@ -227,14 +227,20 @@ def numero():
 @cache.cached()
 def mapa():
     setattr(g, 'lang', 'en')
-    return render_template('latlong_map_leaflet.html')
+    return render_template('latlong_map_boot.html')
 
 
 @app.route('/mapa')
 @cache.cached()
 def mapa_es():
     setattr(g, 'lang', 'es')
-    return render_template('latlong_map_leaflet.html')
+    return render_template('latlong_map_boot.html')
+
+@app.route('/mapa-google-temp-no-usar')
+@cache.cached()
+def mapa_es_google():
+    setattr(g, 'lang', 'es')
+    return render_template('latlong_map_boot.html')
 
 
 @app.route('/en/crime')
@@ -424,7 +430,7 @@ if __name__ == '__main__':
         app.config['ASSETS_DEBUG'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
         debug = True
-        render_template = uglify(render_template)
+        #render_template = uglify(render_template)
     else:
         render_template = uglify(render_template)
 
