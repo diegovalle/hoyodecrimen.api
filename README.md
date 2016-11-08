@@ -38,6 +38,14 @@ CREATE TABLE cuadrantes (
 );
 --COPY cuadrantes FROM '/tmp/cuadrantes.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
 
+CREATE TABLE pgj (
+	crime varchar (60),
+	date  varchar (10),
+	count int,
+       PRIMARY KEY(crime, date)
+);
+--COPY pgj FROM '/tmp/pgj.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+
 CREATE TABLE municipios (cuadrante varchar (15),
 sector varchar (60),
 cvegeo  varchar (5),
@@ -65,6 +73,7 @@ CREATE TABLE crime_latlong (
 ```sh
 psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy cuadrantes (cuadrante,crime,date,count,year,sector,population) from '/tmp/cuadrantes.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
 psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy municipios (cuadrante,sector,cvegeo,municipio) from '/tmp/municipios.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy pgj (crime,date,count) from '/tmp/pgj.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
 psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy crime_latlong  (cuadrante,crime,date,hour,year,month,latitude,longitude,id) from '/tmp/crime-lat-long.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
 ```
 
@@ -78,6 +87,9 @@ CREATE INDEX crime_latlongi
   (geom );
 CREATE INDEX crime_crime
   ON crime_latlong
+  (crime);
+CREATE INDEX pgj_crime
+  ON pgj
   (crime);
 CREATE INDEX crime_crime_date2
   ON crime_latlong

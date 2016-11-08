@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html  lang="{{_('en')}}">
+    <head>
+
+        <meta name="description" content="{{_('Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance.')}}">
+        <title>{{_('Interactive Map of Crime in Mexico City')}}</title
+        <link rel="alternate" hreflang="es" href="{{_('https://hoyodecrimen.com/mapa')}}" />
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@diegovalle" />
+        <meta name="twitter:title" content="{{_('Crime Map of Mexico City')}}" />
+        <meta name="twitter:description" content="{{_('Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance.')}}" />
+        <meta name="twitter:image" content="https://hoyodecrimen.com/images/latlongmap.png" />
+        <meta name="twitter:url" content="{{_('https://hoyodecrimen.com/en/mapa')}}" />
+
+        <meta name="blitz" content="mu-01188fe9-0b813050-b0f51076-c96f41fb">
+
+        <meta name="og:title" content="{{_('Crime Map of Mexico City')}}" />
+        <meta property="og:description" content="{{_('Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance.')}}"/>
+        <meta property="og:url" content="{{_('https://hoyodecrimen.com/en/mapa')}}"/>
+        <meta property="og:image" content="https://hoyodecrimen.com/images/latlongmap.png"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:site_name" content="Hoyo de Crimen"/>
+
+
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+
+             <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.css"> -->
+        {% assets  'latlong_bootstrap_css' %}
+        <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
+        {% endassets %}
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIWARe1FvYw_lgl_5wrauHSaYYG64N2Vg"></script>
+
+        {% assets "js_latlong_js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        <style>
+         html, body {width:100%; height:100%; padding: 0; margin: 0; overflow:hidden;}
+         #map { width: 100%; height:100%; background: black; overflow:hidden;}
+         #wrapper { position: relative; }
+         p {margin:0}
+         div.cartodb-popup h4 {
+             color: #111111;
+             font-weight: 100;
+         }
+         #infobox {
+             position: absolute;
+             right: 20px;
+             top: 45px;
+             background: rgba(255,255,255, 1);
+             z-index: 99;
+             font-size: 0.85em;
+             font-weight: 300;
+             margin: 0.1em 0 1em 0;
+             font-family: 'Source Sans Pro';
+             font-size:15px;
+             letter-spacing: 2px;
+             padding: 10px;
+             text-transform: uppercase;
+             background: white; //#EADBC4;
+         }
+
+         .select-style select {
+             padding: 1px 8px;
+             border: none;
+             width: 100%;
+             box-shadow: none;
+             background: transparent;
+             background-image: none;
+             -webkit-appearance: none;
+             font-size: .8em;
+             font-family: 'Source Sans Pro';
+             font-weight: 300;
+             color: #555;
+             -webkit-appearance: none;
+             -moz-appearance: none;
+             text-indent: 1px;
+             text-overflow: '';
+         }
+
+         .select-style {
+             border: 0px solid #ccc;
+             width: 250px;
+             border-radius: 3px;
+             overflow: hidden;
+             background: #ffffff url("data:image/png;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==") no-repeat 101% 50%;
+             display: block;
+             margin: 0 auto;
+         }
+
+         body {
+             padding-top: 50px;
+         }
+         input[type="radio"], input[type="checkbox"] {
+             margin: 0;
+         }
+         #sidebar {
+             display: block;
+             width: 250px;
+             height: 100%;
+             max-width: 100%;
+             float: left;
+         }
+         #map {
+             width: auto;
+             height: 100%;
+             box-shadow: 0 0 10px rgba(0,0,0,0.5);
+         }
+         #loading {
+             position: absolute;
+             width: 220px;
+             height: 19px;
+             top: 50%;
+             left: 50%;
+             margin: -10px 0 0 -110px;
+             z-index: 20001;
+         }
+         #features {
+             margin: 0px;
+             border: none;
+             border-radius: 0px;
+             -webkit-box-shadow: none;
+             box-shadow: none;
+         }
+         #sidebar-hide-btn {
+             margin-top: -2px;
+         }
+         #aboutTabsContent {
+             padding-top: 10px;
+         }
+         .progress-bar-full {
+             width: 100%;
+         }
+         .white {
+             color: #FFFFFF;
+         }
+         .panel-heading{
+             width: 250px;
+         }
+         .panel-body{
+             width: 250px;
+         }
+         .feature-row {
+             cursor: pointer;
+             width: 250px;
+         }
+         .sidebar-wrapper {
+             width: 100%;
+             height: 100%;
+             position: relative;
+         }
+         .sidebar-table {
+             position: absolute;
+             width: 100%;
+             top: 103px;
+             bottom: 0px;
+             overflow: auto;
+         }
+         .leaflet-control-layers {
+             overflow: auto;
+         }
+         .leaflet-control-layers label {
+             font-weight: normal;
+             margin-bottom: 0px;
+         }
+         .leaflet-control-layers-list input[type="radio"], input[type="checkbox"] {
+             margin: 2px;
+         }
+         .table {
+             margin-bottom: 0px;
+         }
+         .navbar .navbar-brand {
+             font-weight: bold;
+             font-size: 25px;
+             color: #FFFFFF;
+         }
+         .navbar-collapse.in {
+             overflow-y: hidden;
+         }
+         .navbar-header .navbar-icon-container {
+             margin-right: 15px;
+         }
+         .navbar-header .navbar-icon {
+             line-height: 50px;
+             height: 50px;
+         }
+         .navbar-header a.navbar-icon {
+             margin-left: 25px;
+         }
+         .typeahead {
+             background-color: #FFFFFF;
+         }
+         .tt-dropdown-menu {
+             background-color: #FFFFFF;
+             border: 1px solid rgba(0, 0, 0, 0.2);
+             border-radius: 4px 4px 4px 4px;
+             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+             margin-top: 4px;
+             padding: 4px 0;
+             width: 100%;
+             max-height: 300px;
+             overflow: auto;
+         }
+         .tt-suggestion {
+             font-size: 14px;
+             line-height: 20px;
+             padding: 3px 10px;
+         }
+         .tt-suggestion.tt-cursor {
+             background-color: #0097CF;
+             color: #FFFFFF;
+             cursor: pointer;
+         }
+         .tt-suggestion p {
+             margin: 0;
+         }
+         .tt-suggestion + .tt-suggestion {
+             border-top: 1px solid #ccc;
+         }
+         .typeahead-header {
+             margin: 0 5px 5px 5px;
+             padding: 3px 0;
+             border-bottom: 2px solid #333;
+         }
+         .has-feedback .form-control-feedback {
+             position: absolute;
+             top: 0;
+             right: 0;
+             display: block;
+             width: 34px;
+             height: 34px;
+             line-height: 34px;
+             text-align: center;
+         }
+         @media (max-width: 992px) {
+             .navbar .navbar-brand {
+                 font-size: 18px;
+             }
+         }
+         @media (max-width: 767px){
+             #sidebar {
+                 display: none;
+             }
+             .url-break {
+                 word-break: break-all;
+                 word-break: break-word;
+                 -webkit-hyphens: auto;
+                 hyphens: auto;
+             }
+             .dropdown-menu a i{
+                 color: #FFFFFF;
+             }
+         }
+         /* Print Handling */
+         @media print {
+             .navbar {
+                 display: none !important;
+             }
+             .leaflet-control-container {
+                 display: none !important;
+             }
+         }
+         .social:hover {
+             -webkit-transform: scale(1.1);
+             -moz-transform: scale(1.1);
+             -o-transform: scale(1.1);
+         }
+         .social {
+             -webkit-transform: scale(0.8);
+             /* Browser Variations: */
+
+             -moz-transform: scale(0.8);
+             -o-transform: scale(0.8);
+             -webkit-transition-duration: 0.5s;
+             -moz-transition-duration: 0.5s;
+             -o-transition-duration: 0.5s;
+         }
+
+         /*
+            Multicoloured Hover Variations
+          */
+
+         #social-fb:hover {
+             color: #3B5998;
+         }
+         #social-tw:hover {
+             color: #4099FF;
+         }
+         #social-gp:hover {
+             color: #d34836;
+         }
+         #social-em:hover {
+             color: #f39c12;
+         }
+
+
+         .axis--grid .domain {
+             fill: #ddd;
+             stroke: none;
+         }
+
+         .axis--x .domain,
+         .axis--grid .tick line {
+             stroke: #fff;
+         }
+
+         .axis--grid .tick--minor line {
+             stroke-opacity: .5;
+         }
+         .date-val-start:before {
+             content: "{{_('Start Date: ')}}";
+             font: 700 12px Arial;
+         }
+         .date-val-end:before {
+             content: "{{_('End Date: ')}}";
+             font: 700 12px Arial;
+         }
+         .hour-val-start:before {
+             content: "{{_('Start Hour: ')}}";
+             font: 700 12px Arial;
+         }
+         .hour-val-end:before {
+             content: "{{_('End Hour: ')}}";
+             font: 700 12px Arial;
+         }
+         .date-val-end, .date-val-start, .hour-val-start, .hour-val-end {
+             font: 400 12px Arial;
+             color: #888;
+             display: block;
+             margin: 3px 0 0 0;
+         }
+         .noUi-target {
+             margin-bottom: 11px;
+         }
+         div.cartodb-popup div.cartodb-popup-content-wrapper {
+             width: 226px;
+             max-width: 226px;
+         }
+        </style>
+
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <div class="navbar-icon-container">
+                        <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
+                        <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg white"></i></a>
+                    </div>
+                    <a class="navbar-brand" href="{{_('/en/')}}">HoyoDeCrimen</a>
+                </div>
+                <div class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{_('/en/rates')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa fa-line-chart white"></i>&nbsp;&nbsp;{{_('Rates')}}</a></li>
+                        <li><a href="{{_('/en/counts')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa fa-line-chart white"></i>&nbsp;&nbsp;{{_('Counts')}}</a></li>
+                        <li class="dropdown">
+                            <a id="toolsDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa  fa-map-marker white"></i>&nbsp;&nbsp;{{_('Maps')}} <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{_('/en/map')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="full-extent-btn">&nbsp;&nbsp;{{_('Latitude and Longitude')}}</a></li>
+                                <li><a href="{{_('/en/sectores-map')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn">&nbsp;&nbsp;{{_('Sectores (rates)')}}</a></li>
+                                <li><a href="{{_('/en/cuadrantes-map')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn">&nbsp;&nbsp;{{_('Cuadrantes (counts)')}}</a></li>
+                                <!-- <li class="divider hidden-xs"></li>
+                                     <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="login-btn"><i class="fa fa-user"></i>&nbsp;&nbsp;Login</a></li> -->
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a id="toolsDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa  fa-signal white"></i>&nbsp;&nbsp;{{_('Stats')}} <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{_('/en/crime')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="full-extent-btn">&nbsp;&nbsp;{{_('Time Series by Crime')}}</a></li>
+                                <li><a href="{{_('/en/charts')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn">&nbsp;&nbsp;{{_('Time Series by Sector')}}</a></li>
+                                <li><a href="{{_('/en/hours')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn">&nbsp;&nbsp;{{_('Crime by Hour')}}</a></li>
+                                <li><a href="{{_('/en/days')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn">&nbsp;&nbsp;{{_('Crime by Day')}}</a></li>
+                                <li><a href="{{_('/en/trends')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn">&nbsp;&nbsp;{{_('Change (Cuadrantes)')}}</a></li>
+                                <!-- <li class="divider hidden-xs"></li>
+                                     <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="login-btn"><i class="fa fa-user"></i>&nbsp;&nbsp;Login</a></li> -->
+                            </ul>
+                        </li>
+                        <li><a href="{{_('/en/about')}}" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa  fa-question-circle white"></i>&nbsp;&nbsp;{{_('About')}}</a></li>
+                        <li class="hidden-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="list-btn"><i class="fa fa-list white"></i>&nbsp;&nbsp;{{_('Filters')}}</a></li>
+                    </ul>
+                </div><!--/.navbar-collapse -->
+            </div>
+        </div>
+
+        <div id="container" style="height:100%">
+            <div id="sidebar">
+                <div class="panel panel-default" id="features">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Filters
+                                <button type="button" class="btn btn-xs btn-default pull-right" id="sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+
+                                    <p><h7>{{_('All crimes reported to the SSP&#8209;CDMX since January 2013.')}}</h7></p><br/>
+                                    <select class="selectpicker" id="seltarget" autofocus="" multiple multipleSeparator=", "></select>
+                                    <br/>
+
+                                    <hr/>
+                                    <p>{{_('Select a date range:')}}</p>
+                                    <div style="padding:10px;">
+                                        <div id="slider-date"></div>
+                                        <span class="date-val-start" id="slider-date-value-min"></span>
+                                        <span class="date-val-end" id="slider-date-value-max"></span>
+                                    </div>
+                                    <hr/>
+                                    <p>{{_('Select an hour range:')}}</p>
+                                    <div style="padding:10px;">
+                                        <div id="slider-hour"></div>
+                                        <span class="hour-val-start" id="slider-hour-value-min"></span>
+                                        <span class="hour-val-end" id="slider-hour-value-max"></span>
+                                    </div>
+
+
+
+                                    <div class="text-center center-block" style="">
+                                        <hr/>
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{_('https://hoyodecrimen.com/en/mapa')}}&t={{_('Interactive Map of Crime in Mexico City')}}" target="_blank"><i class="fa fa-facebook-square fa-3x social"></i></a>
+                                            <a href="https://twitter.com/intent/tweet?source={{_('https://hoyodecrimen.com/en/mapa')}}&text={{_('Interactive Map of Crime in Mexico City')}} {{_('https://hoyodecrimen.com/en/mapa')}}&via=diegovalle"><i class="fa fa-twitter-square fa-3x social" target="_blank"></i></a>
+                                            <a href="mailto:?subject={{_('Interactive Map of Crime in Mexico City')}}&body={{_('https://hoyodecrimen.com/en/mapa')}}"><i class="fa fa-envelope-square fa-3x social" target="_blank"></i></a>
+                                        </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+            </div>
+            <div id="map"></div>
+            </div>
+
+
+
+
+
+        <!-- define custom infowindow -->
+        <script type = "infowindow/html" id="infowindow_template">
+
+         <div class="cartodb-popup">
+         <a href= "#close" class="cartodb-popup-close-button close">x</a>
+         <div class="cartodb-popup-content-wrapper">
+         <div class="cartodb-popup-content">
+         <h4><b>{{_('crime:')}}</b> {% raw %}{{content.data.crime}}{% endraw %}</h4>
+         <h4><b>{{_('cuadrante:')}}</b> {% raw %}{{content.data.cuadrante}}{% endraw %}</h4>
+         <h4><b>{{_('date:')}}</b> {% raw %}{{content.data.date}}{% endraw %}</h4>
+         <h4><b>{{_('hour:')}}</b> {% raw %}{{content.data.hour}}{% endraw %}</h4>
+         </div>
+         </div>
+         <div class="cartodb-popup-tip-container"></div>
+         </div>
+
+        </script>
+
+        <script>
+         var start_date, end_date;
+         var center;
+         var select_crime;
+         function calculateCenter() {
+             center = map.getCenter();
+         }
+
+         $("#list-btn").click(function() {
+             animateSidebar();
+             return false;
+         });
+
+         $("#nav-btn").click(function() {
+             $(".navbar-collapse").collapse("toggle");
+             return false;
+         });
+
+         $("#sidebar-toggle-btn").click(function() {
+             animateSidebar();
+             return false;
+         });
+
+         $("#sidebar-hide-btn").click(function() {
+             animateSidebar();
+             return false;
+         });
+
+
+         function animateSidebar() {
+             calculateCenter();
+             $("#sidebar").animate({
+                 width: "toggle"
+             }, 350, function() {
+                 google.maps.event.trigger(map, "resize");
+                 map.setCenter(center);
+             });
+         }
+         /* Larger screens get expanded layer control and visible sidebar */
+         if (document.body.clientWidth <= 767) {
+             var isCollapsed = true;
+         } else {
+             var isCollapsed = false;
+         }
+         $( document ).ready(function()
+             {
+                 $.ajax({
+                     dataType: 'jsonp',
+                     url: '/api/v1/crimes_extra',
+                     success: function(data) {
+
+
+                         $("#seltarget").change(function() {
+                             updateQuery($("#seltarget").attr('value'))
+                         });
+                         sorted_crime = _.sortBy(_.unique(_.pluck(data.crimes, 'crime')),
+                                                 function(x) {
+                                                     if (x === "HOMICIDIO DOLOSO")
+                                                         return -5;
+                                                     if (x === "ROBO DE VEHICULO AUTOMOTOR C.V.")
+                                                         return -4;
+                                                     if (x === "ROBO DE VEHICULO AUTOMOTOR S.V.")
+                                                         return -3;
+                                                     if (x === "ROBO A TRANSEUNTE C.V.")
+                                                         return -2;
+
+                                                     if (x === "LESIONES POR ARMA DE FUEGO")
+                                                         return 3;
+                                                     return 9999;
+                                                 });
+                         $.each(sorted_crime, function(key, value) {
+
+                             $('#seltarget')
+                                 .append($('<option>', { value : value })
+                                     .text(value));
+                         });
+
+                         $("#seltarget").selectpicker('refresh');
+                         $('.selectpicker').selectpicker('val', 'HOMICIDIO DOLOSO');
+
+                         // Figure out the date range for the slider
+
+                         var dateSlider = document.getElementById('slider-date');
+                         var dateFieldMin = document.getElementById('slider-date-value-min');
+                         var dateFieldMax = document.getElementById('slider-date-value-max');
+
+                         start_date = data.date_range[0];
+                         end_date = data.date_range[1];
+                         numMonths = ((parseInt(data.date_range[1].slice(0,4)) - 2013) * 12) + parseInt(data.date_range[1].slice(5)) - 1;
+                         noUiSlider.create(dateSlider, {
+                             start: [ 0, numMonths ],
+                             connect: [false, true, false],
+                             step: 1,
+                             range: {
+                                 'min': [  0 ],
+                                 'max': [ numMonths ]
+                             }
+                         });
+                         function convertToDate(number){
+                             d = new Date(Math.floor(number/12) + 2013, number % 12, 1);
+                             return d.getFullYear() + '-' + (d.getMonth() + 1 <= 9 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1));
+                         }
+                         dateSlider.noUiSlider.on('update', function( values, handle ){
+                             (handle ? dateFieldMax : dateFieldMin).innerHTML = convertToDate(values[handle]);
+                         });
+                         dateSlider.noUiSlider.on('change', function( values, handle ){
+                             var a = dateSlider.noUiSlider.get();
+                             start_date = convertToDate(a[0]);
+                             end_date = convertToDate(a[1]);
+                             updateQuery();
+                         });
+                     }});
+
+
+
+                 var hourSlider = document.getElementById('slider-hour');
+                 var hourFieldMin = document.getElementById('slider-hour-value-min');
+                 var hourFieldMax = document.getElementById('slider-hour-value-max');
+
+                 start_hour = '00';
+                 end_hour = '23';
+                 noUiSlider.create(hourSlider, {
+                     start: [ 0, 23 ],
+                     connect: [false, true, false],
+                     step: 1,
+                     range: {
+                         'min': [  0 ],
+                         'max': [ 23 ]
+                     }
+                 });
+
+                 hourSlider.noUiSlider.on('update', function( values, handle ){
+                     (handle ? hourFieldMax : hourFieldMin).innerHTML = values[handle] < '10' ? '0' + Math.round(values[handle]) : Math.round(values[handle]);
+                 });
+                 hourSlider.noUiSlider.on('change', function( values, handle ){
+                     var a = hourSlider.noUiSlider.get();
+                     start_hour = a[0] < 10 ? '0' + Math.round(a[0]) : Math.round(a[0]);
+                     end_hour = a[1] < 10 ? '0' + Math.round(a[1]) : Math.round(a[1]);
+                     updateQuery();
+                 });
+             });
+        </script>
+
+
+        <script>
+         var layerUrl = 'https://diegovalle.carto.com/api/v2/viz/968b131a-97ea-11e6-a8b1-0e3ff518bd15/viz.json';
+         var cartocss_style = "#crime_lat_long{marker-fill: #333; marker-width: 10; marker-line-color: white; marker-line-width: 0.3;}#crime_lat_long[crime='HOMICIDIO DOLOSO']{marker-fill: #e41a1c;}#crime_lat_long[crime='ROBO DE VEHICULO AUTOMOTOR C.V.']{marker-fill: #00441b;}#crime_lat_long[crime='ROBO DE VEHICULO AUTOMOTOR S.V.']{marker-fill: #74c476;}#crime_lat_long[crime='ROBO A TRANSEUNTE C.V.']{marker-fill: #377eb8;}";
+
+         var map;
+         var sublayers = [];
+         var infoFields = ['crime', 'cuadrante', 'date', 'hour', 'lat', 'long']
+
+         function makeLink() {
+             var baseUrl = window.location.href.split('#')[0];
+             var center = map.getCenter();
+             window.location.replace(baseUrl + "#/"+ center.lat().toFixed(5)+"/"+center.lng().toFixed(5)+"/"+map.getZoom());
+         }
+
+         function init(){
+             var mapCanvas = document.getElementById('map');
+
+             var hash = window.location.hash
+             var params = hash.split("/")
+             var firsttime = false;
+             var lat = 19.427420161083823;
+             var lng = -99.14422988891602;
+             var zoom = 12;
+             if (params.length === 4) {
+                 lat = parseFloat(params[1])
+                 lng = parseFloat(params[2])
+                 zoom = parseInt(params[3])
+             } else {
+                 firsttime = true;
+             }
+             var mapOptions = {
+                 zoom: zoom,
+                 center: new google.maps.LatLng(lat, lng),
+                 mapTypeControl: true,
+                 mapTypeControlOptions: {
+                     mapTypeIds: [google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.HYBRID, 'map_style'],
+                     position: google.maps.ControlPosition.TOP_RIGHT
+                 }
+             };
+             map = new google.maps.Map(mapCanvas, mapOptions);
+
+
+             if (firsttime) {
+                 var bounds = new google.maps.LatLngBounds();
+                 bounds.extend(new google.maps.LatLng('19.593571', '-99.350858'));
+                 bounds.extend(new google.maps.LatLng('19.141173', '-98.944222'));
+                 map.fitBounds(bounds);
+             }
+
+             google.maps.event.addListener(map, 'dragend', function() {
+                 makeLink()
+             });
+             google.maps.event.addListener(map, 'zoom_changed', function() {
+                 makeLink()
+             });
+
+
+             cartodb.createLayer(map, layerUrl, function(layer)
+                 // add sublayer
+                 {
+
+                     layer.createSubLayer({
+                         sql: "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where crime = 'HOMICIDIO DOLOSO'"+ " AND lat IS NOT NULL",
+                         cartocss: cartocss_style,
+                         interactivity: infoFields
+                     });
+                     //layer.hide();
+                 }).addTo(map)
+
+                    .on('done', function(layer){
+
+                        // add interactivity only to the sublayer
+
+                        layer.setInteraction(true);
+                        layer.getSubLayer(1).setInteraction(true);
+                        layer.getSubLayer(0).hide()
+
+                        // apply the custom infowindow
+                        var infowindow = cdb.vis.Vis.addInfowindow(map, layer.getSubLayer(1), infoFields);
+                        infowindow.model.set('template', $('#infowindow_template').html());
+                        sublayers.push(layer.getSubLayer(1));
+                    });
+         }
+
+         //window.onload = init;
+         google.maps.event.addDomListener(window, 'load', init);
+
+         function updateQuery(crime) {
+             var targets = [];
+             $.each($(".selectpicker option:selected"), function(){
+                 targets.push($(this).val());
+             });
+             var sql = "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where (crime = '" + targets.join("' or crime = '") + "') AND lat IS NOT NULL AND (date::text >= '" + start_date + "' AND date::text <= '" + end_date + "' ) AND (hour::text >= '" + start_hour + "' AND hour::text <= '" + end_hour + "')";
+             sublayers[0].set({
+                 sql: sql,
+                 cartocss: cartocss_style,
+                 interactivity: infoFields
+             });
+         }
+
+
+        </script>
+        <!-- <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+             <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.min.js"></script>
+           -->
+        {% assets "latlong_bootstrap_js" %}
+        <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+         ga('create', 'UA-100264-9', 'auto');
+         ga('send', 'pageview');
+        </script>
+    </body>
+</html>

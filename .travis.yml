@@ -34,6 +34,13 @@ before_script:
         geom geometry,
         PRIMARY KEY(id)
     );
+    CREATE TABLE pgj (
+	crime varchar (60),
+	date  varchar (10),
+	count int,
+       PRIMARY KEY(crime, date)
+     );
+    COPY pgj FROM '$TRAVIS_BUILD_DIR/data/pgj.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
     COPY crime_latlong(cuadrante,crime,date,hour,year,month,latitude,longitude,id) FROM '$TRAVIS_BUILD_DIR/data/crime-lat-long.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
     UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);
     CREATE INDEX crime_latlongi

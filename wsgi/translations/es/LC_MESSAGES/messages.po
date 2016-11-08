@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-11-05 07:03-0600\n"
-"PO-Revision-Date: 2016-11-05 07:06-0600\n"
+"POT-Creation-Date: 2016-11-07 17:14-0600\n"
+"PO-Revision-Date: 2016-11-07 17:15-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -18,7 +18,8 @@ msgstr ""
 "Generated-By: Babel 1.3\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: templates/about.html:2 templates/about.html:29
+#: templates/about.html:2 templates/about.html:23 templates/about.html:30
+#: templates/about.html:44
 msgid "About Crime in Mexico City"
 msgstr "Acerca de Crimen por tu Rumbo"
 
@@ -47,49 +48,57 @@ msgstr "https://hoyodecrimen.com/en/about"
 msgid "About crime in Mexico City"
 msgstr "Acerca de Crimen por tu Rumbo"
 
-#: templates/about.html:132 templates/base.html:112
+#: templates/about.html:24 templates/about.html:31
+msgid "Data sources and information for hoyodecrimen.com"
+msgstr "Fuentes e información de hoyodecrimen.com"
+
+#: templates/about.html:26 templates/about.html:32
+msgid "https://hoyodecrimen.com/en/about"
+msgstr "https://hoyodecrimen.com/acerca"
+
+#: templates/about.html:147 templates/base.html:112
 msgid "Created by <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
 msgstr "Creado por <a href=\"https://www.diegovalle.net\">Diego Valle</a>"
 
-#: templates/about.html:135
+#: templates/about.html:150
 msgid "Crime data from a <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>."
 msgstr "Los datos de incidencia delictiva vienen de una <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">solicitud de información</a> a la SSPDF. El mapa de cuadrantes es de <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
 
-#: templates/about.html:136 templates/base.html:114
+#: templates/about.html:151 templates/base.html:114
 msgid "There's also a"
 msgstr "También hay una"
 
-#: templates/about.html:136 templates/base.html:114
+#: templates/about.html:151 templates/base.html:114
 msgid "/"
 msgstr "/en/"
 
-#: templates/about.html:136 templates/base.html:114
+#: templates/about.html:151 templates/base.html:114
 msgid "Spanish version"
 msgstr "versión en inglés"
 
-#: templates/about.html:136 templates/base.html:114
+#: templates/about.html:151 templates/base.html:114
 msgid "and a really cool"
 msgstr "y un muy cool"
 
-#: templates/about.html:138
+#: templates/about.html:153
 msgid "Download the complete dataset as a <a href=\"http://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip\">csv file</a>"
 msgstr "Descargar los datos de criminalidad <a href=\"http://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip\">como csv</a>"
 
-#: templates/about.html:141
+#: templates/about.html:156
 msgid "Visit <a href=\"https://crimenmexico.diegovalle.net/en/\">CrimenMexico</a> for crime information at the national, state and municipio level"
 msgstr "Visiten <a href=\"https://crimenmexico.diegovalle.net/en/\">CrimenMexico</a> para obtener información criminal de todo México"
 
-#: templates/about.html:143
+#: templates/about.html:158
 msgid "You can download a map of cuadrantes as <a href=\"https://hoyodecrimen.com/api/v1/cuadrantes/geojson\">GeoJSON</a> using the API"
 msgstr "Pueden descargar un mapa de los cuadrantes en formato GeoJSON <a href=\"https://hoyodecrimen.com/api/v1/cuadrantes/geojson\">usando el API</a>"
 
-#: templates/about.html:145
+#: templates/about.html:160
 msgid "This webapp is opensource and you can view the code on <a href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
 msgstr "El código fuente de la aplicación está disponible en <a href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
 
-#: templates/about.html:147 templates/about.html:151 templates/about.html:155
-#: templates/about.html:159 templates/about.html:163 templates/about.html:167
-#: templates/about.html:171 templates/charts.html:205 templates/charts.html:209
+#: templates/about.html:162 templates/about.html:166 templates/about.html:170
+#: templates/about.html:174 templates/about.html:178 templates/about.html:182
+#: templates/about.html:186 templates/charts.html:205 templates/charts.html:209
 #: templates/charts.html:213 templates/charts.html:217
 #: templates/charts.html:221 templates/charts.html:225
 #: templates/charts.html:229 templates/days.html:259 templates/days.html:263
@@ -100,42 +109,42 @@ msgstr "El código fuente de la aplicación está disponible en <a href=\"https:
 msgid "Crime by Sector"
 msgstr "Crimen por Sector"
 
-#: templates/about.html:148 templates/charts.html:206 templates/days.html:260
+#: templates/about.html:163 templates/charts.html:206 templates/days.html:260
 #: templates/hours.html:257
 msgid "/images/total-sector-hom.png"
 msgstr "/images/total-sector-hom_es.png"
 
-#: templates/about.html:152 templates/charts.html:210 templates/days.html:264
+#: templates/about.html:167 templates/charts.html:210 templates/days.html:264
 #: templates/hours.html:261
 msgid "/images/total-sector-rncv.png"
 msgstr "/images/total-sector-rncv_es.png"
 
-#: templates/about.html:156 templates/charts.html:214 templates/days.html:268
+#: templates/about.html:171 templates/charts.html:214 templates/days.html:268
 #: templates/hours.html:265
 msgid "/images/total-sector-rvcv.png"
 msgstr "/images/total-sector-rvcv_es.png"
 
-#: templates/about.html:160 templates/charts.html:218 templates/days.html:272
+#: templates/about.html:175 templates/charts.html:218 templates/days.html:272
 #: templates/hours.html:269
 msgid "/images/total-sector-rvsv.png"
 msgstr "/images/total-sector-rvsv_es.png"
 
-#: templates/about.html:164 templates/charts.html:222 templates/days.html:276
+#: templates/about.html:179 templates/charts.html:222 templates/days.html:276
 #: templates/hours.html:273
 msgid "/images/total-sector-rtcv.png"
 msgstr "/images/total-sector-rtcv_es.png"
 
-#: templates/about.html:168 templates/charts.html:226 templates/days.html:280
+#: templates/about.html:183 templates/charts.html:226 templates/days.html:280
 #: templates/hours.html:277
 msgid "/images/total-sector-rtsv.png"
 msgstr "/images/total-sector-rtsv_es.png"
 
-#: templates/about.html:172 templates/charts.html:230 templates/days.html:284
+#: templates/about.html:187 templates/charts.html:230 templates/days.html:284
 #: templates/hours.html:281
 msgid "/images/total-sector-rccv.png"
 msgstr "/images/total-sector-rccv_es.png"
 
-#: templates/base.html:62
+#: templates/base.html:62 templates/latlong_map_boot.html:356
 msgid "/en/"
 msgstr "/"
 
@@ -143,99 +152,100 @@ msgstr "/"
 msgid "Home"
 msgstr "Inicio"
 
-#: templates/base.html:63
+#: templates/base.html:63 templates/latlong_map_boot.html:361
 msgid "/en/rates"
 msgstr "/tasas"
 
-#: templates/base.html:63
+#: templates/base.html:63 templates/latlong_map_boot.html:361
 msgid "Rates"
 msgstr "Tasas"
 
-#: templates/base.html:64
+#: templates/base.html:64 templates/latlong_map_boot.html:362
 msgid "/en/counts"
 msgstr "/numero"
 
-#: templates/base.html:64
+#: templates/base.html:64 templates/latlong_map_boot.html:362
 msgid "Counts"
 msgstr "Número"
 
-#: templates/base.html:67
+#: templates/base.html:67 templates/latlong_map_boot.html:364
 msgid "Maps"
 msgstr "Mapas"
 
-#: templates/base.html:69
+#: templates/base.html:69 templates/latlong_map_boot.html:366
 msgid "/en/map"
 msgstr "/mapa"
 
-#: templates/base.html:69
+#: templates/base.html:69 templates/latlong_map_boot.html:366
 msgid "Latitude and Longitude"
 msgstr "Localización Puntual"
 
-#: templates/base.html:70
+#: templates/base.html:70 templates/latlong_map_boot.html:367
 msgid "/en/sectores-map"
 msgstr "/sectores-mapa"
 
-#: templates/base.html:70
+#: templates/base.html:70 templates/latlong_map_boot.html:367
 msgid "Sectores (rates)"
 msgstr "Sectores (tasas)"
 
-#: templates/base.html:72
+#: templates/base.html:72 templates/latlong_map_boot.html:368
 msgid "/en/cuadrantes-map"
 msgstr "/cuadrantes-mapa"
 
-#: templates/base.html:72
+#: templates/base.html:72 templates/latlong_map_boot.html:368
 msgid "Cuadrantes (counts)"
 msgstr "Cuadrantes (número)"
 
-#: templates/base.html:78
+#: templates/base.html:78 templates/latlong_map_boot.html:374
 msgid "Stats"
 msgstr "Stats"
 
-#: templates/base.html:80
+#: templates/base.html:80 templates/latlong_map_boot.html:376
 msgid "/en/crime"
 msgstr "/crimen"
 
-#: templates/base.html:80
+#: templates/base.html:80 templates/latlong_map_boot.html:376
 msgid "Time Series by Crime"
 msgstr "Series por Crimen"
 
-#: templates/base.html:81
+#: templates/base.html:81 templates/latlong_map_boot.html:377
 msgid "/en/charts"
 msgstr "/charts"
 
-#: templates/base.html:81
+#: templates/base.html:81 templates/latlong_map_boot.html:377
 msgid "Time Series by Sector"
 msgstr "Series por Sector"
 
-#: templates/base.html:82
+#: templates/base.html:82 templates/latlong_map_boot.html:378
 msgid "/en/hours"
 msgstr "/hora"
 
-#: templates/base.html:82
+#: templates/base.html:82 templates/latlong_map_boot.html:378
 msgid "Crime by Hour"
 msgstr "por Hora"
 
-#: templates/base.html:83
+#: templates/base.html:83 templates/latlong_map_boot.html:379
 msgid "/en/days"
 msgstr "/dia"
 
-#: templates/base.html:83
+#: templates/base.html:83 templates/latlong_map_boot.html:379
 msgid "Crime by Day"
 msgstr "por Día de la Semana"
 
-#: templates/base.html:84
+#: templates/base.html:84 templates/latlong_map_boot.html:380
 msgid "/en/trends"
 msgstr "/tendencias"
 
-#: templates/base.html:84
+#: templates/base.html:84 templates/latlong_map_boot.html:380
 msgid "Change (Cuadrantes)"
 msgstr "Cambios (Cuadrantes)"
 
-#: templates/base.html:88 templates/latlong_map_leaflet.html:767
+#: templates/base.html:88 templates/latlong_map_boot.html:385
+#: templates/latlong_map_leaflet.html:767
 msgid "/en/about"
 msgstr "/acerca"
 
-#: templates/base.html:88
+#: templates/base.html:88 templates/latlong_map_boot.html:385
 msgid "About"
 msgstr "Acerca"
 
@@ -347,7 +357,7 @@ msgstr " , tasa: "
 msgid "Charts of Crime in Mexico City"
 msgstr "Gráficas de las tasas de crimen en la Ciudad de México por sector delictivo"
 
-#: templates/charts.html:5 templates/crime.html:5
+#: templates/charts.html:5
 msgid "https://hoyodecrimen.com/charts"
 msgstr "https://hoyodecrimen.com/en/charts"
 
@@ -363,11 +373,11 @@ msgstr "Gráficas de las tasas de crimen en la Ciudad de México por sector deli
 msgid "Crime: "
 msgstr "Crimen: "
 
-#: templates/charts.html:171 templates/crime.html:157
+#: templates/charts.html:171 templates/crime.html:204
 msgid "rate:"
 msgstr "tasa:"
 
-#: templates/charts.html:171 templates/crime.html:157
+#: templates/charts.html:171 templates/crime.html:204
 msgid "count:"
 msgstr "número:"
 
@@ -383,19 +393,40 @@ msgstr "https://hoyodecrimen.com/en/counts"
 msgid "Maps of crime rates in Mexico City by cuadrante delictivo"
 msgstr "Mapas de tasas delictivas por cuadrante en la Ciudad de México"
 
-#: templates/crime.html:2
+#: templates/crime.html:2 templates/crime.html:27
 msgid "Charts of Crime in all of Mexico City"
 msgstr "Gráficas del crimen en toda la Ciudad de México"
+
+#: templates/crime.html:5
+msgid "https://hoyodecrimen.com/crimen"
+msgstr "https://hoyodecrimen.com/en/crime"
 
 #: templates/crime.html:6
 msgid "Small multiple charts of crime in all ofMexico City"
 msgstr "Gráficas del en toda la Ciudad de México"
 
-#: templates/crime.html:33
+#: templates/crime.html:28 templates/crime.html:35
+msgid "Charts of crime trends in Mexico City"
+msgstr "Gráficas de las tasas de crimen en la Ciudad de México"
+
+#: templates/crime.html:30 templates/crime.html:36
+msgid "https://hoyodecrimen.com/en/crime"
+msgstr "https://hoyodecrimen.com/crimen"
+
+#: templates/crime.html:34 templates/pip.html:11 templates/pip.html:18
+#: templates/pip.html:120
+msgid "Crime in Mexico City"
+msgstr "Crimen por tu Rumbo"
+
+#: templates/crime.html:48
 msgid "Small multiple charts of crime in all of Mexico City"
 msgstr "Gráficas de las tasas de crimen en toda la Ciudad de México"
 
-#: templates/crime.html:130 templates/rates-sectores.html:179
+#: templates/crime.html:64
+msgid "The SESNSP crime data comes from the data the PGJ-CDMX reports to the <a href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php\">Sistema Ejecutivo del Sistema Nacional</a>. The SSP-CDMX data is from a FOIA request to the Mexico City government."
+msgstr "Los datos del SESNSP muestran la información proporcionada por la PGJ-CDMX al <a href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php\">Sistema Ejecutivo del Sistema Nacional</a>. Los datos de la SSP-CDMX vienen de una solicitud de información y son los que usa el resto del sitio."
+
+#: templates/crime.html:178 templates/rates-sectores.html:179
 msgid "\"annualized rate per 100,000\""
 msgstr "\"tasa anualizada por 100,000\""
 
@@ -490,13 +521,13 @@ msgstr "\"Hora\""
 #: templates/latlong_map.html:5 templates/latlong_map.html:14
 #: templates/latlong_map.html:21 templates/latlong_map_boot.html:5
 #: templates/latlong_map_boot.html:14 templates/latlong_map_boot.html:21
-#: templates/latlong_map_leaflet.html:4 templates/latlong_map_leaflet.html:13
-#: templates/latlong_map_leaflet.html:20
+#: templates/latlong_map_leaflet.html:13 templates/latlong_map_leaflet.html:20
 msgid "Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance."
-msgstr "Mapa de incidentes criminales en la Ciudad de México con latitud, longitud, fecha y hora de ocurrencia"
+msgstr "Mapa de incidentes criminales de la Ciudad de México con latitud, longitud, fecha y hora de ocurrencia"
 
 #: templates/latlong_map.html:6 templates/latlong_map_boot.html:6
-#: templates/latlong_map_leaflet.html:5
+#: templates/latlong_map_boot.html:427 templates/latlong_map_boot.html:428
+#: templates/latlong_map_boot.html:429 templates/latlong_map_leaflet.html:5
 msgid "Interactive Map of Crime in Mexico City"
 msgstr "Mapa interactivo del crimen en la Ciudad de México"
 
@@ -513,29 +544,63 @@ msgstr "Mapa del Crimen por tu Rumbo"
 
 #: templates/latlong_map.html:16 templates/latlong_map.html:22
 #: templates/latlong_map_boot.html:16 templates/latlong_map_boot.html:22
-#: templates/latlong_map_leaflet.html:15 templates/latlong_map_leaflet.html:21
+#: templates/latlong_map_boot.html:427 templates/latlong_map_boot.html:428
+#: templates/latlong_map_boot.html:429 templates/latlong_map_leaflet.html:15
+#: templates/latlong_map_leaflet.html:21
 msgid "https://hoyodecrimen.com/en/mapa"
 msgstr "https://hoyodecrimen.com/mapa"
 
-#: templates/latlong_map.html:107 templates/latlong_map_boot.html:277
+#: templates/latlong_map.html:107 templates/latlong_map_boot.html:454
 #: templates/latlong_map_leaflet.html:742
 msgid "crime:"
 msgstr "crimen: "
 
-#: templates/latlong_map.html:108 templates/latlong_map_boot.html:278
+#: templates/latlong_map.html:108 templates/latlong_map_boot.html:455
 #: templates/latlong_map_leaflet.html:743
 msgid "cuadrante:"
 msgstr "cuadrante: "
 
-#: templates/latlong_map.html:109 templates/latlong_map_boot.html:279
+#: templates/latlong_map.html:109 templates/latlong_map_boot.html:456
 #: templates/latlong_map_leaflet.html:744
 msgid "date:"
 msgstr "fecha:"
 
-#: templates/latlong_map.html:110 templates/latlong_map_boot.html:280
+#: templates/latlong_map.html:110 templates/latlong_map_boot.html:457
 #: templates/latlong_map_leaflet.html:745
 msgid "hour:"
 msgstr "hora:"
+
+#: templates/latlong_map_boot.html:317
+msgid "Start Date: "
+msgstr "Fecha de Inicio: "
+
+#: templates/latlong_map_boot.html:321
+msgid "End Date: "
+msgstr "Fin: "
+
+#: templates/latlong_map_boot.html:325
+msgid "Start Hour: "
+msgstr "Hora de Inicio: "
+
+#: templates/latlong_map_boot.html:329
+msgid "End Hour: "
+msgstr "Fin: "
+
+#: templates/latlong_map_boot.html:386
+msgid "Filters"
+msgstr "Filtros"
+
+#: templates/latlong_map_boot.html:404
+msgid "All crimes reported to the SSP&#8209;CDMX since January 2013."
+msgstr "Todos los crímenes reportados a la SSP&#8209;CDMX desde Enereo del 2013"
+
+#: templates/latlong_map_boot.html:409
+msgid "Select a date range:"
+msgstr "Seleccionar fechas:"
+
+#: templates/latlong_map_boot.html:416
+msgid "Select an hour range:"
+msgstr "Seleccionar horas:"
 
 #: templates/latlong_map_leaflet.html:746
 msgid "lat:"
@@ -560,10 +625,6 @@ msgstr "https://hoyodecrimen.com/en/"
 #: templates/pip.html:6
 msgid "Crime in Mexico City. Find out how many crimes there were in your cuadrante delictivo"
 msgstr "Crimen en la Ciudad de México. Averigua cuantos crímenes ocurrieron por tu rumbo"
-
-#: templates/pip.html:11 templates/pip.html:18 templates/pip.html:120
-msgid "Crime in Mexico City"
-msgstr "Crimen por tu Rumbo"
 
 #: templates/pip.html:12
 msgid "Maps and charts of where crimes are happening in your neighbor and street"
@@ -824,6 +885,3 @@ msgstr "Tasa por Sector"
 
 #~ msgid "Change in Crime by Cuadrante"
 #~ msgstr "Cambios en Crímenes"
-
-#~ msgid "https://hoyodecrimen.com/about"
-#~ msgstr "https://hoyodecrimen.com/en/about"
