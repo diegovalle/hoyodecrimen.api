@@ -146,11 +146,15 @@
                                              if (x === "HOMICIDIO DOLOSO")
                                                  return -5;
                                              if (x === "ROBO DE VEHICULO AUTOMOTOR C.V.")
-                                                 return -3;
+                                                 return -4;
                                              if (x === "ROBO DE VEHICULO AUTOMOTOR S.V.")
-                                                 return -1;
+                                                 return -3;
+                                             if (x === "ROBO A TRANSEUNTE C.V.")
+                                                 return 6;
+                                             if (x === "ROBO A TRANSEUNTE S.V.")
+                                                 return 7;
                                              if (x === "LESIONES POR ARMA DE FUEGO")
-                                                 return 3;
+                                                 return 5;
                                              return 9999;
                                          })
 
@@ -211,20 +215,6 @@
              }});
      }
 
-     /* $.ajax({
-      *     dataType: 'jsonp',
-      *     url: '/api/v1/crimes_extra',
-      *     success: function(data) {
-      *         crimes = _.pluck(data.rows, "crime");
-      *         $.each(crimes, function(key, value) {
-      *             $('#crimeSelect')
-      *                 .append($('<option>', { value : value })
-      *                     .text(value));
-      *         });
-      *     }});
-      * $('#crimeSelect').on('change', function() {
-      *     small_multiples(this.value); // or $(this).val()
-      * }); */
      small_multiples();
      $body = $("body");
 
