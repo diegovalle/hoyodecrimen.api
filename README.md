@@ -87,6 +87,9 @@ CREATE INDEX crime_latlongi
 CREATE INDEX crime_crime
   ON crime_latlong
   (crime);
+CREATE INDEX pgj_crime
+  ON pgj
+  (crime);
 CREATE INDEX crime_crime_date2
   ON crime_latlong
   (crime, date);
