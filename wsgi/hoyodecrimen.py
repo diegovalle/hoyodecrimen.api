@@ -139,6 +139,21 @@ latlong_js = Bundle("js/vendor/carto/cartodb.js",
                     filters="jsmin", output="js/packed-latlong.js", )
 assets.register('js_latlong_js', latlong_js)
 
+latlong_bootstrap_css = Bundle("css/vendor/bootstrap/bootstrap.min.css",
+                              "css/vendor/bootstrap/bootstrap-select.min.css",
+                              "css/vendor/bootstrap/cartodb.css",
+                              "css/font-awesome.min.css",
+                              "css/vendor/bootstrap/nouislider.css",
+                    filters="cssmin", output="css/packed-latlong-bootstap.css", )
+assets.register('latlong_bootstrap_css', latlong_bootstrap_css)
+
+latlong_bootstrap_js = Bundle("js/vendor/bootstrap/jquery-3.1.1.js",
+                              "js/vendor/bootstrap/bootstrap.min.js",
+                              "js/vendor/bootstrap/bootstrap-select.min.js",
+                              "js/vendor/bootstrap/nouislider.min.js",
+                    filters="jsmin", output="js/packed-latlong-bootstap.js", )
+assets.register('latlong_bootstrap_js', latlong_bootstrap_js)
+
 @babel.localeselector
 def get_locale():
     return getattr(g, 'lang')
@@ -182,6 +197,12 @@ def api_html(filename):
          filename += 'index.html'
     return send_from_directory(os.path.join(_basedir, 'static', 'sphinx', 'html'), filename)
 
+
+@app.route('/static/<path:filename>')
+def static_html(filename):
+    if filename.endswith('/'):
+         filename += 'index.html'
+    return send_from_directory(os.path.join(_basedir, 'static'), filename)
 
 @app.route('/en/rates')
 @cache.cached()
@@ -227,14 +248,20 @@ def numero():
 @cache.cached()
 def mapa():
     setattr(g, 'lang', 'en')
-    return render_template('latlong_map_leaflet.html')
+    return render_template('latlong_map_boot.html')
 
 
 @app.route('/mapa')
 @cache.cached()
 def mapa_es():
     setattr(g, 'lang', 'es')
-    return render_template('latlong_map_leaflet.html')
+    return render_template('latlong_map_boot.html')
+
+@app.route('/mapa-google-temp-no-usar')
+@cache.cached()
+def mapa_es_google():
+    setattr(g, 'lang', 'es')
+    return render_template('latlong_map_boot.html')
 
 
 @app.route('/en/crime')
@@ -424,7 +451,7 @@ if __name__ == '__main__':
         app.config['ASSETS_DEBUG'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
         debug = True
-        render_template = uglify(render_template)
+        #render_template = uglify(render_template)
     else:
         render_template = uglify(render_template)
 

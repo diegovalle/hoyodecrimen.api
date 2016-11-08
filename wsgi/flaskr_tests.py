@@ -375,6 +375,17 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
+    def test_api_v1_crimes_extra(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/crimes_extra', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
+
+    def test_api_v1_series_extra2(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/series_extra', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(json.loads(response.data), {"rows": []})
 
 
 if __name__ == '__main__':
