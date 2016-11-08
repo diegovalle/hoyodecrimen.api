@@ -73,6 +73,7 @@ CREATE TABLE crime_latlong (
 ```sh
 psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy cuadrantes (cuadrante,crime,date,count,year,sector,population) from '/tmp/cuadrantes.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
 psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy municipios (cuadrante,sector,cvegeo,municipio) from '/tmp/municipios.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy pgj (crime,date,count) from '/tmp/pgj.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
 psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -c "\copy crime_latlong  (cuadrante,crime,date,hour,year,month,latitude,longitude,id) from '/tmp/crime-lat-long.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
 ```
 

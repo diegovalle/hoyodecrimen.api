@@ -211,20 +211,20 @@
              }});
      }
 
-     $.ajax({
-         dataType: 'jsonp',
-         url: '/api/v1/crimes_extra',
-         success: function(data) {
-             crimes = _.pluck(data.rows, "crime");
-             $.each(crimes, function(key, value) {
-                 $('#crimeSelect')
-                     .append($('<option>', { value : value })
-                         .text(value));
-             });
-         }});
-     $('#crimeSelect').on('change', function() {
-         small_multiples(this.value); // or $(this).val()
-     });
+     /* $.ajax({
+      *     dataType: 'jsonp',
+      *     url: '/api/v1/crimes_extra',
+      *     success: function(data) {
+      *         crimes = _.pluck(data.rows, "crime");
+      *         $.each(crimes, function(key, value) {
+      *             $('#crimeSelect')
+      *                 .append($('<option>', { value : value })
+      *                     .text(value));
+      *         });
+      *     }});
+      * $('#crimeSelect').on('change', function() {
+      *     small_multiples(this.value); // or $(this).val()
+      * }); */
      small_multiples();
      $body = $("body");
 
