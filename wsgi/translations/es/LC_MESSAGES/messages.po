@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-11-07 22:39-0600\n"
-"PO-Revision-Date: 2016-11-07 22:43-0600\n"
+"POT-Creation-Date: 2016-11-08 11:03-0600\n"
+"PO-Revision-Date: 2016-11-08 11:03-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -62,8 +62,8 @@ msgstr "Creado por <a href=\"https://www.diegovalle.net\">Diego Valle</a>"
 
 #: templates/about.html:150
 #, python-format
-msgid "Crime data from a <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>. Keep in mind that about 95% of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore. "
-msgstr "Los datos de incidencia delictiva vienen de una <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">solicitud de información</a> a la SSPDF. El mapa de cuadrantes es de <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>. La cifra negra en CDMX es cerca del 95% por lo que recomiendo enfocarse en homicidios y robo de vehículo. C.V. significa con violencia y S.V. sin violencia."
+msgid "Crime data since 2013 comes from a <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore."
+msgstr "Los datos de incidencia delictiva desde el 2013 vienen de una <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">solicitud de información</a> a la SSPDF. El mapa de cuadrantes es de <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>. La cifra negra en CDMX es cerca del 95&#37; por lo que recomiendo enfocarse en homicidios y robo de vehículo. C.V. significa con violencia y S.V. sin violencia."
 
 #: templates/about.html:151 templates/base.html:114
 msgid "There's also a"
@@ -694,7 +694,7 @@ msgstr "Tasas de criminalidad alisadas espacialmente en tu cuadrante y comparada
 
 #: templates/pip.html:155
 msgid "When comparing cuadrantes with the rest of CDMX, the raw crime incidence rate can be statistically unstable due to the small size of the cuadrantes and the relative small number of people at risk. Plus, sometimes homicides and firearm lesions are recorded as having happened inside a hospital, to get a better sense of the crime risk I spatially smoothed the rate of each cuadrante taking into account its nearest neighbors."
-msgstr "Al comparar cuadrantes con el resto de la Ciudad de México, las tasas de incidencia criminal pueden ser estadísticamente inestables debido al tamaño pequeño de los cuadrantes y de su poca población. Además, a veces los homicidios y lesiones por arma de fuego son catalogadas con la latitud y longitud de los hospitales donde atienden a las víctimas. Para mejorar la percepción del riesgo a ser víctima de un crimen alise espacialmente las tasas de los cuadrantes para tomar en cuenta a sus vecinos más cercanos."
+msgstr "C.V. y S.V. significan con y sin violencia. Al comparar cuadrantes con el resto de la Ciudad de México, las tasas de incidencia criminal pueden ser estadísticamente inestables debido al tamaño pequeño de los cuadrantes y de su poca población. Además, a veces los homicidios y lesiones por arma de fuego son catalogadas con la latitud y longitud de los hospitales donde atienden a las víctimas. Para mejorar la percepción del riesgo a ser víctima de un crimen alise espacialmente las tasas de los cuadrantes para tomar en cuenta a sus vecinos más cercanos."
 
 #: templates/pip.html:159
 msgid "Official Crime Data"
