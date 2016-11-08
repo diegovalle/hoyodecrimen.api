@@ -383,7 +383,7 @@ class FlaskTestCase(unittest.TestCase):
 
     def test_api_v1_series_extra2(self):
         tester = app.test_client(self)
-        response = tester.get('/api/v1/series_extra', content_type='application/json')
+        response = tester.get('/api/v1/df/crimes/all/series_extra', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data), {"rows": []})
 
