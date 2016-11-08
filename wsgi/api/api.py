@@ -606,7 +606,8 @@ def frontpage_extra(crime, long, lat):
         results_cuad_period = get_cuad_period_neighbors(results_pip[0], crime, start_date, max_date)
 
         results_sphere = Crime_latlong.query. \
-                         filter(func.ST_DWithin(cast(Crime_latlong.geom, Geography), point, 500 )). \
+                         filter(*[func.ST_DWithin(cast(Crime_latlong.geom, Geography), point, 500),
+                                 and_(Crime_latlong.date >= start_date, Crime_latlong.date <= max_date)]). \
             with_entities(func.upper(Crime_latlong.crime).label("crime"),
                           func.upper(Crime_latlong.date).label("date"),
                           func.upper(Crime_latlong.hour).label("hour"),
