@@ -14,13 +14,13 @@ before_script:
     varchar (60), date varchar (10), count int, year int, sector
     varchar(60), population integer, PRIMARY KEY(cuadrante, sector,
     crime, date) ); COPY cuadrantes FROM
-    '$TRAVIS_BUILD_DIR/data/cuadrantes.csv'
+    '$TRAVIS_BUILD_DIR/ansible/roles/hoyodecrimen.app/files/cuadrantes.csv'
     DELIMITER ',' NULL AS 'NA' CSV HEADER;CREATE TABLE municipios (cuadrante varchar (15),
     sector varchar (60),
     cvegeo  varchar (5),
     municipio varchar(200),
     PRIMARY KEY(cuadrante)
-    ); COPY municipios FROM '$TRAVIS_BUILD_DIR/data/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+    ); COPY municipios FROM '$TRAVIS_BUILD_DIR/ansible/roles/hoyodecrimen.app/files/municipios.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
     CREATE TABLE crime_latlong (
         cuadrante varchar (20),
         crime varchar (60),
@@ -40,8 +40,8 @@ before_script:
         count int,
        PRIMARY KEY(crime, date)
      );
-    COPY pgj FROM '$TRAVIS_BUILD_DIR/data/pgj.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
-    COPY crime_latlong(cuadrante,crime,date,hour,year,month,latitude,longitude,id) FROM '$TRAVIS_BUILD_DIR/data/crime-lat-long.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+    COPY pgj FROM '$TRAVIS_BUILD_DIR/ansible/roles/hoyodecrimen.app/files/pgj.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
+    COPY crime_latlong(cuadrante,crime,date,hour,year,month,latitude,longitude,id) FROM '$TRAVIS_BUILD_DIR/ansible/roles/hoyodecrimen.app/files/crime-lat-long.csv' DELIMITER ',' NULL AS 'NA' CSV HEADER;
     UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);
     CREATE INDEX crime_latlongi
       ON crime_latlong
