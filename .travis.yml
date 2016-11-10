@@ -6,8 +6,6 @@ env:
 addons:
   postgresql: "9.2"
 before_script:
-  - unzip $TRAVIS_BUILD_DIR/data/cuadrantes.csv.zip -d $TRAVIS_BUILD_DIR/data
-  - unzip $TRAVIS_BUILD_DIR/data/crime-lat-long.csv.zip -d $TRAVIS_BUILD_DIR/data
   - psql -c 'create database apihoyodecrimen;' -U postgres
   - psql apihoyodecrimen -U postgres -c "create extension postgis;"
   - psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (20), crime
