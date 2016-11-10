@@ -80,7 +80,7 @@ def not_found(error):
 css_pip_req = Bundle("css/skel.css", "css/style.css",
                      "css/leaflet.css", "css/vendor/metricsgraphics/metricsgraphics.css", "css/crime.css",
                      "css/vendor/leaflet/fullscreen.css",
-                     filters="cssmin", output="css/packed-pip-req.css")
+                     filters="cssmin", output="css/packed-pip-req.%(version)s.css")
 assets.register('css_pip_req', css_pip_req)
 
 js_pip_req = Bundle( "js/jquery.1.9.1.min.js",  "js/jquery.dropotron.min.js",
@@ -90,15 +90,15 @@ js_pip_req = Bundle( "js/jquery.1.9.1.min.js",  "js/jquery.dropotron.min.js",
                     "js/vendor/leaflet/fullscreen.js", "js/leaflet-pip.js", 
                     "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
                     "js/vendor/metricsgraphics/metricsgraphics.js",
-                    filters='jsmin', output='js/packed-pip-req.js')
+                    filters='jsmin', output='js/packed-pip-req.%(version)s.js')
 assets.register('js_pip_req', js_pip_req)
 
-js_pip = Bundle("js/pip.js", filters='jsmin', output="js/packed-pip.js")
+js_pip = Bundle("js/pip.js", filters='jsmin', output="js/packed-pip.%(version)s.js")
 assets.register("js_pip", js_pip)
 
 css_maps_req = Bundle("css/skel.css", "css/style.css",
                       "css/leaflet.css", "css/crime.css",  "css/vendor/metricsgraphics/metricsgraphics.css",
-                      filters="cssmin", output="css/packed-maps-reqs.css", )
+                      filters="cssmin", output="css/packed-maps-reqs.%(version)s.css", )
 assets.register('css_maps_req', css_maps_req)
 
 js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
@@ -106,7 +106,7 @@ js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
                      "js/d3.v3.min.js",
                      "js/topojson.v1.min.js", "js/d3.tip.v0.6.3.js",
                      "js/tooltip.js", "js/vendor/lodash/lodash.min.js", "js/vendor/metricsgraphics/metricsgraphics.js",
-                     filters="jsmin", output="js/packed-maps-reqs.js")
+                     filters="jsmin", output="js/packed-maps-reqs.%(version)s.js")
 assets.register('js_maps_req', js_maps_req)
 
 js_maps = Bundle("js/maps.js", filters='jsmin', output="js/packed-maps.js")
@@ -116,7 +116,7 @@ js_leaflet = Bundle("js/leaflet-map.js", filters='jsmin', output="js/packed-leaf
 assets.register('js_leaflet', js_maps)
 
 css_leaflet_req = Bundle("css/l.geosearch.css", "css/leaflet.css", "css/L.Control.Locate.css",
-                         filters="cssmin", output="css/packed-leaflet-req.css")
+                         filters="cssmin", output="css/packed-leaflet-req.%(version)s.css")
 assets.register('css_leaflet_req', css_leaflet_req)
 
 js_leaflet_req = Bundle("js/cuadrantes_neighbors.json","js/leaflet.js", "js/L.Control.Locate.js",
@@ -128,7 +128,7 @@ js_leaflet_req = Bundle("js/cuadrantes_neighbors.json","js/leaflet.js", "js/L.Co
                         "js/d3.v3.min.js", "js/colorbrewer.js",
                         "js/underscore-min.js",
                         "js/vendor/metricsgraphics/metricsgraphics.js",
-                        filters="jsmin", output="js/packed-leaflet.js")
+                        filters="jsmin", output="js/packed-leaflet.%(version)s.js")
 assets.register('js_leaflet_req', js_leaflet_req)
 
 latlong_css = Bundle("css/vendor/carto/cartodb.css",
@@ -136,7 +136,7 @@ latlong_css = Bundle("css/vendor/carto/cartodb.css",
 assets.register('css_latlong_css', latlong_css)
 
 latlong_js = Bundle("js/vendor/carto/cartodb.js",
-                    filters="jsmin", output="js/packed-latlong.js", )
+                    filters="jsmin", output="js/packed-latlong.%(version)s.js", )
 assets.register('js_latlong_js', latlong_js)
 
 latlong_bootstrap_css = Bundle("css/vendor/bootstrap/bootstrap.min.css",
@@ -144,14 +144,14 @@ latlong_bootstrap_css = Bundle("css/vendor/bootstrap/bootstrap.min.css",
                               "css/vendor/bootstrap/cartodb.css",
                               "css/font-awesome.min.css",
                               "css/vendor/bootstrap/nouislider.css",
-                    filters="cssmin", output="css/packed-latlong-bootstap.css", )
+                    filters="cssmin", output="css/packed-latlong-bootstap.%(version)s.css", )
 assets.register('latlong_bootstrap_css', latlong_bootstrap_css)
 
 latlong_bootstrap_js = Bundle("js/vendor/bootstrap/jquery-3.1.1.js",
                               "js/vendor/bootstrap/bootstrap.min.js",
                               "js/vendor/bootstrap/bootstrap-select.min.js",
                               "js/vendor/bootstrap/nouislider.min.js",
-                    filters="jsmin", output="js/packed-latlong-bootstap.js", )
+                    filters="jsmin", output="js/packed-latlong-bootstap.%(version)s.js", )
 assets.register('latlong_bootstrap_js', latlong_bootstrap_js)
 
 @babel.localeselector
