@@ -1,0 +1,105 @@
+---
+- name: apt-get update
+  raw: apt-get update -qq
+
+- name: Change root password
+  user: name=root password="{{ ROOT_PASSWORD }}"
+
+- name: Add deploy user
+  user: name={{ username }} password="{{ DEPLOY_PASSWORD }}" shell=/bin/bash group=www-data
+
+- name: Generate en_US locale
+  locale_gen: name=en_US.UTF-8 state=present
+
+- name: Generate es_ES locale
+  locale_gen: name=es_ES.UTF-8 state=present
+
+- name: Add authorized keys for deploy user
+  authorized_key: user={{ username }} key="{{ lookup('file', item) }}"
+  with_items:
+    - vps.pub
+    - vpsandroid.pub
+
+- name: Add deploy user to sudoers
+  lineinfile: dest=/etc/sudoers
+              regexp="{{ username }} ALL"
+              line="{{ username }} ALL=(ALL) ALL"
+              state=present
+
+- name: Remove Packages
+  apt: name="{{ item }}" state=absent
+  with_items:
+    - apache
+    - samba
+    - sendmail
+    - bind9
+    - ncsd
+    - sasl
+    - exim
+
+- name: Install Packages
+  apt: name="{{ item }}" state=latest
+  with_items:
+    - git
+    - xz-utils
+    - ntp
+    - mailutils
+    - wget
+    - ack-grep
+    - curl
+    - unzip
+    - ntp
+    - tmux
+    - sqlite3
+    - libxml2-dev
+    - apt-transport-https
+    - imagemagick
+    - optipng
+    - htop
+    #- ufw
+    - siege
+    #- fail2ban
+    - unattended-upgrades
+  notify:
+    - Start NTP
+
+- name: Add Periodic Configuration
+  copy: src=10periodic dest=/etc/apt/apt.conf.d/10periodic owner=root group=root mode=0644
+
+- name: Add Unattended Upgrade Configuration
+  copy: src=50unattended-upgrades dest=/etc/apt/apt.conf.d/50unattended-upgrades owner=root  group=root mode=0644
+  notify:
+   - Restart Unattended Upgrades
+
+- name: Restrict core dumps  using pam limits
+  lineinfile: dest=/etc/security/limits.conf line="* hard core 0" state=present
+
+- name: Restrict Core Dumps - using sysctl
+  sysctl: name=fs.suid_dumpable value=0 ignoreerrors=yes sysctl_set=yes reload=yes state=present
+
+- name: SSH config
+  lineinfile: dest="{{ item.file }}" regexp="{{ item.regexp }}" line="{{ item.line }}" state=present
+  with_items:
+    - { regexp: '^PasswordAuthentication.*', line: 'PasswordAuthentication no', file: '/etc/ssh/sshd_config'  }
+    - { regexp: '^PermitRootLogin.*', line: 'PermitRootLogin without-password', file: '/etc/ssh/sshd_config' }
+    - { regexp: '^UseDNS.*', line: 'UseDNS no', file: '/etc/ssh/sshd_config' }
+    - { regexp: '^Ciphers', line: 'Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr', file: '/etc/ssh/sshd_config' }
+    - { regexp: '^MACs', line: 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com', file: '/etc/ssh/sshd_config' }
+    - { regexp: '^KexAlgorithms', line: 'KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256', file: '/etc/ssh/sshd_config' }
+  notify: Restart ssh
+
+- name: PAM config
+  replace: dest="{{ item.file }}" regexp="{{ item.regexp }}" replace="{{ item.line }}"
+  with_items:
+    - { regexp: '^session.*optional.*pam_motd.so.*', line: '# MOTD DISABLED', file: '/etc/pam.d/login' }
+    - { regexp: '^session.*optional.*pam_motd.so.*', line: '# MOTD DISABLED', file: '/etc/pam.d/sshd' }
+
+- name: Disallow root SSH access without-password
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^PermitRootLogin"
+              line="PermitRootLogin without-password"
+              state=present
+  notify: Restart ssh
+
+- name: Add disabled cron to help debug environments
+  cron: name="save environmental variables to cronenv file" minute="*" hour="*" job="env > ~/cronenv" disabled="yes" user={{ username }}

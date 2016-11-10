@@ -1,0 +1,6 @@
+letsencrypt_user: letsencrypt
+letsencrypt_group: letsencrypt
+letsencrypt_cronjob_daysofmonth: 1
+nginx_user: www-data
+nginx_group: www-data
+acme_ssl_base_folder: /opt/ssl

@@ -1,0 +1,102 @@
+    - name: add apt-key
+      shell: curl https://nginx.org/keys/nginx_signing.key | /usr/bin/apt-key add -
+
+    - name: modify repository
+      apt_repository:
+        repo: "{{ item }}"
+        state: present
+      with_items:
+        - "deb http://nginx.org/packages/{{ansible_distribution|lower}}/ {{ansible_distribution_release}} nginx"
+        - "deb-src http://nginx.org/packages/{{ansible_distribution|lower}}/ {{ansible_distribution_release}} nginx"
+
+    # See: https://rtcamp.com/wordpress-nginx/tutorials/single-site/fastcgi-cache-with-purging/
+    #- name: Update PPA to use nginx with nginx-cache-purge installed
+    #  apt_repository:
+    #    repo: ppa:rtcamp/nginx
+    #    state: present
+
+    - name: install openssl
+      apt:
+        name: openssl
+        state: present
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+        force: yes
+      notify: Restart nginx
+
+    - name: Ensure that nginx snippets dir exists
+      file:
+        path: "/etc/nginx/snippets/"
+        state: directory
+        owner: "root"
+        group: "root"
+        mode: "0644"
+
+    - name: Generate useful snippets
+      copy:
+        src: "{{ item }}"
+        dest: "/etc/nginx/snippets/{{ item }}"
+      with_items:
+        - referral-spam.conf
+        - acme-challenge.conf
+      notify: Restart nginx
+
+
+    - name: Copy over h5bp configuration
+      copy: src={{ item }} dest=/etc/nginx/{{ item }}
+      with_items:
+        - h5bp/
+        - mime.types
+
+    - name: copy nginx.conf
+      template:
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: 0644
+      notify: Restart nginx
+
+
+    - name: verify /etc/nginx/sites-available/ exists
+      file: path=/etc/nginx/sites-available/ state=directory owner=root group=root mode=0644
+
+
+    - name: verify /etc/nginx/sites-enabled/ exists
+      file: path=/etc/nginx/sites-enabled/ state=directory owner=root group=root mode=0644
+
+    - name: Copy over website configuration
+      copy: src={{ item }} dest=/etc/nginx/sites-enabled/{{ item }}
+      with_items:
+        - ssl.no-default
+        - no-default
+      notify: Restart nginx
+
+    - name: Ensure that nginx ssl dir exists
+      file:
+        path: "/etc/nginx/ssl/"
+        state: directory
+        owner: "root"
+        group: "root"
+        mode: "0770"
+
+    - name: Ensure that nginx ssl dir exists for the default site
+      file:
+        path: "/etc/nginx/ssl/default"
+        state: directory
+        owner: "root"
+        group: "root"
+        mode: "0770"
+
+    - name: Generate self-signed certificates for the default site
+      shell: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/default/nginx.key -out /etc/nginx/ssl/default/nginx.crt   -subj "/C=US/ST=CA/O=example.com/CN=example.com"
+
+    - name: generate 2048 dhparam
+      command: openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048 creates=/etc/nginx/ssl/dhparam.pem
+      notify: Restart nginx
+
+
+
