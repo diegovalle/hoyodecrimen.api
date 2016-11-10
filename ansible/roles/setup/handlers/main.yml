@@ -1,0 +1,9 @@
+---
+- name: Start NTP
+  service: name=ntp state=started enabled=yes
+
+- name: Restart Unattended Upgrades
+  service: name=unattended-upgrades state=restarted
+
+- name: Restart ssh
+  service: name=ssh state=restarted

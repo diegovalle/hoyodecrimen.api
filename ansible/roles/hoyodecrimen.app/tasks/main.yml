@@ -1,0 +1,122 @@
+- name: ensure database is created
+  become: true
+  become_user: postgres
+  postgresql_db: name={{dbname}}
+
+- name: ensure user has access to database
+  become: true
+  become_user: postgres
+  postgresql_user: db={{dbname}} name={{dbuser}} password={{DB_PASSWORD}} priv=ALL
+
+- name: ensure user does not have unnecessary privilege
+  become: true
+  become_user: postgres
+  postgresql_user: name={{dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+
+- name: ensure no other user can access the database
+  become: true
+  become_user: postgres
+  postgresql_privs: db={{dbname}} role=PUBLIC type=database priv=ALL state=absent
+
+- name: copy file db csv files
+  become: true
+  become_user: "{{ username }}"
+  copy: src={{item}} dest=/tmp/{{item}}
+  with_items:
+    - crime-lat-long.csv
+    - cuadrantes.csv
+    - municipios.csv
+    - pgj.csv
+    - db.sql
+    - index.sql
+
+- service: name=hoyodecrimen state=stopped
+
+- name: create tables
+  become: true
+  become_user: "{{ username }}"
+  shell: psql {{dbname}} < /tmp/db.sql
+
+- name: create postgis extension for apihoyodecrimen db
+  become: true
+  become_user: postgres
+  shell: "{{item}}"
+  environment:
+    PGPASSWORD: "{{DB_PASSWORD}}"
+  with_items:
+    - psql -d {{dbname}} -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+
+- name: copy database data
+  become: true
+  become_user: "{{ username }}"
+  shell: "{{item}}"
+  environment:
+    PGPASSWORD: "{{DB_PASSWORD}}"
+  with_items:
+    - psql -d {{dbname}} -c "\copy cuadrantes (cuadrante,crime,date,count,year,sector,population) from '/tmp/cuadrantes.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+    - psql -d {{dbname}} -c "\copy municipios (cuadrante,sector,cvegeo,municipio) from '/tmp/municipios.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+    - psql -d {{dbname}} -c "\copy pgj (crime,date,count) from '/tmp/pgj.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+    - psql -d {{dbname}} -c "\copy crime_latlong  (cuadrante,crime,date,hour,year,month,latitude,longitude,id) from '/tmp/crime-lat-long.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+
+- name: Install the package redis
+  apt:
+    name: redis-server
+    state: present
+
+- name: create dir for repo
+  file: path=/var/www/hoyodecrimen.com/hoyodecrimen.api/ state=directory owner={{username}} group=www-data mode=0774
+
+- name: Copy hoyodecrimen.api repo
+  become: true
+  become_user: "{{ username }}"
+  git: repo=https://github.com/diegovalle/hoyodecrimen.api dest=/var/www/hoyodecrimen.com/hoyodecrimen.api/ force=yes
+
+- name: Ensure www-data can write to static
+  file: path=/var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/ state=directory owner={{username}} group=www-data mode=0774 recurse=yes
+
+- name: create a spatial db with the cuadrantes shapefile
+  become: true
+  become_user: "{{ username }}"
+  shell: "{{item}}"
+  environment:
+    PGPASSWORD: "{{DB_PASSWORD}}"
+  with_items:
+    - psql -d {{dbname}} < /var/www/hoyodecrimen.com/hoyodecrimen.api/data/cuadrantes_poly.sql
+
+- name: add indexes
+  become: true
+  become_user: "{{ username }}"
+  shell: psql {{dbname}} < /tmp/index.sql
+
+- name: create a file with the enviromental variables
+  copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
+
+- template: src=envars.j2 dest=/var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/envars owner={{username}} group=www-data mode=0640
+
+- name: Install pip requirements
+  become: true
+  become_user: "{{ username }}"
+  pip: requirements=/var/www/hoyodecrimen.com/hoyodecrimen.api/requirements.txt virtualenv=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv
+
+- redis: command=flush flush_mode=all
+
+- name: copy hoyodecrimen service conf
+  copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
+
+- service: name=hoyodecrimen state=started
+
+- name: Install the package python-babel
+  apt:
+    name: python-babel
+    state: present
+
+- name: compile translations
+  become: true
+  become_user: "{{ username }}"
+  shell: pybabel compile -d translations
+  args:
+    chdir: /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi
+
+- service: name=nginx state=restarted
+
+- service: name=redis-server state=started
