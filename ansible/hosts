@@ -1,0 +1,2 @@
+[all]
+168.235.84.195 ansible_ssh_user=root

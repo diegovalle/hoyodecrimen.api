@@ -1,0 +1,107 @@
+---
+
+    - name: install packages
+      apt: name={{ item }} state=latest
+      with_items:
+        - python-pip 
+        - python-dev 
+        - build-essential 
+  
+    - name: install pip dependencies
+      pip:
+        name: argparse
+        state: present
+
+    - name: create group
+      group:
+        name: '{{ nginx_group }}'
+        system: yes
+
+    - name: create group
+      group:
+        name: '{{ letsencrypt_group }}'
+        system: yes
+
+    - name: create user
+      user:
+        name: '{{ letsencrypt_user }}'
+        groups: '{{ letsencrypt_group }},{{ nginx_group }}'
+        shell: /bin/bash
+        home: /home/{{ letsencrypt_user }}
+
+    - name: Ensure that nginx ssl dir exists
+      file:
+        path: "/etc/nginx/ssl/"
+        state: directory
+        owner: "{{letsencrypt_user}}"
+        group: "root"
+        mode: "0770"
+
+    - name: Ensure that nginx ssl dir exists for the default site
+      file:
+        path: "/etc/nginx/ssl/default"
+        state: directory
+        owner: "{{letsencrypt_user}}"
+        group: "root"
+        mode: "0770"
+
+
+    - name: clone acme-tiny repository
+      git:
+        dest: /tmp/acme-tiny/
+        repo: 'https://github.com/diafygi/acme-tiny.git'
+        force: yes
+
+    - name: create {{ acme_ssl_base_folder }} directory for acme_tiny.py
+      file: path='{{ acme_ssl_base_folder }}' state=directory owner='root' group='root' mode=0755
+
+    - name: copy acme-tiny.py
+      command: cp /tmp/acme-tiny/acme_tiny.py '{{ acme_ssl_base_folder }}/acme_tiny.py'
+
+    - name: Ensure that nginx snippets dir exists
+      file:
+        path: "/etc/nginx/snippets/"
+        state: directory
+        owner: "root"
+        group: "root"
+        mode: "0644"
+
+    - name: Generate useful snippets
+      copy:
+        src: "{{ item }}"
+        dest: "/etc/nginx/snippets/{{ item }}"
+      with_items:
+        - referral-spam.conf
+        - acme-challenge.conf
+      notify: restart nginx
+
+    - name: create challenges directory
+      file:
+        path: /var/www/challenges
+        state: directory
+        owner: '{{ letsencrypt_user }}'
+        group: '{{ nginx_user }}'
+
+    - name: create ssl certs directory
+      file:
+        path: /home/{{ letsencrypt_user }}/ssl/
+        state: directory
+        owner: root
+        group: '{{ letsencrypt_user }}'
+        mode: 0770
+
+    - name: letsencrypt user has permission to restart nginx
+      lineinfile:
+        'dest=/etc/sudoers
+        line="{{ letsencrypt_user }} ALL=NOPASSWD: /usr/sbin/nginx -s reload"
+        state=present
+        validate="visudo -cf %s"'
+
+    - name: copy scripts to create csr and renew the cert
+      copy: src={{ item }} dest=/home/{{ letsencrypt_user }}/ssl/{{ item }} owner={{ letsencrypt_user }} mode=0755
+      with_items:
+        - create_csr.sh
+        - renew_cert.sh
+
+# openssl req -new -sha256 -key domain.key -subj "/C=US/ST=CA/O=diegovalle.net/CN=diegovalle.net" -reqexts SAN  -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=DNS:diegovalle.net,DNS:blog.diegovalle.net,DNS:data.diegovalle.net,DNS:crimenmexico.diegovalle.net,DNS:bcrimenmexico.diegovalle.net,DNS:calendar.diegovalle.net,DNS:docs.diegovalle.net,DNS:mail.diegovalle.net,DNS:sites.diegovalle.net")) > domain.csr
+
