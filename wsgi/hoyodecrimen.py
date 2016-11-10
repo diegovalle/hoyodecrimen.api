@@ -32,7 +32,7 @@ app.config.from_pyfile('apihoyodecrimen.cfg')
 
 cache.init_app(app)
 assets = Environment(app)
-assets.versions = 'timestamp'    # use the last modified timestamp
+assets.versions = 'hash'    # use the last modified timestamp
 babel = Babel(app)
 
 app.config['FREEZER_STATIC_IGNORE'] = ['/api/v1/*']
