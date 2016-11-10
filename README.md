@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/diegovalle/hoyodecrimen.api.svg?branch=master)](https://travis-ci.org/diegovalle/hoyodecrimen.api)
 
-Distrito Federal Crime API and Website
-===========================
+#Distrito Federal Crime API and Website
 
 You'll need to set the following environmental variables for the testing environment:
 
@@ -14,9 +13,21 @@ OPENSHIFT_REDIS_PORT='6379'
 OPENSHIFT_APP_UUID=true (only when running in production)
 ```
 
-To deploy to a server use the ansible script in the ansible directory.
+##To deploy a testing server you have to:
 
-*Updating*
+* create a postgresql database called apihoyodecrimen
+* Enale the postgis extension ```CREATE EXTENSION IF NOT EXISTS postgis;```
+* use the db.sql file in the ansible/roles/hoyodecrimen.app/files to create the tables (bbe sure to uncomment the lines to
+also copy the data)
+* copy the cuadrantes polygon ```psql -d apihoyodecrimen < data/cuadrantes_poly.sql```
+* add the indexes in the file ansible/roles/hoyodecrimen.app/files/index.sql
+
+
+
+##To deploy to a server use the ansible script in the ansible directory.
+
+
+##Updating
 
 To update the carto table you first have to delete all rows in the existing table
 
