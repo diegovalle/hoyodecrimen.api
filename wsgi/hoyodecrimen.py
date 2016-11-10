@@ -87,7 +87,7 @@ js_pip_req = Bundle( "js/jquery.1.9.1.min.js",  "js/jquery.dropotron.min.js",
                     "js/skel.min.js",
                     "js/skel-layers.min.js",
                     "js/init.js", "js/vendor/lodash/lodash.min.js", "js/leaflet.js",
-                    "js/vendor/leaflet/fullscreen.js", "js/leaflet-pip.js", 
+                    "js/vendor/leaflet/fullscreen.js", "js/leaflet-pip.js",
                     "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
                     "js/vendor/metricsgraphics/metricsgraphics.js",
                     filters='jsmin', output='js/packed-pip-req.%(version)s.js')
