@@ -17,9 +17,9 @@ OPENSHIFT_APP_UUID=true (only when running in production)
 
 * create a postgresql database called apihoyodecrimen
 * Enale the postgis extension ```CREATE EXTENSION IF NOT EXISTS postgis;```
-* use the db.sql file in the ansible/roles/hoyodecrimen.app/files to create the tables (bbe sure to uncomment the lines to
+* use the db.sql file in the ansible/roles/hoyodecrimen.app/files to create the tables (be sure to uncomment the lines to
 also copy the data)
-* copy the cuadrantes polygon ```psql -d apihoyodecrimen < data/cuadrantes_poly.sql```
+* copy the cuadrantes polygons ```psql -d apihoyodecrimen < data/cuadrantes_poly.sql```
 * add the indexes in the file ansible/roles/hoyodecrimen.app/files/index.sql
 
 
@@ -43,6 +43,3 @@ INSERT INTO crime_lat_long SELECT * FROM crime_lat_long_1
 
 and then delete the temporary table
 
-```
-psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W  -c ""
-```
