@@ -1,0 +1,21 @@
+---
+- hosts: all
+  gather_facts: False
+
+  tasks:
+  - name: install python 2
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+- hosts: all
+  vars:
+    username: deploy
+    letsencrypt_user: letsencrypt
+  vars_files:
+    - secrets.yml
+  roles:
+    #- setup
+    #- nginx
+    #- letsencrypt
+    #- postgresql
+    #- hoyodecrimen.com
+    - hoyodecrimen.app
