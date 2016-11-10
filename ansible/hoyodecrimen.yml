@@ -13,9 +13,9 @@
   vars_files:
     - secrets.yml
   roles:
-    #- setup
-    #- nginx
-    #- letsencrypt
-    #- postgresql
-    #- hoyodecrimen.com
+    - setup
+    - nginx
+    - letsencrypt
+    - postgresql
+    - hoyodecrimen.com
     - hoyodecrimen.app
