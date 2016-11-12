@@ -402,7 +402,7 @@
                                 <div class="col-xs-12 col-md-12">
 
                                     <p><h7>{{_('All crimes reported to the SSP&#8209;CDMX since January 2013.')}}</h7></p><br/>
-                                    <select class="selectpicker" id="seltarget" autofocus="" multiple multipleSeparator=", "></select>
+                                    <select class="selectpicker" id="seltarget" name="crimes" autofocus="" multiple multipleSeparator=", "></select>
                                     <br/>
 
                                     <hr/>
@@ -514,9 +514,7 @@
                      success: function(data) {
 
 
-                         $("#seltarget").change(function() {
-                             updateQuery($("#seltarget").attr('value'))
-                         });
+
                          sorted_crime = _.sortBy(_.unique(_.pluck(data.crimes, 'crime')),
                                                  function(x) {
                                                      if (x === "HOMICIDIO DOLOSO")
@@ -538,11 +536,15 @@
                                  .append($('<option>', { value : value })
                                      .text(value));
                          });
+                         //$('.selectpicker').selectpicker('val', 'HOMICIDIO DOLOSO');
 
+                         //$("#seltarget").selectpicker('refresh');
+                         $('select[name=crimes]').val('HOMICIDIO DOLOSO');
                          $("#seltarget").selectpicker('refresh');
-                         $('.selectpicker').selectpicker('val', 'HOMICIDIO DOLOSO');
 
-                         // Figure out the date range for the slider
+                         $("#seltarget").change(function() {
+                             updateQuery($("#seltarget").attr('value'))
+                         });
 
                          var dateSlider = document.getElementById('slider-date');
                          var dateFieldMin = document.getElementById('slider-date-value-min');
