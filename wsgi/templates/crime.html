@@ -47,12 +47,15 @@
     <div>
         <h2>{{_('Small multiple charts of crime in all of Mexico City')}}</h2>
         <div class="row">
-            <div class="4u 12u(movile)">&nbsp;</div>
+            <div class="3u 12u(movile)">&nbsp;</div>
             <div class="2u 12u(movile)">
                 <div class="legend"><span class="mg-line1-legend-color">— SSP-CDMX</span></div>
             </div>
             <div class="2u 12u(movile)">
                 <div class="legend"><span class="mg-line2-legend-color">— SESNSP </span></div>
+            </div>
+            <div class="2u 12u(movile)">
+                <div class="legend"><span class="mg-line3-legend-color">— INEGI </span></div>
             </div>
         </div>
         <hr/>
@@ -61,7 +64,7 @@
     </div>
     <div>
         <br/>
-        <p>{{_('The SESNSP crime data comes from the data the PGJ-CDMX reports to the <a href="http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php">Sistema Ejecutivo del Sistema Nacional</a>. The SSP-CDMX data is from a FOIA request to the Mexico City government.')}}</p>
+        <p>{{_('The SESNSP crime data comes from the data the PGJ-CDMX reports to the <a href="http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php">Sistema Ejecutivo del Sistema Nacional</a>. The <a href="http://www.inegi.org.mx/sistemas/olap/proyectos/bd/continuas/mortalidad/defuncioneshom.asp?s=est">INEGI</a> homicide data is based on death certificates issued by the health authority. The SSP-CDMX data is from a FOIA request to the Mexico City government.')}}</p>
     </div>
     <style>
      .mg-chart-title {
@@ -90,6 +93,10 @@
      .mg-line2-color {
          stroke: #ec8407;
      }
+     .mg-line3-legend-color {
+         color: #db4437;;
+     }
+
      path.mg-main-line {
          fill: none;
          opacity: 0.8;
@@ -165,7 +172,7 @@
                                                   .replace(/\./g, '-') +'" class="6u"></div>').appendTo('#small-multiples');
                      }
                  });
-                 $('.3u').each(function(index, obj){
+                 $('#small-multiples .3u').each(function(index, obj){
                      $(obj).attr('id', 'line' + sectores[index].replace(/ /g, '-')
                                                                .replace(/\./g, '-'));
                  });
@@ -195,7 +202,20 @@
                          xax_count: 4,
                          yax_count: 3,
                      };
-                     line_options.data = [ filterCrime(data.ssp, x), filterCrime(data.pgj, x)];
+                     if (x === 'HOMICIDIO DOLOSO') {
+                         var homicides = [96,87,106,87,90,89,74,97,86,106,97,92,93,77,115,103,61,91,72,81,91,88,100,117,88,79,80,96,91,95,90,105,81,90,93,91];
+                         var inegi = [];
+                         for(var i = 0; i < homicides.length; i++) {
+                             inegi.push({
+                                 'count' : homicides[i],
+                                 'rate': (homicides[i] / daysInMonth(data.ssp[i].date.substr(0,4), data.ssp[i].date.substr(5,6)) * 30)/ population * 100000 * 12,
+                                 'date': data.ssp[i].date,
+                                 'crime': x
+                             })
+                         }
+                         line_options.data = [ filterCrime(data.ssp, x), filterCrime(data.pgj, x), filterCrime(inegi, x)];
+                     } else
+                         line_options.data = [ filterCrime(data.ssp, x), filterCrime(data.pgj, x)];
                      line_options.title = x;
                      line_options.target = "#line" + x.replace(/ /g, '-').replace(/\./g, '-');
                      line_options.mouseover = function(d, i) {

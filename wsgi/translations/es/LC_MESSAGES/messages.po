@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-11-08 11:03-0600\n"
-"PO-Revision-Date: 2016-11-08 11:03-0600\n"
+"POT-Creation-Date: 2016-11-11 20:37-0600\n"
+"PO-Revision-Date: 2016-11-11 20:40-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -61,7 +61,6 @@ msgid "Created by <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
 msgstr "Creado por <a href=\"https://www.diegovalle.net\">Diego Valle</a>"
 
 #: templates/about.html:150
-#, python-format
 msgid "Crime data since 2013 comes from a <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore."
 msgstr "Los datos de incidencia delictiva desde el 2013 vienen de una <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">solicitud de información</a> a la SSPDF. El mapa de cuadrantes es de <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>. La cifra negra en CDMX es cerca del 95&#37; por lo que recomiendo enfocarse en homicidios y robo de vehículo. C.V. significa con violencia y S.V. sin violencia."
 
@@ -374,11 +373,11 @@ msgstr "Gráficas de las tasas de crimen en la Ciudad de México por sector deli
 msgid "Crime: "
 msgstr "Crimen: "
 
-#: templates/charts.html:171 templates/crime.html:208
+#: templates/charts.html:171 templates/crime.html:228
 msgid "rate:"
 msgstr "tasa:"
 
-#: templates/charts.html:171 templates/crime.html:208
+#: templates/charts.html:171 templates/crime.html:228
 msgid "count:"
 msgstr "número:"
 
@@ -423,11 +422,11 @@ msgstr "Crimen por tu Rumbo"
 msgid "Small multiple charts of crime in all of Mexico City"
 msgstr "Gráficas de las tasas de crimen en toda la Ciudad de México"
 
-#: templates/crime.html:64
-msgid "The SESNSP crime data comes from the data the PGJ-CDMX reports to the <a href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php\">Sistema Ejecutivo del Sistema Nacional</a>. The SSP-CDMX data is from a FOIA request to the Mexico City government."
-msgstr "Los datos del SESNSP muestran la información proporcionada por la PGJ-CDMX al <a href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php\">Sistema Ejecutivo del Sistema Nacional</a>. Los datos de la SSP-CDMX vienen de una solicitud de información y son los que usa el resto del sitio."
+#: templates/crime.html:67
+msgid "The SESNSP crime data comes from the data the PGJ-CDMX reports to the <a href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php\">Sistema Ejecutivo del Sistema Nacional</a>. The <a href=\"http://www.inegi.org.mx/sistemas/olap/proyectos/bd/continuas/mortalidad/defuncioneshom.asp?s=est\">INEGI</a> homicide data is based on death certificates issued by the health authority. The SSP-CDMX data is from a FOIA request to the Mexico City government."
+msgstr "Los datos del SESNSP muestran la información proporcionada por la PGJ-CDMX al <a href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php\">Sistema Ejecutivo del Sistema Nacional</a>. Los datos del  <a href=\"http://www.inegi.org.mx/sistemas/olap/proyectos/bd/continuas/mortalidad/defuncioneshom.asp?s=est\">INEGI</a> provienen de los certificados de defunción. Los datos de la SSP-CDMX vienen de una solicitud de información y son los que usa el resto del sitio."
 
-#: templates/crime.html:182 templates/rates-sectores.html:179
+#: templates/crime.html:189 templates/rates-sectores.html:179
 msgid "\"annualized rate per 100,000\""
 msgstr "\"tasa anualizada por 100,000\""
 
@@ -891,3 +890,23 @@ msgstr "Tasa por Sector"
 
 #~ msgid "Change in Crime by Cuadrante"
 #~ msgstr "Cambios en Crímenes"
+
+#~ msgid ""
+#~ "The SESNSP crime data comes from "
+#~ "the data the PGJ-CDMX reports to"
+#~ " the <a href=\"http://secretariadoejecutivo.gob.mx"
+#~ "/incidencia-delictiva/incidencia-delictiva-fuero-"
+#~ "comun.php\">Sistema Ejecutivo del Sistema "
+#~ "Nacional</a>. The SSP-CDMX data is "
+#~ "from a FOIA request to the Mexico"
+#~ " City government."
+#~ msgstr ""
+#~ "Los datos del SESNSP muestran la "
+#~ "información proporcionada por la PGJ-"
+#~ "CDMX al <a "
+#~ "href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva"
+#~ "/incidencia-delictiva-fuero-comun.php\">Sistema "
+#~ "Ejecutivo del Sistema Nacional</a>. Los "
+#~ "datos de la SSP-CDMX vienen de "
+#~ "una solicitud de información y son "
+#~ "los que usa el resto del sitio."
