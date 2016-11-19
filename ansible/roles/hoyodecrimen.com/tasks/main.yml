@@ -1,0 +1,42 @@
+---
+- name: Ensure ssl directory exists
+  file: path=/etc/nginx/ssl/hoyodecrimen.com/ state=directory owner={{letsencrypt_user }} group=root mode=0770
+
+- name: Ensure blog directory exists
+  file: path=/var/www/hoyodecrimen.com state=directory owner={{ username }} group={{ nginx_group }} mode=0664 recurse=yes
+
+- name: Copy site nginx configuration
+  copy: src=hoyodecrimen.com dest=/etc/nginx/sites-enabled/hoyodecrimen.com
+  notify: Reload nginx
+
+- name: Correct permissions for website dir
+  shell: find /var/www/hoyodecrimen.com -type d -exec chmod 0775 {} \; -exec chown {{ username }}:{{ nginx_group }} {} \; && find /var/www/hoyodecrimen.com -type f -exec chmod 0644 {} \; -exec chown {{ username }}:{{ nginx_group }} {} \;
+
+- name: Copy over letsencrypt certs
+  copy: content={{ item.src }} dest={{ item.dest }}
+  no_log: true
+  with_items:
+    - {src: "{{hoyodecrimen_com_domain_csr}}", dest: /etc/nginx/ssl/hoyodecrimen.com/domain.csr}
+    - {src: "{{hoyodecrimen_com_account_key}}", dest: /etc/nginx/ssl/hoyodecrimen.com/account.key}
+    - {src: "{{hoyodecrimen_com_domain_key}}", dest: /etc/nginx/ssl/hoyodecrimen.com/domain.key}
+    - {src: "{{hoyodecrimen_com_chained_pem}}", dest: /etc/nginx/ssl/hoyodecrimen.com/chained.pem}
+  notify: Reload nginx
+
+- name: add cron entry
+  cron:
+    user={{ letsencrypt_user }}
+    name="renew diegovalle.net certificates"
+    minute="17"
+    day="17"
+    hour="3"
+    job="/home/{{ letsencrypt_user }}/ssl/renew_cert.sh hoyodecrimen.com && curl -fsS --retry 3 {{ health_check_renew_hoyodecrimen_com }}  > /dev/null"
+
+- copy: src=create_cert_yml.sh dest=/opt/create_cert_yml.sh owner=root group=root mode=0755 
+
+- name: Correct certificate permissions
+  file: path=/etc/nginx/ssl/hoyodecrimen.com/{{ item }} owner={{ letsencrypt_user }} group=root mode=0660
+  with_items:
+    - account.key
+    - domain.key
+    - domain.csr
+    - chained.pem
