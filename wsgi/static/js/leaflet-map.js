@@ -306,7 +306,12 @@ function highlightFeature(e) {
             area: false,
             buffer: 30,
             top: 30,
+            y_extended_ticks: true,
+            yax_count: 3,
+
+            full_width: true,
             left: 50,
+            right: 50,
             full_width: true,
             //width: 200,
             interpolate: "linear",
