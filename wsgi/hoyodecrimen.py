@@ -407,25 +407,25 @@ def static_images_favicon():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'favicon.ico')
 
-@app.route('/favicon-<string:size>')
+@app.route('/favicon-<string:size>.png')
 def static_favicon_slash(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'favicon-' + size)
+                               'favicon-' + size + '.png')
 
-@app.route('/apple-touch-icon-<string:size>')
+@app.route('/apple-touch-icon-<string:size>.png')
 def static_apple(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'apple-touch-icon-' + size)
+                               'apple-touch-icon-' + size + '.png')
 
-@app.route('/android-icon-<string:size>')
+@app.route('/android-icon-<string:size>.png')
 def static_android(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'android-icon-' + size)
+                               'android-icon-' + size + '.png')
 
 @app.route('/ms-icon-<string:size>')
 def static_msicon(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'ms-icon-' + size)
+                               'ms-icon-' + size + '.png')
 
 @app.route('/manifest.json')
 def static_manifest():
