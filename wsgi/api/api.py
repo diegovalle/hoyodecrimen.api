@@ -18,7 +18,13 @@ import os
 from .models import db, Cuadrantes, Cuadrantes_Poly, Municipios, Crime_latlong, pgj
 from . import lib
 from .lib import InvalidAPIUsage
-from urllib.parse  import urlparse
+
+import sys
+if sys.version_info[0] >= 3:
+    from urllib.parse import urlparse
+else:
+    from urlparse import urlparse
+
 from .neighbors import neighbors
 from flask_sqlalchemy import get_debug_queries
 
