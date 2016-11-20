@@ -57,7 +57,7 @@ before_script:
      (cuadrante, crime, date);" -U postgres
   - psql -d apihoyodecrimen -U postgres < $TRAVIS_BUILD_DIR/data/cuadrantes_poly.sql
   - pybabel extract -F wsgi/babel.cfg -o wsgi/messages.pot .
-  - pybabel update -i wsgi/messages.pot -d wsgi/translations
+  - pybabel compile -d wsgi/translations
 env:
   - OPENSHIFT_POSTGRESQL_DB_PASSWORD="" OPENSHIFT_POSTGRESQL_DB_URL="postgres://postgres:@localhost/apihoyodecrimen" REDIS_PASSWORD="" OPENSHIFT_REDIS_HOST='127.0.0.1' OPENSHIFT_REDIS_PORT='6379'
 # command to install dependencies
