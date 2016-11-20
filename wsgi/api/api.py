@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Blueprint, Flask, jsonify, \
     request, abort, make_response, url_for, \
     send_from_directory, send_file, current_app
@@ -14,11 +15,11 @@ from geoalchemy2.elements import WKTElement
 from geoalchemy2.types import Geography
 import time
 import os
-from models import db, Cuadrantes, Cuadrantes_Poly, Municipios, Crime_latlong, pgj
-import lib
-from lib import InvalidAPIUsage
-from urlparse import urlparse
-from neighbors import neighbors
+from .models import db, Cuadrantes, Cuadrantes_Poly, Municipios, Crime_latlong, pgj
+from . import lib
+from .lib import InvalidAPIUsage
+from urllib.parse  import urlparse
+from .neighbors import neighbors
 from flask_sqlalchemy import get_debug_queries
 
 
