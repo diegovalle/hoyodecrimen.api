@@ -664,7 +664,7 @@ def latlong(crime, long, lat, distance):
 
     .. sourcecode:: http
 
-      GET /api/v1/cuadrantes/crimes/all/coords/-99.13333/19.43/distance/500 HTTP/1.1
+      GET /api/v1/latlong/crimes/all/coords/-99.13333/19.43/distance/500 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
