@@ -22,14 +22,21 @@ from flask.ext.babel import gettext, ngettext
 from flask_frozen import Freezer
 from htmlmin.main import minify
 import functools
+from raven.contrib.flask import Sentry
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
+
+
+
 app = Flask(__name__)
+
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 43200 * 20 # 20 days
 app.register_blueprint(API)
 db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
+sentry = Sentry(dsn= os.environ['SENTRY_DSN'])
+sentry.init_app(app)
 
 cache.init_app(app)
 assets = Environment(app)
