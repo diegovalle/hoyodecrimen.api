@@ -71,6 +71,16 @@ server {
        expires 1M;
        access_log off;
     }
+    location = /google055ef027e7764e4d.html {
+       alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/google055ef027e7764e4d.html;
+       expires 1M;
+       access_log off;
+    }
+    location = /mu-01188fe9-0b813050-b0f51076-c96f41fb.txt {
+       alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/mu-01188fe9-0b813050-b0f51076-c96f41fb.txt;
+       expires 1M;
+       access_log off;
+    }
     location = /robots.txt {
        alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/robots.txt;
     }
@@ -83,6 +93,9 @@ server {
     #    access_log off;
     # }
     # favicon stuff
+    location = /apple-touch-icon.png {
+       alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/images/apple-touch-icon.png;
+    }
     location ^~ /apple-touch-icon {
        root /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/images/;
        expires 1M;
