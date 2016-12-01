@@ -22,4 +22,5 @@ simplejson==3.8.2
 htmlmin==0.1.10
 uWSGI==2.0.14
 raven==5.32.0
+blinker==1.4
 
