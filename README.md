@@ -6,11 +6,12 @@ You'll need to set the following environmental variables for the testing environ
 
 ```
 OPENSHIFT_POSTGRESQL_DB_PASSWORD=""
-OPENSHIFT_POSTGRESQL_DB_URL="postgresql://x:x@localhost/apihoyodecrimen"
+OPENSHIFT_POSTGRESQL_DB_URL="postgresql://user:password@localhost/apihoyodecrimen"
 REDIS_PASSWORD=""
 OPENSHIFT_REDIS_HOST='127.0.0.1'
 OPENSHIFT_REDIS_PORT='6379'
 OPENSHIFT_APP_UUID=true (only when running in production)
+SENTRY_DSN = Your [sentry.io](sentry.io) dsn
 ```
 
 ##To deploy a testing server you have to:
