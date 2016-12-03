@@ -10,7 +10,7 @@ import os
 #from redis import Redis
 from api.api import API, cache
 from flask_babel import Babel
-from flask_frozen import Freezer
+#from flask_frozen import Freezer
 from htmlmin.main import minify
 import functools
 from raven.contrib.flask import Sentry
@@ -29,14 +29,18 @@ db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
 
 
+# report exceptions to sentry.io
+sentry = Sentry(dsn= os.environ['SENTRY_DSN'])
+sentry.init_app(app)
+
 cache.init_app(app)
 assets = Environment(app)
 assets.versions = 'hash'    # use the last modified timestamp
 babel = Babel(app)
 
 
-freezer = Freezer(app)
-app.config['FREEZER_STATIC_IGNORE'] = ['/api/v1/*']
+#freezer = Freezer(app)
+#app.config['FREEZER_STATIC_IGNORE'] = ['/api/v1/*']
 
 def uglify(route_function):
     @functools.wraps(route_function)
@@ -453,9 +457,6 @@ if __name__ == '__main__':
         #render_template = uglify(render_template)
     else:
         render_template = uglify(render_template)
-        # report exceptions to sentry.io
-        sentry = Sentry(dsn= os.environ['SENTRY_DSN'])
-        sentry.init_app(app)
 
     #freezer.freeze()
     app.run(debug=debug)
