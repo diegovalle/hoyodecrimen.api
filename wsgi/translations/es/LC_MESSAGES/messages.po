@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2016-12-02 20:51-0600\n"
-"PO-Revision-Date: 2016-12-02 20:51-0600\n"
+"PO-Revision-Date: 2016-12-02 22:08-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -62,7 +62,7 @@ msgstr "Creado por <a href=\"https://www.diegovalle.net\">Diego Valle</a>"
 
 #: templates/about.html:147
 msgid "To keep the site going I need your help, you can sponsor me at <a href=\"https://www.patreon.com/hoyodecrimen\">patreon</a>"
-msgstr "Para mantener el sitio necesito de tu ayuda. Puedes hacerte patrocinador en <a href=\"https://www.patreon.com/hoyodecrimen\">patreon</a>"
+msgstr "Para mantener el sitio necesito de tu ayuda. Puedes convertirte en patrocinador visitando mi <a href=\"https://www.patreon.com/hoyodecrimen\">patreon</a>"
 
 #: templates/about.html:150
 msgid "Crime data since 2013 comes from a <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore."
