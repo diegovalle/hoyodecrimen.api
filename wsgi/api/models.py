@@ -1,5 +1,4 @@
-from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey
+from flask_sqlalchemy import SQLAlchemy
 from geoalchemy2 import Geometry
 
 db = SQLAlchemy()

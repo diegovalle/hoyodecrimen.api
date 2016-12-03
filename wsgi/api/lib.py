@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import jsonify
-from .models import db, Cuadrantes, Cuadrantes_Poly
+from .models import Cuadrantes
 from datetime import datetime
-from sqlalchemy import func, and_
+from sqlalchemy import func
 import time
 
 class InvalidAPIUsage(Exception):
