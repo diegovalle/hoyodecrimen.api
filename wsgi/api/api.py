@@ -34,7 +34,7 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 # Use redis if not running in Openshift
 if 'OPENSHIFT_APP_UUID' not in os.environ:
     cache = Cache(config={
-        'CACHE_TYPE': 'simple',  # null or simple
+        'CACHE_TYPE': 'null',  # null or simple
         'CACHE_DIR': '/tmp',
         'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
         'CACHE_THRESHOLD': 922337203685477580,
