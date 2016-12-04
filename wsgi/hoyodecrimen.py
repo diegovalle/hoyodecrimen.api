@@ -420,6 +420,11 @@ def static_apple(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'apple-touch-icon-' + size + '.png')
 
+@app.route('/apple-touch-icon.png')
+def apple_icon():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon.png')
+
 @app.route('/android-icon-<string:size>.png')
 def static_android(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
