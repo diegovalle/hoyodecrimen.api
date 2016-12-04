@@ -1,0 +1,35 @@
+machine:
+  # Override /etc/hosts
+  hosts:
+    hoyodecrimen.com: 127.0.0.1
+
+## Customize dependencies
+dependencies:
+  pre:
+    - sudo apt update
+    - sudo apt-get install -y npm
+    - npm install -g grunt-cli bower
+    - npm install -g casperjs
+    - virtualenv hoyo_ansible && source hoyo_ansible/bin/activate && pip install ansible
+
+  override:
+    # password for ansible ssh keys
+    - cp ansible/notsecrets.yml ansible/secrets.yml
+    - source crimenmexico_ansible/bin/activate && cd ansible && ansible-playbook -i "localhost," -c local playbook.yml --sudo  && cd ..
+  
+  # we automatically cache and restore many dependencies between
+  # builds. If you need to, you can add custom paths to cache:
+  cache_directories:
+    - /usr/lib/R/library
+
+## Customize test commands
+test:
+  override:  
+    - casperjs --url=http://hoyodecrimen.com  --ignore-ssl-errors test wsgi/test.js
+
+general:
+  branches:
+    only:
+      - master # list of branches to build
+      - develop
+

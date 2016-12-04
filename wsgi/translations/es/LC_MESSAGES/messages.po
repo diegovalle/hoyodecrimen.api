@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-12-02 20:51-0600\n"
-"PO-Revision-Date: 2016-12-02 22:08-0600\n"
+"POT-Creation-Date: 2016-12-04 12:26-0600\n"
+"PO-Revision-Date: 2016-12-04 12:26-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -100,9 +100,13 @@ msgstr "Pueden descargar un mapa de los cuadrantes en formato GeoJSON <a href=\"
 msgid "This webapp is opensource and you can view the code on <a href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
 msgstr "El código fuente de la aplicación está disponible en <a href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
 
-#: templates/about.html:163 templates/about.html:167 templates/about.html:171
-#: templates/about.html:175 templates/about.html:179 templates/about.html:183
-#: templates/about.html:187 templates/charts.html:205 templates/charts.html:209
+#: templates/about.html:163
+msgid "I take your security seriously, if you believe you&#x27;ve found a vulnerability in this website please report it to <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. You can find my PGP key by googling it."
+msgstr "La seguridad de este sitio es mi prioridad, si crees haber encontrado una vulnerabilidad no dudes en reportarla a <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. Puedes encontrar mi llave PGP usando Google."
+
+#: templates/about.html:165 templates/about.html:169 templates/about.html:173
+#: templates/about.html:177 templates/about.html:181 templates/about.html:185
+#: templates/about.html:189 templates/charts.html:205 templates/charts.html:209
 #: templates/charts.html:213 templates/charts.html:217
 #: templates/charts.html:221 templates/charts.html:225
 #: templates/charts.html:229 templates/days.html:259 templates/days.html:263
@@ -113,37 +117,37 @@ msgstr "El código fuente de la aplicación está disponible en <a href=\"https:
 msgid "Crime by Sector"
 msgstr "Crimen por Sector"
 
-#: templates/about.html:164 templates/charts.html:206 templates/days.html:260
+#: templates/about.html:166 templates/charts.html:206 templates/days.html:260
 #: templates/hours.html:257
 msgid "/images/total-sector-hom.png"
 msgstr "/images/total-sector-hom_es.png"
 
-#: templates/about.html:168 templates/charts.html:210 templates/days.html:264
+#: templates/about.html:170 templates/charts.html:210 templates/days.html:264
 #: templates/hours.html:261
 msgid "/images/total-sector-rncv.png"
 msgstr "/images/total-sector-rncv_es.png"
 
-#: templates/about.html:172 templates/charts.html:214 templates/days.html:268
+#: templates/about.html:174 templates/charts.html:214 templates/days.html:268
 #: templates/hours.html:265
 msgid "/images/total-sector-rvcv.png"
 msgstr "/images/total-sector-rvcv_es.png"
 
-#: templates/about.html:176 templates/charts.html:218 templates/days.html:272
+#: templates/about.html:178 templates/charts.html:218 templates/days.html:272
 #: templates/hours.html:269
 msgid "/images/total-sector-rvsv.png"
 msgstr "/images/total-sector-rvsv_es.png"
 
-#: templates/about.html:180 templates/charts.html:222 templates/days.html:276
+#: templates/about.html:182 templates/charts.html:222 templates/days.html:276
 #: templates/hours.html:273
 msgid "/images/total-sector-rtcv.png"
 msgstr "/images/total-sector-rtcv_es.png"
 
-#: templates/about.html:184 templates/charts.html:226 templates/days.html:280
+#: templates/about.html:186 templates/charts.html:226 templates/days.html:280
 #: templates/hours.html:277
 msgid "/images/total-sector-rtsv.png"
 msgstr "/images/total-sector-rtsv_es.png"
 
-#: templates/about.html:188 templates/charts.html:230 templates/days.html:284
+#: templates/about.html:190 templates/charts.html:230 templates/days.html:284
 #: templates/hours.html:281
 msgid "/images/total-sector-rccv.png"
 msgstr "/images/total-sector-rccv_es.png"
