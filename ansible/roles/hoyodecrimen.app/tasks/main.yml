@@ -31,12 +31,6 @@
     - index.sql
 
 
-
-- name: create tables
-  become: true
-  become_user: "{{ username }}"
-  shell: psql {{dbname}} < /tmp/db.sql
-
 - name: create postgis extension for apihoyodecrimen db
   become: true
   become_user: postgres
@@ -45,6 +39,12 @@
     PGPASSWORD: "{{DB_PASSWORD}}"
   with_items:
     - psql -d {{dbname}} -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+
+
+- name: create tables
+  become: true
+  become_user: "{{ username }}"
+  shell: psql {{dbname}} < /tmp/db.sql
 
 - name: copy database data
   become: true
