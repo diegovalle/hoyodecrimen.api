@@ -15,7 +15,7 @@ dependencies:
   override:
     # password for ansible ssh keys
     - cp ansible/notsecrets.yml ansible/secrets.yml
-    - source hoyo_ansible/bin/activate && cd ansible && ansible-playbook -i "localhost," -c local playbook.yml --sudo  && cd ..
+    - source hoyo_ansible/bin/activate && cd ansible && ansible-playbook -i "localhost," -c local hoyodecrimen.yml --sudo  && cd ..
   
   # we automatically cache and restore many dependencies between
   # builds. If you need to, you can add custom paths to cache:
