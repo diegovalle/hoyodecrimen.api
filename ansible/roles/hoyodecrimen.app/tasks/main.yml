@@ -30,7 +30,7 @@
     - db.sql
     - index.sql
 
-- service: name=hoyodecrimen state=stopped
+
 
 - name: create tables
   become: true
