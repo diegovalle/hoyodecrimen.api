@@ -37,6 +37,11 @@
   become_user: "{{ username }}"
   shell: psql {{dbname}} < /tmp/db.sql
 
+- name: add indexes
+  become: true
+  become_user: "{{ username }}"
+  shell: psql {{dbname}} < /tmp/index.sql
+
 - name: create postgis extension for apihoyodecrimen db
   become: true
   become_user: postgres
@@ -82,11 +87,6 @@
     PGPASSWORD: "{{DB_PASSWORD}}"
   with_items:
     - psql -d {{dbname}} < /var/www/hoyodecrimen.com/hoyodecrimen.api/data/cuadrantes_poly.sql
-
-- name: add indexes
-  become: true
-  become_user: "{{ username }}"
-  shell: psql {{dbname}} < /tmp/index.sql
 
 - name: create a file with the enviromental variables
   copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
