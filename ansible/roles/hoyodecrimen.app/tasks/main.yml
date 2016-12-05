@@ -97,6 +97,14 @@
 - name: update pip
   command: pip2 install --upgrade pip
 
+- name: ensure pip is latest version in virtenv
+  become: true
+  become_user: "{{ username }}"
+  pip:
+    name: pip
+    virtualenv: /var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv
+    state: latest
+
 - name: Install pip requirements
   become: true
   become_user: "{{ username }}"
