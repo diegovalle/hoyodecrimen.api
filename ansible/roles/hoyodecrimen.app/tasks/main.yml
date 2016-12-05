@@ -58,10 +58,11 @@
     - psql -d {{dbname}} -c "\copy pgj (crime,date,count) from '/tmp/pgj.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
     - psql -d {{dbname}} -c "\copy crime_latlong  (cuadrante,crime,date,hour,year,month,latitude,longitude,id) from '/tmp/crime-lat-long.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
 
-- name: Install the package redis
-  apt:
-    name: redis-server
-    state: present
+- name: Install redis
+  apt: name="{{ item }}" state=latest
+  with_items:
+    - redis-server
+    - python-redis
 
 - name: create dir for repo
   file: path=/var/www/hoyodecrimen.com/hoyodecrimen.api/ state=directory owner={{username}} group=www-data mode=0774
