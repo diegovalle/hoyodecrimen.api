@@ -111,7 +111,7 @@
   become_user: "{{ username }}"
   pip: requirements=/var/www/hoyodecrimen.com/hoyodecrimen.api/requirements.txt virtualenv=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv
 
-- redis: command=flush flush_mode=all
+#- redis: command=flush flush_mode=all
 
 - name: copy hoyodecrimen service conf
   copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
