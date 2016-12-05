@@ -88,10 +88,11 @@
   become_user: "{{ username }}"
   shell: psql {{dbname}} < /tmp/index.sql
 
-- name: create a file with the enviromental variables
+- name: copy the init file for the hoyodecrimen service
   copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
 
-- template: src=envars.j2 dest=/var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/envars owner={{username}} group=www-data mode=0640
+- name: create a file with the enviromental variables
+  template: src=envars.j2 dest=/var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/envars owner={{username}} group=www-data mode=0640
 
 - name: Install pip requirements
   become: true

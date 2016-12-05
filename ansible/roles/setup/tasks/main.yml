@@ -40,6 +40,8 @@
 - name: Install Packages
   apt: name="{{ item }}" state=latest
   with_items:
+    - python-dev
+    - python-virtualenv
     - git
     - xz-utils
     - ntp
