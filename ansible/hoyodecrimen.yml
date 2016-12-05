@@ -17,5 +17,6 @@
     - nginx
     - letsencrypt
     - postgresql
+    - rsyslog
     - hoyodecrimen.com
     - hoyodecrimen.app

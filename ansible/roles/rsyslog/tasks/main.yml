@@ -18,15 +18,15 @@
         - 40-nginx.conf
       notify: Restart rsyslog
 
-    - name: SSH config
+    - name: rsyslog config
       lineinfile: dest="{{ item.file }}" regexp="{{ item.regexp }}" line="{{ item.line }}" state=present
       with_items:
         - { regexp: '^$DefaultNetstreamDriverCAFile /etc/papertrail-bundle.pem # trust these CAs', line: '$DefaultNetstreamDriverCAFile /etc/papertrail-bundle.pem # trust these CAs', file: '/etc/rsyslog.conf'  }
         - { regexp: '^$ActionSendStreamDriver gtls # use gtls netstream driver', line: '$ActionSendStreamDriver gtls # use gtls netstream driver', file: '/etc/rsyslog.conf' }
         - { regexp: '^$ActionSendStreamDriverMode 1 # require TLS', line: '$ActionSendStreamDriverMode 1 # require TLS', file: '/etc/rsyslog.conf' }
         - { regexp: '^$ActionSendStreamDriverAuthMode x509/name # authenticate by hostname', line: '$ActionSendStreamDriverAuthMode x509/name # authenticate by hostname', file: '/etc/rsyslog.conf' }
-        - { regexp: '^$ActionSendStreamDriverPermittedPeer *.papertrailapp.com', line: '$ActionSendStreamDriverPermittedPeer *.papertrailapp.com', file: '/etc/rsyslog.conf' }
-        - { regexp: '^*.*          @@logs.papertrailapp.com:57466', line: '*.*          @@logs.papertrailapp.com:57466', file: '/etc/rsyslog.conf' }
+        - { regexp: '^$ActionSendStreamDriverPermittedPeer', line: '$ActionSendStreamDriverPermittedPeer *.papertrailapp.com', file: '/etc/rsyslog.conf' }
+        - { regexp: '^\*\.\*          @@logs.papertrailapp.com:57466', line: '*.*          @@logs.papertrailapp.com:57466', file: '/etc/rsyslog.conf' }
       notify: Restart rsyslog
 
 
