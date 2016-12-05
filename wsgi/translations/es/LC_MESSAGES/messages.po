@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-12-04 12:26-0600\n"
-"PO-Revision-Date: 2016-12-04 12:26-0600\n"
+"POT-Creation-Date: 2016-12-05 13:48-0600\n"
+"PO-Revision-Date: 2016-12-05 13:49-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -272,6 +272,10 @@ msgstr "Descargar los datos de criminalidad <a href=\"https://data.diegovalle.ne
 #: templates/base.html:131
 msgid "For a complete crime and safety report for all of Mexico please visit <a href=\"https://crimenmexico.diegovalle.net/en/\">CrimenMexico</a>."
 msgstr "Visiten <a href=\"https://crimenmexico.diegovalle.net/en/\">CrimenMexico</a> para una guía completa del crimen y seguridad en todo México."
+
+#: templates/base.html:166
+msgid "All rights reserved"
+msgstr "Todos los derechos reservados"
 
 #: templates/base.html:189
 msgid "8acd30bddc88809427bf568b635de1df754c10c9"
