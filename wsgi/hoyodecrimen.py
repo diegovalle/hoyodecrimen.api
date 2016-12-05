@@ -30,8 +30,11 @@ app.config.from_pyfile('apihoyodecrimen.cfg')
 
 
 # report exceptions to sentry.io
-sentry = Sentry(dsn= os.environ['SENTRY_DSN'])
-sentry.init_app(app)
+# first test if sentry.io is in the string
+# to see if we are in the testing environment
+if 'sentry.io' in os.environ['SENTRY_DSN']:
+    sentry = Sentry(dsn= os.environ['SENTRY_DSN'])
+    sentry.init_app(app)
 
 cache.init_app(app)
 assets = Environment(app)
