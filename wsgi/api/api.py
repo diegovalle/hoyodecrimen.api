@@ -326,6 +326,7 @@ def get_cuad_period(cuadrante, crime, start_date, max_date):
 
 @cache.memoize()
 def get_cuad_period_neighbors(cuadrante, crime, start_date, max_date):
+    #import pdb;pdb.set_trace()
     if crime == "ALL":
         filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
                    or_(*[func.upper(Cuadrantes.cuadrante) == x for x in neighbors[cuadrante]])]
@@ -333,7 +334,6 @@ def get_cuad_period_neighbors(cuadrante, crime, start_date, max_date):
         filters = [or_(*[func.upper(Cuadrantes.crime) == x for x in crime.split(',')])]
         filters.append(or_(*[func.upper(Cuadrantes.cuadrante) == x for x in neighbors[cuadrante]]))
         filters.append(and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date))
-    #import pdb;pdb.set_trace()
     return Cuadrantes.query. \
         filter(*filters). \
         with_entities(func.upper(Cuadrantes.crime).label('crime'),
