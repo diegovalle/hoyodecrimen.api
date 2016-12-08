@@ -387,6 +387,28 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
 
+    # Check that the cuadrantes polygons match the crime data
+    def test_cuadrantes(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/cuadrantes', content_type='application/json')
+        cuadrantes = tester.get('/api/v1/cuadrantes/geojson', content_type='application/json')
+        for i in range(0, len(json.loads(cuadrantes.data.decode('utf-8'))['features'])):
+            print( json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['cuadrante'])
+            cuadrante = tester.get('/api/v1/cuadrantes/' +  json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['cuadrante'] + '/crimes/homicidio%20doloso/series', content_type='application/json')
+            self.assertEqual(cuadrante.status_code, 200)
+            self.assertNotEqual(json.loads(cuadrante.data.decode('utf-8')), {"rows": []})
+
+    # Check that the sectores polygons match the crime data
+    def test_sectores(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/sectores/', content_type='application/json')
+        cuadrantes = tester.get('/api/v1/sectores/geojson', content_type='application/json')
+        for i in range(0, len(json.loads(cuadrantes.data.decode('utf-8'))['features'])):
+            print( json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['sector'])
+            cuadrante = tester.get('/api/v1/sectores/' +  json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['sector'] + '/crimes/homicidio%20doloso/series', content_type='application/json')
+            self.assertEqual(cuadrante.status_code, 200)
+            self.assertNotEqual(json.loads(cuadrante.data.decode('utf-8')), {"rows": []})
+
 
 if __name__ == '__main__':
     unittest.main()
