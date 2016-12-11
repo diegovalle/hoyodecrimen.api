@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-12-05 13:48-0600\n"
-"PO-Revision-Date: 2016-12-05 13:49-0600\n"
+"POT-Creation-Date: 2016-12-09 21:52-0600\n"
+"PO-Revision-Date: 2016-12-09 21:53-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -101,8 +101,8 @@ msgid "This webapp is opensource and you can view the code on <a href=\"https://
 msgstr "El código fuente de la aplicación está disponible en <a href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
 
 #: templates/about.html:163
-msgid "I take your security seriously, if you believe you&#x27;ve found a vulnerability in this website please report it to <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. You can find my PGP key by googling it."
-msgstr "La seguridad de este sitio es mi prioridad, si crees haber encontrado una vulnerabilidad no dudes en reportarla a <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. Puedes encontrar mi llave PGP usando Google."
+msgid "I take your security seriously, if you believe you&#x27;ve found a vulnerability in this website please report it to <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. You can get my PGP key from <a href=\"https://keybase.io/diegovalle\">keybase</a>."
+msgstr "La seguridad de este sitio es mi prioridad, si crees haber encontrado una vulnerabilidad no dudes en reportarla a <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. Puedes encontrar mi llave PGP en  <a href=\"https://keybase.io/diegovalle\">https://keybase.io/diegovalle</a>."
 
 #: templates/about.html:165 templates/about.html:169 templates/about.html:173
 #: templates/about.html:177 templates/about.html:181 templates/about.html:185
