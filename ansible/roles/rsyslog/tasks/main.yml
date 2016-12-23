@@ -5,8 +5,8 @@
 
     - name: download papertrail cert
       get_url: 
-        url: https://papertrailapp.com/tools/papertrail-bundle.pem
-        dest: /etc/papertrail-bundle.pem
+        url: https://logdog.loggly.com/media/logs-01.loggly.com_sha12.crt
+        dest: /etc/logs-01.loggly.com_sha12.crt
       notify: Restart rsyslog
 
     - name: Generate conf files
@@ -18,15 +18,20 @@
         - 40-nginx.conf
       notify: Restart rsyslog
 
+    - lineinfile:
+        dest: /etc/rsyslog.conf
+        line: '$template LogglyFormat,"<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [{{ LOGLY_TOKEN }}@41058 tag=\"RsyslogTLS\"] %msg%\n"'
+      notify: Restart rsyslog
+
     - name: rsyslog config
       lineinfile: dest="{{ item.file }}" regexp="{{ item.regexp }}" line="{{ item.line }}" state=present
       with_items:
-        - { regexp: '^$DefaultNetstreamDriverCAFile /etc/papertrail-bundle.pem # trust these CAs', line: '$DefaultNetstreamDriverCAFile /etc/papertrail-bundle.pem # trust these CAs', file: '/etc/rsyslog.conf'  }
+        - { regexp: '^$DefaultNetstreamDriverCAFile /etc/logs-01.loggly.com_sha12.crt # trust these CAs', line: '$DefaultNetstreamDriverCAFile /etc/logs-01.loggly.com_sha12.crt # trust these CAs', file: '/etc/rsyslog.conf'  }
         - { regexp: '^$ActionSendStreamDriver gtls # use gtls netstream driver', line: '$ActionSendStreamDriver gtls # use gtls netstream driver', file: '/etc/rsyslog.conf' }
         - { regexp: '^$ActionSendStreamDriverMode 1 # require TLS', line: '$ActionSendStreamDriverMode 1 # require TLS', file: '/etc/rsyslog.conf' }
         - { regexp: '^$ActionSendStreamDriverAuthMode x509/name # authenticate by hostname', line: '$ActionSendStreamDriverAuthMode x509/name # authenticate by hostname', file: '/etc/rsyslog.conf' }
-        - { regexp: '^$ActionSendStreamDriverPermittedPeer', line: '$ActionSendStreamDriverPermittedPeer *.papertrailapp.com', file: '/etc/rsyslog.conf' }
-        - { regexp: '^\*\.\*          @@logs.papertrailapp.com:57466', line: '*.*          @@logs.papertrailapp.com:57466', file: '/etc/rsyslog.conf' }
+        - { regexp: '^$ActionSendStreamDriverPermittedPeer', line: '$ActionSendStreamDriverPermittedPeer *.loggly.com', file: '/etc/rsyslog.conf' }
+        - { regexp: '^\*\.\*          @@logs-01.loggly.com:6514;LogglyFormat', line: '*.*         @@logs-01.loggly.com:6514;LogglyFormat', file: '/etc/rsyslog.conf' }
       notify: Restart rsyslog
 
 
