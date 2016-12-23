@@ -3,10 +3,8 @@
         name: rsyslog-gnutls
         state: present
 
-    - name: download papertrail cert
-      get_url: 
-        url: https://logdog.loggly.com/media/logs-01.loggly.com_sha12.crt
-        dest: /etc/logs-01.loggly.com_sha12.crt
+    - name: download loggly cert
+      command: curl -o /etc/logs-01.loggly.com_sha12.crt https://logdog.loggly.com/media/logs-01.loggly.com_sha12.crt
       notify: Restart rsyslog
 
     - name: Generate conf files
@@ -33,13 +31,3 @@
         - { regexp: '^$ActionSendStreamDriverPermittedPeer', line: '$ActionSendStreamDriverPermittedPeer *.loggly.com', file: '/etc/rsyslog.conf' }
         - { regexp: '^\*\.\*          @@logs-01.loggly.com:6514;LogglyFormat', line: '*.*         @@logs-01.loggly.com:6514;LogglyFormat', file: '/etc/rsyslog.conf' }
       notify: Restart rsyslog
-
-
-
-
-
-
-
-
-
-
