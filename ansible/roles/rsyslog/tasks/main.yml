@@ -18,7 +18,7 @@
 
     - lineinfile:
         dest: /etc/rsyslog.conf
-        line: '$template LogglyFormat,"<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [{{ LOGLY_TOKEN }}@41058 tag=\"RsyslogTLS\"] %msg%\n"'
+        line: '$template LogglyFormat,"<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [{{ LOGGLY_TOKEN }}@41058 tag=\"RsyslogTLS\"] %msg%\n"'
       notify: Restart rsyslog
 
     - name: rsyslog config
