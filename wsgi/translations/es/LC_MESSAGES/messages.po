@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-05-07 19:27-0500\n"
-"PO-Revision-Date: 2017-05-07 19:31-0500\n"
+"PO-Revision-Date: 2017-05-07 20:10-0500\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr "Para mantener el sitio necesito de tu ayuda. Puedes convertirte en patro
 
 #: templates/about.html:151
 msgid "Sadly, this site is suspend for the foreseeable future due to the refusal of the SSP-CDMX to provide updated crime information"
-msgstr "Tristemente, este ya no se ha podido actualizar debido a la negativa de la SSP-CDMX a contestar las solicitudes de información pidiéndoles datos actualizados."
+msgstr "Tristemente, este sitio ya no se ha podido actualizar debido a la negativa de la SSP-CDMX a contestar las solicitudes de información pidiéndoles datos actualizados."
 
 #: templates/about.html:155
 msgid "Crime data since 2013 comes from a <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore."
