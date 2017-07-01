@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>sphinxcontrib.httpdomain — Documenting RESTful HTTP APIs &mdash; HoyoDeCrimen API 1 documentation</title>
+    <title>sphinxcontrib.httpdomain — Documenting RESTful HTTP APIs &#8212; HoyoDeCrimen API 1 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -17,15 +17,17 @@
         VERSION:     '1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="HoyoDeCrimen API 1 documentation" href="../../../index.html" /> 
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -38,7 +40,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">HoyoDeCrimen API 1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HoyoDeCrimen API 1 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -48,7 +50,7 @@
           <div class="body" role="main">
             
   <span class="target" id="module-sphinxcontrib.httpdomain"></span><div class="section" id="sphinxcontrib-httpdomain-documenting-restful-http-apis">
-<h1><a class="reference internal" href="../test/index.html#module-sphinxcontrib.httpdomain" title="sphinxcontrib.httpdomain"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.httpdomain</span></code></a> &#8212; Documenting RESTful HTTP APIs<a class="headerlink" href="#sphinxcontrib-httpdomain-documenting-restful-http-apis" title="Permalink to this headline">¶</a></h1>
+<h1><a class="reference internal" href="../test/index.html#module-sphinxcontrib.httpdomain" title="sphinxcontrib.httpdomain"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.httpdomain</span></code></a> — Documenting RESTful HTTP APIs<a class="headerlink" href="#sphinxcontrib-httpdomain-documenting-restful-http-apis" title="Permalink to this headline">¶</a></h1>
 <p>This contrib extension, <a class="reference internal" href="../test/index.html#module-sphinxcontrib.httpdomain" title="sphinxcontrib.httpdomain"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.httpdomain</span></code></a>, provides a Sphinx
 domain for describing RESTful HTTP APIs.</p>
 <div class="admonition seealso">
@@ -66,7 +68,7 @@ See the following <code class="xref py py-mod docutils literal"><span class="pre
 </div>
 <p>In order to use it, add <a class="reference internal" href="../test/index.html#module-sphinxcontrib.httpdomain" title="sphinxcontrib.httpdomain"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.httpdomain</span></code></a> into
 <code class="xref py py-data docutils literal"><span class="pre">extensions</span></code> list of your Sphinx configuration file (<code class="file docutils literal"><span class="pre">conf.py</span></code>):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;sphinxcontrib.httpdomain&#39;</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sphinxcontrib.httpdomain&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="section" id="additional-configuration">
@@ -74,7 +76,7 @@ See the following <code class="xref py py-mod docutils literal"><span class="pre
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">http_headers_ignore_prefixes</span></code></dt>
 <dd><p class="first">List of HTTP header prefixes which should be ignored in strict mode:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">http_headers_ignore_prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;X-&#39;</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http_headers_ignore_prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;X-&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="last versionadded">
@@ -84,7 +86,7 @@ See the following <code class="xref py py-mod docutils literal"><span class="pre
 <dt><code class="docutils literal"><span class="pre">http_index_ignore_prefixes</span></code></dt>
 <dd><p class="first">Strips the leading segments from the endpoint paths by given list
 of prefixes:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">http_index_ignore_prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;/internal&#39;</span><span class="p">,</span> <span class="s">&#39;/_proxy&#39;</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http_index_ignore_prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/internal&#39;</span><span class="p">,</span> <span class="s1">&#39;/_proxy&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="last versionadded">
@@ -93,7 +95,7 @@ of prefixes:</p>
 </dd>
 <dt><code class="docutils literal"><span class="pre">http_index_shortname</span></code></dt>
 <dd><p class="first">Short name of the index which will appears on every page:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">http_index_shortname</span> <span class="o">=</span> <span class="s">&#39;api&#39;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http_index_shortname</span> <span class="o">=</span> <span class="s1">&#39;api&#39;</span>
 </pre></div>
 </div>
 <div class="last versionadded">
@@ -102,7 +104,7 @@ of prefixes:</p>
 </dd>
 <dt><code class="docutils literal"><span class="pre">http_index_localname</span></code></dt>
 <dd><p class="first">Full index name which is used on index page:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">http_index_shortname</span> <span class="o">=</span> <span class="s">&quot;My Project HTTP API&quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http_index_shortname</span> <span class="o">=</span> <span class="s2">&quot;My Project HTTP API&quot;</span>
 </pre></div>
 </div>
 <div class="last versionadded">
@@ -112,7 +114,7 @@ of prefixes:</p>
 <dt><code class="docutils literal"><span class="pre">http_strict_mode</span></code></dt>
 <dd><p class="first">When <code class="docutils literal"><span class="pre">True</span></code> (default) emits build errors when status codes, methods and
 headers are looks non-standard:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">http_strict_mode</span> <span class="o">=</span> <span class="bp">True</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">http_strict_mode</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
 <div class="last versionadded">
@@ -123,9 +125,9 @@ headers are looks non-standard:</p>
 </div>
 <div class="section" id="basic-usage">
 <h2>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
-<p>There are several provided <a class="reference internal" href="#directives"><span>directives</span></a> that describe
+<p>There are several provided <a class="reference internal" href="#directives"><span class="std std-ref">directives</span></a> that describe
 HTTP resources.</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">http:get</span><span class="p">::</span> /users/(int:user_id)/posts/(tag)
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">http:get</span><span class="p">::</span> /users/(int:user_id)/posts/(tag)
 
    The posts tagged with <span class="nv">`tag`</span> that the user (<span class="nv">`user_id`</span>) wrote.
 
@@ -179,13 +181,13 @@ HTTP resources.</p>
 <code class="descname">GET </code><code class="descname">/users/</code><span class="sig-paren">(</span><em class="property">int: </em><em>user_id</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#get--users-(int-user_id)-posts-(tag)" title="Permalink to this definition">¶</a></dt>
 <dd><p>The posts tagged with <cite>tag</cite> that the user (<cite>user_id</cite>) wrote.</p>
 <p><strong>Example request</strong>:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/users/123/posts/web</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/users/123/posts/web</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">example.com</span>
 <span class="na">Accept</span><span class="o">:</span> <span class="l">application/json, text/javascript</span>
 </pre></div>
 </div>
 <p><strong>Example response</strong>:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
 <span class="na">Vary</span><span class="o">:</span> <span class="l">Accept</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">text/javascript</span>
 
@@ -210,31 +212,31 @@ HTTP resources.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
-<li><strong>sort</strong> &#8211; one of <code class="docutils literal"><span class="pre">hit</span></code>, <code class="docutils literal"><span class="pre">created-at</span></code></li>
-<li><strong>offset</strong> &#8211; offset number. default is 0</li>
-<li><strong>limit</strong> &#8211; limit number. default is 30</li>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>sort</strong> – one of <code class="docutils literal"><span class="pre">hit</span></code>, <code class="docutils literal"><span class="pre">created-at</span></code></li>
+<li><strong>offset</strong> – offset number. default is 0</li>
+<li><strong>limit</strong> – limit number. default is 30</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Request Headers:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> &#8211; the response content type depends on
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – the response content type depends on
 <em class="mailheader">Accept</em> header</li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.8">Authorization</a> &#8211; optional OAuth token to authenticate</li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7235#section-4.2">Authorization</a> – optional OAuth token to authenticate</li>
 </ul>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Response Headers:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; this depends on <em class="mailheader">Accept</em>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – this depends on <em class="mailheader">Accept</em>
 header of request</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; no error</li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; there&#8217;s no user</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – no error</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – there’s no user</li>
 </ul>
 </td>
 </tr>
@@ -243,9 +245,9 @@ header of request</li>
 </dd></dl>
 
 </div></blockquote>
-<p>Of course, <a class="reference internal" href="#roles"><span>roles</span></a> that refer the directives as well.
+<p>Of course, <a class="reference internal" href="#roles"><span class="std std-ref">roles</span></a> that refer the directives as well.
 For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="na">:http:get:</span><span class="nv">`/users/(int:user_id)/posts/(tag)`</span>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="na">:http:get:</span><span class="nv">`/users/(int:user_id)/posts/(tag)`</span>
 </pre></div>
 </div>
 <p>will render like:</p>
@@ -257,63 +259,63 @@ For example:</p>
 <dl class="directive">
 <dt id="directive-http:options">
 <code class="descname">.. http:options::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:options" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.2">OPTIONS</a> method.
+<dd><p>Describes a HTTP resource’s <a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-4.3.7">OPTIONS</a> method.
 It can also be referred by <a class="reference internal" href="#role-http:options" title="http:options role"><code class="xref rst rst-role docutils literal"><span class="pre">http:options</span></code></a> role.</p>
 </dd></dl>
 
 <dl class="directive">
 <dt id="directive-http:head">
 <code class="descname">.. http:head::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:head" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.4">HEAD</a> method.
+<dd><p>Describes a HTTP resource’s <a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-4.3.2">HEAD</a> method.
 It can also be referred by <a class="reference internal" href="#role-http:head" title="http:head role"><code class="xref rst rst-role docutils literal"><span class="pre">http:head</span></code></a> role.</p>
 </dd></dl>
 
 <dl class="directive">
 <dt id="directive-http:post">
 <code class="descname">.. http:post::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5">POST</a> method.
+<dd><p>Describes a HTTP resource’s <a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-4.3.3">POST</a> method.
 It can also be referred by <a class="reference internal" href="#role-http:post" title="http:post role"><code class="xref rst rst-role docutils literal"><span class="pre">http:post</span></code></a> role.</p>
 </dd></dl>
 
 <dl class="directive">
 <dt id="directive-http:get">
 <code class="descname">.. http:get::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.3">GET</a> method.
+<dd><p>Describes a HTTP resource’s <a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-4.3.1">GET</a> method.
 It can also be referred by <a class="reference internal" href="#role-http:get" title="http:get role"><code class="xref rst rst-role docutils literal"><span class="pre">http:get</span></code></a> role.</p>
 </dd></dl>
 
 <dl class="directive">
 <dt id="directive-http:put">
 <code class="descname">.. http:put::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6">PUT</a> method.
+<dd><p>Describes a HTTP resource’s <a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-4.3.4">PUT</a> method.
 It can also be referred by <a class="reference internal" href="#role-http:put" title="http:put role"><code class="xref rst rst-role docutils literal"><span class="pre">http:put</span></code></a> role.</p>
 </dd></dl>
 
 <dl class="directive">
 <dt id="directive-http:patch">
 <code class="descname">.. http:patch::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:patch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s <a class="reference external" href="http://tools.ietf.org/html/rfc5789#section-2">PATCH</a> method.
+<dd><p>Describes a HTTP resource’s <a class="reference external" href="http://tools.ietf.org/html/rfc5789#section-2">PATCH</a> method.
 It can also be referred by <a class="reference internal" href="#role-http:patch" title="http:patch role"><code class="xref rst rst-role docutils literal"><span class="pre">http:patch</span></code></a> role.</p>
 </dd></dl>
 
 <dl class="directive">
 <dt id="directive-http:delete">
 <code class="descname">.. http:delete::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.7">DELETE</a> method.
+<dd><p>Describes a HTTP resource’s <a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-4.3.5">DELETE</a> method.
 It can also be referred by <a class="reference internal" href="#role-http:delete" title="http:delete role"><code class="xref rst rst-role docutils literal"><span class="pre">http:delete</span></code></a> role.</p>
 </dd></dl>
 
 <dl class="directive">
 <dt id="directive-http:trace">
 <code class="descname">.. http:trace::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:trace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.8">TRACE</a> method.
+<dd><p>Describes a HTTP resource’s <a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-4.3.8">TRACE</a> method.
 It can also be referred by <a class="reference internal" href="#role-http:trace" title="http:trace role"><code class="xref rst rst-role docutils literal"><span class="pre">http:trace</span></code></a> role.</p>
 </dd></dl>
 
 <dl class="directive">
 <dt id="directive-http:copy">
 <code class="descname">.. http:copy::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s <a class="reference external" href="http://tools.ietf.org/html/rfc2518#section-8.8">COPY</a> method.
+<dd><p>Describes a HTTP resource’s <a class="reference external" href="http://tools.ietf.org/html/rfc2518#section-8.8">COPY</a> method.
 It can also be referred by <a class="reference internal" href="#role-http:copy" title="http:copy role"><code class="xref rst rst-role docutils literal"><span class="pre">http:copy</span></code></a> role.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 1.3.0.</span></p>
@@ -323,7 +325,7 @@ It can also be referred by <a class="reference internal" href="#role-http:copy" 
 <dl class="directive">
 <dt id="directive-http:any">
 <code class="descname">.. http:any::</code><code class="descclassname"> path</code><a class="headerlink" href="#directive-http:any" title="Permalink to this definition">¶</a></dt>
-<dd><p>Describes a HTTP resource&#8217;s which accepts requests with
+<dd><p>Describes a HTTP resource’s which accepts requests with
 <em>any</em> method. Useful for cases when requested resource
 proxying the request to some other location keeping original request
 context. It can also be referred by <a class="reference internal" href="#role-http:any" title="http:any role"><code class="xref rst rst-role docutils literal"><span class="pre">http:any</span></code></a> role.</p>
@@ -341,21 +343,21 @@ context. It can also be referred by <a class="reference internal" href="#role-ht
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">noindex</span></code></dt>
 <dd><p class="first">Excludes specific directive from HTTP routing table.</p>
-<div class="last highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">http:get</span><span class="p">::</span> /users/(int:user_id)/posts/(tag)
+<div class="last highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">http:get</span><span class="p">::</span> /users/(int:user_id)/posts/(tag)
    <span class="nc">:noindex:</span>
 </pre></div>
 </div>
 </dd>
 <dt><code class="docutils literal"><span class="pre">deprecated</span></code></dt>
 <dd><p class="first">Marks the method as deprecated in HTTP routing table.</p>
-<div class="last highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">http:get</span><span class="p">::</span> /users/(int:user_id)/tagged_posts
+<div class="last highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">http:get</span><span class="p">::</span> /users/(int:user_id)/tagged_posts
    <span class="nc">:deprecated:</span>
 </pre></div>
 </div>
 </dd>
 <dt><code class="docutils literal"><span class="pre">synopsis</span></code></dt>
 <dd><p class="first">Adds short description for HTTP routing table.</p>
-<div class="last highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">http:get</span><span class="p">::</span> /users/(int:user_id)/posts/(tag)
+<div class="last highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">http:get</span><span class="p">::</span> /users/(int:user_id)/posts/(tag)
    <span class="nc">:synopsis:</span> <span class="nf">Returns posts by the specified tag for the user</span>
 </pre></div>
 </div>
@@ -374,10 +376,10 @@ nicely:</p>
 <dt><code class="docutils literal"><span class="pre">queryparameter</span></code>, <code class="docutils literal"><span class="pre">queryparam</span></code>, <code class="docutils literal"><span class="pre">qparam</span></code>, <code class="docutils literal"><span class="pre">query</span></code></dt>
 <dd><p class="first">Description of parameter passed by request query string.</p>
 <p>It optionally can be typed, all the query parameters will have obviously
-string types though.  But it&#8217;s useful if there&#8217;s conventions for it.</p>
+string types though.  But it’s useful if there’s conventions for it.</p>
 <div class="last versionchanged">
 <p><span class="versionmodified">Changed in version 1.1.9: </span>It can be typed e.g.:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="nc">:query string title:</span> <span class="nf">the post title</span>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="nc">:query string title:</span> <span class="nf">the post title</span>
 <span class="nc">:query string body:</span> <span class="nf">the post body</span>
 <span class="nc">:query boolean sticky:</span> <span class="nf">whether it&#39;s sticky or not</span>
 </pre></div>
@@ -400,7 +402,7 @@ string types though.  But it&#8217;s useful if there&#8217;s conventions for it.
 </div>
 <div class="last versionchanged">
 <p><span class="versionmodified">Changed in version 1.1.9: </span>It can be typed e.g.:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="nc">:jsonparam string title:</span> <span class="nf">the post title</span>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="nc">:jsonparam string title:</span> <span class="nf">the post title</span>
 <span class="nc">:jsonparam string body:</span> <span class="nf">the post body</span>
 <span class="nc">:jsonparam boolean sticky:</span> <span class="nf">whether it&#39;s sticky or not</span>
 </pre></div>
@@ -411,7 +413,7 @@ string types though.  But it&#8217;s useful if there&#8217;s conventions for it.
 <dd><p class="first">Description of a single field of JSON object passed by request body,
 encoded in <em class="mimetype">application/json</em>. The key difference from <code class="docutils literal"><span class="pre">json</span></code> is
 explicitly defined use-case (request/response) of the described object.</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="nc">:&lt;json string title:</span> <span class="nf">the post title</span>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="nc">:&lt;json string title:</span> <span class="nf">the post title</span>
 <span class="nc">:&lt;json string body:</span> <span class="nf">the post body</span>
 <span class="nc">:&lt;json boolean sticky:</span> <span class="nf">whether it&#39;s sticky or not</span>
 </pre></div>
@@ -423,7 +425,7 @@ explicitly defined use-case (request/response) of the described object.</p>
 <dt><code class="docutils literal"><span class="pre">resjsonobj</span></code>, <code class="docutils literal"><span class="pre">resjson</span></code>, <code class="docutils literal"><span class="pre">&gt;jsonobj</span></code>, <code class="docutils literal"><span class="pre">&gt;json</span></code></dt>
 <dd><p class="first">Description of a single field of JSON object returned with response body,
 encoded in <em class="mimetype">application/json</em>.</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="nc">:&gt;json boolean ok:</span> <span class="nf">Operation status</span>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="nc">:&gt;json boolean ok:</span> <span class="nf">Operation status</span>
 </pre></div>
 </div>
 <div class="last versionadded">
@@ -436,12 +438,12 @@ encoded in <em class="mimetype">application/json</em>.</p>
 <blockquote>
 <div><p>Similar to <code class="docutils literal"><span class="pre">&lt;json</span></code> and <code class="docutils literal"><span class="pre">&gt;json</span></code> respectively, but uses for describing
 objects schema inside of returned array.</p>
-<p>Let&#8217;s say, the response contains the following data:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[{</span><span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="o">:</span> <span class="s2">&quot;forbidden&quot;</span><span class="p">,</span> <span class="s2">&quot;reason&quot;</span><span class="o">:</span> <span class="s2">&quot;sorry&quot;</span><span class="p">}]</span>
+<p>Let’s say, the response contains the following data:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="o">:</span> <span class="s2">&quot;forbidden&quot;</span><span class="p">,</span> <span class="s2">&quot;reason&quot;</span><span class="o">:</span> <span class="s2">&quot;sorry&quot;</span><span class="p">}]</span>
 </pre></div>
 </div>
 <p>Then we can describe it in the following way:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="nc">:&gt;jsonarr boolean ok:</span> <span class="nf">Operation status. Not present in case of error</span>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="nc">:&gt;jsonarr boolean ok:</span> <span class="nf">Operation status. Not present in case of error</span>
 <span class="nc">:&gt;jsonarr string id:</span> <span class="nf">Object ID</span>
 <span class="nc">:&gt;jsonarr string error:</span> <span class="nf">Error type</span>
 <span class="nc">:&gt;jsonarr string reason:</span> <span class="nf">Error reason</span>
@@ -451,7 +453,7 @@ objects schema inside of returned array.</p>
 <p><span class="versionmodified">New in version 1.3.0.</span></p>
 </div>
 </div></blockquote>
-<div class="highlight-rst"><div class="highlight"><pre><span class="nc">:&gt;json boolean status:</span> <span class="nf">Operation status</span>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="nc">:&gt;json boolean status:</span> <span class="nf">Operation status</span>
 </pre></div>
 </div>
 <dl class="docutils">
@@ -471,7 +473,7 @@ objects schema inside of returned array.</p>
 <dd>Description of response status code.</dd>
 </dl>
 <p>For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">http:post</span><span class="p">::</span> /posts/(int:post_id)
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">http:post</span><span class="p">::</span> /posts/(int:post_id)
 
    Replies a comment to the post.
 
@@ -499,35 +501,35 @@ objects schema inside of returned array.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>post_id</strong> (<em>int</em>) &#8211; post&#8217;s unique id</li>
+<li><strong>post_id</strong> (<em>int</em>) – post’s unique id</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Form Parameters:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
-<li><strong>email</strong> &#8211; author email address</li>
-<li><strong>body</strong> &#8211; comment body</li>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>email</strong> – author email address</li>
+<li><strong>body</strong> – comment body</li>
 </ul>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Request Headers:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a> &#8211; the response content type depends on
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – the response content type depends on
 <em class="mailheader">Accept</em> header</li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.8">Authorization</a> &#8211; optional OAuth token to authenticate</li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7235#section-4.2">Authorization</a> – optional OAuth token to authenticate</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Response Headers:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a> &#8211; this depends on <em class="mailheader">Accept</em>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – this depends on <em class="mailheader">Accept</em>
 header of request</li>
 </ul>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.3">302 Found</a> &#8211; and then redirects to <span class="problematic">GET /posts/(int:post_id)</span></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> &#8211; when form parameters are missing</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.3">302 Found</a> – and then redirects to <code class="xref http http-get docutils literal"><span class="pre">GET</span> <span class="pre">/posts/(int:post_id)</span></code></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – when form parameters are missing</li>
 </ul>
 </td>
 </tr>
@@ -602,11 +604,11 @@ header of request</li>
 <dl class="role">
 <dt id="role-http:statuscode">
 <code class="descname">:http:statuscode:</code><a class="headerlink" href="#role-http:statuscode" title="Permalink to this definition">¶</a></dt>
-<dd><p>A reference to a HTTP status code. The text &#8220;<cite>code</cite> <cite>Status Name</cite>&#8221; is
+<dd><p>A reference to a HTTP status code. The text “<cite>code</cite> <cite>Status Name</cite>” is
 generated; in the HTML output, this text is a hyperlink to a web reference
 of the specified status code.</p>
 <p>For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="m">-</span> <span class="na">:http:statuscode:</span><span class="nv">`404`</span>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="m">-</span> <span class="na">:http:statuscode:</span><span class="nv">`404`</span>
 <span class="m">-</span> <span class="na">:http:statuscode:</span><span class="nv">`200 Oll Korrect`</span>
 </pre></div>
 </div>
@@ -628,18 +630,18 @@ of the specified status code.</p>
 <dd><p>A reference to a HTTP method (also known as <em>verb</em>). In the HTML output,
 this text is a hyperlink to a web reference of the specified HTTP method.</p>
 <p>For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre>It accepts <span class="na">:http:method:</span><span class="nv">`post`</span> only.
+<div class="highlight-rst"><div class="highlight"><pre><span></span>It accepts <span class="na">:http:method:</span><span class="nv">`post`</span> only.
 </pre></div>
 </div>
 <p>It will render like this:</p>
 <blockquote>
-<div>It accepts <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5">POST</a> only.</div></blockquote>
+<div>It accepts <a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-4.3.3">POST</a> only.</div></blockquote>
 </dd></dl>
 
 <dl class="role">
 <dt id="role-mimetype">
 <code class="descname">:mimetype:</code><a class="headerlink" href="#role-mimetype" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exactly it doesn&#8217;t belong to HTTP domain, but standard domain. It refers
+<dd><p>Exactly it doesn’t belong to HTTP domain, but standard domain. It refers
 to the MIME type like <em class="mimetype">text/html</em>.</p>
 </dd></dl>
 
@@ -654,63 +656,63 @@ to the MIME type like <em class="mimetype">text/html</em>.</p>
 <dl class="role">
 <dt id="role-http:header">
 <code class="descname">:http:header:</code><a class="headerlink" href="#role-http:header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similar to <a class="reference internal" href="#role-mimetype" title="mimetype role"><code class="xref rst rst-role docutils literal"><span class="pre">mimetype</span></code></a> role, it doesn&#8217;t belong to HTTP domain,
+<dd><p>Similar to <a class="reference internal" href="#role-mimetype" title="mimetype role"><code class="xref rst rst-role docutils literal"><span class="pre">mimetype</span></code></a> role, it doesn’t belong to HTTP domain,
 but standard domain. It refers to the HTTP request/response header field
-like <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a>.</p>
+like <a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a>.</p>
 <p>Known HTTP headers:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Accept</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.2">Accept-Charset</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3">Accept-Encoding</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4">Accept-Language</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.5">Accept-Ranges</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.6">Age</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.7">Allow</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.8">Authorization</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9">Cache-Control</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1">Connection</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11">Content-Encoding</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.12">Content-Language</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.13">Content-Length</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.14">Content-Location</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.3">Accept-Charset</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.4">Accept-Encoding</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.3.5">Accept-Language</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7233#section-2.3">Accept-Ranges</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7234#section-5.1">Age</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-7.4.1">Allow</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7235#section-4.2">Authorization</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7234#section-5.2">Cache-Control</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7230#section-6.1">Connection</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.2.2">Content-Encoding</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.3.2">Content-Language</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7230#section-3.3.2">Content-Length</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.4.2">Content-Location</a></li>
 <li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.15">Content-MD5</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.16">Content-Range</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7233#section-4.2">Content-Range</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a></li>
 <li><a class="reference external" href="http://tools.ietf.org/html/rfc2109#section-4.3.4">Cookie</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.18">Date</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-7.1.1.2">Date</a></li>
 <li><a class="reference external" href="http://tools.ietf.org/html/rfc2518#section-9.3">Destination</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19">ETag</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.2">Expect</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.21">Expires</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.22">From</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.23">Host</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24">If-Match</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25">If-Modified-Since</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26">If-None-Match</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.27">If-Range</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.28">If-Unmodified-Since</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.29">Last-Modified</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-2.3">ETag</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.1.1">Expect</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7234#section-5.3">Expires</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.5.2">From</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7230#section-5.4">Host</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7232#section-3.1">If-Match</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7232#section-3.3">If-Modified-Since</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7232#section-3.2">If-None-Match</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7233#section-3.2">If-Range</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7232#section-3.4">If-Unmodified-Since</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7232#section-2.2">Last-Modified</a></li>
 <li><a class="reference external" href="http://www.w3.org/TR/eventsource/#last-event-id">Last-Event-ID</a></li>
 <li><a class="reference external" href="http://tools.ietf.org/html/rfc5988#section-5">Link</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3">Location</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.31">Max-Forwards</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.32">Pragma</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.33">Proxy-Authenticate</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.34">Proxy-Authorization</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35">Range</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.36">Referer</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.37">Retry-After</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.38">Server</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-7.1.2">Location</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.1.2">Max-Forwards</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7234#section-5.4">Pragma</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7235#section-4.3">Proxy-Authenticate</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7235#section-4.4">Proxy-Authorization</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7233#section-3.1">Range</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.5.2">Referer</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-7.1.3">Retry-After</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-7.4.2">Server</a></li>
 <li><a class="reference external" href="http://tools.ietf.org/html/rfc2109#section-4.2.2">Set-Cookie</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.39">TE</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4">Trailer</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41">Transfer-Encoding</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.42">Upgrade</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43">User-Agent</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.44">Vary</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.45">Via</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.47">WWW-Authenticate</a></li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.46">Warning</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7230#section-4.3">TE</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7230#section-4.4">Trailer</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7230#section-3.3.1">Transfer-Encoding</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7230#section-6.7">Upgrade</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-5.5.3">User-Agent</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7231#section-7.1.4">Vary</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7230#section-5.7.1">Via</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7235#section-4.1">WWW-Authenticate</a></li>
+<li><a class="reference external" href="http://tools.ietf.org/html/rfc7234#section-5.5">Warning</a></li>
 </ul>
 <p>If HTTP header is unknown, the build error will be raised unless header has
 <code class="docutils literal"><span class="pre">X-</span></code> prefix which marks him as custom one like <em>X-Foo-Bar</em>.</p>
@@ -721,19 +723,19 @@ like <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc
 
 <span class="target" id="module-sphinxcontrib.autohttp.flask"></span></div>
 <div class="section" id="sphinxcontrib-autohttp-flask-exporting-api-reference-from-flask-app">
-<h2><a class="reference internal" href="../test/index.html#module-sphinxcontrib.autohttp.flask" title="sphinxcontrib.autohttp.flask"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.flask</span></code></a> &#8212; Exporting API reference from Flask app<a class="headerlink" href="#sphinxcontrib-autohttp-flask-exporting-api-reference-from-flask-app" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="../test/index.html#module-sphinxcontrib.autohttp.flask" title="sphinxcontrib.autohttp.flask"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.flask</span></code></a> — Exporting API reference from Flask app<a class="headerlink" href="#sphinxcontrib-autohttp-flask-exporting-api-reference-from-flask-app" title="Permalink to this headline">¶</a></h2>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 1.1.</span></p>
 </div>
 <p>It generates RESTful HTTP API reference documentation from a <a class="reference external" href="http://flask.pocoo.org/">Flask</a>
-application&#8217;s routing table, similar to <code class="xref py py-mod docutils literal"><span class="pre">sphinx.ext.autodoc</span></code>.</p>
+application’s routing table, similar to <code class="xref py py-mod docutils literal"><span class="pre">sphinx.ext.autodoc</span></code>.</p>
 <p>In order to use it, add <a class="reference internal" href="../test/index.html#module-sphinxcontrib.autohttp.flask" title="sphinxcontrib.autohttp.flask"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.flask</span></code></a> into
 <code class="xref py py-data docutils literal"><span class="pre">extensions</span></code> list of your Sphinx configuration (<code class="file docutils literal"><span class="pre">conf.py</span></code>) file:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;sphinxcontrib.autohttp.flask&#39;</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sphinxcontrib.autohttp.flask&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autoflask</span><span class="p">::</span> autoflask_sampleapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autoflask</span><span class="p">::</span> autoflask_sampleapp:app
    <span class="nc">:undoc-static:</span>
 </pre></div>
 </div>
@@ -748,20 +750,20 @@ application&#8217;s routing table, similar to <code class="xref py py-mod docuti
 <dl class="get">
 <dt id="get--(user)-posts-(int-post_id)">
 <code class="descname">GET </code><code class="descname">/</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><code class="descname">/posts/</code><span class="sig-paren">(</span><em class="property">int: </em><em>post_id</em><span class="sig-paren">)</span><a class="headerlink" href="#get--(user)-posts-(int-post_id)" title="Permalink to this definition">¶</a></dt>
-<dd><p>User&#8217;s post.</p>
+<dd><p>User’s post.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>user</strong> &#8211; user login name</li>
-<li><strong>post_id</strong> &#8211; post unique id</li>
+<li><strong>user</strong> – user login name</li>
+<li><strong>post_id</strong> – post unique id</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when user and post exists</li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when user and post doesn&#8217;t exist</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – when user and post exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – when user and post doesn’t exist</li>
 </ul>
 </td>
 </tr>
@@ -778,13 +780,13 @@ application&#8217;s routing table, similar to <code class="xref py py-mod docuti
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>user</strong> &#8211; user login name</li>
+<li><strong>user</strong> – user login name</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> &#8211; when user exists</li>
-<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> &#8211; when user doesn&#8217;t exist</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – when user exists</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – when user doesn’t exist</li>
 </ul>
 </td>
 </tr>
@@ -801,27 +803,27 @@ application&#8217;s routing table, similar to <code class="xref py py-mod docuti
 </div>
 <p>Generates HTTP API references from a Flask application. It takes an
 import name, like:</p>
-<div class="highlight-python"><div class="highlight"><pre>your.webapplication.module:app
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">your</span><span class="o">.</span><span class="n">webapplication</span><span class="o">.</span><span class="n">module</span><span class="p">:</span><span class="n">app</span>
 </pre></div>
 </div>
 <p>Colon character (<code class="docutils literal"><span class="pre">:</span></code>) separates module path and application variable.
 Latter part can be more complex:</p>
-<div class="highlight-python"><div class="highlight"><pre>your.webapplication.module:create_app(config=&#39;default.cfg&#39;)
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">your</span><span class="o">.</span><span class="n">webapplication</span><span class="o">.</span><span class="n">module</span><span class="p">:</span><span class="n">create_app</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s1">&#39;default.cfg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>It&#8217;s useful when a Flask application is created from the factory function
+<p>It’s useful when a Flask application is created from the factory function
 (<code class="xref py py-func docutils literal"><span class="pre">create_app()</span></code>, in the above example).</p>
 <p>It takes several flag options as well.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">endpoints</span></code></dt>
 <dd><p class="first">Endpoints to generate a reference.</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autoflask</span><span class="p">::</span> yourwebapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autoflask</span><span class="p">::</span> yourwebapp:app
    <span class="nc">:endpoints:</span> <span class="nf">user, post, friends</span>
 </pre></div>
 </div>
 <p>will document <code class="xref py py-func docutils literal"><span class="pre">user()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">post()</span></code>, and <code class="xref py py-func docutils literal"><span class="pre">friends()</span></code>
 view functions, and</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autoflask</span><span class="p">::</span> yourwebapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autoflask</span><span class="p">::</span> yourwebapp:app
    <span class="nc">:endpoints:</span>
 </pre></div>
 </div>
@@ -835,7 +837,7 @@ like above.</p>
 <dt><code class="docutils literal"><span class="pre">undoc-endpoints</span></code></dt>
 <dd><p class="first">Excludes specified endpoints from generated references.</p>
 <p>For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autoflask</span><span class="p">::</span> yourwebapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autoflask</span><span class="p">::</span> yourwebapp:app
    <span class="nc">:undoc-endpoints:</span> <span class="nf">admin, admin_login</span>
 </pre></div>
 </div>
@@ -863,7 +865,7 @@ nothing to do with docstrings. It just excludes specified endpoints.</p>
 <dd>Excludes a view function that serves static files, which is included
 in Flask by default.</dd>
 <dt><code class="docutils literal"><span class="pre">include-empty-docstring</span></code></dt>
-<dd><p class="first">View functions that don&#8217;t have docstring (<code class="xref py py-attr docutils literal"><span class="pre">__doc__</span></code>) are excluded
+<dd><p class="first">View functions that don’t have docstring (<code class="xref py py-attr docutils literal"><span class="pre">__doc__</span></code>) are excluded
 by default. If this flag option has given, they become included also.</p>
 <div class="last versionadded">
 <p><span class="versionmodified">New in version 1.1.2.</span></p>
@@ -874,16 +876,16 @@ by default. If this flag option has given, they become included also.</p>
 
 <span class="target" id="module-sphinxcontrib.autohttp.bottle"></span></div>
 <div class="section" id="sphinxcontrib-autohttp-bottle-exporting-api-reference-from-bottle-app">
-<h2><a class="reference internal" href="#module-sphinxcontrib.autohttp.bottle" title="sphinxcontrib.autohttp.bottle"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.bottle</span></code></a> &#8212; Exporting API reference from Bottle app<a class="headerlink" href="#sphinxcontrib-autohttp-bottle-exporting-api-reference-from-bottle-app" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#module-sphinxcontrib.autohttp.bottle" title="sphinxcontrib.autohttp.bottle"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.bottle</span></code></a> — Exporting API reference from Bottle app<a class="headerlink" href="#sphinxcontrib-autohttp-bottle-exporting-api-reference-from-bottle-app" title="Permalink to this headline">¶</a></h2>
 <p>It generates RESTful HTTP API reference documentation from a <a class="reference external" href="http://bottlepy.org/">Bottle</a>
-application&#8217;s routing table, similar to <code class="xref py py-mod docutils literal"><span class="pre">sphinx.ext.autodoc</span></code>.</p>
+application’s routing table, similar to <code class="xref py py-mod docutils literal"><span class="pre">sphinx.ext.autodoc</span></code>.</p>
 <p>In order to use it, add <a class="reference internal" href="#module-sphinxcontrib.autohttp.bottle" title="sphinxcontrib.autohttp.bottle"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.bottle</span></code></a> into
 <code class="xref py py-data docutils literal"><span class="pre">extensions</span></code> list of your Sphinx configuration (<code class="file docutils literal"><span class="pre">conf.py</span></code>) file:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;sphinxcontrib.autohttp.bottle&#39;</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sphinxcontrib.autohttp.bottle&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autobottle</span><span class="p">::</span> autobottle_sampleapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autobottle</span><span class="p">::</span> autobottle_sampleapp:app
 </pre></div>
 </div>
 <p>will be rendered as:</p>
@@ -894,27 +896,27 @@ application&#8217;s routing table, similar to <code class="xref py py-mod docuti
 <code class="descname">.. autobottle::</code><code class="descclassname"> module:app</code><a class="headerlink" href="#directive-autobottle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates HTTP API references from a Bottle application. It takes an
 import name, like:</p>
-<div class="highlight-python"><div class="highlight"><pre>your.webapplication.module:app
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">your</span><span class="o">.</span><span class="n">webapplication</span><span class="o">.</span><span class="n">module</span><span class="p">:</span><span class="n">app</span>
 </pre></div>
 </div>
 <p>Colon character (<code class="docutils literal"><span class="pre">:</span></code>) separates module path and application variable.
 Latter part can be more complex:</p>
-<div class="highlight-python"><div class="highlight"><pre>your.webapplication.module:create_app(config=&#39;default.cfg&#39;)
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">your</span><span class="o">.</span><span class="n">webapplication</span><span class="o">.</span><span class="n">module</span><span class="p">:</span><span class="n">create_app</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s1">&#39;default.cfg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>It&#8217;s useful when a Bottle application is created from the factory function
+<p>It’s useful when a Bottle application is created from the factory function
 (<code class="xref py py-func docutils literal"><span class="pre">create_app()</span></code>, in the above example).</p>
 <p>It takes several flag options as well.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">endpoints</span></code></dt>
 <dd><p class="first">Endpoints to generate a reference.</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autobottle</span><span class="p">::</span> yourwebapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autobottle</span><span class="p">::</span> yourwebapp:app
    <span class="nc">:endpoints:</span> <span class="nf">user, post, friends</span>
 </pre></div>
 </div>
 <p>will document <code class="xref py py-func docutils literal"><span class="pre">user()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">post()</span></code>, and <code class="xref py py-func docutils literal"><span class="pre">friends()</span></code>
 view functions, and</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autobottle</span><span class="p">::</span> yourwebapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autobottle</span><span class="p">::</span> yourwebapp:app
    <span class="nc">:endpoints:</span>
 </pre></div>
 </div>
@@ -925,7 +927,7 @@ like above.</p>
 <dt><code class="docutils literal"><span class="pre">undoc-endpoints</span></code></dt>
 <dd><p class="first">Excludes specified endpoints from generated references.</p>
 <p>For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autobottle</span><span class="p">::</span> yourwebapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autobottle</span><span class="p">::</span> yourwebapp:app
    <span class="nc">:undoc-endpoints:</span> <span class="nf">admin, admin_login</span>
 </pre></div>
 </div>
@@ -938,23 +940,23 @@ nothing to do with docstrings. It just excludes specified endpoints.</p>
 </div>
 </dd>
 <dt><code class="docutils literal"><span class="pre">include-empty-docstring</span></code></dt>
-<dd>View functions that don&#8217;t have docstring (<code class="xref py py-attr docutils literal"><span class="pre">__doc__</span></code>) are excluded
+<dd>View functions that don’t have docstring (<code class="xref py py-attr docutils literal"><span class="pre">__doc__</span></code>) are excluded
 by default. If this flag option has given, they become included also.</dd>
 </dl>
 </dd></dl>
 
 <span class="target" id="module-sphinxcontrib.autohttp.tornado"></span></div>
 <div class="section" id="sphinxcontrib-autohttp-tornado-exporting-api-reference-from-tornado-app">
-<h2><a class="reference internal" href="#module-sphinxcontrib.autohttp.tornado" title="sphinxcontrib.autohttp.tornado"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.tornado</span></code></a> &#8212; Exporting API reference from Tornado app<a class="headerlink" href="#sphinxcontrib-autohttp-tornado-exporting-api-reference-from-tornado-app" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#module-sphinxcontrib.autohttp.tornado" title="sphinxcontrib.autohttp.tornado"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.tornado</span></code></a> — Exporting API reference from Tornado app<a class="headerlink" href="#sphinxcontrib-autohttp-tornado-exporting-api-reference-from-tornado-app" title="Permalink to this headline">¶</a></h2>
 <p>It generates RESTful HTTP API reference documentation from a <a class="reference external" href="http://www.tornadoweb.org/">Tornado</a>
-application&#8217;s routing table, similar to <code class="xref py py-mod docutils literal"><span class="pre">sphinx.ext.autodoc</span></code>.</p>
+application’s routing table, similar to <code class="xref py py-mod docutils literal"><span class="pre">sphinx.ext.autodoc</span></code>.</p>
 <p>In order to use it, add <a class="reference internal" href="#module-sphinxcontrib.autohttp.tornado" title="sphinxcontrib.autohttp.tornado"><code class="xref py py-mod docutils literal"><span class="pre">sphinxcontrib.autohttp.tornado</span></code></a> into
 <code class="xref py py-data docutils literal"><span class="pre">extensions</span></code> list of your Sphinx configuration (<code class="file docutils literal"><span class="pre">conf.py</span></code>) file:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;sphinxcontrib.autohttp.tornado&#39;</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sphinxcontrib.autohttp.tornado&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autotornado</span><span class="p">::</span> autotornado_sampleapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autotornado</span><span class="p">::</span> autotornado_sampleapp:app
 </pre></div>
 </div>
 <p>will be rendered as:</p>
@@ -965,7 +967,7 @@ application&#8217;s routing table, similar to <code class="xref py py-mod docuti
 <code class="descname">.. autotornado::</code><code class="descclassname"> module:app</code><a class="headerlink" href="#directive-autotornado" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates HTTP API references from a Tornado application. It takes an
 import name, like:</p>
-<div class="highlight-python"><div class="highlight"><pre>your.webapplication.module:app
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">your</span><span class="o">.</span><span class="n">webapplication</span><span class="o">.</span><span class="n">module</span><span class="p">:</span><span class="n">app</span>
 </pre></div>
 </div>
 <p>Colon character (<code class="docutils literal"><span class="pre">:</span></code>) separates module path and application variable.</p>
@@ -973,13 +975,13 @@ import name, like:</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">endpoints</span></code></dt>
 <dd><p class="first">Endpoints to generate a reference.</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autotornado</span><span class="p">::</span> yourwebapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autotornado</span><span class="p">::</span> yourwebapp:app
    <span class="nc">:endpoints:</span> <span class="nf">user, post, friends</span>
 </pre></div>
 </div>
 <p>will document <code class="xref py py-func docutils literal"><span class="pre">user()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">post()</span></code>, and <code class="xref py py-func docutils literal"><span class="pre">friends()</span></code>
 view functions, and</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autotornado</span><span class="p">::</span> yourwebapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autotornado</span><span class="p">::</span> yourwebapp:app
    <span class="nc">:endpoints:</span>
 </pre></div>
 </div>
@@ -990,7 +992,7 @@ like above.</p>
 <dt><code class="docutils literal"><span class="pre">undoc-endpoints</span></code></dt>
 <dd><p class="first">Excludes specified endpoints from generated references.</p>
 <p>For example:</p>
-<div class="highlight-rst"><div class="highlight"><pre><span class="p">..</span> <span class="ow">autotornado</span><span class="p">::</span> yourwebapp:app
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">autotornado</span><span class="p">::</span> yourwebapp:app
    <span class="nc">:undoc-endpoints:</span> <span class="nf">admin, admin_login</span>
 </pre></div>
 </div>
@@ -1003,7 +1005,7 @@ nothing to do with docstrings. It just excludes specified endpoints.</p>
 </div>
 </dd>
 <dt><code class="docutils literal"><span class="pre">include-empty-docstring</span></code></dt>
-<dd>View functions that don&#8217;t have docstring (<code class="xref py py-attr docutils literal"><span class="pre">__doc__</span></code>) are excluded
+<dd>View functions that don’t have docstring (<code class="xref py py-attr docutils literal"><span class="pre">__doc__</span></code>) are excluded
 by default. If this flag option has given, they become included also.</dd>
 </dl>
 </dd></dl>
@@ -1017,8 +1019,8 @@ and distributed under BSD license.</p>
 <p>The source code is mantained under <a class="reference external" href="https://bitbucket.org/birkenfeld/sphinx-contrib">the common repository of contributed
 extensions for Sphinx</a> (find the <code class="file docutils literal"><span class="pre">httpdomain</span></code> directory inside
 the repository).</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> hg clone https://bitbucket.org/birkenfeld/sphinx-contrib
-<span class="gp">$</span> <span class="nb">cd </span>sphinx-contrib/httpdomain
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> hg clone https://bitbucket.org/birkenfeld/sphinx-contrib
+<span class="gp">$</span> <span class="nb">cd</span> sphinx-contrib/httpdomain
 </pre></div>
 </div>
 </div>
@@ -1128,7 +1130,7 @@ highlighted in <code class="xref rst rst-dir docutils literal"><span class="pre"
 <h3>Version 1.1.5<a class="headerlink" href="#version-1-1-5" title="Permalink to this headline">¶</a></h3>
 <p>Released on July 6, 2011.</p>
 <ul class="simple">
-<li>Flask 0.6&#8211;0.7 compatibility.  Flask renamed
+<li>Flask 0.6–0.7 compatibility.  Flask renamed
 <code class="xref py py-attr docutils literal"><span class="pre">static_path</span></code> attribute to
 <code class="xref py py-attr docutils literal"><span class="pre">static_url_path</span></code>, so <a class="reference internal" href="#directive-autoflask" title="autoflask directive"><code class="xref rst rst-dir docutils literal"><span class="pre">autoflask</span></code></a> also reflect
 the change.
@@ -1186,7 +1188,7 @@ the change.
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sphinxcontrib.httpdomain</span></code> &#8212; Documenting RESTful HTTP APIs</a><ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sphinxcontrib.httpdomain</span></code> — Documenting RESTful HTTP APIs</a><ul>
 <li><a class="reference internal" href="#additional-configuration">Additional Configuration</a></li>
 <li><a class="reference internal" href="#basic-usage">Basic usage</a></li>
 <li><a class="reference internal" href="#directives">Directives</a><ul>
@@ -1195,9 +1197,9 @@ the change.
 </li>
 <li><a class="reference internal" href="#resource-fields">Resource Fields</a></li>
 <li><a class="reference internal" href="#roles">Roles</a></li>
-<li><a class="reference internal" href="#sphinxcontrib-autohttp-flask-exporting-api-reference-from-flask-app"><code class="docutils literal"><span class="pre">sphinxcontrib.autohttp.flask</span></code> &#8212; Exporting API reference from Flask app</a></li>
-<li><a class="reference internal" href="#sphinxcontrib-autohttp-bottle-exporting-api-reference-from-bottle-app"><code class="docutils literal"><span class="pre">sphinxcontrib.autohttp.bottle</span></code> &#8212; Exporting API reference from Bottle app</a></li>
-<li><a class="reference internal" href="#sphinxcontrib-autohttp-tornado-exporting-api-reference-from-tornado-app"><code class="docutils literal"><span class="pre">sphinxcontrib.autohttp.tornado</span></code> &#8212; Exporting API reference from Tornado app</a></li>
+<li><a class="reference internal" href="#sphinxcontrib-autohttp-flask-exporting-api-reference-from-flask-app"><code class="docutils literal"><span class="pre">sphinxcontrib.autohttp.flask</span></code> — Exporting API reference from Flask app</a></li>
+<li><a class="reference internal" href="#sphinxcontrib-autohttp-bottle-exporting-api-reference-from-bottle-app"><code class="docutils literal"><span class="pre">sphinxcontrib.autohttp.bottle</span></code> — Exporting API reference from Bottle app</a></li>
+<li><a class="reference internal" href="#sphinxcontrib-autohttp-tornado-exporting-api-reference-from-tornado-app"><code class="docutils literal"><span class="pre">sphinxcontrib.autohttp.tornado</span></code> — Exporting API reference from Tornado app</a></li>
 <li><a class="reference internal" href="#author-and-license">Author and License</a></li>
 <li><a class="reference internal" href="#changelog">Changelog</a><ul>
 <li><a class="reference internal" href="#version-1-3-0">Version 1.3.0</a></li>
@@ -1223,21 +1225,18 @@ the change.
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../../_sources/ext/httpdomain/doc/index.txt"
+      <li><a href="../../../_sources/ext/httpdomain/doc/index.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1256,23 +1255,25 @@ the change.
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">HoyoDeCrimen API 1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">HoyoDeCrimen API 1 documentation</a> &#187;</li> 
       </ul>
     </div>
 
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2014, Diego Valle-Jones.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2014, Diego Valle-Jones.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
     </div>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-100264-9', 'auto');
-  ga('send', 'pageview');
-
+ <script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    _paq.push(['setTrackerUrl',  'https://api-0a75cf5975c321f57993d45fd90a3792.oasis.sandstorm.io']);
+    _paq.push(['setSiteId', 2]);
+    _paq.push(['setApiToken', 'Yh3ufxuscHwfzozgphRiZfbj_qGWUjYj0T3uyhqQpvi']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src='https://o8c02p39rrla5i26f23e.oasis.sandstorm.io/embed.js'; s.parentNode.insertBefore(g,s);
+  })();
 </script>
 
   </body>
