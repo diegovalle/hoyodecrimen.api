@@ -65,7 +65,7 @@ env:
 # command to install dependencies
 install:
 #  - ./travis-tool.sh install_deps
-  - travis_wait mvn install
+  - "travis_wait 30 mvn install"
   - "pip install -r requirements.txt"
   #- ./install-gdal.sh
 # command to run tests
