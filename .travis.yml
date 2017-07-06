@@ -65,11 +65,11 @@ env:
 # command to install dependencies
 install:
 #  - ./travis-tool.sh install_deps
-  - "travis_wait 30 mvn install"
   - "pip install -r requirements.txt"
   #- ./install-gdal.sh
 # command to run tests
 script:
+  - "travis_wait 30 sleep 1800 &"
   - python wsgi/flaskr_tests.py
 branches:
   only:
