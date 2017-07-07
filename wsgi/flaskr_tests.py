@@ -1,7 +1,15 @@
+#!/usr/bin/python -tt
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 from hoyodecrimen import app
 import json
 import unittest
+import codecs
+import sys
+
+UTF8Writer = codecs.getwriter('utf8')
+sys.stdout = UTF8Writer(sys.stdout)
+
 #import tempfile
 
 class FlaskTestCase(unittest.TestCase):
@@ -404,7 +412,7 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/api/v1/sectores/', content_type='application/json')
         cuadrantes = tester.get('/api/v1/sectores/geojson', content_type='application/json')
         for i in range(0, len(json.loads(cuadrantes.data.decode('utf-8'))['features'])):
-            print( json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['sector'])
+            print( unicode(json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['sector']))
             cuadrante = tester.get('/api/v1/sectores/' +  json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['sector'] + '/crimes/homicidio%20doloso/series', content_type='application/json')
             self.assertEqual(cuadrante.status_code, 200)
             self.assertNotEqual(json.loads(cuadrante.data.decode('utf-8')), {"rows": []})
