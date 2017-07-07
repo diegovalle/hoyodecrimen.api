@@ -9,7 +9,6 @@ addons:
   postgresql: "9.2"
 
 before_script:
-  - sudo locale-gen --no-purge --lang en_US.UTF-8
   - psql -c 'create database apihoyodecrimen;' -U postgres
   - psql apihoyodecrimen -U postgres -c "create extension postgis;"
   - psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (20), crime
