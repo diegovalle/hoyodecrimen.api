@@ -665,7 +665,7 @@ def latlong(crime, long, lat, distance):
 
     .. sourcecode:: http
 
-      GET /api/v1/cuadrantes/crimes/all/coords/-99.13333/19.43/distance/500 HTTP/1.1
+      GET /api/v1/latlong/crimes/all/coords/-99.13333/19.43/distance/500 HTTP/1.1
       Host: hoyodecrimen.com
       Accept: application/json
 
@@ -2352,5 +2352,3 @@ def top5changecuadrantes(crime):
                                                                         'rank': rank})
     results = db.session.execute(sql_query1 + sql_query2 + sql_query3, crime_data)
     return lib.ResultProxy_to_json(results)
-
-
