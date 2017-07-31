@@ -171,6 +171,12 @@ server {
        alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/geojson/municipios.json;
        default_type application/json;
     }
+    location ^~ /api/v1/latlong/crimes {
+       limit_req zone=hoyodecrimen burst=5;
+       default_type application/json;
+       include uwsgi_params;
+       uwsgi_pass unix:/tmp/hoyodecrimen.sock;
+    }
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/tmp/hoyodecrimen.sock;
