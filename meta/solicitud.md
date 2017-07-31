@@ -29,5 +29,5 @@ De no entregar los datos solicitados dentro del tiempo límite marcado , con fun
 
 ###Datos para facilitar su localización
 
-Los cuadrantes a los que me refiero son los que la SSPDF hace disponibles en su página:
-http://www.ssp.df.gob.mx/ubica_cuadrantes.html
+Los cuadrantes a los que me refiero son los que la SSP-CDMX hace disponibles en su página:
+http://www.ssp.df.gob.mx/cuadrante.html
