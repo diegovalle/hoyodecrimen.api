@@ -29,7 +29,7 @@
     minute="17"
     day="17"
     hour="3"
-    job="/home/{{ letsencrypt_user }}/ssl/renew_cert.sh hoyodecrimen.com && curl -fsS --retry 3 {{ health_check_renew_hoyodecrimen_com }}  > /dev/null"
+    job="/home/{{ letsencrypt_user }}/ssl/renew_cert.sh hoyodecrimen.com && curl -fsS --retry 3 {{ health_check_renew_hoyodecrimen_com }}  > /dev/null 2>&1"
 
 - copy: src=create_cert_yml.sh dest=/opt/create_cert_yml.sh owner=root group=root mode=0755 
 
