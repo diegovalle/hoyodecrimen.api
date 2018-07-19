@@ -14,7 +14,7 @@ addons:
 before_script:
   - psql -c 'create database apihoyodecrimen;' -U postgres
   - psql apihoyodecrimen -U postgres -c "create extension postgis;"
-  - psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (20), crime
+  - sudo psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (20), crime
     varchar (60), date varchar (10), count int, year int, sector
     varchar(60), population integer, PRIMARY KEY(cuadrante, sector,
     crime, date) ); COPY cuadrantes FROM
@@ -60,7 +60,7 @@ before_script:
     CREATE INDEX cuadrantes_cuadrante_crime_date
       ON cuadrantes
      (cuadrante, crime, date);" -U postgres
-  - psql -d apihoyodecrimen -U postgres < $TRAVIS_BUILD_DIR/data/cuadrantes_poly.sql
+  - sudo psql -d apihoyodecrimen -U postgres < $TRAVIS_BUILD_DIR/data/cuadrantes_poly.sql
   - pybabel extract -F wsgi/babel.cfg -o wsgi/messages.pot .
   - pybabel compile -d wsgi/translations
 env:

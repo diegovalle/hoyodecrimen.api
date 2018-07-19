@@ -254,14 +254,14 @@ def numero():
 @cache.cached()
 def mapa():
     setattr(g, 'lang', 'en')
-    return render_template('latlong_map_boot.html')
+    return render_template('latlong_map_leaflet.html')
 
 
 @app.route('/mapa')
 @cache.cached()
 def mapa_es():
     setattr(g, 'lang', 'es')
-    return render_template('latlong_map_boot.html')
+    return render_template('latlong_map_leaflet.html')
 
 @app.route('/mapa-google-temp-no-usar')
 @cache.cached()
