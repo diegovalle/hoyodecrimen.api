@@ -161,7 +161,7 @@ casper.test.begin(
                 }, '/mapa - slider hour');
                 test.assertEval(function() {
                     return __utils__
-                        .findAll('#cartodb-gmaps-attribution').length === 1;
+                        .findAll('.leaflet-container').length === 1;
                 }, '/mapa - carto map');
                 test.assertEval(function() {
                     return __utils__
@@ -182,7 +182,7 @@ casper.test.begin(
                 }, '/en/map - slider hour');
                 test.assertEval(function() {
                     return __utils__
-                        .findAll('#cartodb-gmaps-attribution').length === 1;
+                        .findAll('.leaflet-container').length === 1;
                 }, '/en/map - carto map');
                 test.assertEval(function() {
                     return __utils__
