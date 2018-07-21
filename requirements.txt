@@ -18,7 +18,7 @@ itsdangerous==0.24
 Jinja2==2.8
 jsmin==2.2.1
 MarkupSafe==0.23
-psycopg2==2.6.2
+psycopg2==2.7.5
 pytz==2016.7
 raven==5.32.0
 redis==2.10.5
