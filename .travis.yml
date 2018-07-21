@@ -14,7 +14,7 @@ addons:
 before_script:
   - psql -c 'create database apihoyodecrimen;' -U postgres
   - psql apihoyodecrimen -U postgres -c "create extension postgis;"
-  - cp "$TRAVIS_BUILD_DIR/ansible/roles/hoyodecrimen.app/files/*.csv" /tmp
+  - cp $TRAVIS_BUILD_DIR/ansible/roles/hoyodecrimen.app/files/*.csv /tmp
   - sudo psql -d apihoyodecrimen -c "CREATE TABLE cuadrantes ( cuadrante varchar (20), crime
     varchar (60), date varchar (10), count int, year int, sector
     varchar(60), population integer, PRIMARY KEY(cuadrante, sector,
