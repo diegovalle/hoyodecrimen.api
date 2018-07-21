@@ -779,13 +779,17 @@
 
              cartodb.createLayer(map, layerUrl)
                     .addTo(map)
-                    .on('done', function(layer) {
-                        var sublayer = layer.getSubLayer(0);
-                        sublayer.set(subLayerOptions);
-                        sublayers.push(sublayer);
-                        var infowindow = cartodb.vis.Vis.addInfowindow(map, sublayer, infoFields);
-                        infowindow.model.set('template', $('#infowindow_template').html());
-                    }).on('error', function() {
+                    .done(function(layer) {
+
+                          // create and add a new sublayer
+                           layer.createSubLayer({
+                             sql: "SELECT * FROM table_name limit 200",
+                             cartocss: '#table_name {marker-fill: #F0F0F0;}'
+                    });
+
+// change the query for the first layer
+layer.getSubLayer(0).setSQL("SELECT * FROM table_name limit 10");
+}).on('error', function() {
                         //log the error
                     });
          }
