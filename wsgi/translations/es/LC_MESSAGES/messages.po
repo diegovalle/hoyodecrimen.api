@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-25 21:30-0500\n"
-"PO-Revision-Date: 2018-07-25 21:32-0500\n"
+"POT-Creation-Date: 2018-07-25 21:57-0500\n"
+"PO-Revision-Date: 2018-07-25 21:57-0500\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -636,7 +636,7 @@ msgid "Crimes since January 2013"
 msgstr "Todos los crímenes geolocalizados desde el 2013"
 
 #: templates/pip.html:2
-msgid "Mexico City Crime- See how your neighborhood rated for violent and property crimes"
+msgid "Mexico City Crime - See how your neighborhood rated for violent and property crimes"
 msgstr "Crimen en la Ciudad de México - Averigua cuantos delitos se cometieron por tu rumbo"
 
 #: templates/pip.html:5
