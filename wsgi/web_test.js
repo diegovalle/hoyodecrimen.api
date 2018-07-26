@@ -45,7 +45,7 @@ casper.test.begin(
 
         casper.thenOpen(partialURL + '/en/', function() {
             this.wait(35000, function() {
-                test.assertTitle('Crime in Mexico City - See how your' +
+                test.assertTitle('Mexico City Crime - See how your' +
                                  ' neighborhood rated for violent and ' +
                                  'property crimes',
                                  'homepage title is the one expected');
