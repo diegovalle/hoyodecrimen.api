@@ -180,6 +180,9 @@ server {
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/tmp/hoyodecrimen.sock;
+
+        # when a client closes the connection then keep the channel to uwsgi open. Otherwise uwsgi throws and IOError
+        uwsgi_ignore_client_abort on;
     }
 }
 
