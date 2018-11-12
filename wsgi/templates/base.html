@@ -150,9 +150,7 @@ var _rollbarConfig = {
                                         <li class="fa fa-facebook">
                                             <a href="https://www.facebook.com/diegovalle">/diegovalle</a>
                                         </li>
-                                        <li class="fa fa-google-plus">
-                                            <a href="https://plus.google.com/112417668983107842349?rel=author">+DiegoValleJones</a>
-                                        </li>
+                                        
                                     </ul>
                                 </div>
                             </section>
@@ -174,18 +172,16 @@ var _rollbarConfig = {
         {% endblock %}
         {% block js_bottom %}
         {% endblock %}
-      <script type="text/javascript">
-  var _paq = _paq || [];
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    _paq.push(['setTrackerUrl',  'https://api-0a75cf5975c321f57993d45fd90a3792.oasis.sandstorm.io']);
-    _paq.push(['setSiteId', 2]);
-    _paq.push(['setApiToken', 'Yh3ufxuscHwfzozgphRiZfbj_qGWUjYj0T3uyhqQpvi']);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src='https://o8c02p39rrla5i26f23e.oasis.sandstorm.io/embed.js'; s.parentNode.insertBefore(g,s);
-  })();
-</script>
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100264-9"></script>
+            <script>
+             window.dataLayer = window.dataLayer || [];
+             function gtag(){dataLayer.push(arguments);}
+             gtag('js', new Date());
+
+             gtag('config', 'UA-100264-9');
+            </script>
+
         <script src="//my.hellobar.com/{{_('8acd30bddc88809427bf568b635de1df754c10c9')}}.js" type="text/javascript" charset="utf-8" async="async"></script>
         <!-- English
              1ff9c89c8f9ed13417d494d31ba01faaef45c3cb
