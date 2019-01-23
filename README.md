@@ -33,7 +33,7 @@ also copy the data)
 
 truncate the tables `psql -d apihoyodecrimen`
 
-```
+```sql
 TRUNCATE TABLE  crime_latlong;
 TRUNCATE TABLE  cuadrantes;
 TRUNCATE TABLE pgj;
@@ -49,23 +49,22 @@ psql -d apihoyodecrimen -c "\copy pgj (crime,date,count) from '/tmp/pgj.csv' wit
 
 convert to geom the latitude and longitude
 
-```
+```sql
 UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);
 ```
 
 
 
-To update the carto table you first have to delete all rows in the existing table
+To update the carto table you first have to delete all rows in the existing table (don't delete the crime_lat_long1 table visualization)
 
 ```sql
-TRUNCATE TABLE crime_lat_long
+TRUNCATE TABLE crime_lat_long;
 ```
 
 and then upload the new table to a tempory one and copy all rows to crime_lat_long
 
 ```sql
-INSERT INTO crime_lat_long SELECT * FROM crime_lat_long_1
+INSERT INTO crime_lat_long SELECT * FROM crime_lat_long_pgj
 ```
 
 and then delete the temporary table
-

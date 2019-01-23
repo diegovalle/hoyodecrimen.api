@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-22 22:45-0600\n"
-"PO-Revision-Date: 2019-01-22 22:46-0600\n"
+"POT-Creation-Date: 2019-01-23 09:36-0600\n"
+"PO-Revision-Date: 2019-01-23 09:58-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -63,7 +63,7 @@ msgstr "Creado por <a href=\"https://www.diegovalle.net\">Diego Valle</a>"
 
 #: templates/about.html:155
 msgid "The source of crime data is the <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. Cuadrante coordinates scraped from <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore."
-msgstr "Los datos de incidencia delictiva vienen de la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. El mapa de cuadrantes es de <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
+msgstr "Los datos de incidencia delictiva provienen de la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. El mapa de cuadrantes es de <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
 
 #: templates/about.html:157 templates/base.html:128
 msgid "There's also a"
@@ -256,7 +256,7 @@ msgstr "Preguntas o comentarios... ¡Contáctame!"
 
 #: templates/base.html:127
 msgid "The source of crime data is the <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. Cuadrante coordinates scraped from <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>."
-msgstr "Los datos de incidencia delictiva vienen de la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. El mapa de cuadrantes es de <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
+msgstr "Los datos de incidencia delictiva provienen de la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. El mapa de cuadrantes es de <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
 
 #: templates/base.html:130
 msgid "For a complete crime and safety report for all of Mexico please visit <a href=\"https://elcri.men/en/\">El Crimen</a>."
@@ -424,7 +424,7 @@ msgstr "Gráficas de las tasas de crimen en toda la Ciudad de México"
 
 #: templates/crime.html:67
 msgid "The SESNSP crime data comes from the data the PGJ-CDMX reports to the <a href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php\">Sistema Ejecutivo del Sistema Nacional</a>. The <a href=\"http://www.inegi.org.mx/sistemas/olap/proyectos/bd/continuas/mortalidad/defuncioneshom.asp?s=est\">INEGI</a> homicide data is based on death certificates issued by the health authority. The SSP-CDMX data is from a FOIA request to the Mexico City government."
-msgstr "Los datos del SESNSP muestran la información proporcionada por la PGJ-CDMX al <a href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php\">Sistema Ejecutivo del Sistema Nacional</a>. Los datos del  <a href=\"http://www.inegi.org.mx/sistemas/olap/proyectos/bd/continuas/mortalidad/defuncioneshom.asp?s=est\">INEGI</a> provienen de los certificados de defunción. Los datos de la SSP-CDMX vienen de una solicitud de información y son los que usa el resto del sitio."
+msgstr "Los datos del SESNSP muestran la información proporcionada por la PGJ-CDMX al <a href=\"http://secretariadoejecutivo.gob.mx/incidencia-delictiva/incidencia-delictiva-fuero-comun.php\">Sistema Ejecutivo del Sistema Nacional</a>. Los datos del  <a href=\"http://www.inegi.org.mx/sistemas/olap/proyectos/bd/continuas/mortalidad/defuncioneshom.asp?s=est\">INEGI</a> provienen de los certificados de defunción. Los datos de la PGJ-CDMX vienen del portal de datos abiertos del gobierno de la Ciudad de México"
 
 #: templates/crime.html:189 templates/rates-sectores.html:179
 msgid "\"annualized rate per 100,000\""
@@ -591,8 +591,8 @@ msgid "Filters"
 msgstr "Filtros"
 
 #: templates/latlong_map_boot.html:574
-msgid "All crimes reported to the SSP&#8209;CDMX since January 2013."
-msgstr "Todos los crímenes reportados a la SSP&#8209;CDMX desde Enereo del 2013"
+msgid "All police investigations started by the PGJ&#8209;CDMX since January 2016."
+msgstr "Todas las carpetas de investigación iniciadas por PGJ&#8209;CDMX desde Enero del 2016"
 
 #: templates/latlong_map_boot.html:579
 msgid "Select a date range:"
