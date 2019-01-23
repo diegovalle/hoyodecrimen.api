@@ -1073,7 +1073,7 @@ def df_all(crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
-    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = check_dates(start_date, end_date, '2016-01-01')
     filters = process_crime(crime, start_date, max_date)
     # if crime == "ALL":
     #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
@@ -1102,7 +1102,7 @@ def df_crime_extra_all(crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
-    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = check_dates(start_date, end_date, '2016-01-01')
     filters = process_crime(crime, start_date, max_date)
     # if crime == "ALL":
     #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date),
@@ -1184,7 +1184,7 @@ def cuadrantes(cuadrante, crime):
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
     # Needs to default to 2013-01 when the series starts instead of a year ago
-    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = check_dates(start_date, end_date, '2016-01-01')
     filters = process_crime(crime, start_date, max_date, cuadrante = cuadrante)
     # if crime == "ALL":
     #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
@@ -1259,7 +1259,7 @@ def sectors(crime, sector):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = check_dates(start_date, end_date, '2016-01-01')
     filters = process_crime(crime, start_date, max_date, sector = sector)
     # if crime == "ALL":
     #     filters = [and_(Cuadrantes.date >= start_date, Cuadrantes.date <= max_date)]
@@ -1334,7 +1334,7 @@ def municipios_series(crime, municipio):
     crime = crime.upper()
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    start_date, max_date = check_dates(start_date, end_date, '2013-01-01')
+    start_date, max_date = check_dates(start_date, end_date, '2016-01-01')
     filters = process_crime(crime, start_date, max_date, municipio = municipio)
 
     results = Cuadrantes.query.join(Municipios, Cuadrantes.cuadrante == Municipios.cuadrante). \

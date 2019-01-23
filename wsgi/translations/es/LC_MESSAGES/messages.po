@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-25 21:57-0500\n"
-"PO-Revision-Date: 2018-07-25 21:57-0500\n"
+"POT-Creation-Date: 2019-01-22 22:45-0600\n"
+"PO-Revision-Date: 2019-01-22 22:46-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -57,21 +57,13 @@ msgstr "Fuentes e información de hoyodecrimen.com"
 msgid "https://hoyodecrimen.com/en/about"
 msgstr "https://hoyodecrimen.com/acerca"
 
-#: templates/about.html:147 templates/base.html:126
+#: templates/about.html:148 templates/base.html:126
 msgid "Created by <a href=\"https://www.diegovalle.net\">Diego Valle-Jones</a>"
 msgstr "Creado por <a href=\"https://www.diegovalle.net\">Diego Valle</a>"
 
-#: templates/about.html:147
-msgid "To keep the site going I need your help, you can sponsor me at <a href=\"https://www.patreon.com/hoyodecrimen\">patreon</a>"
-msgstr "Para mantener el sitio necesito de tu ayuda. Puedes convertirte en patrocinador visitando mi <a href=\"https://www.patreon.com/hoyodecrimen\">patreon</a>"
-
-#: templates/about.html:151
-msgid "Sadly, this site is suspend for the foreseeable future due to the refusal of the SSP-CDMX to provide updated crime information"
-msgstr "Tristemente, este sitio ya no se ha podido actualizar debido a la negativa de la SSP-CDMX a contestar las solicitudes de información pidiéndoles datos actualizados."
-
 #: templates/about.html:155
-msgid "Crime data since 2013 comes from a <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore."
-msgstr "Los datos de incidencia delictiva desde el 2013 vienen de una <a href=\"http://data.diegovalle.net/hoyodecrimen/solicitud.zip\">solicitud de información</a> a la SSPDF. El mapa de cuadrantes es de <a href=\"http://201.144.220.174/pid/gps/cuadrantesWeb.php\">Consulta de Cuadrantes</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>. La cifra negra en CDMX es cerca del 95&#37; por lo que recomiendo enfocarse en homicidios y robo de vehículo. C.V. significa con violencia y S.V. sin violencia."
+msgid "The source of crime data is the <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. Cuadrante coordinates scraped from <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore."
+msgstr "Los datos de incidencia delictiva vienen de la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. El mapa de cuadrantes es de <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
 
 #: templates/about.html:157 templates/base.html:128
 msgid "There's also a"
@@ -90,28 +82,24 @@ msgid "and a really cool"
 msgstr "y un muy cool"
 
 #: templates/about.html:159
-msgid "Download the complete dataset as a <a href=\"http://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip\">csv file</a>"
-msgstr "Descargar los datos de criminalidad <a href=\"http://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip\">como csv</a>"
-
-#: templates/about.html:162
 msgid "Visit <a href=\"https://elcri.men/en/\">El Crimen</a> for crime information at the national, state and municipio level"
 msgstr "Visiten <a href=\"https://elcri.men/\">El Crimen</a> para obtener información criminal de todo México"
 
-#: templates/about.html:164
+#: templates/about.html:161
 msgid "You can download a map of cuadrantes as <a href=\"https://hoyodecrimen.com/api/v1/cuadrantes/geojson\">GeoJSON</a> using the API"
 msgstr "Pueden descargar un mapa de los cuadrantes en formato GeoJSON <a href=\"https://hoyodecrimen.com/api/v1/cuadrantes/geojson\">usando el API</a>"
 
-#: templates/about.html:166
+#: templates/about.html:163
 msgid "This webapp is opensource and you can view the code on <a href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
 msgstr "El código fuente de la aplicación está disponible en <a href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
 
-#: templates/about.html:168
+#: templates/about.html:165
 msgid "I take your security seriously, if you believe you&#x27;ve found a vulnerability in this website please report it to <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. You can get my PGP key from <a href=\"https://keybase.io/diegovalle\">keybase</a>."
 msgstr "La seguridad de este sitio es mi prioridad, si crees haber encontrado una vulnerabilidad no dudes en reportarla a <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. Puedes encontrar mi llave PGP en  <a href=\"https://keybase.io/diegovalle\">https://keybase.io/diegovalle</a>."
 
-#: templates/about.html:170 templates/about.html:174 templates/about.html:178
-#: templates/about.html:182 templates/about.html:186 templates/about.html:190
-#: templates/about.html:194 templates/charts.html:205 templates/charts.html:209
+#: templates/about.html:167 templates/about.html:171 templates/about.html:175
+#: templates/about.html:179 templates/about.html:183 templates/about.html:187
+#: templates/about.html:191 templates/charts.html:205 templates/charts.html:209
 #: templates/charts.html:213 templates/charts.html:217
 #: templates/charts.html:221 templates/charts.html:225
 #: templates/charts.html:229 templates/days.html:259 templates/days.html:263
@@ -122,37 +110,37 @@ msgstr "La seguridad de este sitio es mi prioridad, si crees haber encontrado un
 msgid "Crime by Sector"
 msgstr "Crimen por Sector"
 
-#: templates/about.html:171 templates/charts.html:206 templates/days.html:260
+#: templates/about.html:168 templates/charts.html:206 templates/days.html:260
 #: templates/hours.html:257
 msgid "/images/total-sector-hom.png"
 msgstr "/images/total-sector-hom_es.png"
 
-#: templates/about.html:175 templates/charts.html:210 templates/days.html:264
+#: templates/about.html:172 templates/charts.html:210 templates/days.html:264
 #: templates/hours.html:261
 msgid "/images/total-sector-rncv.png"
 msgstr "/images/total-sector-rncv_es.png"
 
-#: templates/about.html:179 templates/charts.html:214 templates/days.html:268
+#: templates/about.html:176 templates/charts.html:214 templates/days.html:268
 #: templates/hours.html:265
 msgid "/images/total-sector-rvcv.png"
 msgstr "/images/total-sector-rvcv_es.png"
 
-#: templates/about.html:183 templates/charts.html:218 templates/days.html:272
+#: templates/about.html:180 templates/charts.html:218 templates/days.html:272
 #: templates/hours.html:269
 msgid "/images/total-sector-rvsv.png"
 msgstr "/images/total-sector-rvsv_es.png"
 
-#: templates/about.html:187 templates/charts.html:222 templates/days.html:276
+#: templates/about.html:184 templates/charts.html:222 templates/days.html:276
 #: templates/hours.html:273
 msgid "/images/total-sector-rtcv.png"
 msgstr "/images/total-sector-rtcv_es.png"
 
-#: templates/about.html:191 templates/charts.html:226 templates/days.html:280
+#: templates/about.html:188 templates/charts.html:226 templates/days.html:280
 #: templates/hours.html:277
 msgid "/images/total-sector-rtsv.png"
 msgstr "/images/total-sector-rtsv_es.png"
 
-#: templates/about.html:195 templates/charts.html:230 templates/days.html:284
+#: templates/about.html:192 templates/charts.html:230 templates/days.html:284
 #: templates/hours.html:281
 msgid "/images/total-sector-rccv.png"
 msgstr "/images/total-sector-rccv_es.png"
@@ -267,22 +255,18 @@ msgid "Questions or comments? <strong>Get in touch:</strong>"
 msgstr "Preguntas o comentarios... ¡Contáctame!"
 
 #: templates/base.html:127
-msgid "Crime data from a <a href=\"https://data.diegovalle.net/hoyodecrimen/solicitud.zip\">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href=\"http://data.ssp.cdmx.gob.mx/ubica_cuadrantes.html\">Ubica tu cuadrante</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>."
-msgstr "Los datos de incidencia delictiva vienen de una <a href=\"https://data.diegovalle.net/hoyodecrimen/solicitud.zip\">solicitud de información</a> a la SSPDF. El mapa de cuadrantes es de <a href=\"http://data.ssp.cdmx.gob.mx/ubica_cuadrantes.html\">Ubica tu cuadrante</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
+msgid "The source of crime data is the <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. Cuadrante coordinates scraped from <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>."
+msgstr "Los datos de incidencia delictiva vienen de la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. El mapa de cuadrantes es de <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
 
 #: templates/base.html:130
-msgid "Download the complete dataset as a <a href=\"https://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip\">csv file</a>"
-msgstr "Descargar los datos de criminalidad <a href=\"https://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip\">como csv</a>"
-
-#: templates/base.html:131
 msgid "For a complete crime and safety report for all of Mexico please visit <a href=\"https://elcri.men/en/\">El Crimen</a>."
 msgstr "Visiten <a href=\"https://elcri.men/\">El Crimen</a> para una guía completa del crimen y seguridad en todo México."
 
-#: templates/base.html:166
+#: templates/base.html:163
 msgid "All rights reserved"
 msgstr "Todos los derechos reservados"
 
-#: templates/base.html:189
+#: templates/base.html:184
 msgid "8acd30bddc88809427bf568b635de1df754c10c9"
 msgstr "1ff9c89c8f9ed13417d494d31ba01faaef45c3cb"
 
@@ -721,8 +705,10 @@ msgstr "Datos Oficiales"
 
 #: templates/pip.html:164
 msgid "The Mexico City Police Department\n"
-"            divided the city into 847 quadrants. Thanks to a freedom of information request this website was able to\n"
-"            obtain crime information for each and every quadrant.<br/><br/> With this data citizens and the authorities can\n"
+"            divided the city into 847 quadrants. Thanks to the \n"
+"            <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">open data iniciative</a> \n"
+"            by the Mexico City government there \n"
+"            is geolocalized data available for all crimes commited in Mexico City.<br/><br/> With this data citizens and the authorities can\n"
 "            visualize\n"
 "            the most violent parts of the city; businessmen can decide where to locate or expand; drivers can find in\n"
 "            which parking\n"
@@ -731,53 +717,53 @@ msgid "The Mexico City Police Department\n"
 "            Chief of Police\n"
 "            to assess and compare his personnel. Don&#39;t hesitate to <a href=\"https://www.diegovalle.net/contact.html\">contact me</a>\n"
 "        if you have any questions."
-msgstr "La SSP-CDMX dividió al Distrito Federal en 847 cuadrantes. Gracias a una solicitud de información obtuve los datos        de todos los crímenes cometidos en los cuadrantes.<br><br> Con estos datos y su visualización, los ciudadanos y las autoridades podrían saber dónde se encuentran las áreas más violentas; los empresarios escogerían mejor dónde situar sus negocios, y los conductores sabrían en cuáles estacionamientos es más probable que les roben el auto... <br><br> Con estos mapas interactivos en la mano se les pueden pedir cuentas a los policías y comandantes responsables de cada cuadrante o sector. Incluso el Secretario de Seguridad Pública        podría usarlos para comparar y evaluar a sus comandantes y policías. No dudes en <a href=\"https://www.diegovalle.net/contact.html\">contactarme</a>."
+msgstr "La SSP-CDMX dividió al Distrito Federal en 847 cuadrantes. Gracias a la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">iniciativa de datos abierto del gobierno de la Ciudad de México</a> se cuentan con datos georeferenciados de criminalidad.<br><br> Con estos datos y su visualización, los ciudadanos y las autoridades podrían saber dónde se encuentran las áreas más violentas; los empresarios escogerían mejor dónde situar sus negocios, y los conductores sabrían en cuáles estacionamientos es más probable que les roben el auto... <br><br> Con estos mapas interactivos en la mano se les pueden pedir cuentas a los policías y comandantes responsables de cada cuadrante o sector. Incluso el Secretario de Seguridad Pública        podría usarlos para comparar y evaluar a sus comandantes y policías. No dudes en <a href=\"https://www.diegovalle.net/contact.html\">contactarme</a>."
 
-#: templates/pip.html:198
+#: templates/pip.html:200
 msgid "Cuadrante Homicides"
 msgstr "Cuadrante - Homicidios"
 
-#: templates/pip.html:199
+#: templates/pip.html:201
 msgid "Cuadrante Violent robberies to a business"
 msgstr "Cuadrante - Robo a Negocio C.V."
 
-#: templates/pip.html:200
+#: templates/pip.html:202
 msgid "Cuadrante Vehicle robberies with violence"
 msgstr "Cuadrante - Robo de Vehículo C.V"
 
-#: templates/pip.html:201
+#: templates/pip.html:203
 msgid "Cuadrante Vehicle robberies without violence"
 msgstr "Cuadrante - Robo de Vehículo S.V."
 
-#: templates/pip.html:202
+#: templates/pip.html:204
 msgid "Cuadrante Rape"
 msgstr "Cuadrante - Violaciones"
 
-#: templates/pip.html:203
+#: templates/pip.html:205
 msgid "Cuadrante House robberies with violence"
 msgstr "Cuadrante - Robo a casa habitación C.V."
 
-#: templates/pip.html:204
+#: templates/pip.html:206
 msgid "Cuadrante Robberies to pedestrians with violence"
 msgstr "Cuadrante - Robo a transeunte C.V."
 
-#: templates/pip.html:205
+#: templates/pip.html:207
 msgid "Cuadrante Robberies to pedestrians without violence"
 msgstr "Cuadrante - Robo a transeunte S.V."
 
-#: templates/pip.html:206
+#: templates/pip.html:208
 msgid "count"
 msgstr "número"
 
-#: templates/pip.html:207
+#: templates/pip.html:209
 msgid "All DF"
 msgstr "Todo CDMX"
 
-#: templates/pip.html:208
+#: templates/pip.html:210
 msgid "rate"
 msgstr "tasa"
 
-#: templates/pip.html:209
+#: templates/pip.html:211
 msgid "Your Cuadrante"
 msgstr "Tu cuadrante"
 
