@@ -31,6 +31,30 @@ also copy the data)
 
 ##Updating
 
+truncate the tables `psql -d apihoyodecrimen`
+
+```
+TRUNCATE TABLE  crime_latlong;
+TRUNCATE TABLE  cuadrantes;
+TRUNCATE TABLE pgj;
+```
+
+update the database with new data
+
+```
+psql -d apihoyodecrimen -c "\copy cuadrantes (cuadrante,crime,date,count,year,sector,population) from '/tmp/cuadrantes-pgj.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+psql -d apihoyodecrimen  -c "\copy crime_latlong  (cuadrante,crime,date,hour,year,month,latitude,longitude,id) from '/tmp/crime-lat-long-pgj.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+psql -d apihoyodecrimen -c "\copy pgj (crime,date,count) from '/tmp/pgj.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
+```
+
+convert to geom the latitude and longitude
+
+```
+UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);
+```
+
+
+
 To update the carto table you first have to delete all rows in the existing table
 
 ```sql
