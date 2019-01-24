@@ -652,8 +652,8 @@ def latlong(crime, long, lat, distance):
     :param lat: lat
     :param crime: the name of a crime or the keyword ``all``
 
-    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :status 200: when the cuadrante corresponding to the latitude and longitude is found
     :status 400: when the latitude or longitude where incorrectly specified
@@ -772,8 +772,8 @@ def hours_df(crime):
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
 
-    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :resheader Content-Type: application/json
 
@@ -915,8 +915,8 @@ def days_df(crime):
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
 
-    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :resheader Content-Type: application/json
 
@@ -1035,8 +1035,8 @@ def df_all(crime):
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
 
-    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :resheader Content-Type: application/json
 
@@ -1072,7 +1072,7 @@ def df_all(crime):
 
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    # Needs to default to 2013-01 when the series starts instead of a year ago
+    # Needs to default to 2016-01 when the series starts instead of a year ago
     start_date, max_date = check_dates(start_date, end_date, '2016-01-01')
     filters = process_crime(crime, start_date, max_date)
     # if crime == "ALL":
@@ -1101,7 +1101,7 @@ def df_crime_extra_all(crime):
 
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    # Needs to default to 2013-01 when the series starts instead of a year ago
+    # Needs to default to 2016-01 when the series starts instead of a year ago
     start_date, max_date = check_dates(start_date, end_date, '2016-01-01')
     filters = process_crime(crime, start_date, max_date)
     # if crime == "ALL":
@@ -1144,8 +1144,8 @@ def cuadrantes(cuadrante, crime):
     :status 200: when the sum of all crimes is found
     :status 404: when the crime or cuadrante is not found in the database
 
-    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :resheader Content-Type: application/json
 
@@ -1183,7 +1183,7 @@ def cuadrantes(cuadrante, crime):
 
     start_date = request.args.get('start_date', '', type=str)
     end_date = request.args.get('end_date', '', type=str)
-    # Needs to default to 2013-01 when the series starts instead of a year ago
+    # Needs to default to 2016-01 when the series starts instead of a year ago
     start_date, max_date = check_dates(start_date, end_date, '2016-01-01')
     filters = process_crime(crime, start_date, max_date, cuadrante = cuadrante)
     # if crime == "ALL":
@@ -1204,6 +1204,8 @@ def cuadrantes(cuadrante, crime):
                       Cuadrantes.population). \
         order_by(Cuadrantes.cuadrante, Cuadrantes.crime, Cuadrantes.date). \
         all()
+    #import pdb; pdb.set_trace()
+
     return lib.results_to_json(results)
 
 
@@ -1222,8 +1224,8 @@ def sectors(crime, sector):
     :status 200: when the sum of all crimes is found
     :status 404: when the crime or cuadrante is not found in the database
 
-    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :resheader Content-Type: application/json
 
@@ -1297,8 +1299,8 @@ def municipios_series(crime, municipio):
     :status 200: when the sum of all crimes is found
     :status 404: when the crime or municipio is not found in the database
 
-    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start the series. ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :resheader Content-Type: application/json
 
@@ -1323,7 +1325,7 @@ def municipios_series(crime, municipio):
       "count": 1,
       "crime": "HOMICIDIO DOLOSO",
       "cve_mun": "09012",
-      "date": "2013-01",
+      "date": "2016-01",
       "municipio": "TLALPAN",
       "population": 633181
       },
@@ -1366,8 +1368,8 @@ def cuadrantes_sum_all(cuadrante, crime):
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
 
-    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :resheader Content-Type: application/json
 
@@ -1444,8 +1446,8 @@ def sectores_sum_all(sector, crime):
     :status 200: when the sum of all crimes is found
     :status 404: when the crime is not found in the database
 
-    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :resheader Content-Type: application/json
 
@@ -1519,8 +1521,8 @@ def municipios_sum_all(municipio, crime):
     :status 200: when the sum of all crimes is found
     :status 404: when the crime or municipio is not found in the database
 
-    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2013-01)
-    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2013-06). Must be greater or equal to start_date
+    :query start_date: Start of the period from which to start aggregating in ``%Y-%m`` format (e.g. 2016-01)
+    :query end_date: End of the period to analyze in ``%Y-%m`` format (e.g. 2016-06). Must be greater or equal to start_date
 
     :resheader Content-Type: application/json
 
@@ -1597,10 +1599,10 @@ def cuadrantes_change_sum_all(cuadrante, crime):
     :status 200: when the  change in crime counts is found
     :status 404: when the crime is not found in the database
 
-    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2016-01)
 
     :resheader Content-Type: application/json
 
@@ -1695,10 +1697,10 @@ def sectores_change_sum_all(sector, crime):
     :status 200: when the  change in crime counts is found
     :status 404: when the crime is not found in the database
 
-    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2016-01)
 
     :resheader Content-Type: application/json
 
@@ -2000,8 +2002,8 @@ def top5cuadrantes(crime):
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
     :status 404: when the crime is not found in the database
 
-    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2016-01)
     :query rank: Return all cuadrantes ranked higher. Defaults to `5`
 
     :resheader Content-Type: application/json
@@ -2085,8 +2087,8 @@ def top5cuadrantes(crime):
 #     :status 400: when the one of the dates was incorrectly specified or the periods overlap
 #     :status 404: when the crime is not found in the database
 
-#     :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
-#     :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
+#     :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2016-01)
+#     :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2016-01)
 #     :query rank: Return all cuadrantes ranked higher. Defaults to `5`
 
 #     :resheader Content-Type: application/json
@@ -2172,8 +2174,8 @@ def top5sectores(crime):
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
     :status 404: when the crime is not found in the database
 
-    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2016-01)
     :query rank: Return all sectores with a rate ranked higher. Defaults to `5`
 
     :resheader Content-Type: application/json
@@ -2260,10 +2262,10 @@ def top5changecuadrantes(crime):
     :status 400: when the one of the dates was incorrectly specified or the periods overlap
     :status 404: when the crime is not found in the database
 
-    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
-    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2013-01)
+    :query start_period1: Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query end_period1: End of the first period. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query start_period2: Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as ``%Y-%m`` (e.g. 2016-01)
+    :query end_period2: End of the second period. Formatted as ``%Y-%m`` (e.g. 2016-01)
     :query rank: Return the top X ranked cuadrantes.
 
     :resheader Content-Type: application/json

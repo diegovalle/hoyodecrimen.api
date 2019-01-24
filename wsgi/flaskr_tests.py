@@ -42,22 +42,22 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         response = tester.get(base_url + '?start_period1=2005-19', content_type='application/json')
         self.assertEqual(response.status_code, 400)
-        response = tester.get(base_url + '?start_period1=2012-12', content_type='application/json')
+        response = tester.get(base_url + '?start_period1=2015-12', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # test with all dates specified
         response = tester.get(base_url + '?start_period1=2005-19&end_period1=2005-19&start_period2=2005-19&end_period2=2005-19', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Overlapping periods
-        response = tester.get(base_url + '?start_period1=2013-01&end_period1=2013-06&start_period2=2013-03&end_period2=2014-02', content_type='application/json')
+        response = tester.get(base_url + '?start_period1=2016-01&end_period1=2016-06&start_period2=2013-03&end_period2=2014-02', content_type='application/json')
         # 1sr period invalid
-        response = tester.get(base_url + '?start_period1=2013-06&end_period1=2013-01&start_period2=2013-03&end_period2=2014-02', content_type='application/json')
+        response = tester.get(base_url + '?start_period1=2016-06&end_period1=2016-01&start_period2=2013-03&end_period2=2014-02', content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
     # Check that the API correctly deals with date parameters
     def test_top_rates_sectores(self):
         base_url = '/api/v1/sectores/crimes/homicidio%20doloso/top/rates'
         tester = app.test_client(self)
-        response = tester.get(base_url + '?start_date=2013-08&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-08&end_date=2017-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         # End date is smaller than start date
         response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
@@ -66,7 +66,7 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Equal dates are allowed since it would only span that month
-        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-07&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
 
@@ -74,7 +74,7 @@ class FlaskTestCase(unittest.TestCase):
     def test_top_counts_cuadrantes(self):
         base_url = '/api/v1/cuadrantes/crimes/homicidio%20doloso/top/counts'
         tester = app.test_client(self)
-        response = tester.get(base_url + '?start_date=2013-08&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-08&end_date=2017-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         # End date is smaller than start date
         response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
@@ -83,7 +83,7 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Equal dates are allowed since it would only span that month
-        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-07&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
 
@@ -150,11 +150,11 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Equal dates are allowed since it would only span that month
-        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-07&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
         # Success
-        response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-01&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
 
@@ -167,15 +167,15 @@ class FlaskTestCase(unittest.TestCase):
         # End date is smaller than start date
         response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
-        # Start date is smaller than 2013 (when the data started being collected)
+        # Start date is smaller than 2016 (when the data started being collected)
         response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Equal dates are allowed since it would only span that month
-        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-07&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
         # Success
-        response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-01&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
 
@@ -192,11 +192,11 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Equal dates are allowed since it would only span that month
-        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-07&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
         # Success
-        response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-01&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
         #response = tester.get('/api/v1/sector/angel%20-%20zona%20rosa/crimes/robo%20a%20negocio%20c.v./series', content_type='application/json')
@@ -209,10 +209,10 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get(base_url, content_type='application/json')
         self.assertEqual(response.status_code, 200)
         # Equal dates are allowed since it would only span that month
-        response = tester.get(base_url + '?start_date=2014-07&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-07&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         # Success
-        response = tester.get(base_url + '?start_date=2014-01&end_date=2014-07', content_type='application/json')
+        response = tester.get(base_url + '?start_date=2016-01&end_date=2016-07', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
 
@@ -407,7 +407,7 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/api/v1/sectores/', content_type='application/json')
         cuadrantes = tester.get('/api/v1/sectores/geojson', content_type='application/json')
         for i in range(0, len(json.loads(cuadrantes.data.decode('utf-8'))['features'])):
-            print(json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['sector'].encode('utf-8'))
+            #print(json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['sector'].encode('utf-8'))
             cuadrante = tester.get('/api/v1/sectores/' +  json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['sector'] + '/crimes/homicidio%20doloso/series', content_type='application/json')
             self.assertEqual(cuadrante.status_code, 200)
             self.assertNotEqual(json.loads(cuadrante.data.decode('utf-8')), {"rows": []})
