@@ -85,7 +85,7 @@ def check_date_month(str):
     try:
         time.strptime(str, '%Y-%m-01')
         valid = True
-        if str < '2013-01-01':
+        if str < '2016-01-01':
             valid = False
     except ValueError:
         valid = False

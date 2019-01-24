@@ -91,10 +91,8 @@ cuadrante.</p>
 <p>This is beta software and paths may break (but not much). If you
 notice an error, have any comments, or stuff you’d like added to the
 API raise an issue on <a class="reference external" href="https://github.com/diegovalle/hoyodecrimen.api/issues">GitHub</a> or email me
-at <a class="reference external" href="mailto:diego&#37;&#52;&#48;diegovalle&#46;net">diego<span>&#64;</span>diegovalle<span>&#46;</span>net</a>. All data comes from freedom of information
-requests to the Mexico City government, sometimes I get data on crimes
-which happened in non-specified cuadrantes (<em>NO ESPECIFICADO</em>) and sometimes
-not, depending on how lucky I get when the FOIA request is answered.</p>
+at diego [at] diegovalle.net. All crime data comes from the Mexico City
+<a class="reference external" href="https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/">open data portal</a></p>
 </div>
 <div class="section" id="license">
 <h1><a class="toc-backref" href="#id10">License</a><a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
@@ -535,8 +533,8 @@ the cuadrante containing the longitude and latitude during the last 12 months</p
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>
@@ -556,7 +554,7 @@ the cuadrante containing the longitude and latitude during the last 12 months</p
 </tbody>
 </table>
 <p><strong>Example request</strong>:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/cuadrantes/crimes/all/coords/-99.13333/19.43/distance/500</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v1/latlong/crimes/all/coords/-99.13333/19.43/distance/500</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">hoyodecrimen.com</span>
 <span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
 </pre></div>
@@ -703,7 +701,7 @@ Content-Type: application/json
 <code class="descname">GET </code><code class="descname">/api/v1/cuadrantes/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/top/counts/change</code><a class="headerlink" href="#get--api-v1-cuadrantes-crimes-(string-crime)-top-counts-change" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the top ranked cuadrantes where crime <strong>counts</strong> increased the most.</p>
 <p>When no date parameters are specified the top 5 cuadrantes are returned for the last 3 months compared
-with the same period during the previous year (e.g. July-May 2014 compared with July-May 2013).
+with the same period during the previous year (e.g. July-May 2018 compared with July-May 2017).
 All population data returned by this call is in persons/year and comes from the 2010 census</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -723,10 +721,10 @@ All population data returned by this call is in persons/year and comes from the 
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_period1</strong> – Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>end_period1</strong> – End of the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>start_period2</strong> – Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>end_period2</strong> – End of the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>start_period1</strong> – Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>end_period1</strong> – End of the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>start_period2</strong> – Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>end_period2</strong> – End of the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
 <li><strong>rank</strong> – Return the top X ranked cuadrantes.</li>
 </ul>
 </td>
@@ -872,10 +870,10 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_period1</strong> – Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>end_period1</strong> – End of the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>start_period2</strong> – Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>end_period2</strong> – End of the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>start_period1</strong> – Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>end_period1</strong> – End of the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>start_period2</strong> – Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>end_period2</strong> – End of the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
 </ul>
 </td>
 </tr>
@@ -940,10 +938,10 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_period1</strong> – Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>end_period1</strong> – End of the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>start_period2</strong> – Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>end_period2</strong> – End of the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>start_period1</strong> – Start of the period from which to start counting. Together with end_period1 this will specify the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>end_period1</strong> – End of the first period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>start_period2</strong> – Start of the period from which to start counting. Together with end_period2 this will specify the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>end_period2</strong> – End of the second period. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
 </ul>
 </td>
 </tr>
@@ -989,7 +987,7 @@ Content-Type: application/json
 <code class="descname">GET </code><code class="descname">/api/v1/cuadrantes/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/top/counts</code><a class="headerlink" href="#get--api-v1-cuadrantes-crimes-(string-crime)-top-counts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the top ranked cuadrantes with the highest crime <strong>counts</strong> for a given period of time.</p>
 <p>When no dates parameters are specified the top 5 cuadrantes for the last 12 months are returned
-(e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
+(e.g. If July is the last date in the database, then the period July 2018 to Aug 2017 will be analyzed).
 All population data returned by this call is in persons/year and comes from the 2010 census</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1009,8 +1007,8 @@ All population data returned by this call is in persons/year and comes from the 
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start counting. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze. Must be greater or equal to start_date. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>start_date</strong> – Start of the period from which to start counting. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze. Must be greater or equal to start_date. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
 <li><strong>rank</strong> – Return all cuadrantes ranked higher. Defaults to <cite>5</cite></li>
 </ul>
 </td>
@@ -1071,8 +1069,8 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>
@@ -1132,8 +1130,8 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>
@@ -1161,7 +1159,7 @@ Content-Type: application/json
 &quot;count&quot;: 1,
 &quot;crime&quot;: &quot;HOMICIDIO DOLOSO&quot;,
 &quot;cve_mun&quot;: &quot;09012&quot;,
-&quot;date&quot;: &quot;2013-01&quot;,
+&quot;date&quot;: &quot;2016-01&quot;,
 &quot;municipio&quot;: &quot;TLALPAN&quot;,
 &quot;population&quot;: 633181
 },
@@ -1193,8 +1191,8 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>
@@ -1255,8 +1253,8 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>
@@ -1299,7 +1297,7 @@ Content-Type: application/json
 <code class="descname">GET </code><code class="descname">/api/v1/sectores/crimes/</code><span class="sig-paren">(</span><em class="property">string: </em><em>crime</em><span class="sig-paren">)</span><code class="descname">/top/rates</code><a class="headerlink" href="#get--api-v1-sectores-crimes-(string-crime)-top-rates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the top ranked sectors with the highest crime <strong>rates</strong> for a given period of time.</p>
 <p>When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
-(e.g. If July is the last date in the database then the period July 2014 to Aug 2013 will be analyzed).
+(e.g. If July is the last date in the database then the period July 2018 to Aug 2017 will be analyzed).
 Crimes where no sector was specified (NO ESPECIFICADO) are ignored.
 All population data returned by this call is in persons/year and comes from the 2010 census</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1320,8 +1318,8 @@ All population data returned by this call is in persons/year and comes from the 
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start counting. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze. Must be greater or equal to start_date. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2013-01)</li>
+<li><strong>start_date</strong> – Start of the period from which to start counting. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze. Must be greater or equal to start_date. Formatted as <code class="docutils literal"><span class="pre">%Y-%m</span></code> (e.g. 2016-01)</li>
 <li><strong>rank</strong> – Return all sectores with a rate ranked higher. Defaults to <cite>5</cite></li>
 </ul>
 </td>
@@ -1383,8 +1381,8 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>
@@ -1444,8 +1442,8 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>
@@ -1557,8 +1555,8 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start the series. <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>
@@ -1615,8 +1613,8 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>
@@ -1680,8 +1678,8 @@ Content-Type: application/json
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">Query Parameters:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-01)</li>
-<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2013-06). Must be greater or equal to start_date</li>
+<li><strong>start_date</strong> – Start of the period from which to start aggregating in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-01)</li>
+<li><strong>end_date</strong> – End of the period to analyze in <code class="docutils literal"><span class="pre">%Y-%m</span></code> format (e.g. 2016-06). Must be greater or equal to start_date</li>
 </ul>
 </td>
 </tr>

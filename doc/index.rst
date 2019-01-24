@@ -48,10 +48,8 @@ This is beta software and paths may break (but not much). If you
 notice an error, have any comments, or stuff you'd like added to the
 API raise an issue on `GitHub
 <https://github.com/diegovalle/hoyodecrimen.api/issues>`_ or email me
-at diego@diegovalle.net. All data comes from freedom of information
-requests to the Mexico City government, sometimes I get data on crimes
-which happened in non-specified cuadrantes (*NO ESPECIFICADO*) and sometimes
-not, depending on how lucky I get when the FOIA request is answered.
+at diego [at] diegovalle.net. All crime data comes from the Mexico City
+`open data portal <https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/>`_ 
 
 License
 ========

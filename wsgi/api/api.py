@@ -1993,7 +1993,7 @@ def top5cuadrantes(crime):
     """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
 
     When no dates parameters are specified the top 5 cuadrantes for the last 12 months are returned
-    (e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
+    (e.g. If July is the last date in the database, then the period July 2018 to Aug 2017 will be analyzed).
     All population data returned by this call is in persons/year and comes from the 2010 census
 
     :param crime: the name of a crime or the keyword ``all``
@@ -2078,7 +2078,7 @@ def top5cuadrantes(crime):
 #     """Return the top ranked cuadrantes with the highest crime **counts** for a given period of time.
 
 #     When no dates parameters are specified the top 5 cuadrantes for the last 12 months are returned
-#     (e.g. If July is the last date in the database, then the period July 2014 to Aug 2013 will be analyzed).
+#     (e.g. If July is the last date in the database, then the period July 2018 to Aug 2017 will be analyzed).
 #     All population data returned by this call is in persons/year and comes from the 2010 census
 
 #     :param crime: the name of a crime or the keyword ``all``
@@ -2164,7 +2164,7 @@ def top5sectores(crime):
     """Return the top ranked sectors with the highest crime **rates** for a given period of time.
 
     When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
-    (e.g. If July is the last date in the database then the period July 2014 to Aug 2013 will be analyzed).
+    (e.g. If July is the last date in the database then the period July 2018 to Aug 2017 will be analyzed).
     Crimes where no sector was specified (NO ESPECIFICADO) are ignored.
     All population data returned by this call is in persons/year and comes from the 2010 census
 
@@ -2253,7 +2253,7 @@ def top5changecuadrantes(crime):
     """Return the top ranked cuadrantes where crime **counts** increased the most.
 
     When no date parameters are specified the top 5 cuadrantes are returned for the last 3 months compared
-    with the same period during the previous year (e.g. July-May 2014 compared with July-May 2013).
+    with the same period during the previous year (e.g. July-May 2018 compared with July-May 2017).
     All population data returned by this call is in persons/year and comes from the 2010 census
 
     :param crime: the name of a crime or the keyword ``all``
