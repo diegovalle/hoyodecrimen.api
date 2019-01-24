@@ -666,8 +666,7 @@
              $("#sidebar").animate({
                  width: "toggle"
              }, 350, function() {
-                 google.maps.event.trigger(map, "resize");
-                 map.setCenter(center);
+                 map.invalidateSize();
              });
          }
          /* Larger screens get expanded layer control and visible sidebar */
@@ -722,7 +721,7 @@
 
                          start_date = data.date_range[0];
                          end_date = data.date_range[1];
-                         numMonths = ((parseInt(data.date_range[1].slice(0,4)) - 2013) * 12) + parseInt(data.date_range[1].slice(5)) - 1;
+                         numMonths = ((parseInt(data.date_range[1].slice(0,4)) - 2016) * 12) + parseInt(data.date_range[1].slice(5)) - 1;
                          noUiSlider.create(dateSlider, {
                              start: [ 0, numMonths ],
                              connect: [false, true, false],
@@ -733,7 +732,7 @@
                              }
                          });
                          function convertToDate(number){
-                             d = new Date(Math.floor(number/12) + 2013, number % 12, 1);
+                             d = new Date(Math.floor(number/12) + 2016, number % 12, 1);
                              return d.getFullYear() + '-' + (d.getMonth() + 1 <= 9 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1));
                          }
                          dateSlider.noUiSlider.on('update', function( values, handle ){

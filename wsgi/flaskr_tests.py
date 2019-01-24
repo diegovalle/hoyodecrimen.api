@@ -29,9 +29,9 @@ class FlaskTestCase(unittest.TestCase):
     def test_error_api_v1_top_counts_change_cuadrantes_dates(self):
         base_url = '/api/v1/cuadrantes/crimes/homicidio%20doloso/top/counts/change'
         tester = app.test_client(self)
-        response = tester.get(base_url + '?start_period1=2013-01&end_period1=2013-12&start_period2=2014-01&end_period2=2014-06', content_type='application/json')
+        response = tester.get(base_url + '?start_period1=2016-01&end_period1=2016-12&start_period2=2017-01&end_period2=2017-06', content_type='application/json')
         self.assertEqual(response.status_code, 200)
-        # Invalid dates or dates before 2013-01
+        # Invalid dates or dates before 2016-01
         response = tester.get(base_url + '?start_period1=2005-19', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         response = tester.get(base_url + '?start_period2=2005-19', content_type='application/json')
@@ -62,7 +62,7 @@ class FlaskTestCase(unittest.TestCase):
         # End date is smaller than start date
         response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
-        # Start date is smaller than 2013 (when the data started being collected)
+        # Start date is smaller than 2016 (when the data started being collected)
         response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Equal dates are allowed since it would only span that month
@@ -79,7 +79,7 @@ class FlaskTestCase(unittest.TestCase):
         # End date is smaller than start date
         response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
-        # Start date is smaller than 2013 (when the data started being collected)
+        # Start date is smaller than 2016 (when the data started being collected)
         response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Equal dates are allowed since it would only span that month
@@ -112,10 +112,10 @@ class FlaskTestCase(unittest.TestCase):
     def test_api_v1_list_change_cuadrantes_all(self):
         base_url = '/api/v1/cuadrantes/all/crimes/all/period/change'
         tester = app.test_client(self)
-        response = tester.get(base_url + '?start_period1=2013-01&end_period1=2013-12&start_period2=2014-01&end_period2=2014-06', content_type='application/json')
+        response = tester.get(base_url + '?start_period1=2016-01&end_period1=2016-12&start_period2=2017-01&end_period2=2017-06', content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(json.loads(response.data.decode('utf-8')), {"rows": []})
-        # Invalid dates or dates before 2013-01
+        # Invalid dates or dates before 2016-01
         response = tester.get(base_url + '?start_period1=2005-19', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         response = tester.get(base_url + '?start_period2=2005-19', content_type='application/json')
@@ -146,7 +146,7 @@ class FlaskTestCase(unittest.TestCase):
         # End date is smaller than start date
         response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
-        # Start date is smaller than 2013 (when the data started being collected)
+        # Start date is smaller than 2016 (when the data started being collected)
         response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Equal dates are allowed since it would only span that month
@@ -188,7 +188,7 @@ class FlaskTestCase(unittest.TestCase):
         # End date is smaller than start date
         response = tester.get(base_url + '?start_date=2014-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
-        # Start date is smaller than 2013 (when the data started being collected)
+        # Start date is smaller than 2016 (when the data started being collected)
         response = tester.get(base_url + '?start_date=2012-08&end_date=2013-07', content_type='application/json')
         self.assertEqual(response.status_code, 400)
         # Equal dates are allowed since it would only span that month

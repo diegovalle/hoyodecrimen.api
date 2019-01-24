@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2019-01-23 09:36-0600\n"
-"PO-Revision-Date: 2019-01-23 09:58-0600\n"
+"PO-Revision-Date: 2019-01-24 11:05-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -592,7 +592,7 @@ msgstr "Filtros"
 
 #: templates/latlong_map_boot.html:574
 msgid "All police investigations started by the PGJ&#8209;CDMX since January 2016."
-msgstr "Todas las carpetas de investigación iniciadas por PGJ&#8209;CDMX desde Enero del 2016"
+msgstr "Todas las carpetas de investigación iniciadas por PGJ&#8209;CDMX desde enero del 2016"
 
 #: templates/latlong_map_boot.html:579
 msgid "Select a date range:"
