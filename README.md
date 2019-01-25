@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/diegovalle/hoyodecrimen.api.svg?branch=master)](https://travis-ci.org/diegovalle/hoyodecrimen.api)
 [![Build Status](https://circleci.com/gh/diegovalle/hoyodecrimen.api.png?style=shield&circle-token=:circle-token)](https://circleci.com/gh/diegovalle/hoyodecrimen.api)
 
-#Distrito Federal Crime API and Website
+# Distrito Federal Crime API and Website
 
 You'll need to set the following environmental variables for the testing environment:
 
@@ -15,7 +15,7 @@ OPENSHIFT_APP_UUID=true (only when running in production)
 SENTRY_DSN = Your sentry.io dsn
 ```
 
-##To deploy a testing server you have to:
+## To deploy a testing server you have to:
 
 * create a postgresql database called apihoyodecrimen
 * Enale the postgis extension ```CREATE EXTENSION IF NOT EXISTS postgis;```
@@ -26,10 +26,10 @@ also copy the data)
 
 
 
-##To deploy to a server use the ansible script in the ansible directory.
+## To deploy to a server use the ansible script in the ansible directory.
 
 
-##Updating
+## Updating
 
 Copy the crime-lat-long, cuadrantes and pgj csv files to the tmp directory
 and then run the `update.sh` script.
