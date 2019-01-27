@@ -65,7 +65,7 @@ server {
     #include h5bp/location/expires.conf;
     #include h5bp/location/cross-domain-fonts.conf;
     #include h5bp/location/protect-system-files.conf;
-    #include h5bp/directive-only/extra-security.conf;
+    include h5bp/directive-only/extra-security.conf;
     location = /favicon.ico {
        alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/images/favicon.ico;
        expires 1M;
