@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-23 09:36-0600\n"
-"PO-Revision-Date: 2019-01-24 11:05-0600\n"
+"POT-Creation-Date: 2019-01-26 18:36-0600\n"
+"PO-Revision-Date: 2019-01-26 19:47-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: templates/about.html:2 templates/about.html:23 templates/about.html:30
 #: templates/about.html:44
 msgid "About Crime in Mexico City"
-msgstr "Acerca de Crimen por tu Rumbo"
+msgstr "Acerca de HoyodeCrimen - Descarga de Datos"
 
 #: templates/about.html:3 templates/change-cuadrantes.html:3
 #: templates/charts.html:3 templates/counts-cuadrantes.html:3
@@ -47,7 +47,7 @@ msgstr "https://hoyodecrimen.com/en/about"
 
 #: templates/about.html:6
 msgid "About crime in Mexico City"
-msgstr "Acerca de Crimen por tu Rumbo"
+msgstr "Acerca de Crimen por tu Rumbo. Descarga de mapas y datos. Hecho por Diego Valle-Jones"
 
 #: templates/about.html:24 templates/about.html:31
 msgid "Data sources and information for hoyodecrimen.com"
@@ -63,7 +63,7 @@ msgstr "Creado por <a href=\"https://www.diegovalle.net\">Diego Valle</a>"
 
 #: templates/about.html:155
 msgid "The source of crime data is the <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. Cuadrante coordinates scraped from <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Consulta de Cuadrantes</a>. The population figures are based on the <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore."
-msgstr "Los datos de incidencia delictiva provienen de la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a>. El mapa de cuadrantes es de <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
+msgstr "Los datos de incidencia delictiva provienen de la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">PJG-CDMX</a> y ahí los pueden descargar. El mapa de cuadrantes es de <a href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu cuadrante</a>. La población está basada en información del <a href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html\">censo 2010 por Manzana</a>."
 
 #: templates/about.html:157 templates/base.html:128
 msgid "There's also a"
@@ -356,7 +356,7 @@ msgstr " , tasa: "
 
 #: templates/charts.html:2
 msgid "Charts of Crime in Mexico City"
-msgstr "Gráficas de las tasas de crimen en la Ciudad de México por sector delictivo"
+msgstr "Gráficas de las tasas de crimen en CDMX por sector delictivo"
 
 #: templates/charts.html:5
 msgid "https://hoyodecrimen.com/charts"
@@ -404,7 +404,7 @@ msgstr "https://hoyodecrimen.com/en/crime"
 
 #: templates/crime.html:6
 msgid "Small multiple charts of crime in all ofMexico City"
-msgstr "Gráficas del en toda la Ciudad de México"
+msgstr "Gráficas del crimen en toda la Ciudad de México. Homicidios, Robo de Vehículo, Robo a Transeúnte con y sin Violencia"
 
 #: templates/crime.html:28 templates/crime.html:35
 msgid "Charts of crime trends in Mexico City"
@@ -432,7 +432,7 @@ msgstr "\"tasa anualizada por 100,000\""
 
 #: templates/cuadrantes-map.html:7
 msgid "Interactive map of crime rates in the cuadrantes of Mexico City"
-msgstr "Mapa interactivo del número de crimenes en los cuadrantes de la Ciudad de México"
+msgstr "Mapa interactivo del número de crímenes en los cuadrantes de CDMX"
 
 #: templates/cuadrantes-map.html:8
 msgid "Interactive Map of Crime Counts by Cuadrante in Mexico City"
@@ -480,7 +480,7 @@ msgstr "- número: "
 
 #: templates/days.html:2
 msgid "Charts of Crime in Mexico City by Day of Week"
-msgstr "Gráficas del crimen en la Ciudad de México por día de la semana"
+msgstr "Gráficas del crimen en CDMX por día de la semana"
 
 #: templates/days.html:5
 msgid "https://hoyodecrimen.com/dia"
@@ -500,7 +500,7 @@ msgstr "\"Número\""
 
 #: templates/hours.html:2
 msgid "Charts of Crime in Mexico City by Hour"
-msgstr "Gráficas de las tasas de crimen en la Ciudad de México por hora"
+msgstr "Gráficas de las tasas de crimen en CDMX por hora"
 
 #: templates/hours.html:5
 msgid "https://hoyodecrimen.com/hora"
@@ -524,11 +524,11 @@ msgstr "\"Hora\""
 #: templates/latlong_map_leaflet.html:4 templates/latlong_map_leaflet.html:13
 #: templates/latlong_map_leaflet.html:20
 msgid "Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance."
-msgstr "Mapa de incidentes criminales de la Ciudad de México con latitud, longitud, fecha y hora de ocurrencia"
+msgstr "Mapa de la inseguridad e incidentes criminales en la Ciudad de México con latitud, longitud, fecha y hora de ocurrencia"
 
-#: templates/latlong_map.html:6 templates/latlong_map_boot.html:6
-#: templates/latlong_map_boot.html:597 templates/latlong_map_boot.html:598
-#: templates/latlong_map_boot.html:599 templates/latlong_map_leaflet.html:5
+#: templates/latlong_map.html:6 templates/latlong_map_boot.html:597
+#: templates/latlong_map_boot.html:598 templates/latlong_map_boot.html:599
+#: templates/latlong_map_leaflet.html:5
 msgid "Interactive Map of Crime in Mexico City"
 msgstr "Mapa interactivo del crimen en la Ciudad de México"
 
@@ -569,6 +569,10 @@ msgstr "fecha:"
 #: templates/latlong_map_leaflet.html:745
 msgid "hour:"
 msgstr "hora:"
+
+#: templates/latlong_map_boot.html:6
+msgid "Mexico City Safety Map"
+msgstr "Mapa del crimen en la Ciudad de México"
 
 #: templates/latlong_map_boot.html:487
 msgid "Start Date: "
@@ -620,16 +624,16 @@ msgid "Crimes since January 2013"
 msgstr "Todos los crímenes geolocalizados desde el 2013"
 
 #: templates/pip.html:2
-msgid "Mexico City Crime - See how your neighborhood rated for violent and property crimes"
-msgstr "Crimen en la Ciudad de México - Averigua cuantos delitos se cometieron por tu rumbo"
+msgid "Mexico City Crime Rates and Statistics"
+msgstr "Crimen en la Ciudad de México - Todos los delitos por tu rumbo"
 
 #: templates/pip.html:5
 msgid "https://hoyodecrimen.com/"
 msgstr "https://hoyodecrimen.com/en/"
 
 #: templates/pip.html:6
-msgid "Crime in Mexico City. Find out how many crimes there were in your cuadrante delictivo"
-msgstr "Crimen en la Ciudad de México. Averigua cuantos crímenes ocurrieron por tu rumbo"
+msgid "Crime in Mexico City. Find out how safe your neighborhood is with maps and charts"
+msgstr "Índice delictivo de la Ciudad de México. Conoce las zonas rojas y colonias que debed evitar. Datos actualizados hasta el 2018"
 
 #: templates/pip.html:12
 msgid "Maps and charts of where crimes are happening in your neighbor and street"
@@ -785,7 +789,7 @@ msgstr "Homicidios - Total CDMX"
 
 #: templates/sectores-map.html:7
 msgid "Interactive map of crime rate in the sectores of Mexico Shitty"
-msgstr "Mapa interactivo de las tasas de criminalidad en el Distrito Federal"
+msgstr "Mapa interactivo de las tasas de criminalidad en CDMX"
 
 #: templates/sectores-map.html:8
 msgid "Interactive Map of Crime Rates by Sector in Mexico City"
