@@ -2,7 +2,7 @@
 
 ###Nombre
 
-Usar un nombre prdista (o de quien gobierne) de http://blog.diegovalle.net/2015/02/the-most-partisan-first-names.html con apellidos de sección de sociales
+Usar un nombre prdista (o de quien gobierne) de http://blog.diegovalle.net/2015/02/the-most-partisan-first-names.html
 
 
 ###Texto Solicitud
