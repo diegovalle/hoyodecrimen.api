@@ -49,3 +49,11 @@ INSERT INTO crime_lat_long SELECT * FROM crime_lat_long_pgj
 and then delete the temporary table
 
 BE SURE THE TABLE IS CALLED crime_lat_long
+
+# Mailing list
+
+Hoyodecrimen Notificaciones:
+https://hoyodecrimen.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=99835eea14
+
+Hoyodecrimen Notifications:
+https://hoyodecrimen.us6.list-manage.com/subscribe/post?u=787fae824c502d9f3ad7d0b73&amp;id=102491489b
