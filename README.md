@@ -44,6 +44,7 @@ and then upload the new table to a tempory one and copy all rows to crime_lat_lo
 
 ```sql
 INSERT INTO crime_lat_long SELECT * FROM crime_lat_long_pgj
+WHERE ROWNUM <= 100;
 ```
 
 and then delete the temporary table

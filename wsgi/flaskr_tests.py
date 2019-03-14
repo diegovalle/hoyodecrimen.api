@@ -4,18 +4,31 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from hoyodecrimen import app
 import json
 import unittest
-
+import datetime
 #import tempfile
 
+
+def add_last_day_of_month(date):
+    date = datetime.datetime.strptime(date, "%Y-%m-%d")
+    next_month = date.replace(day=28) + datetime.timedelta(days=4)
+    next_month = next_month - datetime.timedelta(days=next_month.day)
+    return next_month.strftime("%Y-%m-%d")
+
 class FlaskTestCase(unittest.TestCase):
-    # Check that the API is generating json and responding, even if it's crap
-    # def test_calderas(self):
-#         tester = app.test_client(self)
-#         response = tester.get('/api/v1/estariamosmejorcon',
-# content_type='application/json')
-#         self.assertEqual(response.status_code, 200)
-#         # Check that the result sent is the hero of all Mexico
-#         self.assertEqual(json.loads(response.data.decode('utf-8')), {"rows": ["Calderon"]})
+
+    # test that the last day returned is not somthing like 2019-02-01 but the day is the last day of the month
+    def test_last_day(self):
+        tester = app.test_client(self)
+        response = tester.get('/api/v1/latlong/crimes/all/coords/-99.13333/19.43/distance/500000', content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        last_day = "2016-01-01"
+        crimes = json.loads(response.data.decode('utf-8'))['rows']
+        for i in range(0, len(crimes)):
+            d = crimes[i]['date'].encode('utf-8')
+            if d > last_day:
+                last_day = d
+        print(last_day)
+        self.assertEqual(last_day, add_last_day_of_month(last_day))
 
     # Check the API endpoint
     def test_api_v1_top_counts_change_cuadrantes(self):
@@ -411,6 +424,7 @@ class FlaskTestCase(unittest.TestCase):
             cuadrante = tester.get('/api/v1/sectores/' +  json.loads(cuadrantes.data.decode('utf-8'))['features'][i]['properties']['sector'] + '/crimes/homicidio%20doloso/series', content_type='application/json')
             self.assertEqual(cuadrante.status_code, 200)
             self.assertNotEqual(json.loads(cuadrante.data.decode('utf-8')), {"rows": []})
+
 
 
 if __name__ == '__main__':
