@@ -25,7 +25,7 @@ class FlaskTestCase(unittest.TestCase):
         crimes = json.loads(response.data.decode('utf-8'))['rows']
         for i in range(0, len(crimes)):
             d = crimes[i]['date'].encode('utf-8')
-            if d > last_day:
+            if str(d) > last_day:
                 last_day = d
         print(last_day)
         self.assertEqual(last_day, add_last_day_of_month(last_day))
