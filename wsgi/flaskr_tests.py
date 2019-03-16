@@ -21,7 +21,7 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get('/api/v1/latlong/crimes/all/coords/-99.13333/19.43/distance/500000', content_type='application/json')
         self.assertEqual(response.status_code, 200)
-        last_day = "2016-01-01"
+        last_day = u"2016-01-01"
         crimes = json.loads(response.data.decode('utf-8'))['rows']
         for i in range(0, len(crimes)):
             d = crimes[i]['date'].encode('utf-8')
