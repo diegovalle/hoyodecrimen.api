@@ -58,6 +58,7 @@
     - imagemagick
     - optipng
     - htop
+    - tmux
     #- ufw
     - siege
     #- fail2ban
