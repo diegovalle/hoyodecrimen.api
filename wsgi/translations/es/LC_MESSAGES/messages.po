@@ -8,7 +8,9 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2016-11-11 20:37-0600\n"
-"PO-Revision-Date: 2016-11-11 20:40-0600\n"
+"PO-Revision-Date: 2019-03-24 14:45-0600\n"
+"POT-Creation-Date: 2019-03-24 12:27-0600\n"
+"PO-Revision-Date: 2019-03-24 12:28-0600\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -16,7 +18,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"Language: es\n"
 
 #: templates/about.html:2 templates/about.html:23 templates/about.html:30
 #: templates/about.html:44
@@ -266,6 +269,11 @@ msgid "For a complete crime and safety report for all of Mexico please visit <a 
 msgstr "Visiten <a href=\"https://crimenmexico.diegovalle.net/en/\">CrimenMexico</a> para una guía completa del crimen y seguridad en todo México."
 
 #: templates/base.html:172
+#: templates/base.html:184
+msgid "<script type=\"text/javascript\" src=\"//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js\" data-dojo-config=\"usePlainJson: true, isDebug: false\"></script><script type=\"text/javascript\">window.dojoRequire([\"mojo/signup-forms/Loader\"], function(L) { L.start({\"baseUrl\":\"mc.us6.list-manage.com\",\"uuid\":\"787fae824c502d9f3ad7d0b73\",\"lid\":\"102491489b\",\"uniqueMethods\":true}) })</script>"
+msgstr "<script type=\"text/javascript\" src=\"//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js\" data-dojo-config=\"usePlainJson: true, isDebug: false\"></script><script type=\"text/javascript\">window.dojoRequire([\"mojo/signup-forms/Loader\"], function(L) { L.start({\"baseUrl\":\"mc.us6.list-manage.com\",\"uuid\":\"787fae824c502d9f3ad7d0b73\",\"lid\":\"99835eea14\",\"uniqueMethods\":true}) })</script>"
+
+#: templates/base.html:186
 msgid "8acd30bddc88809427bf568b635de1df754c10c9"
 msgstr "1ff9c89c8f9ed13417d494d31ba01faaef45c3cb"
 
@@ -700,8 +708,7 @@ msgid "Official Crime Data"
 msgstr "Datos Oficiales"
 
 #: templates/pip.html:164
-msgid ""
-"The Mexico City Police Department\n"
+msgid "The Mexico City Police Department\n"
 "            divided the city into 847 quadrants. Thanks to a freedom of information request this website was able to\n"
 "            obtain crime information for each and every quadrant.<br/><br/> With this data citizens and the authorities can\n"
 "            visualize\n"

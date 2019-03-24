@@ -718,6 +718,7 @@
         {% assets "latlong_bootstrap_js" %}
         <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
+
         <script type="text/javascript">
   var _paq = _paq || [];
   _paq.push(['trackPageView']);
@@ -730,5 +731,19 @@
     g.type='text/javascript'; g.async=true; g.defer=true; g.src='https://o8c02p39rrla5i26f23e.oasis.sandstorm.io/embed.js'; s.parentNode.insertBefore(g,s);
   })();
 </script>
+
+        {{_('<script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">window.dojoRequire(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us6.list-manage.com","uuid":"787fae824c502d9f3ad7d0b73","lid":"102491489b","uniqueMethods":true}) })</script>')}}
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100264-9"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+
+         gtag('config', 'UA-100264-9');
+        </script>
+
+
     </body>
 </html>
