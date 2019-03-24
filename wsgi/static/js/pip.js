@@ -33,7 +33,7 @@ var geoLocation = {
             // getPostalCode or time out after 5 seconds if it fails
             navigator.geolocation.getCurrentPosition(deferred.resolve,
                                                      deferred.reject, {
-                timeout: 11000
+                timeout: 5000
             });
         } else {
             //geo location isn't supported
@@ -88,7 +88,7 @@ function timeout(promise, ms) {
 // Download both the outline of CDMX and the geolocation at the same time
 // but time out if the geolocation is taking too long because firefox
 // just hangs if you dismiss the 'allow geolocation' dialog
-$.when(timeout(geoLocation.getLocation(), 15500),
+$.when(timeout(geoLocation.getLocation(), 5500),
        $.getJSON('/js/df-outline.json'))
     .done(function(p, single) {
         //console.log(data.coords.longitude, data.coords.latitude);

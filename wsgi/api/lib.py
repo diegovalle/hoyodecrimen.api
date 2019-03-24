@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import jsonify
-from .models import db, Cuadrantes, Cuadrantes_Poly
+from .models import Cuadrantes
 from datetime import datetime
-from sqlalchemy import func, and_
+from sqlalchemy import func
 import time
 
 class InvalidAPIUsage(Exception):
@@ -85,7 +85,7 @@ def check_date_month(str):
     try:
         time.strptime(str, '%Y-%m-01')
         valid = True
-        if str < '2013-01-01':
+        if str < '2016-01-01':
             valid = False
     except ValueError:
         valid = False

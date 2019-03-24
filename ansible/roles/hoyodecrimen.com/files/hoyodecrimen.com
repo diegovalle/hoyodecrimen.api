@@ -65,9 +65,19 @@ server {
     #include h5bp/location/expires.conf;
     #include h5bp/location/cross-domain-fonts.conf;
     #include h5bp/location/protect-system-files.conf;
-    #include h5bp/directive-only/extra-security.conf;
+    include h5bp/directive-only/extra-security.conf;
     location = /favicon.ico {
        alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/images/favicon.ico;
+       expires 1M;
+       access_log off;
+    }
+    location = /google055ef027e7764e4d.html {
+       alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/google055ef027e7764e4d.html;
+       expires 1M;
+       access_log off;
+    }
+    location = /mu-01188fe9-0b813050-b0f51076-c96f41fb.txt {
+       alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/mu-01188fe9-0b813050-b0f51076-c96f41fb.txt;
        expires 1M;
        access_log off;
     }
@@ -83,6 +93,9 @@ server {
     #    access_log off;
     # }
     # favicon stuff
+    location = /apple-touch-icon.png {
+       alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/images/apple-touch-icon.png;
+    }
     location ^~ /apple-touch-icon {
        root /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/images/;
        expires 1M;
@@ -158,9 +171,18 @@ server {
        alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/geojson/municipios.json;
        default_type application/json;
     }
+    location ^~ /api/v1/latlong/crimes {
+       limit_req zone=hoyodecrimen burst=5;
+       default_type application/json;
+       include uwsgi_params;
+       uwsgi_pass unix:/tmp/hoyodecrimen.sock;
+    }
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/tmp/hoyodecrimen.sock;
+
+        # when a client closes the connection then keep the channel to uwsgi open. Otherwise uwsgi throws and IOError
+        uwsgi_ignore_client_abort on;
     }
 }
 

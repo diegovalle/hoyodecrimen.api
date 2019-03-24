@@ -30,12 +30,6 @@
     - db.sql
     - index.sql
 
-- service: name=hoyodecrimen state=stopped
-
-- name: create tables
-  become: true
-  become_user: "{{ username }}"
-  shell: psql {{dbname}} < /tmp/db.sql
 
 - name: create postgis extension for apihoyodecrimen db
   become: true
@@ -45,6 +39,12 @@
     PGPASSWORD: "{{DB_PASSWORD}}"
   with_items:
     - psql -d {{dbname}} -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+
+
+- name: create tables
+  become: true
+  become_user: "{{ username }}"
+  shell: psql {{dbname}} < /tmp/db.sql
 
 - name: copy database data
   become: true
@@ -58,10 +58,11 @@
     - psql -d {{dbname}} -c "\copy pgj (crime,date,count) from '/tmp/pgj.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
     - psql -d {{dbname}} -c "\copy crime_latlong  (cuadrante,crime,date,hour,year,month,latitude,longitude,id) from '/tmp/crime-lat-long.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
 
-- name: Install the package redis
-  apt:
-    name: redis-server
-    state: present
+- name: Install redis
+  apt: name="{{ item }}" state=latest
+  with_items:
+    - redis-server
+    - python-redis
 
 - name: create dir for repo
   file: path=/var/www/hoyodecrimen.com/hoyodecrimen.api/ state=directory owner={{username}} group=www-data mode=0774
@@ -88,17 +89,27 @@
   become_user: "{{ username }}"
   shell: psql {{dbname}} < /tmp/index.sql
 
-- name: create a file with the enviromental variables
+- name: copy the init file for the hoyodecrimen service
   copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
 
-- template: src=envars.j2 dest=/var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/envars owner={{username}} group=www-data mode=0640
+- name: create a file with the enviromental variables
+  template: src=envars.j2 dest=/var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/envars owner={{username}} group=www-data mode=0640
+
+- name: update pip
+  command: pip2 install --upgrade pip
+
+- name: ensure pip is latest version in virtenv
+  become: true
+  become_user: "{{ username }}"
+  pip:
+    name: pip
+    virtualenv: /var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv
+    state: latest
 
 - name: Install pip requirements
   become: true
   become_user: "{{ username }}"
   pip: requirements=/var/www/hoyodecrimen.com/hoyodecrimen.api/requirements.txt virtualenv=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv
-
-- redis: command=flush flush_mode=all
 
 - name: copy hoyodecrimen service conf
   copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
@@ -120,3 +131,5 @@
 - service: name=nginx state=restarted
 
 - service: name=redis-server state=started
+
+- redis: command=flush flush_mode=all

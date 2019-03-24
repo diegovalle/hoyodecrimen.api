@@ -1,44 +1,49 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
-from datetime import datetime
-from flask import Blueprint, Flask, jsonify, request, abort, \
+from flask import Flask,\
     make_response, url_for, send_from_directory,\
-    send_file, render_template, g, Response
+    render_template, g
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import text, literal_column, literal
-from sqlalchemy import func, and_
-from flask_cache import Cache
-from flask.ext.assets import Environment, Bundle
+from flask_assets import Environment, Bundle
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
-from geoalchemy2.elements import WKTElement
-import time
 import os
-from api.models import db, Cuadrantes, Cuadrantes_Poly
 #from redis import Redis
 from api.api import API, cache
-from flask.ext.compress import Compress
-from flask.ext.babel import Babel
-from flask.ext.babel import gettext, ngettext
-from flask_frozen import Freezer
+from flask_babel import Babel
+#from flask_frozen import Freezer
 from htmlmin.main import minify
 import functools
+from raven.contrib.flask import Sentry
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
+
+
+
 app = Flask(__name__)
+
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 43200 * 20 # 20 days
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.register_blueprint(API)
 db = SQLAlchemy(app)
 app.config.from_pyfile('apihoyodecrimen.cfg')
+
+
+# report exceptions to sentry.io
+# first test if sentry.io is in the string
+# to see if we are in the testing environment
+if 'sentry.io' in os.environ['SENTRY_DSN']:
+    sentry = Sentry(dsn= os.environ['SENTRY_DSN'])
+    sentry.init_app(app)
 
 cache.init_app(app)
 assets = Environment(app)
 assets.versions = 'hash'    # use the last modified timestamp
 babel = Babel(app)
 
-app.config['FREEZER_STATIC_IGNORE'] = ['/api/v1/*']
-freezer = Freezer(app)
 
+#freezer = Freezer(app)
+#app.config['FREEZER_STATIC_IGNORE'] = ['/api/v1/*']
 
 def uglify(route_function):
     @functools.wraps(route_function)
@@ -417,6 +422,11 @@ def static_favicon_slash(size):
 def static_apple(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'apple-touch-icon-' + size + '.png')
+
+@app.route('/apple-touch-icon.png')
+def apple_icon():
+    return send_from_directory(os.path.join(_basedir, 'static','images'),
+                               'apple-touch-icon.png')
 
 @app.route('/android-icon-<string:size>.png')
 def static_android(size):

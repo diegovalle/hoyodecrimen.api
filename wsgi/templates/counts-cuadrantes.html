@@ -114,7 +114,7 @@
                  createLegend('#legend-homicides', quantizeRed)
                  byCrime = _.groupBy(all_df, 'crime')
                  _.forEach(byCrime[value], function(d, i) {
-                     d['rate'] = (d.count / daysInMonth(d.date.substr(0,4), d.date.substr(5,6)) * 30)/  d.population * 100000 * 12
+                     d['rate'] = (d.count / daysInMonth(String(d.date).substr(0,4), String(d.date).substr(5,6)) * 30)/  d.population * 100000 * 12
                  })
                  if(typeof(byCrime[value][0].date) !== 'object')
                      line_options.data = MG.convert.date(byCrime[value], 'date', '%Y-%m');
@@ -178,7 +178,7 @@
          //d3.select('#homicide-title').text('Homicides - DF Total');
          byCrime = _.groupBy(all_df, 'crime')
          _.forEach(byCrime[value], function(d, i) {
-             d['rate'] = (d.count / daysInMonth(d.date.substr(0,4), d.date.substr(5,6)) * 30)/  d.population * 100000 * 12
+             d['rate'] = (d.count / daysInMonth(d.date.getFullYear(), d.date.getMonth()) * 30)/  d.population * 100000 * 12
          })
          if(typeof(byCrime[value][0].date) !== 'object')
              line_options.data = MG.convert.date(byCrime[value], 'date', '%Y-%m');
@@ -193,14 +193,5 @@
     {% assets "js_maps"  %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
-    <script>
-     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-     ga('create', 'UA-100264-9', 'auto');
-     ga('send', 'pageview');
-
-    </script>
+    
 {% endblock %}

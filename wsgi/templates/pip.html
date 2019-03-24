@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}{{_('Crime in Mexico City - See how your neighborhood rated for violent and property crimes')}}{% endblock %}
+{% block title %}{{_('Mexico City Crime Rates and Statistics')}}{% endblock %}
 {% block lang %}{{_('en')}}{% endblock %}
 {% block hreflang %}{{_('es')}}{% endblock %}
 {% block alternhref %}{{_('https://hoyodecrimen.com/')}}{% endblock %}
-{% block description %}{{_('Crime in Mexico City. Find out how many crimes there were in your cuadrante delictivo')}}{% endblock %}
+{% block description %}{{_('Crime in Mexico City. Find out how safe your neighborhood is with maps and charts')}}{% endblock %}
 {% block head %}
 
     <meta name="twitter:card" content="summary" />
@@ -117,7 +117,7 @@
 
 {% block content %}
 
-    <h1 id="logo" style="margin-bottom:50px">{{_('Crime in Mexico City')}}</h1>
+    <h1 id="logo" style="margin-bottom:50px">{{_('Mexico City Crime')}}</h1>
     <div id="map" style="height: 400px;"></div>
     <div class="row">
         <div class="2u" style="margin-top:10px">
@@ -156,14 +156,16 @@
     </div>
 
 
-    <h1 style="margin-top:50px;color:black">{{_('Official Crime Data')}}</h1>
+    <h2 style="margin-top:50px;color:black;font-size: 3em;margin-bottom:0.5em;">{{_('Official Crime Data')}}</h2>
     <div class="row">
         <div class="2u">&nbsp;</div>
         <div class="8u">
             <p style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">
                 {{_('The Mexico City Police Department
-            divided the city into 847 quadrants. Thanks to a freedom of information request this website was able to
-            obtain crime information for each and every quadrant.<br/><br/> With this data citizens and the authorities can
+            divided the city into 847 quadrants. Thanks to the 
+            <a href="https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/">open data iniciative</a> 
+            by the Mexico City government there 
+            is geolocalized data available for all crimes commited in Mexico City.<br/><br/> With this data citizens and the authorities can
             visualize
             the most violent parts of the city; businessmen can decide where to locate or expand; drivers can find in
             which parking

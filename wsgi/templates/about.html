@@ -144,20 +144,25 @@
          shape-rendering: auto;
      }
     </style>
-    <p >{{_('Created by <a href="https://www.diegovalle.net">Diego Valle-Jones</a>')}}</p>
+
+    <p >{{_('Created by <a href="https://www.diegovalle.net">Diego Valle-Jones</a>')}}.</p>
     <br>
-    <a href="/api"><img src="/images/api-docs.png"></a>
-    <p style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">{{_('Crime data since 2013 comes from a <a href="http://data.diegovalle.net/hoyodecrimen/solicitud.zip">FOIA request</a> to the SSPDF. Cuadrante coordinates scraped from <a href="http://201.144.220.174/pid/gps/cuadrantesWeb.php">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore.')}}</p>
+
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post"> <input name="cmd" type="hidden" value="_donations"> <input name="business" type="hidden" value="diegovalle+paypal@gmail.com"> <input name="lc" type="hidden" value="US"> <input name="item_name" type="hidden" value="hoyodecrimen.com (not a charity)"> <input name="no_note" type="hidden" value="0"> <input name="currency_code" type="hidden" value="USD"> <input name="bn" type="hidden" value="PP-DonationsBF:btn_donate_LG.gif:NonHostedGuest"> <input alt="PayPal - The safer, easier way to pay online!" border="0" name="submit" src="https://blog.diegovalle.net/images/paypal-contribute-button147.png" type="image"> </form>
+
+    <p class="donate">Bitcoin: <a href="bitcoin:18HZKcq62P35CSwGatopzeRQLu6SsB1Pw5" rel="noreferrer" data-ss1542040958="1">18HZKcq62P35CSwGatopzeRQLu6SsB1Pw5</a></p>
+
+    <p style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">{{_('The source of crime data is the <a href="https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/">PJG-CDMX</a>. Cuadrante coordinates scraped from <a href="http://www.ssp.df.gob.mx/cuadrante.html">Consulta de Cuadrantes</a>. The population figures are based on the <a href="http://blog.diegovalle.net/2013/06/shapefiles-of-mexico-agebs-manzanas-etc.html">2010 Census by Manzana</a>. Keep in mind that about 95&#37; of crimes in Mexico City are not reported to the police and you should focus on homicides and car robberies since by their nature they are harder to ignore.')}}</p>
+    <br><a href="/api"><img src="/images/api-docs.png"></a>
     <p style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">{{_("There's also a")}} <a href="{{_('/')}}">{{_("Spanish version")}}</a> {{_("and a really cool")}} <a href="/api">API</a></p>
 
-    <p style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">{{_('Download the complete dataset as a <a href="http://data.diegovalle.net/hoyodecrimen/cuadrantes.csv.zip">csv file</a>')}}</p>
-
-
-    <p style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">{{_('Visit <a href="https://crimenmexico.diegovalle.net/en/">CrimenMexico</a> for crime information at the national, state and municipio level')}}</p>
+    <p style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">{{_('Visit <a href="https://elcri.men/en/">El Crimen</a> for crime information at the national, state and municipio level')}}</p>
 
     <p style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">{{_('You can download a map of cuadrantes as <a href="https://hoyodecrimen.com/api/v1/cuadrantes/geojson">GeoJSON</a> using the API')}}</p>
 
     <p style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">{{_('This webapp is opensource and you can view the code on <a href="https://github.com/diegovalle/hoyodecrimen.api">GitHub</a>')}}</p>
+
+<p  style="text-transform:none;font-family: Source Sans Pro;font-size:19px;color:#333;text-align:left;text-justify: inter-word;">{{_('I take your security seriously, if you believe you&#x27;ve found a vulnerability in this website please report it to <a href="mailto:security@hoyodecrimen.com">security@hoyodecrimen.com</a>. You can get my PGP key from <a href="https://keybase.io/diegovalle">keybase</a>.')}}</p>
 
     <!--<h2>{{_('Crime by Sector')}}</h2>
          <img src="{{_('/images/total-sector-hom.png')}}" >

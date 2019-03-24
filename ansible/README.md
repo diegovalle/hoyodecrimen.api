@@ -8,6 +8,7 @@ ROOT_PASSWORD:
 DEPLOY_PASSWORD:
 
 DB_PASSWORD: 
+SENTRY_DSN: 
 
 # deadmansnitch url to check the certs are renewed
 health_check_renew_hoyodecrimen_com:

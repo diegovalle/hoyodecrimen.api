@@ -1,0 +1,33 @@
+    - name: install rsyslog-gnutls
+      apt:
+        name: rsyslog-gnutls
+        state: present
+
+    - name: download loggly cert
+      command: curl -o /etc/logs-01.loggly.com_sha12.crt https://logdog.loggly.com/media/logs-01.loggly.com_sha12.crt
+      notify: Restart rsyslog
+
+    - name: Generate conf files
+      copy:
+        src: "{{ item }}"
+        dest: "/etc/rsyslog.d/{{ item }}"
+      with_items:
+        - 40-hoyodecrimen.conf
+        - 40-nginx.conf
+      notify: Restart rsyslog
+
+    - lineinfile:
+        dest: /etc/rsyslog.conf
+        line: '$template LogglyFormat,"<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [{{ LOGGLY_TOKEN }}@41058 tag=\"RsyslogTLS\"] %msg%\n"'
+      notify: Restart rsyslog
+
+    - name: rsyslog config
+      lineinfile: dest="{{ item.file }}" regexp="{{ item.regexp }}" line="{{ item.line }}" state=present
+      with_items:
+        - { regexp: '^$DefaultNetstreamDriverCAFile /etc/logs-01.loggly.com_sha12.crt # trust these CAs', line: '$DefaultNetstreamDriverCAFile /etc/logs-01.loggly.com_sha12.crt # trust these CAs', file: '/etc/rsyslog.conf'  }
+        - { regexp: '^$ActionSendStreamDriver gtls # use gtls netstream driver', line: '$ActionSendStreamDriver gtls # use gtls netstream driver', file: '/etc/rsyslog.conf' }
+        - { regexp: '^$ActionSendStreamDriverMode 1 # require TLS', line: '$ActionSendStreamDriverMode 1 # require TLS', file: '/etc/rsyslog.conf' }
+        - { regexp: '^$ActionSendStreamDriverAuthMode x509/name # authenticate by hostname', line: '$ActionSendStreamDriverAuthMode x509/name # authenticate by hostname', file: '/etc/rsyslog.conf' }
+        - { regexp: '^$ActionSendStreamDriverPermittedPeer', line: '$ActionSendStreamDriverPermittedPeer *.loggly.com', file: '/etc/rsyslog.conf' }
+        - { regexp: '^\*\.\*          @@logs-01.loggly.com:6514;LogglyFormat', line: '*.*         @@logs-01.loggly.com:6514;LogglyFormat', file: '/etc/rsyslog.conf' }
+      notify: Restart rsyslog

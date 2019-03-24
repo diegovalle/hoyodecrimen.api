@@ -3,7 +3,7 @@
     <head>
 
         <meta name="description" content="{{_('Map of crime incidents in Mexico City tagged with latitude/longitude, date and time of occurance.')}}">
-        <title>{{_('Interactive Map of Crime in Mexico City')}}</title
+        <title>{{_('Mexico City Safety Map')}}</title>
         <link rel="alternate" hreflang="es" href="{{_('https://hoyodecrimen.com/mapa')}}" />
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
@@ -23,23 +23,169 @@
         <meta property="og:image" content="https://hoyodecrimen.com/images/latlongmap.png"/>
         <meta property="og:type" content="website"/>
         <meta property="og:site_name" content="Hoyo de Crimen"/>
+        <script>
+         var _rollbarConfig = {
+             accessToken: "34f60d57b7f1455ea057d588f9741123",
+             captureUncaught: true,
+             captureUnhandledRejections: true,
+             payload: {
+                 environment: "production"
+             }
+         };
+         // Rollbar Snippet
+         !function(r){function e(n){if(o[n])return o[n].exports;var t=o[n]={exports:{},id:n,loaded:!1};return r[n].call(t.exports,t,t.exports,e),t.loaded=!0,t.exports}var o={};return e.m=r,e.c=o,e.p="",e(0)}([function(r,e,o){"use strict";var n=o(1),t=o(4);_rollbarConfig=_rollbarConfig||{},_rollbarConfig.rollbarJsUrl=_rollbarConfig.rollbarJsUrl||"https://cdnjs.cloudflare.com/ajax/libs/rollbar.js/2.4.2/rollbar.min.js",_rollbarConfig.async=void 0===_rollbarConfig.async||_rollbarConfig.async;var a=n.setupShim(window,_rollbarConfig),l=t(_rollbarConfig);window.rollbar=n.Rollbar,a.loadFull(window,document,!_rollbarConfig.async,_rollbarConfig,l)},function(r,e,o){"use strict";function n(r){return function(){try{return r.apply(this,arguments)}catch(r){try{console.error("[Rollbar]: Internal error",r)}catch(r){}}}}function t(r,e){this.options=r,this._rollbarOldOnError=null;var o=d++;this.shimId=function(){return o},"undefined"!=typeof window&&window._rollbarShims&&(window._rollbarShims[o]={handler:e,messages:[]})}function a(r,e){if(r){var o=e.globalAlias||"Rollbar";if("object"==typeof r[o])return r[o];r._rollbarShims={},r._rollbarWrappedError=null;var t=new i(e);return n(function(){e.captureUncaught&&(t._rollbarOldOnError=r.onerror,s.captureUncaughtExceptions(r,t,!0),s.wrapGlobals(r,t,!0)),e.captureUnhandledRejections&&s.captureUnhandledRejections(r,t,!0);var n=e.autoInstrument;return e.enabled!==!1&&(void 0===n||n===!0||"object"==typeof n&&n.network)&&r.addEventListener&&(r.addEventListener("load",t.captureLoad.bind(t)),r.addEventListener("DOMContentLoaded",t.captureDomContentLoaded.bind(t))),r[o]=t,t})()}}function l(r){return n(function(){var e=this,o=Array.prototype.slice.call(arguments,0),n={shim:e,method:r,args:o,ts:new Date};window._rollbarShims[this.shimId()].messages.push(n)})}var i,s=o(2),d=0,c=o(3),p=function(r,e){return new t(r,e)};i=c.curry?c.curry(p):c.bind(null,p),t.prototype.loadFull=function(r,e,o,t,a){var l=function(){var e;if(void 0===r._rollbarDidLoad){e=new Error("rollbar.js did not load");for(var o,n,t,l,i=0;o=r._rollbarShims[i++];)for(o=o.messages||[];n=o.shift();)for(t=n.args||[],i=0;i<t.length;++i)if(l=t[i],"function"==typeof l){l(e);break}}"function"==typeof a&&a(e)},i=!1,s=e.createElement("script"),d=e.getElementsByTagName("script")[0],c=d.parentNode;s.crossOrigin="",s.src=t.rollbarJsUrl,o||(s.async=!0),s.onload=s.onreadystatechange=n(function(){if(!(i||this.readyState&&"loaded"!==this.readyState&&"complete"!==this.readyState)){s.onload=s.onreadystatechange=null;try{c.removeChild(s)}catch(r){}i=!0,l()}}),c.insertBefore(s,d)},t.prototype.wrap=function(r,e,o){try{var n;if(n="function"==typeof e?e:function(){return e||{}},"function"!=typeof r)return r;if(r._isWrap)return r;if(!r._rollbar_wrapped&&(r._rollbar_wrapped=function(){o&&"function"==typeof o&&o.apply(this,arguments);try{return r.apply(this,arguments)}catch(o){var e=o;throw e&&("string"==typeof e&&(e=new String(e)),e._rollbarContext=n()||{},e._rollbarContext._wrappedSource=r.toString(),window._rollbarWrappedError=e),e}},r._rollbar_wrapped._isWrap=!0,r.hasOwnProperty))for(var t in r)r.hasOwnProperty(t)&&(r._rollbar_wrapped[t]=r[t]);return r._rollbar_wrapped}catch(e){return r}};for(var u="log,debug,info,warn,warning,error,critical,global,configure,handleUncaughtException,handleUnhandledRejection,captureEvent,captureDomContentLoaded,captureLoad".split(","),f=0;f<u.length;++f)t.prototype[u[f]]=l(u[f]);r.exports={setupShim:a,Rollbar:i}},function(r,e){"use strict";function o(r,e,o){if(r){var t;"function"==typeof e._rollbarOldOnError?t=e._rollbarOldOnError:r.onerror&&!r.onerror.belongsToShim&&(t=r.onerror,e._rollbarOldOnError=t);var a=function(){var o=Array.prototype.slice.call(arguments,0);n(r,e,t,o)};a.belongsToShim=o,r.onerror=a}}function n(r,e,o,n){r._rollbarWrappedError&&(n[4]||(n[4]=r._rollbarWrappedError),n[5]||(n[5]=r._rollbarWrappedError._rollbarContext),r._rollbarWrappedError=null),e.handleUncaughtException.apply(e,n),o&&o.apply(r,n)}function t(r,e,o){if(r){"function"==typeof r._rollbarURH&&r._rollbarURH.belongsToShim&&r.removeEventListener("unhandledrejection",r._rollbarURH);var n=function(r){var o,n,t;try{o=r.reason}catch(r){o=void 0}try{n=r.promise}catch(r){n="[unhandledrejection] error getting `promise` from event"}try{t=r.detail,!o&&t&&(o=t.reason,n=t.promise)}catch(r){t="[unhandledrejection] error getting `detail` from event"}o||(o="[unhandledrejection] error getting `reason` from event"),e&&e.handleUnhandledRejection&&e.handleUnhandledRejection(o,n)};n.belongsToShim=o,r._rollbarURH=n,r.addEventListener("unhandledrejection",n)}}function a(r,e,o){if(r){var n,t,a="EventTarget,Window,Node,ApplicationCache,AudioTrackList,ChannelMergerNode,CryptoOperation,EventSource,FileReader,HTMLUnknownElement,IDBDatabase,IDBRequest,IDBTransaction,KeyOperation,MediaController,MessagePort,ModalWindow,Notification,SVGElementInstance,Screen,TextTrack,TextTrackCue,TextTrackList,WebSocket,WebSocketWorker,Worker,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload".split(",");for(n=0;n<a.length;++n)t=a[n],r[t]&&r[t].prototype&&l(e,r[t].prototype,o)}}function l(r,e,o){if(e.hasOwnProperty&&e.hasOwnProperty("addEventListener")){for(var n=e.addEventListener;n._rollbarOldAdd&&n.belongsToShim;)n=n._rollbarOldAdd;var t=function(e,o,t){n.call(this,e,r.wrap(o),t)};t._rollbarOldAdd=n,t.belongsToShim=o,e.addEventListener=t;for(var a=e.removeEventListener;a._rollbarOldRemove&&a.belongsToShim;)a=a._rollbarOldRemove;var l=function(r,e,o){a.call(this,r,e&&e._rollbar_wrapped||e,o)};l._rollbarOldRemove=a,l.belongsToShim=o,e.removeEventListener=l}}r.exports={captureUncaughtExceptions:o,captureUnhandledRejections:t,wrapGlobals:a}},function(r,e){"use strict";function o(r,e){this.impl=r(e,this),this.options=e,n(o.prototype)}function n(r){for(var e=function(r){return function(){var e=Array.prototype.slice.call(arguments,0);if(this.impl[r])return this.impl[r].apply(this.impl,e)}},o="log,debug,info,warn,warning,error,critical,global,configure,handleUncaughtException,handleUnhandledRejection,_createItem,wrap,loadFull,shimId,captureEvent,captureDomContentLoaded,captureLoad".split(","),n=0;n<o.length;n++)r[o[n]]=e(o[n])}o.prototype._swapAndProcessMessages=function(r,e){this.impl=r(this.options);for(var o,n,t;o=e.shift();)n=o.method,t=o.args,this[n]&&"function"==typeof this[n]&&("captureDomContentLoaded"===n||"captureLoad"===n?this[n].apply(this,[t[0],o.ts]):this[n].apply(this,t));return this},r.exports=o},function(r,e){"use strict";r.exports=function(r){return function(e){if(!e&&!window._rollbarInitialized){r=r||{};for(var o,n,t=r.globalAlias||"Rollbar",a=window.rollbar,l=function(r){return new a(r)},i=0;o=window._rollbarShims[i++];)n||(n=o.handler),o.handler._swapAndProcessMessages(l,o.messages);window[t]=n,window._rollbarInitialized=!0}}}}]);
+         // End Rollbar Snippet
+        </script>
 
 
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
-
-             <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
-             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.css"> -->
         {% assets  'latlong_bootstrap_css' %}
         <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css">
         {% endassets %}
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIWARe1FvYw_lgl_5wrauHSaYYG64N2Vg"></script>
 
         {% assets "js_latlong_js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
-
+        <script>
+         (function(window) {
+             var HAS_HASHCHANGE = (function() {
+                 var doc_mode = window.documentMode;
+                 return ('onhashchange' in window) &&
+                        (doc_mode === undefined || doc_mode > 7);
+             })();
+             L.Hash = function(map) {
+                 this.onHashChange = L.Util.bind(this.onHashChange, this);
+                 if (map) {
+                     this.init(map);
+                 }
+             };
+             L.Hash.parseHash = function(hash) {
+                 if(hash.indexOf('#') === 0) {
+                     hash = hash.substr(1);
+                 }
+                 var args = hash.split("/");
+                 if (args.length == 4) {
+                     var zoom = parseInt(args[3], 10),
+                         lat = parseFloat(args[1]),
+                         lon = parseFloat(args[2]);
+                     if (isNaN(zoom) || isNaN(lat) || isNaN(lon)) {
+                         return false;
+                     } else {
+                         return {
+                             center: new L.LatLng(lat, lon),
+                             zoom: zoom
+                         };
+                     }
+                 } else {
+                     return false;
+                 }
+             };
+             L.Hash.formatHash = function(map) {
+                 var center = map.getCenter(),
+                     zoom = map.getZoom(),
+                     precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
+                 return "#/" + [
+                     center.lat.toFixed(precision),
+                     center.lng.toFixed(precision),
+                     zoom
+                 ].join("/");
+             },
+                 L.Hash.prototype = {
+                     map: null,
+                     lastHash: null,
+                     parseHash: L.Hash.parseHash,
+                     formatHash: L.Hash.formatHash,
+                     init: function(map) {
+                         this.map = map;
+                         // reset the hash
+                         this.lastHash = null;
+                         this.onHashChange();
+                         if (!this.isListening) {
+                             this.startListening();
+                         }
+                     },
+                     removeFrom: function(map) {
+                         if (this.changeTimeout) {
+                             clearTimeout(this.changeTimeout);
+                         }
+                         if (this.isListening) {
+                             this.stopListening();
+                         }
+                         this.map = null;
+                     },
+                     onMapMove: function() {
+                         // bail if we're moving the map (updating from a hash),
+                         // or if the map is not yet loaded
+                         if (this.movingMap || !this.map._loaded) {
+                             return false;
+                         }
+                         var hash = this.formatHash(this.map);
+                         if (this.lastHash != hash) {
+                             location.replace(hash);
+                             this.lastHash = hash;
+                         }
+                     },
+                     movingMap: false,
+                     update: function() {
+                         var hash = location.hash;
+                         if (hash === this.lastHash) {
+                             return;
+                         }
+                         var parsed = this.parseHash(hash);
+                         if (parsed) {
+                             this.movingMap = true;
+                             this.map.setView(parsed.center, parsed.zoom);
+                             this.movingMap = false;
+                         } else {
+                             this.onMapMove(this.map);
+                         }
+                     },
+                     // defer hash change updates every 100ms
+                     changeDefer: 100,
+                     changeTimeout: null,
+                     onHashChange: function() {
+                         // throttle calls to update() so that they only happen every
+                         // `changeDefer` ms
+                         if (!this.changeTimeout) {
+                             var that = this;
+                             this.changeTimeout = setTimeout(function() {
+                                 that.update();
+                                 that.changeTimeout = null;
+                             }, this.changeDefer);
+                         }
+                     },
+                     isListening: false,
+                     hashChangeInterval: null,
+                     startListening: function() {
+                         this.map.on("moveend", this.onMapMove, this);
+                         if (HAS_HASHCHANGE) {
+                             L.DomEvent.addListener(window, "hashchange", this.onHashChange);
+                         } else {
+                             clearInterval(this.hashChangeInterval);
+                             this.hashChangeInterval = setInterval(this.onHashChange, 50);
+                         }
+                         this.isListening = true;
+                     },
+                     stopListening: function() {
+                         this.map.off("moveend", this.onMapMove, this);
+                         if (HAS_HASHCHANGE) {
+                             L.DomEvent.removeListener(window, "hashchange", this.onHashChange);
+                         } else {
+                             clearInterval(this.hashChangeInterval);
+                         }
+                         this.isListening = false;
+                     }
+                 };
+             L.hash = function(map) {
+                 return new L.Hash(map);
+             };
+             L.Map.prototype.addHash = function() {
+                 this._hash = L.hash(this);
+             };
+             L.Map.prototype.removeHash = function() {
+                 this._hash.removeFrom();
+             };
+         })(window);
+        </script>
         <style>
          html, body {width:100%; height:100%; padding: 0; margin: 0; overflow:hidden;}
          #map { width: 100%; height:100%; background: black; overflow:hidden;}
@@ -63,9 +209,8 @@
              letter-spacing: 2px;
              padding: 10px;
              text-transform: uppercase;
-             background: white; //#EADBC4;
+             background: white;
          }
-
          .select-style select {
              padding: 1px 8px;
              border: none;
@@ -83,7 +228,6 @@
              text-indent: 1px;
              text-overflow: '';
          }
-
          .select-style {
              border: 0px solid #ccc;
              width: 250px;
@@ -93,7 +237,6 @@
              display: block;
              margin: 0 auto;
          }
-
          body {
              padding-top: 50px;
          }
@@ -274,18 +417,15 @@
          .social {
              -webkit-transform: scale(0.8);
              /* Browser Variations: */
-
              -moz-transform: scale(0.8);
              -o-transform: scale(0.8);
              -webkit-transition-duration: 0.5s;
              -moz-transition-duration: 0.5s;
              -o-transition-duration: 0.5s;
          }
-
          /*
             Multicoloured Hover Variations
           */
-
          #social-fb:hover {
              color: #3B5998;
          }
@@ -298,18 +438,14 @@
          #social-em:hover {
              color: #f39c12;
          }
-
-
          .axis--grid .domain {
              fill: #ddd;
              stroke: none;
          }
-
          .axis--x .domain,
          .axis--grid .tick line {
              stroke: #fff;
          }
-
          .axis--grid .tick--minor line {
              stroke-opacity: .5;
          }
@@ -401,7 +537,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-md-12">
 
-                                    <p><h7>{{_('All crimes reported to the SSP&#8209;CDMX since January 2013.')}}</h7></p><br/>
+                                    <p><h7>{{_('All police investigations started by the PGJ&#8209;CDMX since January 2016.')}}</h7></p><br/>
                                     <select class="selectpicker" id="seltarget" name="crimes" autofocus="" multiple multipleSeparator=", "></select>
                                     <br/>
 
@@ -446,7 +582,6 @@
 
         <!-- define custom infowindow -->
         <script type = "infowindow/html" id="infowindow_template">
-
          <div class="cartodb-popup">
          <a href= "#close" class="cartodb-popup-close-button close">x</a>
          <div class="cartodb-popup-content-wrapper">
@@ -459,7 +594,6 @@
          </div>
          <div class="cartodb-popup-tip-container"></div>
          </div>
-
         </script>
 
         <script>
@@ -469,35 +603,28 @@
          function calculateCenter() {
              center = map.getCenter();
          }
-
          $("#list-btn").click(function() {
              animateSidebar();
              return false;
          });
-
          $("#nav-btn").click(function() {
              $(".navbar-collapse").collapse("toggle");
              return false;
          });
-
          $("#sidebar-toggle-btn").click(function() {
              animateSidebar();
              return false;
          });
-
          $("#sidebar-hide-btn").click(function() {
              animateSidebar();
              return false;
          });
-
-
          function animateSidebar() {
              calculateCenter();
              $("#sidebar").animate({
                  width: "toggle"
              }, 350, function() {
-                 google.maps.event.trigger(map, "resize");
-                 map.setCenter(center);
+                 map.invalidateSize();
              });
          }
          /* Larger screens get expanded layer control and visible sidebar */
@@ -512,9 +639,6 @@
                      dataType: 'jsonp',
                      url: '/api/v1/crimes_extra',
                      success: function(data) {
-
-
-
                          sorted_crime = _.sortBy(_.unique(_.pluck(data.crimes, 'crime')),
                                                  function(x) {
                                                      if (x === "HOMICIDIO DOLOSO")
@@ -525,34 +649,28 @@
                                                          return -3;
                                                      if (x === "ROBO A TRANSEUNTE C.V.")
                                                          return -2;
-
                                                      if (x === "LESIONES POR ARMA DE FUEGO")
                                                          return 3;
                                                      return 9999;
                                                  });
                          $.each(sorted_crime, function(key, value) {
-
                              $('#seltarget')
                                  .append($('<option>', { value : value })
                                      .text(value));
                          });
                          //$('.selectpicker').selectpicker('val', 'HOMICIDIO DOLOSO');
-
                          //$("#seltarget").selectpicker('refresh');
                          $('select[name=crimes]').val('HOMICIDIO DOLOSO');
                          $("#seltarget").selectpicker('refresh');
-
                          $("#seltarget").change(function() {
                              updateQuery($("#seltarget").attr('value'))
                          });
-
                          var dateSlider = document.getElementById('slider-date');
                          var dateFieldMin = document.getElementById('slider-date-value-min');
                          var dateFieldMax = document.getElementById('slider-date-value-max');
-
                          start_date = data.date_range[0];
                          end_date = data.date_range[1];
-                         numMonths = ((parseInt(data.date_range[1].slice(0,4)) - 2013) * 12) + parseInt(data.date_range[1].slice(5)) - 1;
+                         numMonths = ((parseInt(data.date_range[1].slice(0,4)) - 2016) * 12) + parseInt(data.date_range[1].slice(5)) - 1;
                          noUiSlider.create(dateSlider, {
                              start: [ 0, numMonths ],
                              connect: [false, true, false],
@@ -563,7 +681,7 @@
                              }
                          });
                          function convertToDate(number){
-                             d = new Date(Math.floor(number/12) + 2013, number % 12, 1);
+                             d = new Date(Math.floor(number/12) + 2016, number % 12, 1);
                              return d.getFullYear() + '-' + (d.getMonth() + 1 <= 9 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1));
                          }
                          dateSlider.noUiSlider.on('update', function( values, handle ){
@@ -576,13 +694,9 @@
                              updateQuery();
                          });
                      }});
-
-
-
                  var hourSlider = document.getElementById('slider-hour');
                  var hourFieldMin = document.getElementById('slider-hour-value-min');
                  var hourFieldMax = document.getElementById('slider-hour-value-max');
-
                  start_hour = '00';
                  end_hour = '23';
                  noUiSlider.create(hourSlider, {
@@ -594,7 +708,6 @@
                          'max': [ 23 ]
                      }
                  });
-
                  hourSlider.noUiSlider.on('update', function( values, handle ){
                      (handle ? hourFieldMax : hourFieldMin).innerHTML = values[handle] < '10' ? '0' + Math.round(values[handle]) : Math.round(values[handle]);
                  });
@@ -609,106 +722,54 @@
 
 
         <script>
-         var layerUrl = 'https://diegovalle.carto.com/api/v2/viz/968b131a-97ea-11e6-a8b1-0e3ff518bd15/viz.json';
+         var layerUrl = "https://diegovalle.carto.com/api/v2/viz/3ea3fa61-5661-4f8d-8673-c9b5bfc18fba/viz.json";
          var cartocss_style = "#crime_lat_long{marker-fill: #333; marker-width: 10; marker-line-color: white; marker-line-width: 0.3;}#crime_lat_long[crime='HOMICIDIO DOLOSO']{marker-fill: #e41a1c;}#crime_lat_long[crime='ROBO DE VEHICULO AUTOMOTOR C.V.']{marker-fill: #00441b;}#crime_lat_long[crime='ROBO DE VEHICULO AUTOMOTOR S.V.']{marker-fill: #74c476;}#crime_lat_long[crime='ROBO A TRANSEUNTE C.V.']{marker-fill: #377eb8;}";
-
          var map;
          var sublayers = [];
          var infoFields = ['crime', 'cuadrante', 'date', 'hour', 'lat', 'long']
-
+         var layer1;
          function makeLink() {
              var baseUrl = window.location.href.split('#')[0];
              var center = map.getCenter();
              window.location.replace(baseUrl + "#/"+ center.lat().toFixed(5)+"/"+center.lng().toFixed(5)+"/"+map.getZoom());
          }
-
          function init(){
-             var mapCanvas = document.getElementById('map');
-
-             var hash = window.location.hash
-             var params = hash.split("/")
-             var firsttime = false;
-             var lat = 19.427420161083823;
-             var lng = -99.14422988891602;
-             var zoom = 12;
-             if (params.length === 4) {
-                 lat = parseFloat(params[1])
-                 lng = parseFloat(params[2])
-                 zoom = parseInt(params[3])
-             } else {
-                 firsttime = true;
+             // initiate leaflet map
+             map = L.map('map', {})
+             map.fitBounds([[19.593571, -99.123324],[19.141173, -99.130924],[19.299933, -99.350858],[19.321587, -98.944222]]);
+             var hash = new L.Hash(map);
+             L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
+             // change the query for the first layer
+             var subLayerOptions = {
+                 sql: "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where crime = 'HOMICIDIO DOLOSO' AND lat IS NOT NULL",
+                 cartocss: "#crime_lat_long{marker-fill: #e41a1c; marker-width: 10; marker-line-color: white; marker-line-width: 0.3;}"
              }
-             var mapOptions = {
-                 zoom: zoom,
-                 center: new google.maps.LatLng(lat, lng),
-                 mapTypeControl: true,
-                 mapTypeControlOptions: {
-                     mapTypeIds: [google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.HYBRID, 'map_style'],
-                     position: google.maps.ControlPosition.TOP_RIGHT
-                 }
-             };
-             map = new google.maps.Map(mapCanvas, mapOptions);
-
-
-             if (firsttime) {
-                 var bounds = new google.maps.LatLngBounds();
-                 bounds.extend(new google.maps.LatLng('19.593571', '-99.350858'));
-                 bounds.extend(new google.maps.LatLng('19.141173', '-98.944222'));
-                 map.fitBounds(bounds);
-             }
-
-             google.maps.event.addListener(map, 'dragend', function() {
-                 makeLink()
-             });
-             google.maps.event.addListener(map, 'zoom_changed', function() {
-                 makeLink()
-             });
-
-
-             cartodb.createLayer(map, layerUrl, function(layer)
-                 // add sublayer
-                 {
-
-                     layer.createSubLayer({
-                         sql: "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where crime = 'HOMICIDIO DOLOSO'"+ " AND lat IS NOT NULL",
-                         cartocss: cartocss_style,
-                         interactivity: infoFields
-                     });
-                     //layer.hide();
-                 }).addTo(map)
-
-                    .on('done', function(layer){
-
-                        // add interactivity only to the sublayer
-
-                        layer.setInteraction(true);
-                        layer.getSubLayer(1).setInteraction(true);
-                        layer.getSubLayer(0).hide()
-
-                        // apply the custom infowindow
-                        var infowindow = cdb.vis.Vis.addInfowindow(map, layer.getSubLayer(1), infoFields);
+             cartodb.createLayer(map, layerUrl)
+                    .addTo(map)
+                    .on('done', function(layer) {
+                        layer1 = layer;
+                        var sublayer = layer.getSubLayer(0);
+                        sublayer.set(subLayerOptions);
+                        sublayers.push(sublayer);
+                        var infowindow = cartodb.vis.Vis.addInfowindow(map, sublayer, infoFields);
                         infowindow.model.set('template', $('#infowindow_template').html());
-                        sublayers.push(layer.getSubLayer(1));
-                    });
+                    }).on('error', function() {
+                        //log the error
+                    })
          }
-
-         //window.onload = init;
-         google.maps.event.addDomListener(window, 'load', init);
-
          function updateQuery(crime) {
              var targets = [];
              $.each($(".selectpicker option:selected"), function(){
                  targets.push($(this).val());
              });
-             var sql = "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where (crime = '" + targets.join("' or crime = '") + "') AND lat IS NOT NULL AND (date::text >= '" + start_date + "' AND date::text <= '" + end_date + "' ) AND (hour::text >= '" + start_hour + "' AND hour::text <= '" + end_hour + "')";
+             var sql = "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where (crime = '" + targets.join("' or crime = '") + "') AND lat IS NOT NULL AND (substring(date::text,1,7) >= '" + start_date + "' AND substring(date::text,1,7) <= '" + end_date + "' ) AND (substring(hour::text,1,2) >= '" + start_hour + "' AND substring(hour::text,1,2) <= '" + end_hour + "')";
              sublayers[0].set({
                  sql: sql,
                  cartocss: cartocss_style,
                  interactivity: infoFields
              });
          }
-
-
+         window.onload = init;
         </script>
         <!-- <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
              <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -718,32 +779,15 @@
         {% assets "latlong_bootstrap_js" %}
         <script  type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
-
-        <script type="text/javascript">
-  var _paq = _paq || [];
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    _paq.push(['setTrackerUrl',  'https://api-0a75cf5975c321f57993d45fd90a3792.oasis.sandstorm.io']);
-    _paq.push(['setSiteId', 2]);
-    _paq.push(['setApiToken', 'Yh3ufxuscHwfzozgphRiZfbj_qGWUjYj0T3uyhqQpvi']);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src='https://o8c02p39rrla5i26f23e.oasis.sandstorm.io/embed.js'; s.parentNode.insertBefore(g,s);
-  })();
-</script>
-
         {{_('<script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">window.dojoRequire(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us6.list-manage.com","uuid":"787fae824c502d9f3ad7d0b73","lid":"102491489b","uniqueMethods":true}) })</script>')}}
-
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100264-9"></script>
         <script>
          window.dataLayer = window.dataLayer || [];
          function gtag(){dataLayer.push(arguments);}
          gtag('js', new Date());
-
          gtag('config', 'UA-100264-9');
         </script>
-
 
     </body>
 </html>
