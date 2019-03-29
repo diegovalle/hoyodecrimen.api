@@ -54,11 +54,16 @@ map = L.map('map', {
         pseudoFullscreen: true // if true, fullscreen to page width and height
     }
 });
+var loadingControl = L.Control.loading({
+    position: 'topright',
+    separate: true
+});
+map.addControl(loadingControl);
 L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
 
 addOutline = function(polygon, map) {
     var myStyle = {
-        'color': 'red',
+        'color': '#ed786a',
         'fillColor': '#fff',
         'weight': 2,
         'opacity': 1
@@ -98,6 +103,12 @@ $.when(timeout(geoLocation.getLocation(), 5500),
         };
         addOutline(single[0], map);
         createMarker(latLng.lat, latLng.lng);
+        map.on('move',function(e){
+            marker.setLatLng(map.getCenter());
+          });
+        map.on('moveend', function(e){
+            marker.fire('dragend');
+        });
     })
     .fail(function(e) {
         latLng = {
@@ -110,6 +121,12 @@ $.when(timeout(geoLocation.getLocation(), 5500),
         });
         //map.setView([latLng.lat, latLng.lng], 15);
         createMarker(latLng.lat, latLng.lng);
+        map.on('move',function(e){
+            marker.setLatLng(map.getCenter());
+          });
+        map.on('moveend', function(e){
+            marker.fire('dragend');
+        });
     });
 
 
@@ -225,12 +242,16 @@ function createMarker(lat, lng) {
     }
     if (typeof marker === 'undefined') {
         map.setView([lat, lng], 15);
-        marker = new L.marker([lat, lng], {draggable: true});
+        marker = new L.marker([lat, lng], {draggable: false});
         marker.on('dragend', function(event) {
+            map.fire('dataloading')
             var marker = event.target;
             var position = marker.getLatLng();
-
-            $.getJSON(charts_url +marker.getLatLng().lng +'/' + marker.getLatLng().lat, function(data) {
+            
+            if (typeof reqData !== "undefined") {
+                reqData.abort();
+            }
+            reqData = $.getJSON(charts_url +marker.getLatLng().lng +'/' + marker.getLatLng().lat, function(data) {
                 var dates = _.uniq(_.pluck(data.cuadrante, 'date'));
                 dates = _.map(dates, function(x) {return x + '-15';});
                 dates.unshift('x');
@@ -267,6 +288,7 @@ function createMarker(lat, lng) {
                         .addTo(map);
                     circles.push(circle);
                 }
+                map.fire('dataload')
             });
 
 
@@ -318,7 +340,7 @@ function createMarker(lat, lng) {
     });
 
     // There's a weird bug where the map has a red border
-    $('.leaflet-clickable').first().attr({'stroke': '#7f0000'});
+    //$('.leaflet-clickable').first().attr({'stroke': '#7f0000'});
 };
 
 $(window).load(function() {
