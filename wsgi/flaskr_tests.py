@@ -28,7 +28,7 @@ class FlaskTestCase(unittest.TestCase):
             if str(d) > str(last_day):
                 last_day = d
         print(last_day)
-        self.assertEqual(last_day, add_last_day_of_month(last_day))
+        self.assertEqual(str(last_day), add_last_day_of_month(str(last_day)))
 
     # Check the API endpoint
     def test_api_v1_top_counts_change_cuadrantes(self):
