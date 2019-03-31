@@ -107,6 +107,7 @@ $.when(timeout(geoLocation.getLocation(), 5500),
             marker.setLatLng(map.getCenter());
           });
         map.on('moveend', function(e){
+            marker.setLatLng(map.getCenter());
             marker.fire('dragend');
         });
     })
@@ -125,6 +126,7 @@ $.when(timeout(geoLocation.getLocation(), 5500),
             marker.setLatLng(map.getCenter());
           });
         map.on('moveend', function(e){
+            marker.setLatLng(map.getCenter());
             marker.fire('dragend');
         });
     });
@@ -242,12 +244,12 @@ function createMarker(lat, lng) {
     }
     if (typeof marker === 'undefined') {
         map.setView([lat, lng], 15);
-        marker = new L.marker([lat, lng], {draggable: false});
+        marker = new L.marker([lat, lng], {draggable: false, keyboard: false, opacity: 0});
         marker.on('dragend', function(event) {
-            map.fire('dataloading')
+            map.fire('dataloading');
             var marker = event.target;
             var position = marker.getLatLng();
-            
+
             if (typeof reqData !== "undefined") {
                 reqData.abort();
             }
@@ -272,15 +274,15 @@ function createMarker(lat, lng) {
                 pipData = data;
                 get_data(pipData, dates);
                 for (var i = 0; i < data.latlong.length; i++) {
-                    circle_color = "darkgray"
+                    circle_color = "darkgray";
                     if (data.latlong[i].crime == "ROBO A TRANSEUNTE C.V.")
-                        circle_color = "#377eb8"
+                        circle_color = "#377eb8";
                     if (data.latlong[i].crime == "ROBO DE VEHICULO AUTOMOTOR C.V.")
-                        circle_color = "#00441b"
+                        circle_color = "#00441b";
                     if (data.latlong[i].crime == "ROBO DE VEHICULO AUTOMOTOR S.V.")
-                        circle_color = "#41ab5d"
+                        circle_color = "#41ab5d";
                     if (data.latlong[i].crime == "HOMICIDIO DOLOSO")
-                        circle_color = "#e41a1c"
+                        circle_color = "#e41a1c";
                     circle = new L.circle(L.latLng(data.latlong[i].lat, data.latlong[i].long),
                                           15, { fillOpacity: .7, color: circle_color, weight: 1 })
                         .bindPopup(data.latlong[i].crime + '<br>' + data.latlong[i].date + '<br>' + data.latlong[i].hour +
@@ -288,8 +290,8 @@ function createMarker(lat, lng) {
                         .addTo(map);
                     circles.push(circle);
                 }
-                map.fire('dataload')
-            });
+                map.fire('dataload');
+            }).fail(function(jqxhr, textStatus, error) {error === "NOT FOUND" && map.fire('dataload');});
 
 
             //}
@@ -312,24 +314,24 @@ function createMarker(lat, lng) {
             "weight": 4,
             "opacity": .7,
             "fillOpacity": 0.1
-        })
+        });
         if(pipCuad)
             pipCuad.addTo(map);
         pipData = data;
         get_data(pipData, dates);
         while(circles.length > 0) {
-            map.removeLayer(circles.pop())
+            map.removeLayer(circles.pop());
         }
         for (var i = 0; i < data.latlong.length; i++) {
-            circle_color = "darkgray"
+            circle_color = "darkgray";
             if (data.latlong[i].crime == "ROBO A TRANSEUNTE C.V.")
-                circle_color = "#377eb8"
+                circle_color = "#377eb8";
             if (data.latlong[i].crime == "ROBO DE VEHICULO AUTOMOTOR C.V.")
-                circle_color = "#00441b"
+                circle_color = "#00441b";
             if (data.latlong[i].crime == "ROBO DE VEHICULO AUTOMOTOR S.V.")
-                circle_color = "#41ab5d"
+                circle_color = "#41ab5d";
             if (data.latlong[i].crime == "HOMICIDIO DOLOSO")
-                circle_color = "#e41a1c"
+                circle_color = "#e41a1c";
             circle = new L.circle(L.latLng(data.latlong[i].lat, data.latlong[i].long),
                                   20, { fillOpacity: .7, color: circle_color, weight: 1 })
                 .bindPopup(data.latlong[i].crime + '<br>' + data.latlong[i].date + '<br>' + data.latlong[i].hour +

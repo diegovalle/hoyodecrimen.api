@@ -118,7 +118,25 @@
 {% block content %}
 
     <h1 id="logo" style="margin-bottom:50px">{{_('Mexico City Crime')}}</h1>
-    <div id="map" style="height: 400px;"></div>
+    <style>
+    #map .centerMarker {
+  position: absolute;
+  /*url of the marker*/
+  background: url(/js/images/marker.png) no-repeat;
+  /*center the marker*/
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  /*fix offset when needed*/
+  margin-left: -13px;
+  margin-top: -41px;
+  /*size of the image*/
+  height: 41px;
+  width: 42px;
+  cursor: pointer;
+}
+    </style>
+    <div id="map" style="height: 400px;"><div class="centerMarker"></div></div>
     <div class="row">
         <div class="2u" style="margin-top:10px">
         </div>
