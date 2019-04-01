@@ -487,7 +487,7 @@
                 <div class="navbar-header">
                     <div class="navbar-icon-container">
                         <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
-                        <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg white"></i></a>
+                        <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-filter fa-lg white"></i></a>
                     </div>
                     <a class="navbar-brand" href="{{_('/en/')}}">HoyoDeCrimen</a>
                 </div>
@@ -735,10 +735,27 @@
          }
          function init(){
              // initiate leaflet map
-             map = L.map('map', {})
+             
+             var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	           attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', zIndex:0
+             });
+             var carto_streets = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>',
+				 zIndex:0 });
+             map = L.map('map', {maxZoom: 18})
+             
+             carto_streets.addTo(map);
+             var baseMaps = {
+               "Streets": carto_streets,
+               "Satellite": Esri_WorldImagery
+             };
+             L.Control.geocoder({
+               defaultMarkGeocode: true,
+               placeholder: "Buscar...",
+               geocoder: new L.Control.Geocoder.Nominatim(),
+              }).addTo(map);
              map.fitBounds([[19.593571, -99.123324],[19.141173, -99.130924],[19.299933, -99.350858],[19.321587, -98.944222]]);
              var hash = new L.Hash(map);
-             L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
+             
              // change the query for the first layer
              var subLayerOptions = {
                  sql: "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where crime = 'HOMICIDIO DOLOSO' AND lat IS NOT NULL",
@@ -748,6 +765,7 @@
                     .addTo(map)
                     .on('done', function(layer) {
                         layer1 = layer;
+                        layer.setZIndex(9);
                         var sublayer = layer.getSubLayer(0);
                         sublayer.set(subLayerOptions);
                         sublayers.push(sublayer);
@@ -756,6 +774,7 @@
                     }).on('error', function() {
                         //log the error
                     })
+             L.control.layers(baseMaps,null, {position: 'topleft'}).addTo(map);
          }
          function updateQuery(crime) {
              var targets = [];

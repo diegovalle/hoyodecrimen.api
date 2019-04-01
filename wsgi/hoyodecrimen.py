@@ -143,7 +143,7 @@ latlong_css = Bundle("css/vendor/carto/cartodb.css",
                          filters="cssmin", output="css/packed-latlong.css")
 assets.register('css_latlong_css', latlong_css)
 
-latlong_js = Bundle("js/vendor/carto/cartodb.js",
+latlong_js = Bundle("js/vendor/carto/cartodb.js", "js/vendor/leaflet/Control.Geocoder.js",
                     filters="jsmin", output="js/packed-latlong.%(version)s.js", )
 assets.register('js_latlong_js', latlong_js)
 
@@ -152,6 +152,7 @@ latlong_bootstrap_css = Bundle("css/vendor/bootstrap/bootstrap.min.css",
                               "css/vendor/bootstrap/cartodb.css",
                               "css/font-awesome.min.css",
                               "css/vendor/bootstrap/nouislider.css",
+                              "css/vendor/leaflet/Control.Geocoder.css",
                     filters="cssmin", output="css/packed-latlong-bootstap.%(version)s.css", )
 assets.register('latlong_bootstrap_css', latlong_bootstrap_css)
 
