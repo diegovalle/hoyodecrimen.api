@@ -244,7 +244,7 @@ function createMarker(lat, lng) {
     }
     if (typeof marker === 'undefined') {
         map.setView([lat, lng], 15);
-        marker = new L.marker([lat, lng], {draggable: false, keyboard: false, opacity: 0});
+        marker = new L.Marker([lat, lng], {draggable: false, keyboard: false, opacity: 0});
         marker.on('dragend', function(event) {
             map.fire('dataloading');
             var marker = event.target;
@@ -283,7 +283,7 @@ function createMarker(lat, lng) {
                         circle_color = "#41ab5d";
                     if (data.latlong[i].crime == "HOMICIDIO DOLOSO")
                         circle_color = "#e41a1c";
-                    circle = new L.circle(L.latLng(data.latlong[i].lat, data.latlong[i].long),
+                    circle = new L.Circle(L.latLng(data.latlong[i].lat, data.latlong[i].long),
                                           15, { fillOpacity: .7, color: circle_color, weight: 1 })
                         .bindPopup(data.latlong[i].crime + '<br>' + data.latlong[i].date + '<br>' + data.latlong[i].hour +
                                    (data.latlong[i].hour < "12" ? ' AM' : ' PM'))
@@ -332,7 +332,7 @@ function createMarker(lat, lng) {
                 circle_color = "#41ab5d";
             if (data.latlong[i].crime == "HOMICIDIO DOLOSO")
                 circle_color = "#e41a1c";
-            circle = new L.circle(L.latLng(data.latlong[i].lat, data.latlong[i].long),
+            circle = new L.Circle(L.latLng(data.latlong[i].lat, data.latlong[i].long),
                                   20, { fillOpacity: .7, color: circle_color, weight: 1 })
                 .bindPopup(data.latlong[i].crime + '<br>' + data.latlong[i].date + '<br>' + data.latlong[i].hour +
                            (data.latlong[i].hour < "12" ? ' AM' : ' PM'))
