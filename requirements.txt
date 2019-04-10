@@ -15,7 +15,7 @@ Frozen-Flask==0.13
 GeoAlchemy2==0.4.0
 htmlmin==0.1.10
 itsdangerous==0.24
-Jinja2==2.8
+Jinja2==2.10.1
 jsmin==2.2.1
 MarkupSafe==0.23
 psycopg2==2.7.5
