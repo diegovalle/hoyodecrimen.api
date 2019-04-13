@@ -24,8 +24,8 @@ casper.test.begin(
     function suite(test) {
         casper.start(partialURL + '/', function() {
             this.wait(35000, function() {
-                test.assertTitle('Crimen en la Ciudad de México - Averigua' +
-                                 ' cuantos delitos se cometieron por tu rumbo',
+                test.assertTitle('Crimen en la Ciudad de México - Todos' +
+                                 ' los delitos por tu rumbo',
                                  'homepage title is the one expected');
                 //test.assertExists('svg path', 'chart exists');
                 test.assertEval(function() {
@@ -45,9 +45,7 @@ casper.test.begin(
 
         casper.thenOpen(partialURL + '/en/', function() {
             this.wait(35000, function() {
-                test.assertTitle('Mexico City Crime - See how your' +
-                                 ' neighborhood rated for violent and ' +
-                                 'property crimes',
+                test.assertTitle('Mexico City Crime Rates and Statistics',
                                  'homepage title is the one expected');
                 //test.assertExists('svg path', 'chart exists');
                 test.assertEval(function() {
