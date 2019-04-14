@@ -66,7 +66,7 @@ jobs:
     - run: virtualenv hoyo_ansible && source hoyo_ansible/bin/activate && pip install ansible
     # This is based on your 1.0 configuration file or project settings
     - run: cp ansible/notsecrets.yml ansible/secrets.yml
-    - run: source hoyo_ansible/bin/activate && cd ansible && ansible-playbook -i "localhost," -c local hoyodecrimen.yml --become  && cd ..
+    - run: source hoyo_ansible/bin/activate && cd ansible && ansible-playbook -i "localhost," -c local hoyodecrimen.yml --become  --extra-vars "testing=true" && cd ..
     # Save dependency cache
     - save_cache:
         key: v1-dep-{{ .Branch }}-{{ epoch }}

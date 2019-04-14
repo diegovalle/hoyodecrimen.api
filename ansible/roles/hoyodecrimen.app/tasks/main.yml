@@ -131,8 +131,10 @@
 
 - name: reload systemd configuration
   command: systemctl daemon-reload
+  when: testing != 'true'
 
 - service: name=hoyodecrimen state=started
+  when: testing != 'true'
 
 - service: name=nginx state=restarted
 
