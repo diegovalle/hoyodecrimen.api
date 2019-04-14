@@ -29,7 +29,7 @@
 - name: Remove Packages
   apt: name="{{ item }}" state=absent
   with_items:
-    - apache
+    - apache2
     - samba
     - sendmail
     - bind9
@@ -60,6 +60,7 @@
     - optipng
     - htop
     - tmux
+    - locales
     #- ufw
     - siege
     #- fail2ban
