@@ -98,7 +98,7 @@
 - name: Manually create the initial virtualenv
   become: true
   become_user: "{{ username }}"
-  command: virtualenv /var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv -p python2 creates="/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3"
+  command: virtualenv /var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3 -p python3 creates="/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3"
 
 - name: ensure pip is latest version in virtenv
   become: true
@@ -111,10 +111,7 @@
 - name: Install pip requirements
   become: true
   become_user: "{{ username }}"
-  pip: requirements=/var/www/hoyodecrimen.com/hoyodecrimen.api/requirements3.txt virtualenv=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3
-
-- name: copy hoyodecrimen service conf
-  copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
+  pip: requirements=/var/www/hoyodecrimen.com/hoyodecrimen.api/requirements.txt virtualenv=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3
 
 - name: copy hoyodecrimen.service
   copy: src=hoyodecrimen.service dest=/etc/systemd/system/hoyodecrimen.service
