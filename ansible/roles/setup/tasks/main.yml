@@ -59,6 +59,7 @@
     - siege
     #- fail2ban
     - unattended-upgrades
+    - openssh-server
   notify:
     - Start NTP
 
