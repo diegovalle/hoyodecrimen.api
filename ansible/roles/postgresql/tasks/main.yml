@@ -8,7 +8,7 @@
   apt: pkg=postgresql-{{ postgre_version }} state=present force=yes
 
 - name: Start postgresql server
-  service: name=postgresql state=started enabled=ye
+  service: name=postgresql state=started enabled=yes
 
 - name: Install Packages
   apt: >
