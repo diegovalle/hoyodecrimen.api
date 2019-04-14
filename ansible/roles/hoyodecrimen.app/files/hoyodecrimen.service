@@ -1,0 +1,15 @@
+[Unit]
+Description="uWSGI server instance for hoyodecrimen.com"
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/
+Environment=PATH=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3/bin
+ExecStart=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3/bin/uwsgi --ini hoyodecrimen.ini
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -INT $MAINPID
+
+[Install]
+WantedBy=multi-user.target

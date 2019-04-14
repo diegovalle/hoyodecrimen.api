@@ -41,6 +41,7 @@
   apt: name="{{ item }}" state=latest
   with_items:
     - python-dev
+    - python3-dev
     - python-virtualenv
     - git
     - xz-utils

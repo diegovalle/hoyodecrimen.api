@@ -89,30 +89,35 @@
   become_user: "{{ username }}"
   shell: psql {{dbname}} < /tmp/index.sql
 
-- name: copy the init file for the hoyodecrimen service
-  copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
-
 - name: create a file with the enviromental variables
   template: src=envars.j2 dest=/var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/envars owner={{username}} group=www-data mode=0640
 
 - name: update pip
   command: pip2 install --upgrade pip
+  
+- name: Manually create the initial virtualenv
+  become: true
+  become_user: "{{ username }}"
+  command: virtualenv /var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv -p python2 creates="/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3"
 
 - name: ensure pip is latest version in virtenv
   become: true
   become_user: "{{ username }}"
   pip:
     name: pip
-    virtualenv: /var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv
+    virtualenv: /var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3
     state: latest
 
 - name: Install pip requirements
   become: true
   become_user: "{{ username }}"
-  pip: requirements=/var/www/hoyodecrimen.com/hoyodecrimen.api/requirements.txt virtualenv=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv
+  pip: requirements=/var/www/hoyodecrimen.com/hoyodecrimen.api/requirements3.txt virtualenv=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3
 
 - name: copy hoyodecrimen service conf
   copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
+  
+- name: copy hoyodecrimen.service
+  copy: src=hoyodecrimen.service dest=/etc/systemd/system/hoyodecrimen.service
 
 - service: name=hoyodecrimen state=started
 
