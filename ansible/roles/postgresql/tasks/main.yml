@@ -2,14 +2,13 @@
   apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main' state=present
 
 - name: Add postgres repository key
-  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present 
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
 
 - name: Install postgresql
   apt: pkg=postgresql-{{ postgre_version }} state=present force=yes
 
 - name: Start postgresql server
-  service: name=postgresql state=started enabled=yes
-  ignore_errors: True
+  service: name=postgresql state=started enabled=ye
 
 - name: Install Packages
   apt: >
@@ -43,7 +42,7 @@
   command: psql -d postgis_template -c "UPDATE pg_database SET datistemplate=true WHERE datname='postgis_template';"
   when: createdb_template_postgis.changed
 
-- name: enable postgis extension 
+- name: enable postgis extension
   become: yes
   become_user: postgres
   command: psql -d postgis_template -c "CREATE EXTENSION postgis;"
