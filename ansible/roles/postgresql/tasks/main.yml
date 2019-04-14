@@ -9,6 +9,7 @@
 
 - name: Start postgresql server
   service: name=postgresql state=started enabled=yes
+  ignore_errors: True
 
 - name: Install Packages
   apt: >
