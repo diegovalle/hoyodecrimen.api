@@ -8,12 +8,6 @@
 - name: Add deploy user
   user: name={{ username }} password="{{ DEPLOY_PASSWORD }}" shell=/bin/bash group=www-data
 
-- name: Generate en_US locale
-  locale_gen: name=en_US.UTF-8 state=present
-
-- name: Generate es_ES locale
-  locale_gen: name=es_ES.UTF-8 state=present
-
 - name: Add authorized keys for deploy user
   authorized_key: user={{ username }} key="{{ lookup('file', item) }}"
   with_items:
@@ -68,6 +62,12 @@
   notify:
     - Start NTP
 
+- name: Generate en_US locale
+  locale_gen: name=en_US.UTF-8 state=present
+
+- name: Generate es_ES locale
+  locale_gen: name=es_ES.UTF-8 state=present
+  
 - name: Add Periodic Configuration
   copy: src=10periodic dest=/etc/apt/apt.conf.d/10periodic owner=root group=root mode=0644
 
