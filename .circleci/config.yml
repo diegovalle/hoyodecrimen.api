@@ -56,6 +56,8 @@ jobs:
         # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
         - v1-dep-
     # This is based on your 1.0 configuration file or project settings
+    - run: apt -y install python3 python3-pip python3-setuptools python3-dev build-essential libssl-dev libffi-dev sudo unzip zip man-db curl
+    - run: pip3 install ansible==2.7.7
     - run: sudo apt update
     - run: sudo apt-get install -y npm
     - run: npm install -g grunt-cli bower
