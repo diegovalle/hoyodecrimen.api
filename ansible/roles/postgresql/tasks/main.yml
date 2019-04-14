@@ -12,18 +12,19 @@
 
 - name: Install Packages
   apt: >
-    pkg={{item}}
-    state=installed
+    pkg={{ packages }}
+    state=present
     update-cache=yes
-  with_items:
-    - build-essential
-    - python-dev
-    - python-setuptools
-    - python-psycopg2
-    - postgresql-contrib-{{ postgre_version }}
-    - postgresql-{{ postgre_version }}-postgis-{{ postgis_version }}
-    - libpq-dev
-    - postgresql-9.5-pgrouting
+  vars:
+    packages:
+      - build-essential
+      - python-dev
+      - python-setuptools
+      - python-psycopg2
+      - postgresql-contrib-{{ postgre_version }}
+      - postgresql-{{ postgre_version }}-postgis-{{ postgis_version }}
+      - libpq-dev
+      - postgresql-9.5-pgrouting
 
 ## CREATE  EXTENSION pgrouting;
 ## SELECT * FROM pgr_version();

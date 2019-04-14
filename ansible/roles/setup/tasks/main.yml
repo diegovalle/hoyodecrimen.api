@@ -21,45 +21,47 @@
               state=present
 
 - name: Remove Packages
-  apt: name="{{ item }}" state=absent
-  with_items:
-    - apache2
-    - samba
-    - sendmail
-    - bind9
-    - ncsd
-    - sasl
-    - exim
+  apt: name="{{ packages }}" state=absent
+  vars:
+    packages:
+      - apache2
+      - samba
+      - sendmail
+      - bind9
+      - ncsd
+      - sasl
+      - exim
 
 - name: Install Packages
-  apt: name="{{ item }}" state=latest
-  with_items:
-    - python-dev
-    - python3-dev
-    - python-virtualenv
-    - git
-    - xz-utils
-    - ntp
-    - mailutils
-    - wget
-    - ack-grep
-    - curl
-    - unzip
-    - ntp
-    - tmux
-    - sqlite3
-    - libxml2-dev
-    - apt-transport-https
-    - imagemagick
-    - optipng
-    - htop
-    - tmux
-    - locales
-    #- ufw
-    - siege
-    #- fail2ban
-    - unattended-upgrades
-    - openssh-server
+  apt: name="{{ packages }}" state=latest
+  vars:
+    packages:
+      - python-dev
+      - python3-dev
+      - python-virtualenv
+      - git
+      - xz-utils
+      - ntp
+      - mailutils
+      - wget
+      - ack-grep
+      - curl
+      - unzip
+      - ntp
+      - tmux
+      - sqlite3
+      - libxml2-dev
+      - apt-transport-https
+      - imagemagick
+      - optipng
+      - htop
+      - tmux
+      - locales
+      #- ufw
+      - siege
+      #- fail2ban
+      - unattended-upgrades
+      - openssh-server
   notify:
     - Start NTP
 
@@ -68,7 +70,7 @@
 
 - name: Generate es_ES locale
   locale_gen: name=es_ES.UTF-8 state=present
-  
+
 - name: Add Periodic Configuration
   copy: src=10periodic dest=/etc/apt/apt.conf.d/10periodic owner=root group=root mode=0644
 
