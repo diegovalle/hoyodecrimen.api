@@ -94,7 +94,7 @@
 
 - name: update pip
   command: pip2 install --upgrade pip
-  
+
 - name: Manually create the initial virtualenv
   become: true
   become_user: "{{ username }}"
@@ -115,7 +115,7 @@
 
 - name: copy hoyodecrimen service conf
   copy: src=hoyodecrimen.conf dest=/etc/init/hoyodecrimen.conf
-  
+
 - name: copy hoyodecrimen.service
   copy: src=hoyodecrimen.service dest=/etc/systemd/system/hoyodecrimen.service
 
