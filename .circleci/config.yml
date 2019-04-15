@@ -40,7 +40,7 @@ jobs:
     # This is based on your 1.0 configuration file or project settings
     - run: apt -qq update
     - run: apt -y install python3 python3-pip python3-setuptools python3-dev build-essential libssl-dev libffi-dev sudo unzip zip man-db curl python3-venv
-    - run: pip3 install ansible==2.7.7
+    - run: pip3 install ansible==2.7.10
     - run: pip3 install virtualenv
     - run:
         working_directory: ~/diegovalle/hoyodecrimen.api
