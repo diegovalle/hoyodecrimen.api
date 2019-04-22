@@ -1,0 +1,44 @@
+
+  - name: Create temp directory for downloading rclone
+    command: mktemp -d /tmp/rclone.XXXXXX
+    register: mktemp_output
+
+  - name: Download rclone
+    get_url:
+      url: "https://downloads.rclone.org/rclone-current-linux-amd64.zip"
+      dest: "{{ mktemp_output.stdout }}/rclone.zip"
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Unzip rclone
+    shell: unzip -j "{{ mktemp_output.stdout }}"/rclone.zip -d "{{ mktemp_output.stdout }}"  warn=False
+
+  - name: Move rclone to /usr/bin/rclone
+    copy:
+      src={{ mktemp_output.stdout }}/rclone
+      dest=/usr/bin/rclone
+      owner=root
+      group=root
+      mode=0755
+      remote_src=true
+
+  - name: Make dir for local manpages
+    file:
+      path: /usr/local/share/man/man1
+      state: directory
+      mode: 0775
+      owner: root
+      group: staff
+
+  - name: Install manpage
+    copy:
+      src={{ mktemp_output.stdout }}/rclone.1
+      dest=/usr/local/share/man/man1/rclone.1
+      mode=0775
+      owner=root
+      group=staff
+      remote_src=true
+
+  - name: mandb
+    command: mandb
