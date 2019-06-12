@@ -83,8 +83,8 @@
 - name: Restrict core dumps  using pam limits
   lineinfile: dest=/etc/security/limits.conf line="* hard core 0" state=present
 
-- name: Restrict Core Dumps - using sysctl
-  sysctl: name=fs.suid_dumpable value=0 ignoreerrors=yes sysctl_set=yes reload=yes state=present
+#- name: Restrict Core Dumps - using sysctl
+#  sysctl: name=fs.suid_dumpable value=0 ignoreerrors=yes sysctl_set=yes reload=yes state=present
 
 - name: SSH config
   lineinfile: dest="{{ item.file }}" regexp="{{ item.regexp }}" line="{{ item.line }}" state=present
