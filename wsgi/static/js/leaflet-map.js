@@ -324,7 +324,7 @@ function highlightFeature(e) {
             return new Date(year, month, 0).getDate();
         }
 
-        _.forEach(data.rows, function(x) {x['rate'] = (x.count / daysInMonth(x.date.substr(0,4), x.date.substr(5,6)) * 30)/ x.population * 100000 * 12});
+        _.forEach(data.rows, function(x) {x['rate'] = (x.count / daysInMonth(x.date.substr(5,6), x.date.substr(0,4)) * 30)/ x.population * 100000 * 12});
         if(mapType === "cuadrantes") line_options.y_accessor = 'count';
         data = MG.convert.date(data.rows, 'date', '%Y-%m');
         line_options.data = data;

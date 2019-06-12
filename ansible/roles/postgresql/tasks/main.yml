@@ -24,7 +24,7 @@
       - postgresql-contrib-{{ postgre_version }}
       - postgresql-{{ postgre_version }}-postgis-{{ postgis_version }}
       - libpq-dev
-      - postgresql-9.5-pgrouting
+      #- postgresql-9.5-pgrouting
 
 ## CREATE  EXTENSION pgrouting;
 ## SELECT * FROM pgr_version();

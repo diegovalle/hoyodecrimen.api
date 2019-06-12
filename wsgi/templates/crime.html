@@ -138,11 +138,11 @@
                  var population
                  _.forEach(data.ssp, function(x) {
                      population = x.population;
-                     x['rate'] = (x.count / daysInMonth(x.date.substr(0,4), x.date.substr(5,6)) * 30)/ x.population * 100000 * 12
+                     x['rate'] = (x.count / daysInMonth( x.date.substr(5,6), x.date.substr(0,4)) * 30)/ x.population * 100000 * 12
                  });
                  _.forEach(data.pgj, function(x) {
                      x['population'] = population;
-                     x['rate'] = (x.count / daysInMonth(x.date.substr(0,4), x.date.substr(5,6)) * 30)/ population * 100000 * 12
+                     x['rate'] = (x.count / daysInMonth(x.date.substr(5,6), x.date.substr(0,4)) * 30)/ population * 100000 * 12
                  });
 
 
@@ -208,7 +208,7 @@
                          for(var i = 0; i < homicides.length; i++) {
                              inegi.push({
                                  'count' : homicides[i],
-                                 'rate': (homicides[i] / daysInMonth(data.ssp[i].date.substr(0,4), data.ssp[i].date.substr(5,6)) * 30)/ population * 100000 * 12,
+                                 'rate': (homicides[i] / daysInMonth(data.ssp[i].date.substr(5,6), data.ssp[i].date.substr(0,4)) * 30)/ population * 100000 * 12,
                                  'date': data.ssp[i].date,
                                  'crime': x
                              })

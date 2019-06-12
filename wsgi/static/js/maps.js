@@ -150,7 +150,7 @@ createMap=function(df, svg, crime, crimeCode, colorFun, titleId, topoNam, tipFun
                 series.unshift(value);
 
                 _.forEach(data.rows, function(d, i) {
-                    d['rate'] = (d.count / daysInMonth(d.date.substr(0,4), d.date.substr(5,6)) * 30)/  d.population * 100000 * 12
+                    d['rate'] = (d.count / daysInMonth(d.date.substr(5,6), d.date.substr(0,4)) * 30)/  d.population * 100000 * 12
                 })
                 line_options.data = MG.convert.date(data.rows, 'date', '%Y-%m');
                 line_options.target = '#chart-homicide';
@@ -335,7 +335,7 @@ d3.json(mapFile, function(error, df) {
             // violA = _.map(byCrime['VIOLACION'], function(x) {return summer(x)})
             // violA.unshift('Rape')
             _.forEach(byCrime['HOMICIDIO DOLOSO'], function(d, i) {
-                d['rate'] = (d.count / daysInMonth(d.date.substr(0,4), d.date.substr(5,6)) * 30) / d.population * 100000 * 12
+                d['rate'] = (d.count / daysInMonth(d.date.substr(5,6), d.date.substr(0,4)) * 30) / d.population * 100000 * 12
             })
 
             line_options.data = MG.convert.date(byCrime['HOMICIDIO DOLOSO'], 'date', '%Y-%m');
