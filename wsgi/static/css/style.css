@@ -1087,3 +1087,7 @@ body.loading .modal {
 *:focus {
     outline: none;
 }
+
+.cryptedmail:after {
+  content: attr(data-ename) "@" attr(data-domain) "." attr(data-tld); 
+}

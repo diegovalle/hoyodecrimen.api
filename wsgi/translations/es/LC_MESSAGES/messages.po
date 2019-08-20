@@ -7,22 +7,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-03-24 15:06-0600\n"
-"PO-Revision-Date: 2019-03-24 15:07-0600\n"
+"POT-Creation-Date: 2019-08-20 12:16-0500\n"
+"PO-Revision-Date: 2019-08-20 12:23-0500\n"
 "Last-Translator: Diego Valle-Jones <diegovalle@gmail.com>\n"
+"Language: es\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
-"Language: es\n"
+"Generated-By: Babel 2.7.0\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
 #: templates/about.html:2 templates/about.html:23 templates/about.html:30
 #: templates/about.html:44
 msgid "About Crime in Mexico City"
-msgstr "Acerca de HoyodeCrimen - Descarga de Datos"
+msgstr "Acerca de Crimen por tu Rumbo"
 
 #: templates/about.html:3 templates/change-cuadrantes.html:3
 #: templates/charts.html:3 templates/counts-cuadrantes.html:3
@@ -47,7 +47,7 @@ msgstr "https://hoyodecrimen.com/en/about"
 
 #: templates/about.html:6
 msgid "About crime in Mexico City"
-msgstr "Acerca de Crimen por tu Rumbo. Descarga de mapas y datos. Hecho por Diego Valle-Jones"
+msgstr "Acerca de Crimen por tu Rumbo"
 
 #: templates/about.html:24 templates/about.html:31
 msgid "Data sources and information for hoyodecrimen.com"
@@ -94,8 +94,8 @@ msgid "This webapp is opensource and you can view the code on <a href=\"https://
 msgstr "El código fuente de la aplicación está disponible en <a href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
 
 #: templates/about.html:165
-msgid "I take your security seriously, if you believe you&#x27;ve found a vulnerability in this website please report it to <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. You can get my PGP key from <a href=\"https://keybase.io/diegovalle\">keybase</a>."
-msgstr "La seguridad de este sitio es mi prioridad, si crees haber encontrado una vulnerabilidad no dudes en reportarla a <a href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>. Puedes encontrar mi llave PGP en  <a href=\"https://keybase.io/diegovalle\">https://keybase.io/diegovalle</a>."
+msgid "I take your security seriously, if you believe you&#x27;ve found a vulnerability in this website please report it to <a href=\"#\" class=\"cryptedmail\" data-ename=\"security\" data-domain=\"hoyodecrimen\" data-tld=\"com\" onclick=\"window.location.href = 'mailto:' + this.dataset.ename + '@' + this.dataset.domain + '.' + this.dataset.tld; return false;\"></a>. You can get my PGP key from <a href=\"https://keybase.io/diegovalle\">keybase</a>."
+msgstr "La seguridad de este sitio es mi prioridad, si crees haber encontrado una vulnerabilidad no dudes en reportarla a <a href=\"#\" class=\"cryptedmail\" data-ename=\"security\" data-domain=\"hoyodecrimen\" data-tld=\"com\" onclick=\"window.location.href =\\ 'mailto:\\' + this.dataset.ename + \\'@\\' + this.dataset.domain + \\'.\\' + this.dataset.tld; return false;\"></a>. Puedes encontrar mi llave PGP en https://keybase.io/diegovalle"
 
 #: templates/about.html:167 templates/about.html:171 templates/about.html:175
 #: templates/about.html:179 templates/about.html:183 templates/about.html:187
@@ -266,7 +266,7 @@ msgstr "Visiten <a href=\"https://elcri.men/\">El Crimen</a> para una guía comp
 msgid "All rights reserved"
 msgstr "Todos los derechos reservados"
 
-#: templates/base.html:183 templates/latlong_map_boot.html:782
+#: templates/base.html:183 templates/latlong_map_boot.html:802
 msgid "<script type=\"text/javascript\" src=\"//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js\" data-dojo-config=\"usePlainJson: true, isDebug: false\"></script><script type=\"text/javascript\">window.dojoRequire([\"mojo/signup-forms/Loader\"], function(L) { L.start({\"baseUrl\":\"mc.us6.list-manage.com\",\"uuid\":\"787fae824c502d9f3ad7d0b73\",\"lid\":\"102491489b\",\"uniqueMethods\":true}) })</script>"
 msgstr "<script type=\"text/javascript\" src=\"//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js\" data-dojo-config=\"usePlainJson: true, isDebug: false\"></script><script type=\"text/javascript\">window.dojoRequire([\"mojo/signup-forms/Loader\"], function(L) { L.start({\"baseUrl\":\"mc.us6.list-manage.com\",\"uuid\":\"787fae824c502d9f3ad7d0b73\",\"lid\":\"99835eea14\",\"uniqueMethods\":true}) })</script>"
 
@@ -651,63 +651,63 @@ msgstr "Crimen por tu rumbo de la Ciudad de México. Los incidentes están geolo
 msgid "Mexico City Crime"
 msgstr "Crimen por tu Rumbo"
 
-#: templates/pip.html:126
+#: templates/pip.html:144
 msgid "Crime in your Cuadrante"
 msgstr "Crimen en tu cuadrante"
 
-#: templates/pip.html:132
+#: templates/pip.html:150
 msgid "Homicide"
 msgstr "Homicidio"
 
-#: templates/pip.html:133
+#: templates/pip.html:151
 msgid "Violent Car Robbery"
 msgstr "Robo de Vehículo C.V."
 
-#: templates/pip.html:134
+#: templates/pip.html:152
 msgid "Non-Violent Car Robbery"
 msgstr "Robo de Vehículo S.V."
 
-#: templates/pip.html:135
+#: templates/pip.html:153
 msgid "Street Robbery"
 msgstr "Robo a Transeúnte C.V."
 
-#: templates/pip.html:136
+#: templates/pip.html:154
 msgid "Other"
 msgstr "Otros"
 
-#: templates/pip.html:138
+#: templates/pip.html:156
 msgid "Cuadrantes highlighted in black. Points represent all crimes within 500 meters of your location during the last 12 months."
 msgstr "El cuadrante es el polígono negro. Los puntos representan crímenes durante los últimos 12 meses a 500 metros de tu ubicación."
 
-#: templates/pip.html:141
+#: templates/pip.html:159
 msgid "Cuadrante: "
 msgstr "Cuadrante: "
 
-#: templates/pip.html:142
+#: templates/pip.html:160
 msgid "Sector: "
 msgstr "Sector: "
 
-#: templates/pip.html:143
+#: templates/pip.html:161
 msgid "Population: "
 msgstr "Población: "
 
-#: templates/pip.html:150
+#: templates/pip.html:168
 msgid "Crimes counts by month in your cuadrante"
 msgstr "Número de crímenes en tu cuadrante"
 
-#: templates/pip.html:153
+#: templates/pip.html:171
 msgid "Spatially smoothed crimes rates in your cuadrante compared to the rest of Mexico City during the last 12 months"
 msgstr "Tasas de criminalidad alisadas espacialmente en tu cuadrante y comparadas con el resto de CDMX (12 últimos meses)"
 
-#: templates/pip.html:155
+#: templates/pip.html:173
 msgid "When comparing cuadrantes with the rest of CDMX, the raw crime incidence rate can be statistically unstable due to the small size of the cuadrantes and the relative small number of people at risk. Plus, sometimes homicides and firearm lesions are recorded as having happened inside a hospital, to get a better sense of the crime risk I spatially smoothed the rate of each cuadrante taking into account its nearest neighbors."
 msgstr "C.V. y S.V. significan con y sin violencia. Al comparar cuadrantes con el resto de la Ciudad de México, las tasas de incidencia criminal pueden ser estadísticamente inestables debido al tamaño pequeño de los cuadrantes y de su poca población. Además, a veces los homicidios y lesiones por arma de fuego son catalogadas con la latitud y longitud de los hospitales donde atienden a las víctimas. Para mejorar la percepción del riesgo a ser víctima de un crimen alise espacialmente las tasas de los cuadrantes para tomar en cuenta a sus vecinos más cercanos."
 
-#: templates/pip.html:159
+#: templates/pip.html:177
 msgid "Official Crime Data"
 msgstr "Datos Oficiales"
 
-#: templates/pip.html:164
+#: templates/pip.html:182
 msgid "The Mexico City Police Department\n"
 "            divided the city into 847 quadrants. Thanks to the \n"
 "            <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">open data iniciative</a> \n"
@@ -723,51 +723,51 @@ msgid "The Mexico City Police Department\n"
 "        if you have any questions."
 msgstr "La SSP-CDMX dividió al Distrito Federal en 847 cuadrantes. Gracias a la <a href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-investigacion-pgj-cdmx/custom/\">iniciativa de datos abierto del gobierno de la Ciudad de México</a> se cuentan con datos georeferenciados de criminalidad.<br><br> Con estos datos y su visualización, los ciudadanos y las autoridades podrían saber dónde se encuentran las áreas más violentas; los empresarios escogerían mejor dónde situar sus negocios, y los conductores sabrían en cuáles estacionamientos es más probable que les roben el auto... <br><br> Con estos mapas interactivos en la mano se les pueden pedir cuentas a los policías y comandantes responsables de cada cuadrante o sector. Incluso el Secretario de Seguridad Pública        podría usarlos para comparar y evaluar a sus comandantes y policías. No dudes en <a href=\"https://www.diegovalle.net/contact.html\">contactarme</a>."
 
-#: templates/pip.html:200
+#: templates/pip.html:218
 msgid "Cuadrante Homicides"
 msgstr "Cuadrante - Homicidios"
 
-#: templates/pip.html:201
+#: templates/pip.html:219
 msgid "Cuadrante Violent robberies to a business"
 msgstr "Cuadrante - Robo a Negocio C.V."
 
-#: templates/pip.html:202
+#: templates/pip.html:220
 msgid "Cuadrante Vehicle robberies with violence"
 msgstr "Cuadrante - Robo de Vehículo C.V"
 
-#: templates/pip.html:203
+#: templates/pip.html:221
 msgid "Cuadrante Vehicle robberies without violence"
 msgstr "Cuadrante - Robo de Vehículo S.V."
 
-#: templates/pip.html:204
+#: templates/pip.html:222
 msgid "Cuadrante Rape"
 msgstr "Cuadrante - Violaciones"
 
-#: templates/pip.html:205
+#: templates/pip.html:223
 msgid "Cuadrante House robberies with violence"
 msgstr "Cuadrante - Robo a casa habitación C.V."
 
-#: templates/pip.html:206
+#: templates/pip.html:224
 msgid "Cuadrante Robberies to pedestrians with violence"
 msgstr "Cuadrante - Robo a transeunte C.V."
 
-#: templates/pip.html:207
+#: templates/pip.html:225
 msgid "Cuadrante Robberies to pedestrians without violence"
 msgstr "Cuadrante - Robo a transeunte S.V."
 
-#: templates/pip.html:208
+#: templates/pip.html:226
 msgid "count"
 msgstr "número"
 
-#: templates/pip.html:209
+#: templates/pip.html:227
 msgid "All DF"
 msgstr "Todo CDMX"
 
-#: templates/pip.html:210
+#: templates/pip.html:228
 msgid "rate"
 msgstr "tasa"
 
-#: templates/pip.html:211
+#: templates/pip.html:229
 msgid "Your Cuadrante"
 msgstr "Tu cuadrante"
 
@@ -905,3 +905,142 @@ msgstr "Tasa por Sector"
 
 #~ msgid "8acd30bddc88809427bf568b635de1df754c10c9"
 #~ msgstr "1ff9c89c8f9ed13417d494d31ba01faaef45c3cb"
+
+#~ msgid "About Crime in Mexico City"
+#~ msgstr "Acerca de HoyodeCrimen - Descarga de Datos"
+
+#~ msgid "https://hoyodecrimen.com/acerca"
+#~ msgstr "https://hoyodecrimen.com/en/about"
+
+#~ msgid "About crime in Mexico City"
+#~ msgstr ""
+#~ "Acerca de Crimen por tu Rumbo. "
+#~ "Descarga de mapas y datos. Hecho "
+#~ "por Diego Valle-Jones"
+
+#~ msgid "Data sources and information for hoyodecrimen.com"
+#~ msgstr "Fuentes e información de hoyodecrimen.com"
+
+#~ msgid "https://hoyodecrimen.com/en/about"
+#~ msgstr "https://hoyodecrimen.com/acerca"
+
+#~ msgid ""
+#~ "The source of crime data is the"
+#~ " <a href=\"https://datos.cdmx.gob.mx/explore/dataset"
+#~ "/carpetas-de-investigacion-pgj-cdmx/custom"
+#~ "/\">PJG-CDMX</a>. Cuadrante coordinates scraped"
+#~ " from <a "
+#~ "href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Consulta de "
+#~ "Cuadrantes</a>. The population figures are "
+#~ "based on the <a "
+#~ "href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-"
+#~ "mexico-agebs-manzanas-etc.html\">2010 Census "
+#~ "by Manzana</a>. Keep in mind that "
+#~ "about 95&#37; of crimes in Mexico "
+#~ "City are not reported to the "
+#~ "police and you should focus on "
+#~ "homicides and car robberies since by "
+#~ "their nature they are harder to "
+#~ "ignore."
+#~ msgstr ""
+#~ "Los datos de incidencia delictiva "
+#~ "provienen de la <a "
+#~ "href=\"https://datos.cdmx.gob.mx/explore/dataset/carpetas-de-"
+#~ "investigacion-pgj-cdmx/custom/\">PJG-CDMX</a> "
+#~ "y ahí los pueden descargar. El "
+#~ "mapa de cuadrantes es de <a "
+#~ "href=\"http://www.ssp.df.gob.mx/cuadrante.html\">Ubica tu "
+#~ "cuadrante</a>. La población está basada "
+#~ "en información del <a "
+#~ "href=\"http://blog.diegovalle.net/2013/06/shapefiles-of-"
+#~ "mexico-agebs-manzanas-etc.html\">censo 2010 "
+#~ "por Manzana</a>."
+
+#~ msgid ""
+#~ "Visit <a href=\"https://elcri.men/en/\">El "
+#~ "Crimen</a> for crime information at the"
+#~ " national, state and municipio level"
+#~ msgstr ""
+#~ "Visiten <a href=\"https://elcri.men/\">El Crimen</a>"
+#~ " para obtener información criminal de "
+#~ "todo México"
+
+#~ msgid ""
+#~ "You can download a map of "
+#~ "cuadrantes as <a "
+#~ "href=\"https://hoyodecrimen.com/api/v1/cuadrantes/geojson\">GeoJSON</a>"
+#~ " using the API"
+#~ msgstr ""
+#~ "Pueden descargar un mapa de los "
+#~ "cuadrantes en formato GeoJSON <a "
+#~ "href=\"https://hoyodecrimen.com/api/v1/cuadrantes/geojson\">usando "
+#~ "el API</a>"
+
+#~ msgid ""
+#~ "This webapp is opensource and you "
+#~ "can view the code on <a "
+#~ "href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
+#~ msgstr ""
+#~ "El código fuente de la aplicación "
+#~ "está disponible en <a "
+#~ "href=\"https://github.com/diegovalle/hoyodecrimen.api\">GitHub</a>"
+
+#~ msgid ""
+#~ "I take your security seriously, if "
+#~ "you believe you&#x27;ve found a "
+#~ "vulnerability in this website please "
+#~ "report it to <a "
+#~ "href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>."
+#~ " You can get my PGP key from"
+#~ " <a href=\"https://keybase.io/diegovalle\">keybase</a>."
+#~ msgstr ""
+#~ "La seguridad de este sitio es mi"
+#~ " prioridad, si crees haber encontrado "
+#~ "una vulnerabilidad no dudes en "
+#~ "reportarla a <a "
+#~ "href=\"mailto:security@hoyodecrimen.com\">security@hoyodecrimen.com</a>."
+#~ " Puedes encontrar mi llave PGP en"
+#~ "  <a "
+#~ "href=\"https://keybase.io/diegovalle\">https://keybase.io/diegovalle</a>."
+
+#~ msgid ""
+#~ "I take your security seriously, if "
+#~ "you believe you&#x27;ve found a "
+#~ "vulnerability in this website please "
+#~ "report it to <a href=\"#\" "
+#~ "class=\"cryptedmail\" data-name=\"security\" "
+#~ "data-domain=\"hoyodecrimen\" data-tld=\"com\" "
+#~ "onclick=\"window.location.href = \"mailto:\" + "
+#~ "this.dataset.name + \"@\" + "
+#~ "this.dataset.domain + \".\" + "
+#~ "this.dataset.tld; return false;\"></a>. You "
+#~ "can get my PGP key from <a "
+#~ "href=\"https://keybase.io/diegovalle\">keybase</a>."
+#~ msgstr ""
+#~ "La seguridad de este sitio es mi"
+#~ " prioridad, si crees haber encontrado "
+#~ "una vulnerabilidad no dudes en "
+#~ "reportarla a <a href=\"#\" "
+#~ "class=\"cryptedmail\" data-name=\"security\" "
+#~ "data-domain=\"hoyodecrimen\" data-tld=\"com\" "
+#~ "onclick=\"window.location.href =\\ \"mailto:\\\" +"
+#~ " this.dataset.name + \\\"@\\\" + "
+#~ "this.dataset.domain + \\\".\\\" + "
+#~ "this.dataset.tld; return false;\"></a>. Puedes "
+#~ "encontrar mi llave PGP en "
+#~ "https://keybase.io/diegovalle"
+
+#~ msgid ""
+#~ "I take your security seriously, if "
+#~ "you believe you&#x27;ve found a "
+#~ "vulnerability in this website please "
+#~ "report it to <a href=\"#\" "
+#~ "class=\"cryptedmail\" data-name=\"security\" "
+#~ "data-domain=\"hoyodecrimen\" data-tld=\"com\" "
+#~ "onclick=\"window.location.href = 'mailto:' + "
+#~ "this.dataset.name + '@' + this.dataset.domain"
+#~ " + '.' + this.dataset.tld; return "
+#~ "false;\"></a>. You can get my PGP "
+#~ "key from <a "
+#~ "href=\"https://keybase.io/diegovalle\">keybase</a>."
+#~ msgstr ""
