@@ -36,7 +36,9 @@
 
         <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Arvo:700" rel="stylesheet" type="text/css" />
         <link rel="alternate" hreflang="{% block hreflang %}{% endblock %}" href="{% block alternhref %}{% endblock %}" />
-
+<style>.crypteddmail:after {
+  content: attr(data-dname) "@" attr(data-ddomain) "." attr(data-dtld); 
+}</style>
         <script>
 var _rollbarConfig = {
     accessToken: "34f60d57b7f1455ea057d588f9741123",
@@ -135,7 +137,7 @@ var _rollbarConfig = {
                                 <div class="row">
                                     <ul class="icons 6u">
                                         <li class="fa fa-envelope">
-                                            <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#100;&#105;&#101;&#103;&#111;&#64;&#100;&#105;&#101;&#103;&#111;&#118;&#97;&#108;&#108;&#101;&#46;&#110;&#101;&#116;'>&#100;&#105;&#101;&#103;&#111;&#64;&#100;&#105;&#101;&#103;&#111;&#118;&#97;&#108;&#108;&#101;&#46;&#110;&#101;&#116;</a>
+                                            <a href="#" class="crypteddmail" data-dname="diego" data-ddomain="diegovalle" data-dtld="net" onclick="window.location.href = `mailto:` + this.dataset.dname + `@` + this.dataset.ddomain + `.` + this.dataset.dtld; return false;"></a>
                                         </li>
                                         <li class="fa fa-github">
                                             <a href="http://github.com/diegovalle">diegovalle</a>
