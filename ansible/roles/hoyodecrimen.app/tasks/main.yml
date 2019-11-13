@@ -121,7 +121,7 @@
 #  file: path=/var/www/hoyodecrimen.com/hoyodecrimen.api/virtenv3 state=directory owner={{ username }} group=www-data recurse=yes
 
 - name: Ensure /var/log/uwsgi directory exists
-  file: path=/var/log/uwsgi state=directory owner={{ nginx_group }} group={{ nginx_group }} mode=0664 recurse=yes
+  file: path=/var/log/uwsgi state=directory owner={{ nginx_group }} group={{ nginx_group }} mode=0774 recurse=yes
 
 - name: copy hoyodecrimen.service
   copy: src=hoyodecrimen.service dest=/etc/systemd/system/hoyodecrimen.service

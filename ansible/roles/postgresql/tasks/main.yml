@@ -4,6 +4,11 @@
 - name: Add postgres repository key
   apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
 
+- name: Add an apt key by id from a keyserver
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 7FCC7D46ACCC4CF8
+
 - name: Install postgresql
   apt: pkg=postgresql-{{ postgre_version }} state=present force=yes
 
