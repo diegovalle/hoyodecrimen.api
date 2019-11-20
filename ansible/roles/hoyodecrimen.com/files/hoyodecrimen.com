@@ -28,6 +28,8 @@ server {
     include snippets/acme-challenge.conf;
 }
 
+limit_req_zone $binary_remote_addr zone=hoyolimit:1m rate=10r/s;
+limit_req_zone $binary_remote_addr zone=hardlimit:1m rate=2r/s;
 
 server {
     listen [::]:443 ssl http2;  # for Linux
@@ -171,12 +173,22 @@ server {
        alias /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/geojson/municipios.json;
        default_type application/json;
     }
-    location ^~ /api/v1/latlong/crimes {
-       limit_req zone=hoyodecrimen burst=5;
+    
+    
+    location ^~ /api/v1/ {
+       limit_req zone=hoyolimit burst=20;
        default_type application/json;
        include uwsgi_params;
        uwsgi_pass unix:/tmp/hoyodecrimen.sock;
-    }
+    }    
+    location ^~ /(api/v1/cuadrantes/.*/crimes|api/v1/sectores/pip)/ {
+       limit_req zone=hardlimit burst=5;
+       default_type application/json;
+       include uwsgi_params;
+       uwsgi_pass unix:/tmp/hoyodecrimen.sock;
+    }  
+    
+    
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/tmp/hoyodecrimen.sock;
