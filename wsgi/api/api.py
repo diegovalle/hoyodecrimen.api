@@ -1675,7 +1675,11 @@ def cuadrantes_change_sum_all(cuadrante, crime):
                                             from cuadrantes
                                             """
     sql_query2 = "" if crime == "ALL" else 'WHERE ' + ' OR '.join([ 'upper(crime) = :crime' + str(x) for x in range(len(crime.split(',')))])
-    sql_query3 = "" if cuadrante == "ALL" else " where upper(cuadrante) = :cuadrante "
+    if sql_query2 == "":
+      sql_query3 = "" if cuadrante == "ALL" else " where upper(cuadrante) = :cuadrante "
+    else:
+      sql_query3 = "" if cuadrante == "ALL" else " and upper(cuadrante) = :cuadrante "
+		
     sql_query4 = """ group by cuadrante, sector, crime
                         order by crime asc, cuadrante asc """
     crime_data = { 'crime'+str(x) : crime.split(',')[x-1] for x in range(len(crime.split(',')))}
@@ -1772,7 +1776,11 @@ def sectores_change_sum_all(sector, crime):
                                             from cuadrantes
                                             """
     sql_query2 = "" if crime == "ALL" else 'WHERE ' + ' OR '.join([ 'upper(crime) = :crime' + str(x) for x in range(len(crime.split(',')))])
-    sql_query3 = "" if sector == "ALL" else " where upper(sector) = :sector "
+    if sql_query2 == "":
+      sql_query3 = "" if sector == "ALL" else " where upper(sector) = :sector "
+    else:
+      sql_query3 = "" if sector == "ALL" else " and upper(sector) = :sector "
+    
     sql_query4 = """ group by sector, crime
                         order by crime asc, sector asc """
     crime_data = { 'crime'+str(x) : crime.split(',')[x-1] for x in range(len(crime.split(',')))}
