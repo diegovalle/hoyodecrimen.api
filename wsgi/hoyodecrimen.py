@@ -178,19 +178,21 @@ def test_cache():
     import random
     return str(random.random())
 
-@cache.cached()
+
 @app.route('/en/')
+@cache.cached(key_prefix='rootpathen')
 def api_home_html():
     setattr(g, 'lang', 'en')
     return render_template('pip.html')
 
-@cache.cached()
 @app.route('/')
+@cache.cached(key_prefix='rootpath')
 def api_home_html_es():
     setattr(g, 'lang', 'es')
     return render_template('pip.html')
 
 @app.route('/sitemap.xml')
+@cache.cached()
 def sitemap():
     return send_from_directory(os.path.join(_basedir, 'static'), 'sitemap.xml')
 
@@ -371,11 +373,13 @@ def cuadrantes_mapa():
 
 # Google webmaster verification
 @app.route('/google055ef027e7764e4d.html')
+@cache.cached()
 def google055ef027e7764e4d():
     return 'google-site-verification: google055ef027e7764e4d.html'
 
 # Blitz verification
 @app.route('/mu-01188fe9-0b813050-b0f51076-c96f41fb.txt')
+@cache.cached()
 def mu01188fe9():
     return '42', 200,  {'Content-Type': 'text/plain; charset=utf-8'}
 
@@ -412,21 +416,25 @@ def static_images(filename):
                                filename)
 
 @app.route('/favicon.ico')
+@cache.cached()
 def static_images_favicon():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'favicon.ico')
 
 @app.route('/favicon-<string:size>.png')
+@cache.cached()
 def static_favicon_slash(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'favicon-' + size + '.png')
 
 @app.route('/apple-touch-icon-<string:size>.png')
+@cache.cached()
 def static_apple(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'apple-touch-icon-' + size + '.png')
 
 @app.route('/apple-touch-icon.png')
+@cache.cached()
 def apple_icon():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'apple-touch-icon.png')
@@ -442,11 +450,13 @@ def static_msicon(size):
                                'ms-icon-' + size + '.png')
 
 @app.route('/manifest.json')
+@cache.cached()
 def static_manifest():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'manifest.json')
 
 @app.route('/browserconfig.xml')
+@cache.cached()
 def static_browserconfig():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'browserconfig.xml')

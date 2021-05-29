@@ -522,6 +522,7 @@ def frontpage(crime, long, lat):
            '<string:lat>',
            methods=['GET'])
 @jsonp
+@cache.cached(timeout=50, key_prefix=make_cache_key)
 def frontpage_extra(crime, long, lat):
     """Given a latitude and longitude determine the cuadrante they correspond to. Include extra crime info
 
@@ -623,7 +624,7 @@ def frontpage_extra(crime, long, lat):
         results_cuad_period = get_cuad_period_neighbors(results_pip[0], crime, start_date, max_date)
         
         results_sphere = Crime_latlong.query. \
-                         filter(*[func.ST_DWithin(cast(Crime_latlong.geom, Geography), point, 500),
+                         filter(*[func.ST_DWithin(func.ST_Transform(Crime_latlong.geom, 2163), func.ST_Transform(point, 2163), 500),
                                  and_(Crime_latlong.date >= start_date, Crime_latlong.date <= add_last_day_of_month(max_date))]). \
             with_entities(func.upper(Crime_latlong.crime).label("crime"),
                           func.upper(Crime_latlong.date).label("date"),
@@ -752,7 +753,7 @@ def latlong(crime, long, lat, distance):
 
     point = WKTElement("POINT(%s %s)" % (long, lat), srid=4326)
 
-    filters.append(func.ST_Distance_Sphere(point, Crime_latlong.geom) <= distance)
+    filters.append(func.ST_DWithin(func.ST_Transform(Crime_latlong.geom, 2163), func.ST_Transform(point, 2163), distance))
 
     results_sphere = Crime_latlong.query. \
         filter(*filters). \
