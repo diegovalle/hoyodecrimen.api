@@ -25,7 +25,10 @@ app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 43200 * 20 # 20 days
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.register_blueprint(API)
-db = SQLAlchemy(app)
+session_options = {
+    'autocommit': True
+}
+db = SQLAlchemy(app, session_options=session_options)
 app.config.from_pyfile('apihoyodecrimen.cfg')
 
 

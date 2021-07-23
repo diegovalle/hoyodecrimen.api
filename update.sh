@@ -25,6 +25,7 @@ CREATE INDEX cuadrantes_upper_crime_date_sector
 CREATE INDEX cuadrantes_upper_crime_date_cuadrante
   ON cuadrantes
   ( (upper(cuadrantes.crime)), date, cuadrante);
+CREATE INDEX uppper_cuadrantes_crime ON cuadrantes USING btree ((upper(cuadrante)), crime);
 "
 
 # scp -C crime-lat-long-pgj.csv cuadrantes-pgj.csv pgj.csv deploy@ip:/tmp
@@ -36,6 +37,6 @@ psql -d apihoyodecrimen  -c "\copy crime_latlong  (cuadrante,crime,date,hour,yea
 psql -d apihoyodecrimen -c "\copy pgj (crime,date,count) from '/tmp/pgj.csv' with delimiter as ','  NULL AS 'NA' CSV HEADER"
 psql -d apihoyodecrimen -c "UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);"
 psql -d apihoyodecrimen -c "$CUADRANTES_INDEX"
-#psql -d apihoyodecrimen -c "VACUUM ANALYZE crime_latlong;"
-#psql -d apihoyodecrimen -c "VACUUM ANALYZE cuadrantes;"
-#psql -d apihoyodecrimen -c "VACUUM ANALYZE pgj;"
+psql -d apihoyodecrimen -c "VACUUM ANALYZE crime_latlong;"
+psql -d apihoyodecrimen -c "VACUUM ANALYZE cuadrantes;"
+psql -d apihoyodecrimen -c "VACUUM ANALYZE pgj;"

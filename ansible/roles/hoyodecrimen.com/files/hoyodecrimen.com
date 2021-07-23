@@ -103,6 +103,16 @@ server {
        expires 1M;
        access_log off;
     }
+    location ^~ /android-icon {
+       root /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/images/;
+       expires 1M;
+       access_log off;
+    }
+    location ^~ /ms-icon {
+       root /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/images/;
+       expires 1M;
+       access_log off;
+    }
     location ^~ /favicon {
        root /var/www/hoyodecrimen.com/hoyodecrimen.api/wsgi/static/images/;
        expires 1M;

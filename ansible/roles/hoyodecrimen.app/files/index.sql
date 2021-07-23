@@ -1,6 +1,9 @@
 UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || latitude || ')',4326);
 --CREATE INDEX crime_latlongi_geography ON crime_latlong USING gist( (geom::geography) );
 CREATE INDEX crime_latlongi_castgeography ON crime_latlong USING gist( CAST(geom AS geography(GEOMETRY,-1) ));
+CREATE INDEX crime_latlongi_castgeography_4326 ON crime_latlong USING gist( CAST(geom AS geography(GEOMETRY,4326) ));
+CREATE INDEX crime_latlongi_castgeography_2163 ON crime_latlong USING GIST (ST_Transform(geom, 2163));
+CREATE INDEX crime_latlong_crime_date_desc ON crime_latlong (crime DESC, date DESC);
 CREATE INDEX crime_latlongi
   ON crime_latlong
   USING gist
@@ -18,12 +21,19 @@ CREATE INDEX cuadrantes_polygeom
   ON cuadrantes_poly
   USING gist
   (geom );
+CREATE INDEX cuadrantes_polygeom_2163
+  ON cuadrantes_poly
+  USING gist
+  (ST_Transform(geom, 2163));
 CREATE INDEX cuadrantes_polygeom_cuadrante
   ON cuadrantes_poly
   (id,sector);
 CREATE INDEX cuadrantes_cuadrante_crime_date
   ON cuadrantes
   (cuadrante, crime, date);
+CREATE INDEX cuadrantes_upper_crime_date_sector
+  ON cuadrantes
+  ( (upper(cuadrantes.crime)), date, sector);
 CREATE INDEX cuadrantes_date_null_desc
 ON cuadrantes (date DESC NULLS LAST);
 CREATE INDEX cuadrantes_cuadrante
@@ -31,7 +41,7 @@ ON cuadrantes (cuadrante);
 CREATE INDEX cuadrantes_crime_null
   ON cuadrantes
   (crime ASC NULLS LAST);
-
+CREATE INDEX uppper_cuadrantes_crime ON cuadrantes USING btree ((upper(cuadrante)), crime);
 CREATE INDEX cuadrantes_crime_partial
   ON cuadrantes
   ( crime)
