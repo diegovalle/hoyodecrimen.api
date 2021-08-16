@@ -91,6 +91,12 @@ def invalid_usage(error):
     return response
 
 
+@API.teardown_request
+def teardown_request(exception):
+    if exception:
+        db.session.rollback()
+    db.session.remove()
+
 def jsonp(func):
     """Wraps JSONified output for JSONP requests."""
     @wraps(func)
