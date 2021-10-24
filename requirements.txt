@@ -7,14 +7,14 @@ Flask==1.0.2
 Flask-Assets==0.12
 Flask-Babel==0.12.2
 Flask-Cache==0.13.1
-Flask-Caching==1.7.0
+Flask-Caching==1.10.1
 Flask-Compress==1.4.0
 Flask-SQLAlchemy==2.3.2
 Frozen-Flask==0.15
 GeoAlchemy2==0.6.1
 htmlmin==0.1.12
 itsdangerous==1.1.0
-Jinja2==2.10.1
+Jinja2==2.11.3
 jsmin==2.2.2
 MarkupSafe==1.1.1
 psycopg2==2.8.1
