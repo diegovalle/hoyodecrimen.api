@@ -1,3 +1,6 @@
+-- psql -d apihoyodecrimen -f update.sql
+
+
 BEGIN;
 -- LOCK TABLE 'table' IN SHARE ROW EXCLUSIVE mode;
 -- cuadrantes

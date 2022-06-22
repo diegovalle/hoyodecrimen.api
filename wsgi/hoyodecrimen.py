@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import Flask,\
     make_response, url_for, send_from_directory,\
-    render_template, g
+    render_template, g, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_assets import Environment, Bundle
 from werkzeug.contrib.profiler import ProfilerMiddleware
@@ -464,6 +464,21 @@ def static_browserconfig():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'browserconfig.xml')
 
+@app.route('/clearcache',
+           methods=['POST'])
+def clear_cache():
+    if 'CACHE_SECRET' in os.environ:
+        if os.environ['CACHE_SECRET'] == request.form.get('CACHE_SECRET'):
+            with app.app_context():
+                cache.clear()
+                ret = "cache cleared"
+        else:
+            ret = "false"
+    else:
+        ret = "Not available"
+    response = make_response(ret, 200)
+    response.mimetype = "text/plain"
+    return response
 
 if __name__ == '__main__':
     with app.app_context():

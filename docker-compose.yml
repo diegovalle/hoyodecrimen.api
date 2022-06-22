@@ -1,0 +1,30 @@
+services:
+  hoyodecrimen:
+    container_name: hoyodecrimen
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+    environment:
+      MODULE_NAME: "${MODULE_NAME}"
+      LOG_LEVEL: "${LOG_LEVEL}"
+      PORT: "${PORT}"
+      OPENSHIFT_POSTGRESQL_DB_PASSWORD: "${OPENSHIFT_POSTGRESQL_DB_PASSWORD}"
+      OPENSHIFT_POSTGRESQL_DB_URL: "${OPENSHIFT_POSTGRESQL_DB_URL}"
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+      OPENSHIFT_REDIS_HOST: "${OPENSHIFT_REDIS_HOST}"
+      OPENSHIFT_REDIS_PORT: "${OPENSHIFT_REDIS_PORT}"
+      OPENSHIFT_POSTGRESQL_DB_USERNAME: "${OPENSHIFT_POSTGRESQL_DB_USERNAME}"
+      OPENSHIFT_PYTHON_DIR: "${OPENSHIFT_PYTHON_DIR}"
+      OPENSHIFT_APP_UUID: "${OPENSHIFT_APP_UUID}"
+      SENTRY_DSN: "${https://511429a9e4274025bed87d7e910dbe69:9ca96946dfb643ddb303dac55c980fae@sentry.io/118704}"
+      CACHE_SECRET: "${CACHE_SECRET}"
+    image: diegovalle/hoyodecrimen
+    ports:
+      - '8080:8080'
+    environment:
+      - PUID=1000
+      - PGID=1000
+    env_file:
+      - .env
+version: '3'

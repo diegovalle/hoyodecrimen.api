@@ -1,0 +1,15 @@
+^.circleci/
+**/*.env
+.git
+.cache
+^.openshift/
+^.travis.yml/
+^.htaccess/
+^ansible/
+^config.sh$
+^data/
+^doc/
+^meta/
+^temp/
+wsgi/build/
+__pycache__/

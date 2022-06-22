@@ -82,3 +82,4 @@ virtenv/
 virtenv3/
 wsgi/envars
 wsgi/static/packed-latlong-bootstrap.css
+.env
