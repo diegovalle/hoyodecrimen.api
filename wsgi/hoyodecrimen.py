@@ -176,26 +176,24 @@ def robots():
     return send_from_directory(os.path.join(_basedir, 'static'), 'robots.txt')
 
 @app.route('/test-cache')
-@cache.cached()
 def test_cache():
     import random
     return str(random.random())
 
 
 @app.route('/en/')
-@cache.cached(key_prefix='rootpathen')
+@cache.cached()
 def api_home_html():
     setattr(g, 'lang', 'en')
     return render_template('pip.html')
 
 @app.route('/')
-@cache.cached(key_prefix='rootpath')
+@cache.cached()
 def api_home_html_es():
     setattr(g, 'lang', 'es')
     return render_template('pip.html')
 
 @app.route('/sitemap.xml')
-@cache.cached()
 def sitemap():
     return send_from_directory(os.path.join(_basedir, 'static'), 'sitemap.xml')
 
@@ -419,25 +417,21 @@ def static_images(filename):
                                filename)
 
 @app.route('/favicon.ico')
-@cache.cached()
 def static_images_favicon():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'favicon.ico')
 
 @app.route('/favicon-<string:size>.png')
-@cache.cached()
 def static_favicon_slash(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'favicon-' + size + '.png')
 
 @app.route('/apple-touch-icon-<string:size>.png')
-@cache.cached()
 def static_apple(size):
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'apple-touch-icon-' + size + '.png')
 
 @app.route('/apple-touch-icon.png')
-@cache.cached()
 def apple_icon():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'apple-touch-icon.png')
@@ -453,13 +447,11 @@ def static_msicon(size):
                                'ms-icon-' + size + '.png')
 
 @app.route('/manifest.json')
-@cache.cached()
 def static_manifest():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'manifest.json')
 
 @app.route('/browserconfig.xml')
-@cache.cached()
 def static_browserconfig():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'browserconfig.xml')
