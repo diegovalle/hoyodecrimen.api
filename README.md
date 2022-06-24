@@ -6,13 +6,12 @@
 You'll need to set the following environmental variables for the testing environment:
 
 ```
-OPENSHIFT_POSTGRESQL_DB_PASSWORD=""
-OPENSHIFT_POSTGRESQL_DB_URL="postgresql://user:password@localhost/apihoyodecrimen"
-REDIS_PASSWORD=""
-OPENSHIFT_REDIS_HOST='127.0.0.1'
-OPENSHIFT_REDIS_PORT='6379'
-OPENSHIFT_APP_UUID=true (only when running in production)
-SENTRY_DSN = Your sentry.io dsn
+MODULE_NAME
+LOG_LEVEL
+PORT
+SQLALCHEMY_DATABASE_URI
+SENTRY_DSN
+CACHE_SECRET
 ```
 
 ## To deploy a testing server you have to:

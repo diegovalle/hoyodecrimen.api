@@ -1,6 +1,6 @@
 [Unit]
 Description="uWSGI server instance for hoyodecrimen.com"
-After=network.target
+After=network.target postgresql.service
 
 [Service]
 User=www-data

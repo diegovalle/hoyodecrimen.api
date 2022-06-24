@@ -28,8 +28,8 @@ app.register_blueprint(API)
 session_options = {
     'autocommit': True
 }
-db = SQLAlchemy(app, session_options=session_options)
 app.config.from_pyfile('apihoyodecrimen.cfg')
+db = SQLAlchemy(app, session_options=session_options)
 
 
 # report exceptions to sentry.io
@@ -488,7 +488,7 @@ if __name__ == '__main__':
 
     debug = False
     # Running locally
-    if 'OPENSHIFT_APP_UUID' not in os.environ:
+    if 'PRODUCTION' not in os.environ:
         app.config['PROFILE'] = True
         app.config['ASSETS_DEBUG'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])

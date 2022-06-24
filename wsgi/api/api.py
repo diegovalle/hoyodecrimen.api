@@ -32,24 +32,24 @@ from flask_sqlalchemy import get_debug_queries
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Use redis if not running in Openshift
-if 'OPENSHIFT_APP_UUID' not in os.environ:
+if 'PRODUCTION' not in os.environ:
     cache = Cache(config={
-        'CACHE_TYPE': 'simple',  # null or simple
+        'CACHE_TYPE': 'null',  # null or simple
         'CACHE_DIR': '/tmp',
         'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
         'CACHE_THRESHOLD': 922337203685477580,
     })
 else:
     cache = Cache(config={
-        'CACHE_TYPE': 'redis',
+        'CACHE_TYPE': 'simple',
         # 'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD']
         # +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'
         # + os.environ['OPENSHIFT_REDIS_PORT'],
-        'CACHE_DEFAULT_TIMEOUT': 2592000,
-        'CACHE_REDIS_PASSWORD': os.environ['REDIS_PASSWORD'],
-        'CACHE_REDIS_HOST': os.environ['OPENSHIFT_REDIS_HOST'],
-        'CACHE_REDIS_PORT': os.environ['OPENSHIFT_REDIS_PORT'],
-        'CACHE_KEY_PREFIX': 'hoyodecrimen'
+        #'CACHE_DEFAULT_TIMEOUT': 2592000,
+        #'CACHE_REDIS_PASSWORD': os.environ['REDIS_PASSWORD'],
+        #'CACHE_REDIS_HOST': os.environ['OPENSHIFT_REDIS_HOST'],
+        #'CACHE_REDIS_PORT': os.environ['OPENSHIFT_REDIS_PORT'],
+        #'CACHE_KEY_PREFIX': 'hoyodecrimen'
         #'CACHE_REDIS_URL': 'redis://127.0.0.1:6379'
     })
 

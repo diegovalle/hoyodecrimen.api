@@ -9,22 +9,39 @@ services:
       MODULE_NAME: "${MODULE_NAME}"
       LOG_LEVEL: "${LOG_LEVEL}"
       PORT: "${PORT}"
-      OPENSHIFT_POSTGRESQL_DB_PASSWORD: "${OPENSHIFT_POSTGRESQL_DB_PASSWORD}"
-      OPENSHIFT_POSTGRESQL_DB_URL: "${OPENSHIFT_POSTGRESQL_DB_URL}"
-      REDIS_PASSWORD: "${REDIS_PASSWORD}"
-      OPENSHIFT_REDIS_HOST: "${OPENSHIFT_REDIS_HOST}"
-      OPENSHIFT_REDIS_PORT: "${OPENSHIFT_REDIS_PORT}"
-      OPENSHIFT_POSTGRESQL_DB_USERNAME: "${OPENSHIFT_POSTGRESQL_DB_USERNAME}"
-      OPENSHIFT_PYTHON_DIR: "${OPENSHIFT_PYTHON_DIR}"
-      OPENSHIFT_APP_UUID: "${OPENSHIFT_APP_UUID}"
+      SQLALCHEMY_DATABASE_URI: "${SQLALCHEMY_DATABASE_URI}"
+      PRODUCTION: "${PRODUCTION}"
       SENTRY_DSN: "${SENTRY_DNS}"
       CACHE_SECRET: "${CACHE_SECRET}"
     image: diegovalle/hoyodecrimen
     ports:
       - '8080:8080'
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       - PUID=1000
       - PGID=1000
     env_file:
       - .env
+
+  db:
+    container_name: hoyodecrimendb
+    environment:
+      POSTGRES_USER: deploy
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: apihoyodecrimen
+    image: postgis/postgis:14-3.2
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - default
+    volumes:
+      - ~/Downloads/postgres:/var/lib/postgresql/data
+    ports:
+      - 5405:5432
+    restart: always
 version: '3'
