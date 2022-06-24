@@ -31,27 +31,37 @@ from flask_sqlalchemy import get_debug_queries
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
-# Use redis if not running in Openshift
-if 'PRODUCTION' not in os.environ:
+# Use redis if running in production
+if 'PRODUCTION' in os.environ:
+    if 'CACHE_REDIS_URL' in os.environ:
+        cache = Cache(config={
+            'CACHE_TYPE': 'RedisCache',
+            # e.g. redis://:password@localhost:6379/2
+            'CACHE_REDIS_URL': os.environ['CACHE_REDIS_URL'],
+            'CACHE_DEFAULT_TIMEOUT': 2630000, # 1 month in seconds
+            'CACHE_KEY_PREFIX': 'hoyodecrimen'
+        })
+    else:
+        cache = Cache(config={
+            'CACHE_TYPE': 'FileSystemCache',
+            # 'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD']
+            # +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'
+            # + os.environ['OPENSHIFT_REDIS_PORT'],
+            #'CACHE_DEFAULT_TIMEOUT': 2592000,
+            #'CACHE_REDIS_PASSWORD': os.environ['REDIS_PASSWORD'],
+            #'CACHE_REDIS_HOST': os.environ['OPENSHIFT_REDIS_HOST'],
+            #'CACHE_REDIS_PORT': os.environ['OPENSHIFT_REDIS_PORT'],
+            #'CACHE_KEY_PREFIX': 'hoyodecrimen'
+            #'CACHE_REDIS_URL': 'redis://127.0.0.1:6379'
+        })
+else:
     cache = Cache(config={
         'CACHE_TYPE': 'null',  # null or simple
         'CACHE_DIR': '/tmp',
         'CACHE_DEFAULT_TIMEOUT': 922337203685477580,
         'CACHE_THRESHOLD': 922337203685477580,
     })
-else:
-    cache = Cache(config={
-        'CACHE_TYPE': 'simple',
-        # 'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD']
-        # +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'
-        # + os.environ['OPENSHIFT_REDIS_PORT'],
-        #'CACHE_DEFAULT_TIMEOUT': 2592000,
-        #'CACHE_REDIS_PASSWORD': os.environ['REDIS_PASSWORD'],
-        #'CACHE_REDIS_HOST': os.environ['OPENSHIFT_REDIS_HOST'],
-        #'CACHE_REDIS_PORT': os.environ['OPENSHIFT_REDIS_PORT'],
-        #'CACHE_KEY_PREFIX': 'hoyodecrimen'
-        #'CACHE_REDIS_URL': 'redis://127.0.0.1:6379'
-    })
+
 
 
 API = Blueprint('API', __name__, url_prefix='/api/v1')
@@ -113,7 +123,7 @@ def jsonp(func):
 
 def add_last_day_of_month(date):
     date = datetime.datetime.strptime(date, "%Y-%m-%d")
-    next_month = date.replace(day=28) + datetime.timedelta(days=4) 
+    next_month = date.replace(day=28) + datetime.timedelta(days=4)
     next_month = next_month - datetime.timedelta(days=next_month.day)
     return next_month.strftime("%Y-%m-%d")
 
@@ -627,7 +637,7 @@ def frontpage_extra(crime, long, lat):
         results_cuad = get_cuad_series(results_pip[0], crime)
         results_df_period = get_df_period(start_date, max_date, crime)
         results_cuad_period = get_cuad_period_neighbors(results_pip[0], crime, start_date, max_date)
-        
+
         results_sphere = Crime_latlong.query. \
                          filter(*[func.ST_DWithin(func.ST_Transform(Crime_latlong.geom, 2163), func.ST_Transform(point, 2163), 500),
                                  and_(Crime_latlong.date >= start_date, Crime_latlong.date <= add_last_day_of_month(max_date))]). \
@@ -1685,7 +1695,7 @@ def cuadrantes_change_sum_all(cuadrante, crime):
       sql_query3 = "" if cuadrante == "ALL" else " where upper(cuadrante) = :cuadrante "
     else:
       sql_query3 = "" if cuadrante == "ALL" else " and upper(cuadrante) = :cuadrante "
-		
+
     sql_query4 = """ group by cuadrante, sector, crime
                         order by crime asc, cuadrante asc """
     crime_data = { 'crime'+str(x) : crime.split(',')[x-1] for x in range(len(crime.split(',')))}
@@ -1786,7 +1796,7 @@ def sectores_change_sum_all(sector, crime):
       sql_query3 = "" if sector == "ALL" else " where upper(sector) = :sector "
     else:
       sql_query3 = "" if sector == "ALL" else " and upper(sector) = :sector "
-    
+
     sql_query4 = """ group by sector, crime
                         order by crime asc, sector asc """
     crime_data = { 'crime'+str(x) : crime.split(',')[x-1] for x in range(len(crime.split(',')))}
