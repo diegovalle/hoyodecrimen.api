@@ -45,7 +45,8 @@ if 'PRODUCTION' in os.environ:
         cache = Cache(config={
             'CACHE_TYPE': 'FileSystemCache',
             'CACHE_DIR': '/tmp/hoyodecrimen_cache',
-            'CACHE_THRESHOLD': 30000
+            'CACHE_THRESHOLD': 30000,
+            'CACHE_DEFAULT_TIMEOUT': 2630000
             # 'CACHE_REDIS_URL': 'redis://:' +os.environ['REDIS_PASSWORD']
             # +'@' + os.environ['OPENSHIFT_REDIS_HOST'] + ':'
             # + os.environ['OPENSHIFT_REDIS_PORT'],
