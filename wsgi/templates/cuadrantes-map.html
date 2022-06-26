@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="{{_('en')}}">
     <head>
+		<link rel="shortcut icon" href="https://hoyodecrimencom-cdn.netlify.app/images/favicon.ico" type="image/x-icon">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="{{_('Interactive map of crime rates in the cuadrantes of Mexico City')}}">
         <title>{{_('Interactive Map of Crime Counts by Cuadrante in Mexico City')}}</title>
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="https://hoyodecrimencom-cdn.netlify.app/images/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="https://hoyodecrimencom-cdn.netlify.app/images/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="https://hoyodecrimencom-cdn.netlify.app/images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="https://hoyodecrimencom-cdn.netlify.app/images/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="https://hoyodecrimencom-cdn.netlify.app/images/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="https://hoyodecrimencom-cdn.netlify.app/images/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="https://hoyodecrimencom-cdn.netlify.app/images/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="https://hoyodecrimencom-cdn.netlify.app/images/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="https://hoyodecrimencom-cdn.netlify.app/images/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="https://hoyodecrimencom-cdn.netlify.app/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="https://hoyodecrimencom-cdn.netlify.app/images/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="https://hoyodecrimencom-cdn.netlify.app/images/favicon-16x16.png">
+        <link rel="manifest" href="https://hoyodecrimencom-cdn.netlify.app/manifest.json">
         <link rel="alternate" hreflang="{{_('es')}}" href="{{_('https://hoyodecrimen.com/cuadrantes-mapa')}}" />
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <!-- Bootstrap -->
@@ -258,19 +264,19 @@ var _rollbarConfig = {
       var rates_txt = "{{_(' - rate: ')}}";
       var count_txt = "{{_(' - count: ')}}";
         </script>
-        {% assets  filters="jsmin", output="js/packed-leaflet-map.js", "js/leaflet-map.js"  %}
+        {% assets  'js_leaflet'  %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
 
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100264-9"></script>
-        <script>
-         window.dataLayer = window.dataLayer || [];
-         function gtag(){dataLayer.push(arguments);}
-         gtag('js', new Date());
+         <!-- Global site tag (gtag.js) - Google Analytics -->
+                        <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQQDKGGFMW"></script>
+                        <script>
+                          window.dataLayer = window.dataLayer || [];
+                          function gtag(){dataLayer.push(arguments);}
+                          gtag('js', new Date());
 
-         gtag('config', 'UA-100264-9');
-        </script>
+                          gtag('config', 'G-HQQDKGGFMW');
+                        </script>
 
     </body>
 </html>

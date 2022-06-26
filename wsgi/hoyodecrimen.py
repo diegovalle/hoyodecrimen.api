@@ -141,10 +141,9 @@ js_maps = Bundle("js/maps.js", filters='jsmin', output="gen/js/packed-maps.%(ver
 assets.register('js_maps', js_maps)
 js_maps.build()
 
-# Error here
-#js_leaflet = Bundle("js/leaflet-map.js", filters='jsmin', output="gen/js/packed-leaflet-map.js")
-#assets.register('js_leaflet', js_maps)
-#js_maps.build()
+js_leaflet = Bundle("js/leaflet-map.js", filters='jsmin', output="gen/js/packed-leaflet-map.%(version)s.js")
+assets.register('js_leaflet', js_leaflet)
+js_leaflet.build()
 
 css_leaflet_req = Bundle("css/l.geosearch.css", "css/leaflet.css", "css/L.Control.Locate.css",
                          filters="cssmin", output="gen/css/packed-leaflet-req.%(version)s.css")
