@@ -21,6 +21,7 @@ services:
       retries: 7
     volumes:
       - ./wsgi/static/.webassets-cache:/app/static/.webassets-cache
+      - ./wsgi/static/gen:/app/static/gen
     deploy:
       resources:
         limits:
