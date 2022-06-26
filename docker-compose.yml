@@ -11,9 +11,21 @@ services:
       PORT: "${PORT}"
       SQLALCHEMY_DATABASE_URI: "${SQLALCHEMY_DATABASE_URI}"
       PRODUCTION: "${PRODUCTION}"
-      SENTRY_DSN: "${SENTRY_DNS}"
+      #SENTRY_DSN: "${SENTRY_DNS}"
       CACHE_SECRET: "${CACHE_SECRET}"
     image: diegovalle/hoyodecrimen
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 180s
+      timeout: 30s
+      retries: 7
+    volumes:
+      - ./wsgi/static/.webassets-cache:/app/static/.webassets-cache
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 256M
     ports:
       - '8080:8080'
     depends_on:
@@ -29,7 +41,7 @@ services:
     container_name: hoyodecrimendb
     environment:
       POSTGRES_USER: deploy
-      POSTGRES_PASSWORD: test
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       POSTGRES_DB: apihoyodecrimen
     image: postgis/postgis:14-3.2
     healthcheck:
