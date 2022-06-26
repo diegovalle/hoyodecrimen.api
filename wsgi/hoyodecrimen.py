@@ -10,6 +10,7 @@ import os
 #from redis import Redis
 from api.api import API, cache
 from flask_babel import Babel
+from flask_cdn import CDN
 #from flask_frozen import Freezer
 from htmlmin.main import minify
 import functools
@@ -22,6 +23,13 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
+
+
+app.config['CDN_DOMAIN'] = 'hoyodecrimencom-cdn.netlify.app'
+app.config['CDN_HTTPS'] = True
+app.config['CDN_TIMESTAMP'] = False
+CDN(app)
+
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 43200 * 20 # 20 days
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.register_blueprint(API)
@@ -33,14 +41,18 @@ db = SQLAlchemy(app, session_options=session_options)
 
 
 # report exceptions to sentry.io
-# first test if sentry.io is in the string
-# to see if we are in the testing environment
-if 'sentry.io' in os.environ['SENTRY_DSN']:
+# first test if sentry.io is in the environment
+# to see if we are debugging
+if 'SENTRY_DSN' in os.environ:
     sentry = Sentry(dsn= os.environ['SENTRY_DSN'])
     sentry.init_app(app)
 
 cache.init_app(app)
+
 assets = Environment(app)
+app.config['FLASK_ASSETS_USE_CDN'] = True
+app.config['ASSETS_DEBUG'] = False
+app.config['ASSETS_AUTO_BUILD'] = True
 assets.versions = 'hash'    # use the last modified timestamp
 babel = Babel(app)
 
@@ -90,8 +102,9 @@ css_pip_req = Bundle("css/skel.css", "css/style.css",
                      "css/leaflet.css", "css/vendor/metricsgraphics/metricsgraphics.css", "css/crime.css",
                      "css/vendor/leaflet/fullscreen.css",
                      "css/vendor/leaflet/Control.Loading.css",
-                     filters="cssmin", output="css/packed-pip-req.%(version)s.css")
+                     filters="cssmin", output="gen/css/packed-pip-req.%(version)s.css")
 assets.register('css_pip_req', css_pip_req)
+css_pip_req.build()
 
 js_pip_req = Bundle( "js/jquery.1.9.1.min.js",  "js/jquery.dropotron.min.js",
                     "js/skel.min.js",
@@ -101,34 +114,42 @@ js_pip_req = Bundle( "js/jquery.1.9.1.min.js",  "js/jquery.dropotron.min.js",
                     "js/topojson.v1.min.js", "js/d3.v3.min.js", "js/c3.min.js",
                     "js/vendor/metricsgraphics/metricsgraphics.js",
                     "js/vendor/leaflet/Control.Loading.js",
-                    filters='jsmin', output='js/packed-pip-req.%(version)s.js')
+                    filters='jsmin', output='gen/js/packed-pip-req.%(version)s.js')
 assets.register('js_pip_req', js_pip_req)
+js_pip_req.build()
 
-js_pip = Bundle("js/pip.js", filters='jsmin', output="js/packed-pip.%(version)s.js")
+js_pip = Bundle("js/pip.js", filters='jsmin', output="gen/js/packed-pip.%(version)s.js")
 assets.register("js_pip", js_pip)
+js_pip.build()
 
 css_maps_req = Bundle("css/skel.css", "css/style.css",
                       "css/leaflet.css", "css/crime.css",  "css/vendor/metricsgraphics/metricsgraphics.css",
-                      filters="cssmin", output="css/packed-maps-reqs.%(version)s.css", )
+                      filters="cssmin", output="gen/css/packed-maps-reqs.%(version)s.css", )
 assets.register('css_maps_req', css_maps_req)
+css_maps_req.build()
 
 js_maps_req = Bundle("js/jquery.min.js", "js/jquery.dropotron.min.js",
                      "js/skel.min.js", "js/skel-layers.min.js", "js/init.js",
                      "js/d3.v3.min.js",
                      "js/topojson.v1.min.js", "js/d3.tip.v0.6.3.js",
                      "js/tooltip.js", "js/vendor/lodash/lodash.min.js", "js/vendor/metricsgraphics/metricsgraphics.js",
-                     filters="jsmin", output="js/packed-maps-reqs.%(version)s.js")
+                     filters="jsmin", output="gen/js/packed-maps-reqs.%(version)s.js")
 assets.register('js_maps_req', js_maps_req)
+js_maps_req.build()
 
-js_maps = Bundle("js/maps.js", filters='jsmin', output="js/packed-maps.js")
+js_maps = Bundle("js/maps.js", filters='jsmin', output="gen/js/packed-maps.%(version)s.js")
 assets.register('js_maps', js_maps)
+js_maps.build()
 
-js_leaflet = Bundle("js/leaflet-map.js", filters='jsmin', output="js/packed-leaflet-map.js")
-assets.register('js_leaflet', js_maps)
+# Error here
+#js_leaflet = Bundle("js/leaflet-map.js", filters='jsmin', output="gen/js/packed-leaflet-map.js")
+#assets.register('js_leaflet', js_maps)
+#js_maps.build()
 
 css_leaflet_req = Bundle("css/l.geosearch.css", "css/leaflet.css", "css/L.Control.Locate.css",
-                         filters="cssmin", output="css/packed-leaflet-req.%(version)s.css")
+                         filters="cssmin", output="gen/css/packed-leaflet-req.%(version)s.css")
 assets.register('css_leaflet_req', css_leaflet_req)
+css_leaflet_req.build()
 
 js_leaflet_req = Bundle("js/cuadrantes_neighbors.json","js/leaflet.js", "js/L.Control.Locate.js",
                         "js/leaflet-hash.js", "js/jquery.1.8.3.min.js",
@@ -139,16 +160,19 @@ js_leaflet_req = Bundle("js/cuadrantes_neighbors.json","js/leaflet.js", "js/L.Co
                         "js/d3.v3.min.js", "js/colorbrewer.js",
                         "js/underscore-min.js",
                         "js/vendor/metricsgraphics/metricsgraphics.js",
-                        filters="jsmin", output="js/packed-leaflet.%(version)s.js")
+                        filters="jsmin", output="gen/js/packed-leaflet.%(version)s.js")
 assets.register('js_leaflet_req', js_leaflet_req)
+js_leaflet_req.build()
 
 latlong_css = Bundle("css/vendor/carto/cartodb.css",
-                         filters="cssmin", output="css/packed-latlong.css")
+                         filters="cssmin", output="gen/css/packed-latlong.%(version)s.css")
 assets.register('css_latlong_css', latlong_css)
+latlong_css.build()
 
 latlong_js = Bundle("js/vendor/carto/cartodb.js", "js/vendor/leaflet/Control.Geocoder.js",
-                    filters="jsmin", output="js/packed-latlong.%(version)s.js", )
+                    filters="jsmin", output="gen/js/packed-latlong.%(version)s.js", )
 assets.register('js_latlong_js', latlong_js)
+css_pip_req.build()
 
 latlong_bootstrap_css = Bundle("css/vendor/bootstrap/bootstrap.min.css",
                               "css/vendor/bootstrap/bootstrap-select.min.css",
@@ -156,15 +180,17 @@ latlong_bootstrap_css = Bundle("css/vendor/bootstrap/bootstrap.min.css",
                               "css/font-awesome.min.css",
                               "css/vendor/bootstrap/nouislider.css",
                               "css/vendor/leaflet/Control.Geocoder.css",
-                    filters="cssmin", output="css/packed-latlong-bootstap.%(version)s.css", )
+                    filters="cssmin", output="gen/css/packed-latlong-bootstap.%(version)s.css", )
 assets.register('latlong_bootstrap_css', latlong_bootstrap_css)
+latlong_bootstrap_css.build()
 
 latlong_bootstrap_js = Bundle("js/vendor/bootstrap/jquery-3.1.1.js",
                               "js/vendor/bootstrap/bootstrap.min.js",
                               "js/vendor/bootstrap/bootstrap-select.min.js",
                               "js/vendor/bootstrap/nouislider.min.js",
-                    filters="jsmin", output="js/packed-latlong-bootstap.%(version)s.js", )
+                    filters="jsmin", output="gen/js/packed-latlong-bootstap.%(version)s.js", )
 assets.register('latlong_bootstrap_js', latlong_bootstrap_js)
+latlong_bootstrap_js.build()
 
 @babel.localeselector
 def get_locale():
@@ -176,9 +202,26 @@ def robots():
     return send_from_directory(os.path.join(_basedir, 'static'), 'robots.txt')
 
 @app.route('/test-cache')
+@cache.cached()
 def test_cache():
     import random
     return str(random.random())
+
+@app.route('/clear-cache',
+           methods=['POST'])
+def clear_cache():
+    if 'CACHE_SECRET' in os.environ:
+        if os.environ['CACHE_SECRET'] == request.form.get('CACHE_SECRET'):
+            with app.app_context():
+                cache.clear()
+                ret = "cache cleared"
+        else:
+            ret = "false"
+    else:
+        ret = "Not available"
+    response = make_response(ret, 200)
+    response.mimetype = "text/plain"
+    return response
 
 
 @app.route('/en/')
@@ -455,22 +498,6 @@ def static_manifest():
 def static_browserconfig():
     return send_from_directory(os.path.join(_basedir, 'static','images'),
                                'browserconfig.xml')
-
-@app.route('/clearcache',
-           methods=['POST'])
-def clear_cache():
-    if 'CACHE_SECRET' in os.environ:
-        if os.environ['CACHE_SECRET'] == request.form.get('CACHE_SECRET'):
-            with app.app_context():
-                cache.clear()
-                ret = "cache cleared"
-        else:
-            ret = "false"
-    else:
-        ret = "Not available"
-    response = make_response(ret, 200)
-    response.mimetype = "text/plain"
-    return response
 
 if __name__ == '__main__':
     with app.app_context():

@@ -13,5 +13,17 @@
 ^temp/
 __pycache__/
 wsgi/build/
+wsgi/envars
+wsgi/static/css/animation.css
+wsgi/static/css/leaflet-packed.css
+wsgi/static/css/locate-fa.css
 wsgi/static/css/packed*
+wsgi/static/js/L.Control.Locate.css
+wsgi/static/js/L.Control.Locate.ie.css
+wsgi/static/js/c3.js
+wsgi/static/js/chroma.min.js
+wsgi/static/js/geoPosition.js
+wsgi/static/js/html5shiv.js
+wsgi/static/js/leaflet-bundle.js
+wsgi/static/js/ng-table.map
 wsgi/static/js/packed*

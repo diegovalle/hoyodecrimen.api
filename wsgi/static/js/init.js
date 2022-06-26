@@ -9,10 +9,10 @@
 	skel.init({
 		reset: 'full',
 		breakpoints: {
-			'global':	{ range: '*', href: '/css/style.css' },
-			'desktop':	{ range: '737-', href: '/css/style-desktop.css', containers: 1200, grid: { gutters: 50 } },
-			'1000px':	{ range: '737-1200', href: '/css/style-1000px.css', containers: 960, grid: { gutters: 30 }, viewport: { width: 1080 } },
-			'mobile':	{ range: '-736', href: '/css/style-mobile.css', containers: '100%', grid: { collapse: true, gutters: 10 }, viewport: { scalable: false } }
+			'global':	{ range: '*', href: 'https://hoyodecrimencom-cdn.netlify.app/css/style.min.css' },
+			'desktop':	{ range: '737-', href: 'https://hoyodecrimencom-cdn.netlify.app/css/style-desktop.min.css', containers: 1200, grid: { gutters: 50 } },
+			'1000px':	{ range: '737-1200', href: 'https://hoyodecrimencom-cdn.netlify.app/css/style-1000px.min.css', containers: 960, grid: { gutters: 30 }, viewport: { width: 1080 } },
+			'mobile':	{ range: '-736', href: 'https://hoyodecrimencom-cdn.netlify.app/css/style-mobile.min.css', containers: '100%', grid: { collapse: true, gutters: 10 }, viewport: { scalable: false } }
 		},
 		plugins: {
 			layers: {

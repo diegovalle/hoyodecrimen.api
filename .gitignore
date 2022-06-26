@@ -74,7 +74,6 @@ target/
 
 doc/ext/httpdomain/test/_build/html/.buildinfo
 wsgi/.idea/
-wsgi/static/.webassets-cache/
 wsgi/static/sphinx/html/.buildinfo
 
 
