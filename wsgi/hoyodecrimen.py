@@ -32,9 +32,16 @@ CDN(app)
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 43200 * 20 # 20 days
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Play with following options:
+app.config['SQLALCHEMY_POOL_SIZE'] = 10
+app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.register_blueprint(API)
 session_options = {
     'autocommit': True
+    'pool_pre_ping': True
 }
 app.config.from_pyfile('apihoyodecrimen.cfg')
 db = SQLAlchemy(app, session_options=session_options)
