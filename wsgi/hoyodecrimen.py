@@ -36,11 +36,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Play with following options:
 app.config['SQLALCHEMY_POOL_SIZE'] = 10
 app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
+app.config['SQLALCHEMY_POOL_TIMEOUT'] = 120
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.register_blueprint(API)
 session_options = {
-    'autocommit': True
+    'autocommit': True,
     'pool_pre_ping': True
 }
 app.config.from_pyfile('apihoyodecrimen.cfg')
