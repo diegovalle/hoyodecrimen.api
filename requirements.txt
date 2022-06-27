@@ -24,7 +24,7 @@ itsdangerous==1.1.0
 jinja2==2.11.3
 jsmin==3.0.1
 markupsafe==1.1.1
-psycopg2==2.8.1
+psycopg2==2.9.3
 pytz==2019.1
 raven==6.10.0
 redis==3.2.1
