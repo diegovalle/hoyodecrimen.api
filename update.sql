@@ -4,7 +4,7 @@
 BEGIN;
 -- LOCK TABLE 'table' IN SHARE ROW EXCLUSIVE mode;
 -- cuadrantes
-DROP TABLE IF EXISTS cuadrantes_new;
+--DROP TABLE IF EXISTS cuadrantes_new;
 CREATE TABLE cuadrantes_new (
   cuadrante varchar (20),
   crime varchar (60),
@@ -24,7 +24,7 @@ CREATE INDEX ON cuadrantes_new ((upper(crime)), date, sector);
 CREATE INDEX ON cuadrantes_new ((upper(crime)), date, cuadrante);
 CREATE INDEX ON cuadrantes_new USING btree ((upper(cuadrante)), crime);
 -- pgj
-DROP TABLE IF EXISTS pgj_new;
+--DROP TABLE IF EXISTS pgj_new;
 CREATE TABLE pgj_new (
   crime varchar (60),
   date varchar (10),

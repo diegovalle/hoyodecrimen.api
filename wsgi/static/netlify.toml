@@ -35,3 +35,20 @@
   for = "/manifest.json"
     [headers.values]
     Cache-Control = "public, max-age=600"
+[[headers]]
+  for = "/js/cuadrantes.json"
+    [headers.values]
+    Cache-Control = "public, max-age=600"
+[[headers]]
+  for = "/js/sectores.json"
+    [headers.values]
+    Cache-Control = "public, max-age=600"
+[[headers]]
+  for = "/js/cuadrantes-interactive.json"
+    [headers.values]
+    Cache-Control = "public, max-age=600"
+[[headers]]
+  for = "/js/sectores-interactive.json"
+    [headers.values]
+    Cache-Control = "public, max-age=600"
+
