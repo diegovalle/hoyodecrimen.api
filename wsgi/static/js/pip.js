@@ -46,6 +46,7 @@ var geoLocation = {
 var southWest = L.latLng(19.081966, -99.569838),
     northEast = L.latLng(19.779954, -98.690870),
     bounds = L.latLngBounds(southWest, northEast);
+L.Icon.Default.imagePath = "https://hoyodecrimencom-cdn.netlify.app/js/images/"
 map = L.map('map', {
     maxBounds: bounds,
     maxZoom: 19,
@@ -94,7 +95,7 @@ function timeout(promise, ms) {
 // but time out if the geolocation is taking too long because firefox
 // just hangs if you dismiss the 'allow geolocation' dialog
 $.when(timeout(geoLocation.getLocation(), 5500),
-       $.getJSON('/js/df-outline.json'))
+       $.getJSON('https://hoyodecrimencom-cdn.netlify.app/js/df-outline.json'))
     .done(function(p, single) {
         //console.log(data.coords.longitude, data.coords.latitude);
         latLng = {

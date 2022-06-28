@@ -51,4 +51,16 @@
   for = "/js/sectores-interactive.json"
     [headers.values]
     Cache-Control = "public, max-age=600"
+    [[headers]]
+  for = "/js/df-outline.json"
+    [headers.values]
+    Cache-Control = "public, max-age=600"
+[[headers]]
+  for = "/js/images/*"
+    [headers.values]
+    Cache-Control = "public, max-age=600"
+[[headers]]
+  for = "/css/images/*"
+    [headers.values]
+    Cache-Control = "public, max-age=600"
 
