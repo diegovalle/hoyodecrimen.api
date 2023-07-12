@@ -43,7 +43,7 @@ app.register_blueprint(API)
 session_options = {
     'autocommit': True,
     'pool_pre_ping': True,
-    'connect_timeout': 10
+    'connect_timeout': 15
 }
 app.config.from_pyfile('apihoyodecrimen.cfg')
 db = SQLAlchemy(app, session_options=session_options)
@@ -520,6 +520,7 @@ if __name__ == '__main__':
         app.config['ASSETS_DEBUG'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
         debug = True
+        app.config['CDN_DEBUG'] = True
         #render_template = uglify(render_template)
     else:
         render_template = uglify(render_template)

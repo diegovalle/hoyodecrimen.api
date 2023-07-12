@@ -701,7 +701,7 @@ msgstr "Tasas de criminalidad alisadas espacialmente en tu cuadrante y comparada
 
 #: templates/pip.html:173
 msgid "When comparing cuadrantes with the rest of CDMX, the raw crime incidence rate can be statistically unstable due to the small size of the cuadrantes and the relative small number of people at risk. Plus, sometimes homicides and firearm lesions are recorded as having happened inside a hospital, to get a better sense of the crime risk I spatially smoothed the rate of each cuadrante taking into account its nearest neighbors."
-msgstr "C.V. y S.V. significan con y sin violencia. Al comparar cuadrantes con el resto de la Ciudad de México, las tasas de incidencia criminal pueden ser estadísticamente inestables debido al tamaño pequeño de los cuadrantes y de su poca población. Además, a veces los homicidios y lesiones por arma de fuego son catalogadas con la latitud y longitud de los hospitales donde atienden a las víctimas. Para mejorar la percepción del riesgo a ser víctima de un crimen alise espacialmente las tasas de los cuadrantes para tomar en cuenta a sus vecinos más cercanos."
+msgstr "C.V. y S.V. significan con y sin violencia. Al comparar cuadrantes con el resto de la Ciudad de México, las tasas de incidencia criminal pueden ser estadísticamente inestables debido al tamaño pequeño de los cuadrantes y de su poca población. Además, a veces los homicidios y lesiones por arma de fuego son catalogadas con la latitud y longitud de los hospitales donde atienden a las víctimas. Para mejorar la percepción del riesgo a ser víctima de un crimen alisé espacialmente las tasas de los cuadrantes para tomar en cuenta a sus vecinos más cercanos."
 
 #: templates/pip.html:177
 msgid "Official Crime Data"

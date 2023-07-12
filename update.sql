@@ -1,5 +1,7 @@
 -- psql -d apihoyodecrimen -f update.sql
-
+\set cuadrantes :temp '/cuadrantes-pgj.csv'
+\set pgj :temp '/pgj.csv'
+\set crimelatlongpgj :temp '/crime-lat-long-pgj.csv'
 
 BEGIN;
 -- LOCK TABLE 'table' IN SHARE ROW EXCLUSIVE mode;
@@ -15,7 +17,9 @@ CREATE TABLE cuadrantes_new (
   population integer,
   PRIMARY KEY(cuadrante, sector, crime, date)
 );
-\copy cuadrantes_new (cuadrante,crime,date,count,year,sector,population) from '/tmp/cuadrantes-pgj.csv' with delimiter as ',' NULL AS 'NA' CSV HEADER; -- create indexes
+\set command1 '\\copy cuadrantes_new (cuadrante,crime,date,count,year,sector,population) from ' :'cuadrantes' ' with delimiter as '','' NULL AS ''NA'' CSV HEADER; '
+:command1
+-- create indexes
 CREATE INDEX ON cuadrantes_new (crime ASC NULLS LAST);
 CREATE INDEX ON cuadrantes_new (cuadrante);
 CREATE INDEX ON cuadrantes_new (date DESC NULLS LAST);
@@ -31,11 +35,13 @@ CREATE TABLE pgj_new (
   count int,
   PRIMARY KEY(crime, date)
 );
-\copy pgj_new (crime, date, count) from '/tmp/pgj.csv' with delimiter as ',' NULL AS 'NA' CSV HEADER;
+\set command2 '\\copy pgj_new (crime, date, count) from ' :'pgj' ' with delimiter as '','' NULL AS ''NA'' CSV HEADER;'
+:command2
 CREATE INDEX ON pgj_new (crime);
 -- crime_latlong
 TRUNCATE TABLE crime_latlong;
-\copy crime_latlong (cuadrante,crime,date,hour,year,month,latitude,longitude,id) from '/tmp/crime-lat-long-pgj.csv' with delimiter as ',' NULL AS 'NA' CSV HEADER;
+\set command3 '\\copy crime_latlong (cuadrante,crime,date,hour,year,month,latitude,longitude,id) from ' :'crimelatlongpgj' ' with delimiter as '','' NULL AS ''NA'' CSV HEADER;'
+:command3
 UPDATE crime_latlong
 SET geom = ST_GeomFromText(
     'POINT(' || longitude || ' ' || latitude || ')',
