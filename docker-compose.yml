@@ -21,14 +21,14 @@ services:
       timeout: 30s
       retries: 7
     user: "1000:1000"
-    # volumes:
-    #   - /hoyodecrimen/wsgi/static/.webassets-cache:/app/static/.webassets-cache
-    #   - /hoyodecrimen/wsgi/static/gen:/app/static/gen
+    #volumes:
+    #  - /hoyodecrimen/wsgi/static/.webassets-cache:/app/static/.webassets-cache
+    #  - /hoyodecrimen/wsgi/static/gen:/app/static/gen
     deploy:
       resources:
         limits:
           cpus: '1'
-          memory: 256M
+          #memory: 256M
     ports:
       - '8080:8080'
     depends_on:
