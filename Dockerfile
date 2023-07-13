@@ -1,10 +1,9 @@
 # python3.9-2021-10-26
 FROM tiangolo/meinheld-gunicorn-flask@sha256:fa550ec87b984ce31fe74c4e94fd041e96380d32290ddbba875110d50041fc4d
 
-MODULE_NAME=hoyodecrimen
-LOG_LEVEL=info
-PORT=8080
-PRODUCTION=yes
+ENV MODULE_NAME=hoyodecrimen
+ENV LOG_LEVEL=info
+ENV PORT=8080
 
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
