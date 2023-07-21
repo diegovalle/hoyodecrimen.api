@@ -24,7 +24,7 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 
 
-
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 app.config['CDN_DOMAIN'] = 'hoyodecrimencom-cdn.netlify.app'
 app.config['CDN_HTTPS'] = True
 app.config['CDN_TIMESTAMP'] = False
