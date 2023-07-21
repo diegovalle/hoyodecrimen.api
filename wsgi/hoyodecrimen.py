@@ -15,6 +15,7 @@ from flask_cdn import CDN
 from htmlmin.main import minify
 import functools
 from raven.contrib.flask import Sentry
+from flask_compress import Compress
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -23,7 +24,7 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
-
+Compress(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 app.config['CDN_DOMAIN'] = 'hoyodecrimencom-cdn.netlify.app'
 app.config['CDN_HTTPS'] = True
