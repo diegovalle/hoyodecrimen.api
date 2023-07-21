@@ -9,6 +9,9 @@ COPY ./requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 COPY ./wsgi /app
 RUN cd /app && pybabel compile -d translations
+# Cache directory
+RUN mkdir -p /tmp/hoyodecrimen_cache
+
 RUN addgroup --gid 1000 hoyodecrimen && \
         useradd -rm -d /home/hoyodecrimen -s /bin/bash -g 1000 -u 1000 hoyodecrimen && \
         chown -R 1000:1000 /app
