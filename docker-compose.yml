@@ -14,6 +14,8 @@ services:
       PRODUCTION: "True"
       #SENTRY_DSN: "${SENTRY_DNS}"
       CACHE_SECRET: "${CACHE_SECRET}"
+      PUID: 1000
+      PGID: 1000
     image: diegovalle/hoyodecrimen
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/"]
@@ -24,9 +26,9 @@ services:
     #volumes:
     #  - /hoyodecrimen/wsgi/static/.webassets-cache:/app/static/.webassets-cache
     #  - /hoyodecrimen/wsgi/static/gen:/app/static/gen
-    deploy:
-      resources:
-        limits:
+    #deploy:
+    #  resources:
+    #    limits:
           #cpus: '1'
           #memory: 256M
     ports:
@@ -34,9 +36,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      - PUID=1000
-      - PGID=1000
     env_file:
       - .env
 
@@ -59,5 +58,4 @@ services:
       - /pgdata_hy:/var/lib/postgresql/data
     ports:
       - 5405:5432
-    restart: always
 version: '3'
