@@ -19,4 +19,6 @@ curl -X POST -d "CACHE_SECRET=$2" https://hoyodecrimen.com/clear-cache
 xargs -I % wget -q --show-progress --wait=14 --tries=3 -O /dev/null https://hoyodecrimen.com% < urllist.txt
 
 # backup
-# /usr/lib/postgresql/14/bin/pg_dump -d "$POSTGRES_DB" | gzip > apihoyodecrimen-$(date +%Y-%m-%d_%H-%M).tar.gz
+# /usr/lib/postgresql/14/bin/pg_dump -d "$POSTGRES_DB" | gzip > apihoyodecrimen-$(date +%Y-%m-%d_%H-%M).sql.gz
+# restore
+# gunzip -c apihoyodecrimen-<DATE>.sql.gz | /usr/lib/postgresql/14/bin/psql -d "$POSTGRES_DB"
