@@ -155,7 +155,10 @@
              dataType: 'jsonp',
              url: url,
              success: function(data) {
-
+                 // filter hours that are null
+                 data.rows = data.rows.filter(function (elem) {
+                   return[null].indexOf(elem.hour) === -1; // -1 means not present
+                 });
                  //sectores = _.uniq(_.pluck(data.rows, 'sector'));
                  //_.forEach(data.rows, function(x) {x['rate'] = x.count / x.population * 100000 * 12});
                  //sectors sorted by highest homicide rate
