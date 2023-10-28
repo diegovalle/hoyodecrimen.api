@@ -784,7 +784,7 @@
              $.each($(".selectpicker option:selected"), function(){
                  targets.push($(this).val());
              });
-             if (start_hour == "00" & end_hour === 23) {
+             if (start_hour == "00" & end_hour == 23) {
                var sql = "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where (crime = '" + targets.join("' or crime = '") + "') AND lat IS NOT NULL AND (substring(date::text,1,7) >= '" + start_date + "' AND substring(date::text,1,7) <= '" + end_date + "' ) "
              } else {
                var sql = "SELECT cartodb_id, crime, cuadrante, date::text, hour::text, lat, long, the_geom_webmercator FROM crime_lat_long where (crime = '" + targets.join("' or crime = '") + "') AND lat IS NOT NULL AND (substring(date::text,1,7) >= '" + start_date + "' AND substring(date::text,1,7) <= '" + end_date + "' ) AND (substring(hour::text,1,2) >= '" + start_hour + "' AND substring(hour::text,1,2) <= '" + end_hour + "')"}
