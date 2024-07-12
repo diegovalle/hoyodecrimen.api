@@ -83,6 +83,15 @@ class Municipios(db.Model):
         self.municipio = municipio
 
 
+class json_files(db.Model):
+    __tablename__ = 'json_files'
+    name = db.Column(db.String(25), primary_key=True)
+    data = db.Column(db.LargeBinary)
+
+    def __init__(self, cuadrante, sector, cvegeo, municipio):
+        self.name = name
+        self.data = data
+
 # psql -d apihoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W
 # CREATE TABLE cuadrantes (
 # 	cuadrante varchar (15),

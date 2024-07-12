@@ -1,0 +1,35 @@
+# fly.toml app configuration file generated for apihoyodecrimen on 2024-01-06T18:26:21-06:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#  fly deploy --ha=false
+
+app = "apihoyodecrimen"
+primary_region = "qro"
+
+[build]
+
+[env]
+  PRODUCTION = "yes"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = false
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 2
+  memory_mb = 512
+
+[checks]
+  [checks.hoyodecrimen]
+    grace_period = "1m"
+    interval = "1m"
+    method = "get"
+    path = "/"
+    port = 8080
+    timeout = "10s"
+    type = "http"

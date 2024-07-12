@@ -11,7 +11,7 @@ services:
       LOG_LEVEL: "${LOG_LEVEL}"
       PORT: "${PORT}"
       SQLALCHEMY_DATABASE_URI: "${SQLALCHEMY_DATABASE_URI}"
-      PRODUCTION: "True"
+      #PRODUCTION: "True"
       #SENTRY_DSN: "${SENTRY_DNS}"
       CACHE_SECRET: "${CACHE_SECRET}"
       PUID: 1000

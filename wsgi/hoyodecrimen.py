@@ -430,11 +430,11 @@ def cuadrantes_mapa():
 def google055ef027e7764e4d():
     return 'google-site-verification: google055ef027e7764e4d.html'
 
-# Blitz verification
-@app.route('/mu-01188fe9-0b813050-b0f51076-c96f41fb.txt')
+# loader verification
+@app.route('/loaderio-b22036cc7aa09b0e1eb287b2cbcbab78.txt')
 @cache.cached()
-def mu01188fe9():
-    return '42', 200,  {'Content-Type': 'text/plain; charset=utf-8'}
+def loaderiob22036cc7a():
+    return 'loaderio-b22036cc7aa09b0e1eb287b2cbcbab78'
 
 
 @app.route('/api/_static/<path:filename>')

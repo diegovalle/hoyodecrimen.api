@@ -46,4 +46,22 @@ CREATE INDEX cuadrantes_crime_partial
   ON cuadrantes
   ( crime)
 WHERE (upper(cuadrantes.crime) = 'HOMICIDIO DOLOSO' OR upper(cuadrantes.crime) = 'LESIONES POR ARMA DE FUEGO' OR upper(cuadrantes.crime) = 'ROBO DE VEHICULO AUTOMOTOR S.V.' OR upper(cuadrantes.crime) = 'ROBO DE VEHICULO AUTOMOTOR C.V.' OR upper(cuadrantes.crime) = 'ROBO A TRANSEUNTE C.V.');
+
+--AI
+
+CREATE INDEX crime_latlong_idx_geom ON "crime_latlong" USING GIST ("geom");
+
+CREATE INDEX cuadrantes_idx_uppercri_uppersec_date ON "cuadrantes" ((upper(crime)),(upper(sector)),"date");
+CREATE INDEX cuadrantes_idx_crime_date_sector ON "cuadrantes" ("crime","date","sector");
+
+CREATE INDEX crime_latlong_idx_geom ON "crime_latlong" USING GIST ("geom");
+
+CREATE INDEX cuadrantes_poly_idx_geom ON "cuadrantes_poly" USING GIST ("geom");
+
+CREATE INDEX cuadrantes_idx_upper_upper_crime_date ON "cuadrantes" ((upper(crime)),(upper(cuadrante)),"crime","date");
+
+CREATE INDEX crime_latlong_idx_geom ON "crime_latlong" USING GIST ("geom");
+
+CREATE INDEX cuadrantes_idx_uppercri_uppercua_date ON "cuadrantes" ((upper(crime)),(upper(cuadrante)),"date");
+
 --psql -d scalehoyodecrimen -U $OPENSHIFT_POSTGRESQL_DB_USERNAME -W -f create_db.sql
