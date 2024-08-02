@@ -16,6 +16,7 @@ from htmlmin.main import minify
 import functools
 from raven.contrib.flask import Sentry
 from flask_compress import Compress
+from flask_cors import CORS
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -23,6 +24,7 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 Compress(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False

@@ -14,6 +14,8 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 
+import logging
+
 # from flask_sqlalchemy import get_debug_queries
 from sqlalchemy.sql import text, literal_column, literal
 from sqlalchemy.dialects.mssql import INTEGER, DATE
@@ -92,9 +94,7 @@ API = Blueprint("API", __name__, url_prefix="/api/v1")
 # blueprint can also be app~~
 @API.after_request
 def after_request(response):
-    header = response.headers
-    header["Access-Control-Allow-Origin"] = "*"
-    header["Access-Control-Allow-Headers"] = "Content-Type"
+    response.cache_control.max_age = 180
     return response
 
 
@@ -744,8 +744,8 @@ def frontpage_extra(crime, long, lat):
             Crime_latlong.query.filter(
                 *[
                     func.ST_DWithin(
-                        func.ST_Transform(Crime_latlong.geom, 2163),
-                        func.ST_Transform(point, 2163),
+                        func.ST_Transform(Crime_latlong.geom, 32614),
+                        func.ST_Transform(point, 32614),
                         500,
                     ),
                     and_(
@@ -886,8 +886,8 @@ def latlong(crime, long, lat, distance):
 
     filters.append(
         func.ST_DWithin(
-            func.ST_Transform(Crime_latlong.geom, 2163),
-            func.ST_Transform(point, 2163),
+            func.ST_Transform(Crime_latlong.geom, 32614),
+            func.ST_Transform(point, 32614),
             distance,
         )
     )
@@ -2021,10 +2021,10 @@ def sectores_change_sum_all(sector, crime):
     sql_query2 = (
         ""
         if crime == "ALL"
-        else "WHERE "
+        else "WHERE ("
         + " OR ".join(
             ["upper(crime) = :crime" + str(x) for x in range(len(crime.split(",")))]
-        )
+        ) + ") "
     )
     if sql_query2 == "":
         sql_query3 = "" if sector == "ALL" else " where upper(sector) = :sector "
@@ -2329,14 +2329,15 @@ def top5cuadrantes(crime):
     sql_query = """with crimes as
                           (select sum(count) as count,sector,cuadrante,max(population)as population, crime
                           from cuadrantes
-                          where date >= :start_date and date <= :max_date"""
+                          where (date >= :start_date and date <= :max_date)"""
     sql_query2 = (
         ""
         if crime == "ALL"
-        else " AND "
+        else " AND ("
         + " OR ".join(
             ["upper(crime) = :crime" + str(x) for x in range(len(crime.split(",")))]
         )
+        + ") "
     )
     sql_query3 = """
                           group by cuadrante, sector, crime)
@@ -2510,14 +2511,15 @@ def top5sectores(crime):
                            (select (sum(count) / (nullif(sum(population::float), 0) / :num_months )* 100000) as rate,sum(count) as count,
                            sector,sum(population) / :num_months as population, crime
                            from cuadrantes
-                           where date >= :start_date and date <= :max_date and population is not null"""
+                           where (date >= :start_date and date <= :max_date) and population is not null"""
     sql_query2 = (
         ""
         if crime == "ALL"
-        else " AND "
+        else " AND ("
         + " OR ".join(
             ["upper(crime) = :crime" + str(x) for x in range(len(crime.split(",")))]
         )
+        + ") "
     )
     sql_query3 = """   group by sector, crime)
                        SELECT substring(CAST(start_period as text) for 7) as start_date, substring(end_period::text for 7) as end_date,
@@ -2530,105 +2532,6 @@ def top5sectores(crime):
                            group by count,crime,sector,population, rate) as temp2
                            where rank <= :rank """
     print(sql_query + sql_query2 + sql_query3)
-    crime_data = {
-        "crime" + str(x): crime.split(",")[x - 1] for x in range(len(crime.split(",")))
-    }
-    crime_data.update(
-        {
-            "start_date": start_date,
-            "max_date": max_date,
-            "crime": crime,
-            "num_months": lib.month_diff(max_date, start_date),
-            "rank": rank,
-        }
-    )
-    results = db.session.execute(sql_query + sql_query2 + sql_query3, crime_data)
-    return lib.ResultProxy_to_json(results)
-
-
-@API.route("/sectores/crimes/<string:crime>/top/aggregate", methods=["GET"])
-@jsonp
-@cache.cached(key_prefix=make_cache_key)
-def top5sectores_aggregate(crime):
-    """Return the top ranked sectors with the highest crime **rates** for a given period of time.
-
-    When no date parameters are specified the top 5 cuadrantes are returned for the last 12 months
-    (e.g. If July is the last date in the database then the period July 2018 to Aug 2017 will be analyzed).
-    Crimes where no sector was specified (NO ESPECIFICADO) are ignored.
-    All population data returned by this call is in persons/year and comes from the 2010 census
-
-    :param crime: the name of a crime or the keyword ``all``
-
-    :status 200: when the top 5 cuadrantes are found
-    :status 400: when the one of the dates was incorrectly specified or the periods overlap
-    :status 404: when the crime is not found in the database
-
-    :query start_date: Start of the period from which to start counting. Formatted as ``%Y-%m`` (e.g. 2016-01)
-    :query end_date: End of the period to analyze. Must be greater or equal to start_date. Formatted as ``%Y-%m`` (e.g. 2016-01)
-    :query rank: Return all sectores with a rate ranked higher. Defaults to `5`
-
-    :resheader Content-Type: application/json
-
-    **Example request**:
-
-    .. sourcecode:: http
-
-      GET /api/v1/sectores/crimes/homicidio%20doloso/top/rates HTTP/1.1
-      Host: hoyodecrimen.com
-      Accept: application/json
-
-    **Example response (truncated)**:
-
-    .. sourcecode:: http
-
-      HTTP/1.1 200 OK
-      Content-Type: application/json
-
-      {
-      "rows": [
-      {
-      "count": 22,
-      "end_date": "2014-07",
-      "population": 33787,
-      "rank": 1,
-      "rate": 65.1,
-      "sector": "CONGRESO",
-      "start_date": "2013-08"
-      },
-      ...
-
-    """
-    crime = crime.upper()
-    start_date = request.args.get("start_date", "", type=str)
-    end_date = request.args.get("end_date", "", type=str)
-    start_date, max_date = check_dates(start_date, end_date)
-    rank = request.args.get("rank", 5, type=int)
-    if rank <= 0:
-        raise InvalidAPIUsage("Rank must be greater than zero")
-        # abort(abort(make_response('No negative numbers', 400)))
-    sql_query = """with crimes as
-                           (select (sum(count) / (nullif(sum(population::float), 0) / :num_months )* 100000) as rate,sum(count) as count,
-                           sector,sum(population) / :num_months as population
-                           from cuadrantes
-                           where date >= :start_date and date <= :max_date and population is not null"""
-    sql_query2 = (
-        ""
-        if crime == "ALL"
-        else "WHERE "
-        + " OR ".join(
-            ["upper(crime) = :crime" + str(x) for x in range(len(crime.split(",")))]
-        )
-    )
-    sql_query3 = """   group by sector)
-                       SELECT substring(CAST(start_period as text) for 7) as start_date, substring(end_period::text for 7) as end_date,
-                               round(rate::numeric , 1)::float as rate, sector, count, rank, population from
-                           (SELECT :start_date as start_period, :max_date as end_period, count, rate,
-                                  
-                                   upper(sector) as sector,
-                                   rank() over (order by rate desc) as rank,population
-                           from crimes
-                           group by count,sector,population, rate) as temp2
-                           where rank <= :rank """
     crime_data = {
         "crime" + str(x): crime.split(",")[x - 1] for x in range(len(crime.split(",")))
     }
@@ -2729,10 +2632,11 @@ def top5changecuadrantes(crime):
     sql_query2 = (
         ""
         if crime == "ALL"
-        else "WHERE "
+        else " AND ("
         + " OR ".join(
             ["upper(crime) = :crime" + str(x) for x in range(len(crime.split(",")))]
         )
+        + ") "
     )
     sql_query3 = """
                                             group by cuadrante, sector, crime)
@@ -2767,6 +2671,249 @@ def top5changecuadrantes(crime):
     return lib.ResultProxy_to_json(results)
 
 
+@API.route("/sectores/crimes/<string:crime>/top/aggregate", methods=["GET"])
+@jsonp
+@cache.cached(key_prefix=make_cache_key)
+def top5sectores_aggregate(crime):
+    crime = crime.upper()
+    start_date = request.args.get("start_date", "", type=str)
+    end_date = request.args.get("end_date", "", type=str)
+    start_hour = request.args.get("start_hour", "", type=int)
+    end_hour = request.args.get("end_hour", "", type=int)
+
+    # abort(abort(make_response('No negative numbers', 400)))
+    sql_query = """select count(*) as count,
+                           sector
+                           from crime_latlong
+                           where sector != 'NO ESPECIFICADO'"""
+
+    if start_date == "" and end_date == "":
+        max_date = ""
+        sql_dates = " "
+    else:
+        start_date, max_date = check_dates(start_date, end_date)
+        sql_dates = " and (date >= :start_date and date <= :max_date)"
+
+    if start_hour == "" and end_hour == "":
+        sql_hour = " "
+    else:
+        if start_hour not in range(0, 24) or end_hour not in range(0, 24):
+            raise InvalidAPIUsage("Hours must be between 0 and 23")
+        else:
+            if start_hour < end_hour:
+                sql_hour = " and (hour_int >= :start_hour and hour_int <= :end_hour)"
+            else:
+                sql_hour = " and (hour_int >= :start_hour or hour_int <= :end_hour)"
+
+    sql_query2 = (
+        ""
+        if crime == "ALL"
+        else " AND ("
+        + " OR ".join(
+            ["upper(crime) = :crime" + str(x) for x in range(len(crime.split(",")))]
+        )
+        + ") "
+    )
+    sql_query3 = """   group by sector"""
+    crime_data = {
+        "crime" + str(x): crime.split(",")[x - 1] for x in range(len(crime.split(",")))
+    }
+    crime_data.update(
+        {
+            "start_date": start_date,
+            "max_date": "" if max_date == "" else add_last_day_of_month(max_date),
+            "crime": crime,
+            "start_hour": start_hour,
+            "end_hour": end_hour,
+        }
+    )
+    #logging.warning( sql_query + sql_dates + sql_hour + sql_query2 + sql_query3)
+    #logging.warning(start_hour)
+    #logging.warning(end_hour)
+    results = db.session.execute(
+        sql_query + sql_dates + sql_hour + sql_query2 + sql_query3, crime_data
+    )
+    return lib.ResultProxy_to_json(results)
+
+
+@API.route("/tiles/crimes/<string:crime>/<int:z>/<int:x>/<int:y>", methods=["GET"])
+@cache.cached(key_prefix=make_cache_key)
+def tiles(z, x, y, crime):
+    def get_tile(z, x, y, crime, start_date, end_date, start_hour, end_hour):
+        query = """WITH mvtgeom AS (
+    SELECT St_asmvtgeom(
+            St_transform(geom, 3857),
+            St_tileenvelope(:z, :x, :y),
+            extent => 4096,
+            buffer => 64
+        ) AS geom,
+        date,
+        hour,
+        crime
+    FROM crime_latlong
+    WHERE (St_transform(geom, 3857) && St_tileenvelope(
+            :z,
+            :x,
+            :y,
+            margin => (64.0 / 4096)
+        )) 
+        """
+
+        if start_date == "" and end_date == "":
+            max_date = ""
+            sql_dates = " "
+        else:
+            start_date, max_date = check_dates(start_date, end_date)
+            sql_dates = " AND (date >= :start_date AND date <= :max_date)"
+
+        if start_hour == "" and end_hour == "":
+            sql_hour = " "
+        else:
+            if start_hour not in range(0, 24) or end_hour not in range(0, 24):
+                raise InvalidAPIUsage("Hours must be between 0 and 23")
+            else:
+                if start_hour < end_hour:
+                    sql_hour = (
+                        " and (hour_int >= :start_hour and hour_int <= :end_hour)"
+                    )
+                else:
+                    sql_hour = " and (hour_int >= :start_hour or hour_int <= :end_hour)"
+
+        sql_where = (
+            """
+          )
+SELECT ST_AsMVT(mvtgeom.*, 'layer0') AS dots
+FROM mvtgeom
+            """
+            if crime == "ALL"
+            else " AND ("
+            + " OR ".join(
+                ["crime = :crime" + str(x) for x in range(len(crime.split(",")))]
+            ) 
+        + ") "
+            + """
+         )
+SELECT ST_AsMVT(mvtgeom.*, 'layer0') AS dots
+FROM mvtgeom
+            """
+        )
+
+        crime_data = {
+            "crime" + str(x): crime.split(",")[x - 1]
+            for x in range(len(crime.split(",")))
+        }
+        crime_data.update(
+            {
+                "z": z,
+                "x": x,
+                "y": y,
+                "start_hour": start_hour,
+                "end_hour": end_hour,
+                "start_date": start_date,
+                "max_date": "" if max_date == "" else add_last_day_of_month(max_date),
+            }
+        )
+        results = db.session.execute(
+            query + sql_dates +  sql_where, crime_data
+        )
+        result_array = []
+        for row in results:
+            result_array.append(bytes(row["dots"]))
+        if not result_array:
+            raise InvalidAPIUsage("not found", 404)
+        return result_array
+
+    crime = crime.upper()
+    start_date = request.args.get("start_date", "", type=str)
+    end_date = request.args.get("end_date", "", type=str)
+    start_hour = request.args.get("start_hour", "", type=int)
+    end_hour = request.args.get("end_hour", "", type=int)
+
+    tile = get_tile(z, x, y, crime, start_date, end_date, start_hour, end_hour)
+    response = make_response(tile[0])
+    response.headers["Content-Type"] = "application/octet-stream"
+    # response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate" # HTTP 1.1.
+    # response.headers["Pragma"] = "no-cache" # HTTP 1.0.
+    # response.headers["Expires"] = "0" # Proxies.
+    return response
+
+
+@API.route("/tiles/dates/<int:z>/<int:x>/<int:y>", methods=["GET"])
+@cache.cached(key_prefix=make_cache_key)
+def tiles_Dates(z, x, y):
+    def get_tile(z, x, y, crimes, start_date, max_date):
+        query = """
+        WITH mvtgeom AS (
+        SELECT St_asmvtgeom(St_transform(geom, 3857),
+                    St_tileenvelope(:z, :x, :y),
+                                    extent => 4096, buffer => 64) AS geom,
+                    date,
+                    hour,
+                    crime
+                FROM   crime_latlong
+                WHERE  (St_transform(geom, 3857) && St_tileenvelope(:z, :x, :y,
+                                                margin => ( 64.0 / 4096
+                                                                    ))  )     
+                        AND (date >= :start_date and date <= :max_date)
+                         
+        """
+        sql_where = (
+            """
+            )
+SELECT
+     ST_AsMVT(mvtgeom.*, 'layer0' ) AS dots
+FROM mvtgeom
+            """
+            if crimes == "ALL"
+            else " AND ("
+            + " OR ".join(
+                ["crime = :crime" + str(x) for x in range(len(crimes.split(",")))]
+            )
+            + ") "
+            + """
+            )
+SELECT
+     ST_AsMVT(mvtgeom.*, 'layer0' ) AS dots
+FROM mvtgeom
+            """
+        )
+
+        crime_data = {
+            "crime" + str(x): crimes.split(",")[x - 1]
+            for x in range(len(crimes.split(",")))
+        }
+        crime_data.update(
+            {
+                "z": z,
+                "x": x,
+                "y": y,
+                "start_date": start_date,
+                "max_date": add_last_day_of_month(max_date),
+            }
+        )
+        results = db.session.execute(query + sql_where, crime_data)
+        result_array = []
+        for row in results:
+            result_array.append(bytes(row["dots"]))
+        if not result_array:
+            raise InvalidAPIUsage("not found", 404)
+        return result_array
+
+    crimes = request.args.get("crimes", "ALL", type=str)
+    crimes = crimes.upper()
+    start_date = request.args.get("start_date", "", type=str)
+    end_date = request.args.get("end_date", "", type=str)
+    start_date, max_date = check_dates(start_date, end_date)
+
+    tile = get_tile(z, x, y, crimes, start_date, max_date)
+    response = make_response(tile[0])
+    response.headers["Content-Type"] = "application/octet-stream"
+    # response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate" # HTTP 1.1.
+    # response.headers["Pragma"] = "no-cache" # HTTP 1.0.
+    # response.headers["Expires"] = "0" # Proxies.
+    return response
+
+
 @API.route("/get_file", methods=["GET"])
 @cache.cached(key_prefix=make_cache_key)
 def get_json():
@@ -2786,59 +2933,3 @@ def get_json():
         raise InvalidAPIUsage("not found", 404)
     print("--- %s seconds ---" % (time.time() - start_time))
     return Response(response=result_array[0], status=200, mimetype="application/json")
-
-
-@API.route("/tiles/<int:z>/<int:x>/<int:y>", methods=["GET"])
-@cache.cached(key_prefix=make_cache_key)
-def tiles(z, x, y):
-    def get_tile(z, x, y, crimes):
-        query = """
-        SELECT St_asmvt(t.*, 'layer0') as dots
-        FROM   (SELECT St_asmvtgeom(St_transform(geom, 3857),
-                    St_tileenvelope(:z, :x, :y),
-                                    extent => 4096, buffer => 64) AS geom,
-                    date,
-                    hour,
-                    crime
-                FROM   crime_latlong
-                WHERE  St_transform(geom, 3857) && St_tileenvelope(:z, :x, :y,
-                                                margin => ( 64.0 / 4096
-                                                                    ))
-        """
-        sql_where = (
-            ") AS t"
-            if crimes == "ALL"
-            else " AND "
-            + " OR ".join(
-                ["crime = :crime" + str(x) for x in range(len(crimes.split(",")))]
-            )
-            + ") AS t"
-        )
-        
-        crime_data = {
-            "crime" + str(x): crimes.split(",")[x - 1]
-            for x in range(len(crimes.split(",")))
-        }
-        crime_data.update({"z": z, "x": x, "y": y})
-        results = db.session.execute(query + sql_where, crime_data)
-        result_array = []
-        for row in results:
-            print(sql_where)
-            result_array.append(bytes(row["dots"]))
-        if not result_array:
-            raise InvalidAPIUsage("not found", 404)
-        return result_array
-
-    crimes = request.args.get("crimes", "ALL", type=str)
-    crimes = crimes.upper()
-    start_date = request.args.get("start_date", "", type=str)
-    end_date = request.args.get("end_date", "", type=str)
-    start_date, max_date = check_dates(start_date, end_date)
-    hours = request.args.get("hours", "", type=str)
-
-    tile = get_tile(z, x, y, crimes)
-    response = make_response(tile[0])
-    response.headers["Content-Type"] = "application/octet-stream"
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
-    return response

@@ -2,7 +2,8 @@ UPDATE crime_latlong SET geom = ST_GeomFromText('POINT(' || longitude || ' ' || 
 --CREATE INDEX crime_latlongi_geography ON crime_latlong USING gist( (geom::geography) );
 CREATE INDEX crime_latlongi_castgeography ON crime_latlong USING gist( CAST(geom AS geography(GEOMETRY,-1) ));
 CREATE INDEX crime_latlongi_castgeography_4326 ON crime_latlong USING gist( CAST(geom AS geography(GEOMETRY,4326) ));
-CREATE INDEX crime_latlongi_castgeography_2163 ON crime_latlong USING GIST (ST_Transform(geom, 2163));
+--CREATE INDEX crime_latlongi_castgeography_2163 ON crime_latlong USING GIST (ST_Transform(geom, 2163));
+CREATE INDEX crime_latlongi_castgeography_32614 ON crime_latlong USING GIST (ST_Transform(geom, 32614));
 CREATE INDEX crime_latlong_crime_date_desc ON crime_latlong (crime DESC, date DESC);
 CREATE INDEX crime_latlongi
   ON crime_latlong

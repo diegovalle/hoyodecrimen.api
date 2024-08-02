@@ -17,6 +17,7 @@ flask-cdn==1.5.3
 flask-compress==1.4.0
 flask-sqlalchemy==2.3.2
 flask==1.0.2
+Flask-Cors==4.0.1
 frozen-flask==0.15
 geoalchemy2==0.6.1
 htmlmin==0.1.12
