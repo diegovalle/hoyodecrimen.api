@@ -40,7 +40,8 @@ else:
     from urlparse import urlparse
 
 from .neighbors import neighbors
-#from flask_sqlalchemy import get_debug_queries
+
+# from flask_sqlalchemy import get_debug_queries
 
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
@@ -94,9 +95,13 @@ API = Blueprint("API", __name__, url_prefix="/api/v1")
 # blueprint can also be app~~
 @API.after_request
 def after_request(response):
-    #response.cache_control.max_age = 180
-    response.headers['Cache-Control'] = "public, max-age=31536000, no-cache"
+    # response.cache_control.max_age = 180
+    if "Cache-Control" not in response.headers:
+        response.headers["Cache-Control"] = "public, max-age=31536000, no-cache"
     response.add_etag()
+    if_none_match = request.if_none_match
+    if response.get_etag()[0] in if_none_match.as_set():
+        response.status_code =  304
     return response
 
 
@@ -2026,7 +2031,8 @@ def sectores_change_sum_all(sector, crime):
         else "WHERE ("
         + " OR ".join(
             ["upper(crime) = :crime" + str(x) for x in range(len(crime.split(",")))]
-        ) + ") "
+        )
+        + ") "
     )
     if sql_query2 == "":
         sql_query3 = "" if sector == "ALL" else " where upper(sector) = :sector "
@@ -2729,9 +2735,9 @@ def top5sectores_aggregate(crime):
             "end_hour": end_hour,
         }
     )
-    #logging.warning( sql_query + sql_dates + sql_hour + sql_query2 + sql_query3)
-    #logging.warning(start_hour)
-    #logging.warning(end_hour)
+    # logging.warning( sql_query + sql_dates + sql_hour + sql_query2 + sql_query3)
+    # logging.warning(start_hour)
+    # logging.warning(end_hour)
     results = db.session.execute(
         sql_query + sql_dates + sql_hour + sql_query2 + sql_query3, crime_data
     )
@@ -2791,8 +2797,8 @@ FROM mvtgeom
             else " AND ("
             + " OR ".join(
                 ["crime = :crime" + str(x) for x in range(len(crime.split(",")))]
-            ) 
-        + ") "
+            )
+            + ") "
             + """
          )
 SELECT ST_AsMVT(mvtgeom.*, 'layer0') AS dots
@@ -2815,9 +2821,7 @@ FROM mvtgeom
                 "max_date": "" if max_date == "" else add_last_day_of_month(max_date),
             }
         )
-        results = db.session.execute(
-            query + sql_dates +  sql_where, crime_data
-        )
+        results = db.session.execute(query + sql_dates + sql_where, crime_data)
         result_array = []
         for row in results:
             result_array.append(bytes(row["dots"]))
@@ -2834,6 +2838,7 @@ FROM mvtgeom
     tile = get_tile(z, x, y, crime, start_date, end_date, start_hour, end_hour)
     response = make_response(tile[0])
     response.headers["Content-Type"] = "application/octet-stream"
+    response.headers["Cache-Control"] = "public, max-age=31536000, no-cache"
     # response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate" # HTTP 1.1.
     # response.headers["Pragma"] = "no-cache" # HTTP 1.0.
     # response.headers["Expires"] = "0" # Proxies.
@@ -2934,4 +2939,7 @@ def get_json():
     if not result_array:
         raise InvalidAPIUsage("not found", 404)
     print("--- %s seconds ---" % (time.time() - start_time))
-    return Response(response=result_array[0], status=200, mimetype="application/json")
+    response = make_response(result_array[0])
+
+    return response
+    # return Response(response=result_array[0], status=200, mimetype="application/json")

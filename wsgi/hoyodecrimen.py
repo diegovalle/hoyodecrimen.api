@@ -1,78 +1,82 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
-from flask import Flask,\
-    make_response, url_for, send_from_directory,\
-    render_template, g, request
+from flask import (
+    Flask,
+    make_response,
+    url_for,
+    send_from_directory,
+    render_template,
+    g,
+    request,
+)
 from flask_sqlalchemy import SQLAlchemy
 from flask_assets import Environment, Bundle
-#from werkzeug.contrib.profiler import ProfilerMiddleware
+
+# from werkzeug.contrib.profiler import ProfilerMiddleware
 from functools import wraps
 import os
-#from redis import Redis
+
+# from redis import Redis
 from api.api import API, cache
 from flask_babel import Babel
 from flask_cdn import CDN
-#from flask_frozen import Freezer
+
+# from flask_frozen import Freezer
 from htmlmin.main import minify
 import functools
 from raven.contrib.flask import Sentry
 from flask_compress import Compress
 from flask_cors import CORS
 
-#from api.extensions import db
+# from api.extensions import db
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
-
-
 
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 Compress(app)
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
-app.config['CDN_DOMAIN'] = 'hoyodecrimencom-cdn.netlify.app'
-app.config['CDN_HTTPS'] = True
-app.config['CDN_TIMESTAMP'] = False
+app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
+app.config["CDN_DOMAIN"] = "hoyodecrimencom-cdn.netlify.app"
+app.config["CDN_HTTPS"] = True
+app.config["CDN_TIMESTAMP"] = False
 CDN(app)
 
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 43200 * 20 # 20 days
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 43200 * 20  # 20 days
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Play with following options:
-app.config['SQLALCHEMY_POOL_SIZE'] = 10
-app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
-app.config['SQLALCHEMY_POOL_TIMEOUT'] = 20
+app.config["SQLALCHEMY_POOL_SIZE"] = 10
+app.config["SQLALCHEMY_MAX_OVERFLOW"] = 20
+app.config["SQLALCHEMY_POOL_TIMEOUT"] = 20
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.register_blueprint(API)
-session_options = {
-    'autocommit': True,
-    'pool_pre_ping': True,
-    'connect_timeout': 15
-}
-app.config.from_pyfile('apihoyodecrimen.cfg')
+session_options = {"autocommit": True, "pool_pre_ping": True, "connect_timeout": 15}
+app.config.from_pyfile("apihoyodecrimen.cfg")
 db = SQLAlchemy(app, session_options=session_options)
-db.init_app(app) 
+db.init_app(app)
 
 # report exceptions to sentry.io
 # first test if sentry.io is in the environment
 # to see if we are debugging
-if 'SENTRY_DSN' in os.environ:
-    sentry = Sentry(dsn= os.environ['SENTRY_DSN'])
+if "SENTRY_DSN" in os.environ:
+    sentry = Sentry(dsn=os.environ["SENTRY_DSN"])
     sentry.init_app(app)
 
 cache.init_app(app)
 
 assets = Environment(app)
-app.config['FLASK_ASSETS_USE_CDN'] = True
-app.config['ASSETS_DEBUG'] = False
-app.config['ASSETS_AUTO_BUILD'] = True
-assets.versions = 'hash'    # use the last modified timestamp
+app.config["FLASK_ASSETS_USE_CDN"] = True
+app.config["ASSETS_DEBUG"] = False
+app.config["ASSETS_AUTO_BUILD"] = True
+assets.versions = "hash"  # use the last modified timestamp
 babel = Babel(app)
 
 
-#freezer = Freezer(app)
-#app.config['FREEZER_STATIC_IGNORE'] = ['/api/v1/*']
+# freezer = Freezer(app)
+# app.config['FREEZER_STATIC_IGNORE'] = ['/api/v1/*']
+
 
 def uglify(route_function):
     @functools.wraps(route_function)
@@ -83,8 +87,10 @@ def uglify(route_function):
 
     return wrapped
 
+
 def add_response_headers(headers={}):
     """This decorator adds the headers passed in to the response"""
+
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -93,23 +99,62 @@ def add_response_headers(headers={}):
             for header, value in headers.items():
                 h[header] = value
             return resp
+
         return decorated_function
+
     return decorator
 
 
 def noframes(f):
     """This decorator passes X-Robots-Tag: noindex"""
+
     @wraps(f)
-    @add_response_headers({'X-Frame-Options': 'DENY'})
+    @add_response_headers({"X-Frame-Options": "DENY"})
     def decorated_function(*args, **kwargs):
         return f(*args, **kwargs)
+
     return decorated_function
 
 
 # Simple HTTP error handling
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('404.html'), 404
+    return render_template("404.html"), 404
+
+
+@app.route("/favicon.ico")
+def static_images_favicon():
+    return send_from_directory(
+        os.path.join(_basedir, "static", "images"), "favicon.ico"
+    )
+
+
+@app.route("/")
+@cache.cached()
+def api_home_html_es():
+    return "Hello from API.HOYODECRIMEN.COM. Documentation is at https://hoyodecrimen.com/api/"
+
+
+if __name__ == "__main__":
+    with app.app_context():
+        cache.clear()
+
+    db.create_all()
+
+    debug = False
+    # Running locally
+    if "PRODUCTION" not in os.environ:
+        app.config["PROFILE"] = True
+        app.config["ASSETS_DEBUG"] = True
+        # app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
+        debug = True
+        app.config["CDN_DEBUG"] = True
+        # render_template = uglify(render_template)
+    else:
+        render_template = uglify(render_template)
+
+    # freezer.freeze()
+    app.run(debug=debug)
 
 
 # css_pip_req = Bundle("css/skel.css", "css/style.css",
@@ -205,8 +250,8 @@ def not_found(error):
 # assets.register('latlong_bootstrap_js', latlong_bootstrap_js)
 # latlong_bootstrap_js.build()
 
-#@babel.localeselector
-#def get_locale():
+# @babel.localeselector
+# def get_locale():
 #    return getattr(g, 'lang')
 
 
@@ -242,11 +287,6 @@ def not_found(error):
 # def api_home_html():
 #     setattr(g, 'lang', 'en')
 #     return render_template('pip.html')
-
-@app.route('/')
-@cache.cached()
-def api_home_html_es():
-    return 'Hello from API.HOYODECRIMEN.COM'
 
 # @app.route('/sitemap.xml')
 # def sitemap():
@@ -343,7 +383,6 @@ def api_home_html_es():
 # def crime_es():
 #     setattr(g, 'lang', 'es')
 #     return render_template('crime.html')
-
 
 
 # @app.route('/en/charts')
@@ -471,11 +510,6 @@ def api_home_html_es():
 #     return send_from_directory(os.path.join(_basedir, 'static','images'),
 #                                filename)
 
-@app.route('/favicon.ico')
-def static_images_favicon():
-    return send_from_directory(os.path.join(_basedir, 'static','images'),
-                               'favicon.ico')
-
 # @app.route('/favicon-<string:size>.png')
 # def static_favicon_slash(size):
 #     return send_from_directory(os.path.join(_basedir, 'static','images'),
@@ -510,24 +544,3 @@ def static_images_favicon():
 # def static_browserconfig():
 #     return send_from_directory(os.path.join(_basedir, 'static','images'),
 #                                'browserconfig.xml')
-
-if __name__ == '__main__':
-    with app.app_context():
-        cache.clear()
-
-    db.create_all()
-
-    debug = False
-    # Running locally
-    if 'PRODUCTION' not in os.environ:
-        app.config['PROFILE'] = True
-        app.config['ASSETS_DEBUG'] = True
-        #app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
-        debug = True
-        app.config['CDN_DEBUG'] = True
-        #render_template = uglify(render_template)
-    else:
-        render_template = uglify(render_template)
-
-    #freezer.freeze()
-    app.run(debug=debug)
