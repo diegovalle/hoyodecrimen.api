@@ -1,5 +1,6 @@
 # python3.9-2021-10-26
-FROM tiangolo/meinheld-gunicorn-flask@sha256:fa550ec87b984ce31fe74c4e94fd041e96380d32290ddbba875110d50041fc4d
+FROM tiangolo/meinheld-gunicorn-flask@sha256:d05f97b610eab84b53e90a8fd3553adaf2ce1bca7f6cfe8e6725a17af3dcfa74
+#@sha256:fa550ec87b984ce31fe74c4e94fd041e96380d32290ddbba875110d50041fc4d
 
 ENV MODULE_NAME=hoyodecrimen
 ENV LOG_LEVEL=info
