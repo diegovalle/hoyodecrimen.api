@@ -40,7 +40,7 @@ else:
     from urlparse import urlparse
 
 from .neighbors import neighbors
-from flask_sqlalchemy import get_debug_queries
+#from flask_sqlalchemy import get_debug_queries
 
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
@@ -94,7 +94,9 @@ API = Blueprint("API", __name__, url_prefix="/api/v1")
 # blueprint can also be app~~
 @API.after_request
 def after_request(response):
-    response.cache_control.max_age = 180
+    #response.cache_control.max_age = 180
+    response.headers['Cache-Control'] = "public, max-age=31536000, no-cache"
+    response.add_etag()
     return response
 
 

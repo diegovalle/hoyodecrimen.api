@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from geoalchemy2 import Geometry
 
+#from .extensions import db
 db = SQLAlchemy()
 
 class Cuadrantes(db.Model):
