@@ -1,10 +1,11 @@
 # fly.toml app configuration file generated for apihoyodecrimen on 2024-01-06T18:26:21-06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#  fly deploy --ha=false
+# fly deploy --ha=false
+# fly scale count 1 --region dfw --max-per-region 1
 
 app = "apihoyodecrimen"
-primary_region = "qro"
+primary_region = "iad"
 
 [build]
 
