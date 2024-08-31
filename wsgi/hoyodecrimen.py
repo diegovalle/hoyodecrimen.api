@@ -27,13 +27,15 @@ from raven.contrib.flask import Sentry
 from flask_compress import Compress
 from flask_cors import CORS
 
+import logging
+
 # from api.extensions import db
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app, resources={r"/api/*": {"origins": "https://hoyodecrimen.com"}})
 
 Compress(app)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
@@ -142,6 +144,7 @@ def clear_cache():
             with app.app_context():
                 cache.clear()
                 ret = "cache cleared"
+                logging.info(res)
         else:
             ret = "false"
     else:
