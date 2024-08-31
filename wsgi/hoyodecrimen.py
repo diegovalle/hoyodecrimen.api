@@ -134,6 +134,21 @@ def static_images_favicon():
 def api_home_html_es():
     return "Hello from API.HOYODECRIMEN.COM. Documentation is at https://hoyodecrimen.com/api/"
 
+@app.route('/clear-cache',
+           methods=['POST'])
+def clear_cache():
+    if 'CACHE_SECRET' in os.environ:
+        if os.environ['CACHE_SECRET'] == request.form.get('CACHE_SECRET'):
+            with app.app_context():
+                cache.clear()
+                ret = "cache cleared"
+        else:
+            ret = "false"
+    else:
+        ret = "Not available"
+    response = make_response(ret, 200)
+    response.mimetype = "text/plain"
+    return response
 
 if __name__ == "__main__":
     with app.app_context():
@@ -265,21 +280,7 @@ if __name__ == "__main__":
 #     import random
 #     return str(random.random())
 
-# @app.route('/clear-cache',
-#            methods=['POST'])
-# def clear_cache():
-#     if 'CACHE_SECRET' in os.environ:
-#         if os.environ['CACHE_SECRET'] == request.form.get('CACHE_SECRET'):
-#             with app.app_context():
-#                 cache.clear()
-#                 ret = "cache cleared"
-#         else:
-#             ret = "false"
-#     else:
-#         ret = "Not available"
-#     response = make_response(ret, 200)
-#     response.mimetype = "text/plain"
-#     return response
+
 
 
 # @app.route('/en/')
