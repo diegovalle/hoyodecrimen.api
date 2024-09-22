@@ -35,7 +35,10 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "https://hoyodecrimen.com"}})
+CORS(app, resources=r"/api/*",  
+          origins=["http://localhost:8000", 
+                   "http://localhost:9000", 
+                   "https://hoyodecrimen.com"])
 
 Compress(app)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
@@ -144,7 +147,7 @@ def clear_cache():
             with app.app_context():
                 cache.clear()
                 ret = "cache cleared"
-                logging.info(res)
+                logging.info(ret)
         else:
             ret = "false"
     else:

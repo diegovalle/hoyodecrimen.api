@@ -2744,6 +2744,70 @@ def top5sectores_aggregate(crime):
     return lib.ResultProxy_to_json(results)
 
 
+@API.route("/hextiles/crimes/<string:crime>/top/aggregate", methods=["GET"])
+@jsonp
+@cache.cached(key_prefix=make_cache_key)
+def tophextiles_aggregate(crime):
+    crime = crime.upper()
+    start_date = request.args.get("start_date", "", type=str)
+    end_date = request.args.get("end_date", "", type=str)
+    start_hour = request.args.get("start_hour", "", type=int)
+    end_hour = request.args.get("end_hour", "", type=int)
+
+    # abort(abort(make_response('No negative numbers', 400)))
+    sql_query = """select count(*) as count,
+                           hex_idx
+                           from crime_latlong
+                           where hex_idx IS NOT NULL"""
+
+    if start_date == "" and end_date == "":
+        max_date = ""
+        sql_dates = " "
+    else:
+        start_date, max_date = check_dates(start_date, end_date)
+        sql_dates = " and (date >= :start_date and date <= :max_date)"
+
+    if start_hour == "" and end_hour == "":
+        sql_hour = " "
+    else:
+        if start_hour not in range(0, 24) or end_hour not in range(0, 24):
+            raise InvalidAPIUsage("Hours must be between 0 and 23")
+        else:
+            if start_hour < end_hour:
+                sql_hour = " and (hour_int >= :start_hour and hour_int <= :end_hour)"
+            else:
+                sql_hour = " and (hour_int >= :start_hour or hour_int <= :end_hour)"
+
+    sql_query2 = (
+        ""
+        if crime == "ALL"
+        else " AND ("
+        + " OR ".join(
+            ["upper(crime) = :crime" + str(x) for x in range(len(crime.split(",")))]
+        )
+        + ") "
+    )
+    sql_query3 = """   group by hex_idx"""
+    crime_data = {
+        "crime" + str(x): crime.split(",")[x - 1] for x in range(len(crime.split(",")))
+    }
+    crime_data.update(
+        {
+            "start_date": start_date,
+            "max_date": "" if max_date == "" else add_last_day_of_month(max_date),
+            "crime": crime,
+            "start_hour": start_hour,
+            "end_hour": end_hour,
+        }
+    )
+    # logging.warning( sql_query + sql_dates + sql_hour + sql_query2 + sql_query3)
+    # logging.warning(start_hour)
+    # logging.warning(end_hour)
+    results = db.session.execute(
+        sql_query + sql_dates + sql_hour + sql_query2 + sql_query3, crime_data
+    )
+    return lib.ResultProxy_to_json(results)
+
 @API.route("/tiles/crimes/<string:crime>/<int:z>/<int:x>/<int:y>", methods=["GET"])
 @cache.cached(key_prefix=make_cache_key)
 def tiles(z, x, y, crime):
