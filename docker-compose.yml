@@ -33,29 +33,26 @@ services:
           #memory: 256M
     ports:
       - '8080:8080'
-    depends_on:
-      db:
-        condition: service_healthy
-    env_file:
-      - .env
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
 
-  db:
-    container_name: hoyodecrimen-postgis
-    restart: unless-stopped
-    environment:
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      HOYODECRIMEN_BACKUP_PASSWORD: "${HOYODECRIMEN_BACKUP_PASSWORD}"
-      HOYODECRIMEN_PASSWORD: "${HOYODECRIMEN_PASSWORD}"
-    image: diegovalle/hoyodecrimen-postgis
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 30s
-      timeout: 5s
-      retries: 5
-    networks:
-      - default
-    volumes:
-      - /pgdata_hy:/var/lib/postgresql/data
-    ports:
-      - 5405:5432
-version: '3'
+  # db:
+  #   container_name: hoyodecrimen-postgis
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+  #     HOYODECRIMEN_BACKUP_PASSWORD: "${HOYODECRIMEN_BACKUP_PASSWORD}"
+  #     HOYODECRIMEN_PASSWORD: "${HOYODECRIMEN_PASSWORD}"
+  #   image: diegovalle/hoyodecrimen-postgis
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 30s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - default
+  #   volumes:
+  #     - /pgdata_hy:/var/lib/postgresql/data
+  #   ports:
+  #     - 5405:5432
