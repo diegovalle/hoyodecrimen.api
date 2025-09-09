@@ -29,3 +29,5 @@ wsgi/static/js/ng-table.map
 wsgi/static/js/packed*
 fly.toml
 .dockerignore
+.env
+.envrc
