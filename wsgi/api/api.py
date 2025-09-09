@@ -101,7 +101,7 @@ def after_request(response):
     response.add_etag()
     if_none_match = request.if_none_match
     if response.get_etag()[0] in if_none_match.as_set():
-        response.status_code =  304
+        response.status_code = 304
     return response
 
 
@@ -2808,6 +2808,7 @@ def tophextiles_aggregate(crime):
     )
     return lib.ResultProxy_to_json(results)
 
+
 @API.route("/tiles/crimes/<string:crime>/<int:z>/<int:x>/<int:y>", methods=["GET"])
 @cache.cached(key_prefix=make_cache_key)
 def tiles(z, x, y, crime):
@@ -2885,7 +2886,9 @@ FROM mvtgeom
                 "max_date": "" if max_date == "" else add_last_day_of_month(max_date),
             }
         )
-        results = db.session.execute(query + sql_dates + sql_where, crime_data)
+        results = db.session.execute(
+            query + sql_dates + sql_hour + sql_where, crime_data
+        )
         result_array = []
         for row in results:
             result_array.append(bytes(row["dots"]))
