@@ -2,16 +2,16 @@
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 # fly deploy --ha=false
-# fly scale count 1 --region dfw --max-per-region 1
+# fly scale count 1 --region dfw 
+# flyctl machine update <MACHINE_ID> --vm-size shared-cpu-1x
 
 app = "apihoyodecrimen"
-primary_region = "iad"
+primary_region = "qro"
 
 [build]
 
 [env]
   PRODUCTION = "yes"
-
 [http_service]
   internal_port = 8080
   force_https = true
@@ -19,7 +19,11 @@ primary_region = "iad"
   auto_start_machines = false
   min_machines_running = 1
   processes = ["app"]
-
+  # [http_service.concurrency]
+  #   type = "requests"
+  #   soft_limit = 100
+  #   hard_limit = 150
+    
 [[vm]]
   cpu_kind = "shared"
   cpus = 2
