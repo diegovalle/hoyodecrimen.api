@@ -2,11 +2,11 @@
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 # fly deploy --ha=false
-# fly scale count 1 --region dfw 
+# fly scale count 1 --region lax 
 # flyctl machine update <MACHINE_ID> --vm-size shared-cpu-1x
 
 app = "apihoyodecrimen"
-primary_region = "qro"
+primary_region = "dfw"
 
 [build]
 
